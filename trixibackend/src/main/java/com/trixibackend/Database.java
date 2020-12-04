@@ -24,22 +24,17 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class Database {
-    public UserHandler getUserHandler() {
-        return userHandler;
-    }
-
     private UserHandler userHandler = null;
     private PostHandler postHandler = null;
 
     MongoCollection<User> userColl = null;
     MongoCollection<Post> postColl = null;
 
-
     Map<Type, MongoCollection> collections = new HashMap<>();
 
     private final String atlasUrl = "mongodb+srv://Snehal:1234@cluster0.cemx5.mongodb.net/trixi?retryWrites=true&w=majority";
-    private final String dbname= "trixi";
 
+    private final String dbname= "trixi";
     public Database() {
         init();
     }
@@ -91,14 +86,23 @@ public class Database {
         T updated = (T) coll.findOneAndReplace(eq("_id", id), object);
         if(updated == null) {
             var res = coll.insertOne(object);
-//            user.setId(res.getInsertedId().asObjectId().getValue());
-//            user.setUid(user.getId().toString());
-//            updated = user;
+            if(updated.getClass() == User.class);{
+                User user = (User) updated;
+                user.setId(res.getInsertedId().asObjectId().getValue());
+                user.setUid(user.getId().toString());
+                updated = (T) user;
+            }
+
         }
 
         return updated;
     }
 
+    public PostHandler getPostHandler() {
+        return postHandler;
+    }
 
-
+    public UserHandler getUserHandler() {
+        return userHandler;
+    }
 }

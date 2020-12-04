@@ -12,7 +12,7 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
 
 public class UserHandler {
-    private MongoCollection<User> userColl = null;
+    private MongoCollection<User> userColl;
 
     public UserHandler(MongoDatabase database){
         userColl = database.getCollection("users", User.class);

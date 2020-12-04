@@ -23,10 +23,11 @@ public class Post {
 
     }
 
-    public Post(String title, String filePath, String description) {
+    public Post(String title, String filePath, String description,String ownerId) {
         this.title = title;
         this.filePath = filePath;
         this.description = description;
+        this.ownerId = ownerId;
     }
 
     public Post(String filePath) {

@@ -22,6 +22,20 @@ public class PostHandler {
         return postColl;
     }
 
+    public List<Post> getAllPosts() {
+        List<Post> posts = null;
+        try {
+            FindIterable<Post> usersIter = postColl.find();
+            posts = new ArrayList<>();
+            usersIter.forEach(posts::add);
+            //posts.forEach(user -> user.setUid(user.getId().toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return posts;
+    }
+
     public List<Post> findPostsByOwner(String id) {
         List<Post> posts = null;
         try {
