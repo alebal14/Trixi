@@ -4,6 +4,7 @@ package com.trixibackend;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
+import com.trixibackend.collections.UserHandler;
 import com.trixibackend.entity.User;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -21,7 +22,11 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class Database {
+    public UserHandler getUserHandler() {
+        return userHandler;
+    }
 
+    private UserHandler userHandler = null;
 
     MongoCollection<User> userColl = null;
 
@@ -52,7 +57,10 @@ public class Database {
         database = database.withCodecRegistry(pojoCodecRegistry);
 
         // get users collection linked with POJO
-        userColl = database.getCollection("users", User.class);
+
+        userHandler = new UserHandler(database);
+
+        userColl = userHandler.getUserColl();
 
 
         // generic collections

@@ -26,12 +26,14 @@ public class User {
 
 
     public User(){
+
     }
 
-    public User(String userName, String email, String password) {
+    public User(String userName, String email, String password,String role) {
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public String getRole() {
