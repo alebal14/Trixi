@@ -4,7 +4,9 @@ package com.trixibackend;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
+import com.trixibackend.collections.PostHandler;
 import com.trixibackend.collections.UserHandler;
+import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -27,8 +29,10 @@ public class Database {
     }
 
     private UserHandler userHandler = null;
+    private PostHandler postHandler = null;
 
     MongoCollection<User> userColl = null;
+    MongoCollection<Post> postColl = null;
 
 
     Map<Type, MongoCollection> collections = new HashMap<>();
@@ -59,12 +63,15 @@ public class Database {
         // get users collection linked with POJO
 
         userHandler = new UserHandler(database);
+        postHandler = new PostHandler(database);
 
         userColl = userHandler.getUserColl();
+        postColl = postHandler.getPostColl();
 
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
+        collections.putIfAbsent(Post.class,postColl);
 
     }
 
