@@ -65,6 +65,28 @@ public class RestApi {
     private void setUpGetApi(String collectionName) {
 
         app.get("/rest/" + collectionName, (req, res) -> res.json(db.getAll(collectionName)));
+        app.get("/rest/posts/byCategory/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+            var obj = db.getPostHandler().getPostsByCategory(id);
+            if (obj == null) {
+                res.send("Error: no Object found");
+                return;
+            }
+            res.json(db.getPostHandler().getPostsByCategory(id));
+    });
+
+        //b
+        app.get("/rest/" + collectionName + "/byowner/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+            var obj = db.getByOwner(collectionName, id);
+            if (obj == null) {
+                res.send("Error: no Object found");
+                return;
+            }
+            res.json(db.getByOwner(collectionName, id));
+        });
 
         app.get("/rest/" + collectionName + "/:id", (req, res) -> {
 
@@ -74,7 +96,6 @@ public class RestApi {
                 res.send("Error: no Object found");
                 return;
             }
-
             res.json(db.getById(collectionName, id));
         });
 

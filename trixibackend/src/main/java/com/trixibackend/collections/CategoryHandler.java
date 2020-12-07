@@ -37,18 +37,17 @@ public class CategoryHandler {
         return categories;
     }
 
-//    public Category findCategoryByName(String categoryName) {
-//
-//        try {
-//            var categoryIter = categoryColl.find({ "name": { categoryName }});
-//
-//            var category = categoryIter.first();
-//            if (category == null) return null;
-//            return category;
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
+    public Category findCategoryByName(String categoryName) {
+
+        try {
+            var categoryIter = categoryColl.find(eq("_name", new ObjectId(categoryName)));
+            var category = categoryIter.first();
+            if (category == null) return null;
+            return category;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public Category findCategoryById(String id) {
 

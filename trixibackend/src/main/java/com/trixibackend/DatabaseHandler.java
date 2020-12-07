@@ -141,6 +141,17 @@ public class DatabaseHandler {
         }
     }
 
+    public Object getByOwner(String collectionName, String id){
+        switch (collectionName) {
+            case "posts":
+                return postHandler.findPostsByOwner(id);
+            case "pets":
+                return petHandler.findPetsByOwner(id);
+            default:
+                return null;
+        }
+    }
+
     public Object getByName(String collectionName, String name) {
         switch (collectionName) {
             case "categories":
