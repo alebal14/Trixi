@@ -15,20 +15,18 @@ import static com.mongodb.client.model.Filters.eq;
 public class LikeHandler {
 
     private MongoCollection<Like> likeColl;
-    private PostHandler postHandler;
 
-    public MongoCollection<Like> getLikeColl() {
-        return likeColl;
-    }
 
     public LikeHandler(MongoDatabase database) {
         likeColl = database.getCollection("likes", Like.class);
 
     }
 
-    public MongoCollection<Like> getPetColl() {
+    public MongoCollection<Like> getLikeColl() {
         return likeColl;
     }
+
+
 
     public List<Like> findLikesByPostId(String postId) {
         List<Like> likes = null;

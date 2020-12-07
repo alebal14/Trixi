@@ -1,9 +1,6 @@
 package com.trixibackend;
 
-import com.trixibackend.entity.Like;
-import com.trixibackend.entity.Pet;
-import com.trixibackend.entity.Post;
-import com.trixibackend.entity.User;
+import com.trixibackend.entity.*;
 import express.Express;
 
 public class RestApi {
@@ -51,6 +48,10 @@ public class RestApi {
                 case "likes" :
                     Like like = (Like) req.getBody(Like.class);
                     res.json(db.save(like));
+                    break;
+                case "comments":
+                    Comment comment = (Comment) req.getBody(Comment.class);
+                    res.json(db.save(comment));
                     break;
                 default:
                     break;
