@@ -5,12 +5,12 @@ import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
 import express.Express;
 
-public class Api {
+public class RestApi {
 
     Express app = new Express();
-    Database db = new Database();
+    DatabaseHandler db = new DatabaseHandler();
 
-    public Api() {
+    public RestApi() {
         initApi();
 
     }
@@ -47,7 +47,7 @@ public class Api {
                     Pet pet = (Pet) req.getBody(Pet.class);
                     res.json(db.save(pet));
                     break;
-                //return petHandler.getAllPets(id);
+
                 default:
                     break;
             }
@@ -77,6 +77,8 @@ public class Api {
             res.json(db.getById(collectionName, id));
         });
     }
+
+
 
    /* private void getUserApi() {
         app.get("/rest/users", (req, res) ->

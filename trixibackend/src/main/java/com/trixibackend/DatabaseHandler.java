@@ -4,8 +4,10 @@ package com.trixibackend;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
+import com.trixibackend.collections.PetHandler;
 import com.trixibackend.collections.PostHandler;
 import com.trixibackend.collections.UserHandler;
+import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
 import org.bson.Document;
@@ -21,14 +23,16 @@ import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-public class Database {
+public class DatabaseHandler {
 
     MongoDatabase database;
     private UserHandler userHandler = null;
     private PostHandler postHandler = null;
+    private PetHandler petHandler = null;
 
     MongoCollection<User> userColl = null;
     MongoCollection<Post> postColl = null;
+    MongoCollection<Pet> petColl = null;
 
     Map<Type, MongoCollection> collections = new HashMap<>();
 
@@ -36,7 +40,7 @@ public class Database {
 
     private final String dbname = "trixi";
 
-    public Database() {
+    public DatabaseHandler() {
         init();
     }
 
@@ -60,14 +64,17 @@ public class Database {
 
         userHandler = new UserHandler(database);
         postHandler = new PostHandler(database);
+        petHandler = new PetHandler(database);
 
         userColl = userHandler.getUserColl();
         postColl = postHandler.getPostColl();
+        petColl = petHandler.getPetColl();
 
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
         collections.putIfAbsent(Post.class, postColl);
+        collections.putIfAbsent(Pet.class, petColl);
 
     }
 
@@ -102,7 +109,7 @@ public class Database {
             case "posts":
                 return postHandler.getAllPosts();
             case "pets":
-                //return petHandler.getAllPets();
+                return petHandler.getAllPets();
             default:
                 return null;
         }
@@ -116,7 +123,7 @@ public class Database {
             case "posts":
                 return postHandler.findPostById(id);
             case "pets":
-                //return petHandler.getAllPets(id);
+                return petHandler.findPetById(id);
             default:
                 return null;
         }
@@ -130,6 +137,8 @@ public class Database {
     public UserHandler getUserHandler() {
         return userHandler;
     }
+
+    public PetHandler getPetHandler(){return petHandler;}
 
     public MongoDatabase getDatabase() {
         return database;

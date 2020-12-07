@@ -7,6 +7,10 @@ import java.util.List;
 
 public class Pet {
     private ObjectId id;
+
+
+
+    private String uid;
     private String name;
     private int age;
     private String gender;
@@ -24,13 +28,14 @@ public class Pet {
 
     }
 
-    public Pet(String name, int age, String gender, String breed, String bio, String imageUrl) {
+    public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.breed = breed;
         this.bio = bio;
         this.imageUrl = imageUrl;
+        this.ownerId = ownerId;
     }
 
     public ObjectId getId() {
@@ -41,6 +46,13 @@ public class Pet {
         this.id = id;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
     public String getName() {
         return name;
     }
@@ -125,6 +137,7 @@ public class Pet {
     public String toString() {
         return "Pet{" +
                 "id=" + id +
+                ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
