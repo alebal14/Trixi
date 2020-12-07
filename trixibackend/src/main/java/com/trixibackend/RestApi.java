@@ -56,6 +56,9 @@ public class RestApi {
                     Category category = (Category) req.getBody(Category.class);
                     res.json(db.save(category));
                     break;
+                case "pet_types":
+                    PetType petType = (PetType) req.getBody(PetType.class);
+                    res.json(db.save(petType));
                 default:
                     break;
             }
@@ -78,15 +81,5 @@ public class RestApi {
             res.json(db.getById(collectionName, id));
         });
 
-        app.get("/rest/" + collectionName + "/:name", ((req, res) -> {
-
-            String name = req.getParam("name");
-            var obj = db.getByName(collectionName, name);
-            if (obj == null) {
-                res.send("Error: no Object found");
-                return;
-            }
-            res.json(db.getByName(collectionName, name));
-        }));
     }
 }

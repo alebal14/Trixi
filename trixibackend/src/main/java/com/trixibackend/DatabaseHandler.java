@@ -27,6 +27,7 @@ public class DatabaseHandler {
     private LikeHandler likeHandler = null;
     private CommentHandler commentHandler = null;
     private CategoryHandler categoryHandler = null;
+    private PetTypeHandler petTypeHandler = null;
 
     MongoCollection<User> userColl = null;
     MongoCollection<Post> postColl = null;
@@ -34,6 +35,7 @@ public class DatabaseHandler {
     MongoCollection<Like> likeColl = null;
     MongoCollection<Comment> commentColl = null;
     MongoCollection<Category> categoryColl = null;
+    MongoCollection<PetType> petTypeColl = null;
 
     Map<Type, MongoCollection> collections = new HashMap<>();
 
@@ -69,6 +71,7 @@ public class DatabaseHandler {
         likeHandler = new LikeHandler(database);
         commentHandler = new CommentHandler(database);
         categoryHandler = new CategoryHandler(database);
+        petTypeHandler = new PetTypeHandler(database);
 
         userColl = userHandler.getUserColl();
         postColl = postHandler.getPostColl();
@@ -76,6 +79,7 @@ public class DatabaseHandler {
         likeColl = likeHandler.getLikeColl();
         commentColl = commentHandler.getCommentColl();
         categoryColl = categoryHandler.getCategoryColl();
+        petTypeColl = petTypeHandler.getPetTypeColl();
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
@@ -84,6 +88,7 @@ public class DatabaseHandler {
         collections.putIfAbsent(Like.class, likeColl);
         collections.putIfAbsent(Comment.class, commentColl);
         collections.putIfAbsent(Category.class, categoryColl);
+        collections.putIfAbsent(PetType.class, petTypeColl);
     }
 
     public <T> T save(Object object) {
@@ -120,6 +125,8 @@ public class DatabaseHandler {
                 return petHandler.getAllPets();
             case "categories":
                 return categoryHandler.getAllCategories();
+            case "pet_types":
+                return petTypeHandler.getAllPetTypes();
             default:
                 return null;
         }
@@ -136,19 +143,13 @@ public class DatabaseHandler {
                 return petHandler.findPetById(id);
             case "categories":
                 return categoryHandler.findCategoryById(id);
+            case "pet_types":
+                return  petTypeHandler.findPetTypesById(id);
             default:
                 return null;
         }
     }
 
-    public Object getByName(String collectionName, String name) {
-        switch (collectionName) {
-            case "categories":
-                return categoryHandler.findCategoryByName(name);
-            default:
-                return null;
-        }
-    }
 
     public PostHandler getPostHandler() {
         return postHandler;
