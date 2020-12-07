@@ -13,11 +13,14 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class UserHandler {
     private MongoCollection<User> userColl;
+    private PostHandler postHandler;
 
-    public UserHandler(MongoDatabase database){
+    public UserHandler(MongoDatabase database) {
         userColl = database.getCollection("users", User.class);
+        postHandler = new PostHandler(database);
     }
-    public MongoCollection<User> getUserColl(){
+
+    public MongoCollection<User> getUserColl() {
         return userColl;
     }
 
@@ -27,7 +30,11 @@ public class UserHandler {
             FindIterable<User> usersIter = userColl.find();
             users = new ArrayList<>();
             usersIter.forEach(users::add);
-            users.forEach(user -> user.setUid(user.getId().toString()));
+            users.forEach(user -> {
+                user.setUid(user.getId().toString());
+                user.setPosts(postHandler.findPostsByOwner(user.getUid()));
+                //user.setPets(petHandler.findPetsByOwner(user.getUid()));
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,13 +48,13 @@ public class UserHandler {
             var user = userIter.first();
             if (user == null) return null;
             user.setUid(user.getId().toString());
-            //user.setPets(findCatsByOwner(user.getUid()));
+            user.setPosts(postHandler.findPostsByOwner(user.getUid()));
+            //user.setPets(findPetsByOwner(user.getUid()));
             return user;
         } catch (Exception e) {
             return null;
         }
     }
-
 
 
 }

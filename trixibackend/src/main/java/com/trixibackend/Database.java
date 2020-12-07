@@ -8,22 +8,22 @@ import com.trixibackend.collections.PostHandler;
 import com.trixibackend.collections.UserHandler;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class Database {
+
+    MongoDatabase database;
     private UserHandler userHandler = null;
     private PostHandler postHandler = null;
 
@@ -34,7 +34,8 @@ public class Database {
 
     private final String atlasUrl = "mongodb+srv://Snehal:1234@cluster0.cemx5.mongodb.net/trixi?retryWrites=true&w=majority";
 
-    private final String dbname= "trixi";
+    private final String dbname = "trixi";
+
     public Database() {
         init();
     }
@@ -48,7 +49,7 @@ public class Database {
                 .build();
 
         MongoClient mongoClient = MongoClients.create(settings);
-        MongoDatabase database = mongoClient.getDatabase(dbname);
+        database = mongoClient.getDatabase(dbname);
 
         // Register codec to support POJO operations (Plain Old Java Object)
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
@@ -66,7 +67,7 @@ public class Database {
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
-        collections.putIfAbsent(Post.class,postColl);
+        collections.putIfAbsent(Post.class, postColl);
 
     }
 
@@ -84,18 +85,42 @@ public class Database {
         var coll = collections.get(object.getClass());
 
         T updated = (T) coll.findOneAndReplace(eq("_id", id), object);
-        if(updated == null) {
+        if (updated == null) {
+
             var res = coll.insertOne(object);
-            if(updated.getClass() == User.class);{
-                User user = (User) updated;
-                user.setId(res.getInsertedId().asObjectId().getValue());
-                user.setUid(user.getId().toString());
-                updated = (T) user;
-            }
+            updated = (T) object;
 
         }
 
         return updated;
+    }
+
+    public List<? extends Object> getAll(String collectionName) {
+        switch (collectionName) {
+            case "users":
+                return userHandler.getAllUsers();
+            case "posts":
+                return postHandler.getAllPosts();
+            case "pets":
+                //return petHandler.getAllPets();
+            default:
+                return null;
+        }
+
+    }
+
+    public Object getById(String collectionName, String id) {
+        switch (collectionName) {
+            case "users":
+                return userHandler.findUserById(id);
+            case "posts":
+                return postHandler.findPostById(id);
+            case "pets":
+                //return petHandler.getAllPets(id);
+            default:
+                return null;
+        }
+
     }
 
     public PostHandler getPostHandler() {
@@ -104,5 +129,9 @@ public class Database {
 
     public UserHandler getUserHandler() {
         return userHandler;
+    }
+
+    public MongoDatabase getDatabase() {
+        return database;
     }
 }

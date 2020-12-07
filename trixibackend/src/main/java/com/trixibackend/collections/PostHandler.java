@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,18 @@ public class PostHandler {
 
         return posts;
 
+    }
+
+    public Post findPostById(String id) {
+        try {
+            var postIter = postColl.find(eq("_id", new ObjectId(id)));
+            var post = postIter.first();
+            if (post == null) return null;
+            //post.setUid(post.getId().toString());
+            return post;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
