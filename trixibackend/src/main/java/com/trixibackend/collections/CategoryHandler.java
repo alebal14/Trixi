@@ -38,7 +38,6 @@ public class CategoryHandler {
     }
 
 
-
     public Category findCategoryById(String id) {
 
         try {

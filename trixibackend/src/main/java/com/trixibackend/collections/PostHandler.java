@@ -90,7 +90,6 @@ public class PostHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return posts;
     }
 
