@@ -14,9 +14,11 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class PostHandler {
     private MongoCollection<Post> postColl = null;
+    private LikeHandler likeHandler;
 
     public PostHandler(MongoDatabase database) {
         postColl = database.getCollection("posts", Post.class);
+        likeHandler = new LikeHandler(database);
     }
 
     public MongoCollection<Post> getPostColl() {
@@ -29,7 +31,9 @@ public class PostHandler {
             FindIterable<Post> usersIter = postColl.find();
             posts = new ArrayList<>();
             usersIter.forEach(posts::add);
-            //posts.forEach(user -> user.setUid(user.getId().toString()));
+            posts.forEach(post ->  post.setUid(post.getId().toString()));
+            posts.forEach(post -> post.setLikes(likeHandler.findLikesByPostId(post.getUid())));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,7 +60,8 @@ public class PostHandler {
             var postIter = postColl.find(eq("_id", new ObjectId(id)));
             var post = postIter.first();
             if (post == null) return null;
-            //post.setUid(post.getId().toString());
+            post.setUid(post.getId().toString());
+            post.setLikes(likeHandler.findLikesByPostId(post.getUid()));
             return post;
         } catch (Exception e) {
             return null;

@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Post {
     private ObjectId id;
+    private String uid;
     private String title;
     private String filePath;
     private String description;
@@ -18,6 +19,14 @@ public class Post {
     private List<ObjectId> commentIds = new ArrayList<>();
 
     private List<Like> likes = new ArrayList<>();
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public Post() {
 
@@ -110,6 +119,7 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "id=" + id +
+                ", uid='" + uid + '\'' +
                 ", title='" + title + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", description='" + description + '\'' +

@@ -4,9 +4,11 @@ package com.trixibackend;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
+import com.trixibackend.collections.LikeHandler;
 import com.trixibackend.collections.PetHandler;
 import com.trixibackend.collections.PostHandler;
 import com.trixibackend.collections.UserHandler;
+import com.trixibackend.entity.Like;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
@@ -29,10 +31,12 @@ public class DatabaseHandler {
     private UserHandler userHandler = null;
     private PostHandler postHandler = null;
     private PetHandler petHandler = null;
+    private LikeHandler likeHandler = null;
 
     MongoCollection<User> userColl = null;
     MongoCollection<Post> postColl = null;
     MongoCollection<Pet> petColl = null;
+    MongoCollection<Like> likeColl = null;
 
     Map<Type, MongoCollection> collections = new HashMap<>();
 
@@ -65,16 +69,19 @@ public class DatabaseHandler {
         userHandler = new UserHandler(database);
         postHandler = new PostHandler(database);
         petHandler = new PetHandler(database);
+        likeHandler = new LikeHandler(database);
 
         userColl = userHandler.getUserColl();
         postColl = postHandler.getPostColl();
         petColl = petHandler.getPetColl();
+        likeColl = likeHandler.getLikeColl();
 
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
         collections.putIfAbsent(Post.class, postColl);
         collections.putIfAbsent(Pet.class, petColl);
+        collections.putIfAbsent(Like.class, likeColl);
 
     }
 
@@ -139,6 +146,8 @@ public class DatabaseHandler {
     }
 
     public PetHandler getPetHandler(){return petHandler;}
+
+
 
     public MongoDatabase getDatabase() {
         return database;
