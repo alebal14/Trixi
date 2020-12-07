@@ -4,12 +4,21 @@ import org.bson.types.ObjectId;
 
 public class Category {
     private ObjectId id;
+    private String uId;
     private String name;
 
-    public  Category(){}
+    public Category(){}
 
     public Category(String name) {
         this.name = name;
+    }
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
     }
 
     public ObjectId getId() {

@@ -4,7 +4,6 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.trixibackend.entity.Pet;
-import com.trixibackend.entity.User;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ public class PetHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return pets;
     }
 

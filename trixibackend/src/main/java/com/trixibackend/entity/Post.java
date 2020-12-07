@@ -32,7 +32,15 @@ public class Post {
 
     }
 
-    public Post(String title, String filePath, String description,String ownerId) {
+    public Post(String title, String filePath, String description, String ownerId, String categoryId) {
+        this.title = title;
+        this.filePath = filePath;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.categoryId = categoryId;
+    }
+
+    public Post(String title, String filePath, String description, String ownerId) {
         this.title = title;
         this.filePath = filePath;
         this.description = description;

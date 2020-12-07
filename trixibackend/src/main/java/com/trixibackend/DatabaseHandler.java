@@ -6,7 +6,6 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.trixibackend.collections.*;
 import com.trixibackend.entity.*;
-import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
@@ -27,12 +26,14 @@ public class DatabaseHandler {
     private PetHandler petHandler = null;
     private LikeHandler likeHandler = null;
     private CommentHandler commentHandler = null;
+    private CategoryHandler categoryHandler = null;
 
     MongoCollection<User> userColl = null;
     MongoCollection<Post> postColl = null;
     MongoCollection<Pet> petColl = null;
     MongoCollection<Like> likeColl = null;
     MongoCollection<Comment> commentColl = null;
+    MongoCollection<Category> categoryColl = null;
 
     Map<Type, MongoCollection> collections = new HashMap<>();
 
@@ -67,13 +68,14 @@ public class DatabaseHandler {
         petHandler = new PetHandler(database);
         likeHandler = new LikeHandler(database);
         commentHandler = new CommentHandler(database);
+        categoryHandler = new CategoryHandler(database);
 
         userColl = userHandler.getUserColl();
         postColl = postHandler.getPostColl();
         petColl = petHandler.getPetColl();
         likeColl = likeHandler.getLikeColl();
         commentColl = commentHandler.getCommentColl();
-
+        categoryColl = categoryHandler.getCategoryColl();
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
@@ -81,7 +83,7 @@ public class DatabaseHandler {
         collections.putIfAbsent(Pet.class, petColl);
         collections.putIfAbsent(Like.class, likeColl);
         collections.putIfAbsent(Comment.class, commentColl);
-
+        collections.putIfAbsent(Category.class, categoryColl);
     }
 
     public <T> T save(Object object) {
@@ -116,6 +118,8 @@ public class DatabaseHandler {
                 return postHandler.getAllPosts();
             case "pets":
                 return petHandler.getAllPets();
+            case "categories":
+                return categoryHandler.getAllCategories();
             default:
                 return null;
         }
@@ -130,10 +134,20 @@ public class DatabaseHandler {
                 return postHandler.findPostById(id);
             case "pets":
                 return petHandler.findPetById(id);
+            case "categories":
+                return categoryHandler.findCategoryById(id);
             default:
                 return null;
         }
+    }
 
+    public Object getByName(String collectionName, String name) {
+        switch (collectionName) {
+            case "categories":
+                return categoryHandler.findCategoryByName(name);
+            default:
+                return null;
+        }
     }
 
     public PostHandler getPostHandler() {
@@ -144,9 +158,13 @@ public class DatabaseHandler {
         return userHandler;
     }
 
-    public PetHandler getPetHandler(){return petHandler;}
+    public PetHandler getPetHandler() {
+        return petHandler;
+    }
 
-
+    public CategoryHandler getCategoryHandler() {
+        return categoryHandler;
+    }
 
     public MongoDatabase getDatabase() {
         return database;

@@ -7,6 +7,7 @@ import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
 import org.bson.types.ObjectId;
 
+import java.awt.image.PackedColorModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,21 @@ public class PostHandler {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public List<Post> getPostsByCategory(String categoryId){
+        List<Post> posts = null;
+        try {
+            FindIterable<Post> postsIter = postColl.find(eq("categoryId", categoryId));
+            posts = new ArrayList<>();
+            postsIter.forEach(posts::add);
+            posts.forEach(post -> post.setLikes(likeHandler.findLikesByPostId(post.getUid())));
+            posts.forEach(post -> post.setComments(commentHandler.findCommentsByPostId(post.getUid())) );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return posts;
     }
 
     public LikeHandler getLikeHandler() {

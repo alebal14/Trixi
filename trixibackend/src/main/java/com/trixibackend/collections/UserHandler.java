@@ -29,10 +29,9 @@ public class UserHandler {
     }
 
     public List<User> getAllUsers() {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         try {
             FindIterable<User> usersIter = userColl.find();
-            users = new ArrayList<>();
             usersIter.forEach(users::add);
             users.forEach(user -> {
                 user.setUid(user.getId().toString());
@@ -71,6 +70,5 @@ public class UserHandler {
             return null;
         }
     }
-
 
 }
