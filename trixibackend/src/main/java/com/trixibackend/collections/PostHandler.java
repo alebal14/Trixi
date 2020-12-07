@@ -15,7 +15,11 @@ import static com.mongodb.client.model.Filters.eq;
 public class PostHandler {
     private MongoCollection<Post> postColl = null;
     private LikeHandler likeHandler;
+
+
+
     private CommentHandler commentHandler;
+
 
     public PostHandler(MongoDatabase database) {
         postColl = database.getCollection("posts", Post.class);
@@ -74,4 +78,10 @@ public class PostHandler {
         }
     }
 
+    public LikeHandler getLikeHandler() {
+        return likeHandler;
+    }
+    public CommentHandler getCommentHandler() {
+        return commentHandler;
+    }
 }

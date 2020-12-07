@@ -38,7 +38,14 @@ public class UserHandler {
                 user.setUid(user.getId().toString());
                 user.setPosts(postHandler.findPostsByOwner(user.getUid()));
                 user.setPets(petHandler.findPetsByOwner(user.getUid()));
+                user.getPosts().forEach(post -> {
+                            post.setUid(post.getId().toString());
+                            post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+                            post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+                        }
+                );
             });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,12 +61,16 @@ public class UserHandler {
             user.setUid(user.getId().toString());
             user.setPosts(postHandler.findPostsByOwner(user.getUid()));
             user.setPets(petHandler.findPetsByOwner(user.getUid()));
+            user.getPosts().forEach(post -> {
+                post.setUid(post.getId().toString());
+                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+            });
             return user;
         } catch (Exception e) {
             return null;
         }
     }
-
 
 
 }
