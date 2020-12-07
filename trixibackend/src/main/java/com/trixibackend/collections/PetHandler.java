@@ -36,6 +36,11 @@ public class PetHandler {
             pets.forEach(pet -> {
                 pet.setUid(pet.getId().toString());
                 pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
+                pet.getPosts().forEach(post -> {
+                    post.setUid(post.getId().toString());
+                    post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+                    post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+                });
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,6 +56,11 @@ public class PetHandler {
             if (pet == null) return null;
             pet.setUid(pet.getId().toString());
             pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
+            pet.getPosts().forEach(post -> {
+                post.setUid(post.getId().toString());
+                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+            });
             return pet;
         } catch (Exception e) {
             return null;
