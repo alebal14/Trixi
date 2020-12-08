@@ -32,6 +32,10 @@ public class User extends UserPet{
 
     }
 
+    public User(ObjectId id, String uid) {
+        super(id, uid);
+    }
+
     /*public User(String userName, String email, String password,String role) {
         this.userName = userName;
         this.email = email;
@@ -41,6 +45,7 @@ public class User extends UserPet{
 
     private UserPet prepareToAdd(UserPet userPet){
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
         User objectToAddUser = null;
         Pet objectToAddPet = null;
 
@@ -49,8 +54,9 @@ public class User extends UserPet{
         if(userPet instanceof User){
             try {
                 //This is a shallow copy
-                //User user = (User) userPet;
-                String json = mapper.writeValueAsString(userPet);
+                User user = (User) userPet;
+
+                String json = mapper.writeValueAsString(user);
                 objectToAddUser = mapper.readValue(json, User.class);
 
             } catch (JsonProcessingException e) {
@@ -60,7 +66,7 @@ public class User extends UserPet{
             objectToAddUser = new User();
             objectToAddUser.setPets(null);
             objectToAddUser.setPosts(null);
-            ((User)objectToAddUser).setFollowings(null);
+            objectToAddUser.setFollowings(null);
             objectToAddUser.setFollowers(null);
             return objectToAddUser;
         }  else if (userPet instanceof Pet) {

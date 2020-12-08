@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pet extends UserPet{
-    private ObjectId id;
-    private String uid;
+    //private ObjectId id;
+    //private String uid;
     private String name;
     private int age;
     private String gender;
@@ -24,6 +24,12 @@ public class Pet extends UserPet{
     private List<User> followers = new ArrayList<>();
 
     public Pet() {
+    }
+
+
+
+    public Pet(ObjectId id, String uid) {
+        super(id, uid);
     }
 
     public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {

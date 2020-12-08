@@ -11,6 +11,11 @@ public class UserPet {
     public UserPet() {
     }
 
+    public UserPet(ObjectId id, String uid) {
+        this.id = id;
+        this.uid = uid;
+    }
+
     public ObjectId getId() {
         return id;
     }
