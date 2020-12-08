@@ -7,7 +7,8 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
-@JsonIgnoreProperties
+
+
 public class User extends UserPet{
     //private ObjectId id;
     //private String uid;
@@ -32,16 +33,13 @@ public class User extends UserPet{
 
     }
 
-    public User(ObjectId id, String uid) {
-        super(id, uid);
-    }
 
-    /*public User(String userName, String email, String password,String role) {
+    public User(String userName, String email, String password,String role) {
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.role = role;
-    }*/
+    }
 
     private UserPet prepareToAdd(UserPet userPet){
         ObjectMapper mapper = new ObjectMapper();
@@ -55,7 +53,6 @@ public class User extends UserPet{
             try {
                 //This is a shallow copy
                 User user = (User) userPet;
-
                 String json = mapper.writeValueAsString(user);
                 objectToAddUser = mapper.readValue(json, User.class);
 
@@ -68,11 +65,12 @@ public class User extends UserPet{
             objectToAddUser.setFollowings(null);
             objectToAddUser.setFollowers(null);
             return objectToAddUser;
+
         } else if (userPet instanceof Pet) {
             try {
                 //This is a shallow copy
-                //Pet pet = (Pet) userPet;
-                String json = mapper.writeValueAsString(userPet);
+                Pet pet = (Pet) userPet;
+                String json = mapper.writeValueAsString(pet);
                 objectToAddPet = mapper.readValue(json, Pet.class);
 
             } catch (JsonProcessingException e) {

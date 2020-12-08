@@ -1,11 +1,14 @@
 package com.trixibackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Pet extends UserPet{
     //private ObjectId id;
@@ -27,10 +30,6 @@ public class Pet extends UserPet{
     }
 
 
-
-    public Pet(ObjectId id, String uid) {
-        super(id, uid);
-    }
 
     public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
         this.name = name;
@@ -67,21 +66,6 @@ public class Pet extends UserPet{
         followers.add(prepareToAdd(user));
     }
 
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
 
     public String getName() {
         return name;
@@ -146,7 +130,7 @@ public class Pet extends UserPet{
     public void setPetTypeId(String petTypeId) {
         this.petTypeId = petTypeId;
     }
-
+    @JsonIgnore
     public List<Post> getPosts() {
         return posts;
     }

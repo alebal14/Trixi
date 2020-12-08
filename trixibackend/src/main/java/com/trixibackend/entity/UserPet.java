@@ -22,10 +22,7 @@ public class UserPet {
     public UserPet() {
     }
 
-    public UserPet(ObjectId id, String uid) {
-        this.id = id;
-        this.uid = uid;
-    }
+
     @JsonIgnore
     public ObjectId getId() {
         return id;
