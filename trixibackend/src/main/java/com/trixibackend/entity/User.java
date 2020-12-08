@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User extends UserPet{
     private ObjectId id;
     private String uid;
     private String userName;
@@ -22,42 +22,59 @@ public class User {
 
     private List<Post> posts = new ArrayList<>();
 
-    private List<Object> followings = new ArrayList<>();
+    private List<UserPet> followings = new ArrayList<>();
     private List<User> followers = new ArrayList<>();
 
-    private Object prepareToAdd(Object object){
+
+
+    public User(){
+
+    }
+
+    /*public User(String userName, String email, String password,String role) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }*/
+
+    private UserPet prepareToAdd(UserPet userPet){
         ObjectMapper mapper = new ObjectMapper();
-        Object objectToAdd = null;
+        UserPet objectToAdd = null;
 
         try {
             //This is a shallow copy
-            String json = mapper.writeValueAsString(object);
-            objectToAdd = mapper.readValue(json, object.getClass());
+            String json = mapper.writeValueAsString(userPet);
+            objectToAdd = mapper.readValue(json, userPet.getClass());
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        switch (object.getClass().getSimpleName()){
+
+        if(userPet instanceof User){
+            ((User) objectToAdd).setPets(null);
+            ((User)objectToAdd).setPosts(null);
+            //((User)objectToAdd).setFollowings(null);
+            ((User)objectToAdd).setFollowers(null);
+        }  else if (userPet instanceof Pet) {
+            ((Pet)objectToAdd).setPosts(null);
+            ((Pet)objectToAdd).setFollowers(null);
+        }
+        /*switch (userPet.getClass().getSimpleName()){
             case "User":
-                ((User) objectToAdd).setPets(null);
-                ((User)objectToAdd).setPosts(null);
-                ((User)objectToAdd).setFollowings(null);
-                ((User)objectToAdd).setFollowers(null);
+
 
                 break;
             case "Pet":
-                ((Pet)objectToAdd).setPosts(null);
-                ((Pet)objectToAdd).setFollowers(null);
+                (
                 break;
         }
-
+*/
         return objectToAdd;
     }
 
-    public void addToFollowings(Object object){
-        followings.add(prepareToAdd(object));
-
-
+    public void addToFollowings(UserPet userPet){
+        followings.add(prepareToAdd(userPet));
     }
 
     public void addToFollowers(User user){
@@ -65,26 +82,14 @@ public class User {
     }
 
 
-    /* TODO
-    *   Create List for Followers and Following */
 
-    public List<Object> getFollowings() {
+
+    public List<UserPet> getFollowings() {
         return followings;
     }
 
-    public void setFollowings(List<Object> followings) {
+    public void setFollowings(List<UserPet> followings) {
         this.followings = followings;
-    }
-
-    public User(){
-
-    }
-
-    public User(String userName, String email, String password,String role) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
     }
 
     public List<User> getFollowers() {
@@ -183,16 +188,16 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", uid='" + uid + '\'' +
-                ", name='" + userName + '\'' +
+                ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", bio='" + bio + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", role='" + role + '\'' +
                 ", pets=" + pets +
-
                 ", posts=" + posts +
-
+                //", followings=" + followings +
+                ", followers=" + followers +
                 '}';
     }
 }
