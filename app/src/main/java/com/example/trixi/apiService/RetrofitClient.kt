@@ -7,29 +7,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitClient {
 
-    private val AUTH = "Basic" + Base64.encodeToString("root: ".toByteArray(), Base64.NO_WRAP)
-    private val BASE_URL = "http://localhost:3000/rest/"
+    companion object{
+        val BASE_URL = "http://192.168.1.7:3000/rest/"
+        //val BASE_URL = "http://localhost:3000/rest/"
 
-    private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor {chain ->
-            val original = chain.request()
-
-            val requestBuilder = original.newBuilder()
-                .addHeader("Authorization", AUTH)
-                .method(original.method(), original.body())
-
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }.build()
-
-    val instance: Api by lazy {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-
-        retrofit.create(Api::class.java)
+        fun getRetroInstance(): Retrofit{
+            return Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
     }
+
+
+
 
 }
