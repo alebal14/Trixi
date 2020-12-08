@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RepoViewModel : ViewModel() {
+class GetFromDbViewModel : ViewModel() {
 
     lateinit var userListData: MutableLiveData<List<User>>
 
@@ -24,12 +24,12 @@ class RepoViewModel : ViewModel() {
 
     fun makeApiCall(){
         val retrofitClient = RetrofitClient.getRetroInstance().create(Api::class.java)
+
         val call = retrofitClient.getAllUsers()
         call.enqueue(object : Callback<List<User>>{
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
                 Log.d("uus", "users : onfailure " + t.message)
                 userListData.postValue(null)
-
             }
             override fun onResponse(
                 call: Call<List<User>>, response: Response<List<User>>) {
@@ -40,15 +40,5 @@ class RepoViewModel : ViewModel() {
                 }
             }
         })
-
-
-
-
-
-
-
-
-
-
     }
 }
