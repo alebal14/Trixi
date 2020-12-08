@@ -22,8 +22,19 @@ public class RestApi {
             setUpGetApi(collectionName);
             setUpPostApi(collectionName);
             setUpDeleteApi(collectionName);
+            setUpUpdateApi(collectionName);
         });
 
+
+
+    }
+
+    private void setUpUpdateApi(String collectionName) {
+
+//        app.post("rest/users/addFollower/:id/",(req,res) ->{
+//            Object object = req.getBody(Object.class);
+//
+//        })
     }
 
     private void setUpDeleteApi(String collectionName) {

@@ -19,12 +19,11 @@ public class User {
     private String role;
 
     private List<Pet> pets = new ArrayList<>();
-    //private List<ObjectId> petIds = new ArrayList<>();
 
     private List<Post> posts = new ArrayList<>();
-    //private List<ObjectId> postIds = new ArrayList<>();
 
-    private List<Object> following = new ArrayList<>();
+    private List<Object> followings = new ArrayList<>();
+    private List<User> followers = new ArrayList<>();
 
     private Object prepareToAdd(Object object){
         ObjectMapper mapper = new ObjectMapper();
@@ -42,10 +41,13 @@ public class User {
             case "User":
                 ((User) objectToAdd).setPets(null);
                 ((User)objectToAdd).setPosts(null);
-                ((User)objectToAdd).setFollowing(null);
+                ((User)objectToAdd).setFollowings(null);
+                ((User)objectToAdd).setFollowers(null);
+
                 break;
             case "Pet":
                 ((Pet)objectToAdd).setPosts(null);
+                ((Pet)objectToAdd).setFollowers(null);
                 break;
         }
 
@@ -53,23 +55,25 @@ public class User {
     }
 
     public void addToFollowing(Object object){
+        followings.add(prepareToAdd(object));
 
-
-
-        following.add(prepareToAdd(object));
 
     }
+
+    public void addToFollower(User user){
+        followers.add((User) prepareToAdd(user));
+    }
+
 
     /* TODO
     *   Create List for Followers and Following */
 
-
-    public List<Object> getFollowing() {
-        return following;
+    public List<Object> getFollowings() {
+        return followings;
     }
 
-    public void setFollowing(List<Object> following) {
-        this.following = following;
+    public void setFollowings(List<Object> followings) {
+        this.followings = followings;
     }
 
     public User(){
@@ -81,6 +85,14 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 
     public String getRole() {
