@@ -58,13 +58,11 @@ public class User extends UserPet{
 
                 String json = mapper.writeValueAsString(user);
                 objectToAddUser = mapper.readValue(json, User.class);
-                //objectToAddUser = (User) user.clone();
 
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
 
-            //objectToAddUser = new User();
             objectToAddUser.setPets(null);
             objectToAddUser.setPosts(null);
             objectToAddUser.setFollowings(null);
@@ -84,17 +82,7 @@ public class User extends UserPet{
             objectToAddPet.setFollowers(null);
             return objectToAddPet;
         }
-        /*switch (userPet.getClass().getSimpleName()){
-            case "User":
 
-
-                break;
-            case "Pet":
-                (
-                break;
-        }
-*/
-        ;
         return null;
     }
 
@@ -136,15 +124,12 @@ public class User extends UserPet{
    /* public ObjectId getId() {
         return id;
     }
-
     public void setId(ObjectId id) {
         this.id = id;
     }
-
     public String getUid() {
         return uid;
     }
-
     public void setUid(String uid) {
         this.uid = uid;
     }*/

@@ -143,7 +143,7 @@ public class UserHandler {
 
         User updated = userColl.findOneAndReplace(eq("_id", user.getId()), user);
 
-        return user;
+        return updated;
 
 
     }

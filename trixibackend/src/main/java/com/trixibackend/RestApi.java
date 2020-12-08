@@ -41,10 +41,11 @@ public class RestApi {
           User user = db.getUserHandler().findUserById(userid);
           User following = db.getUserHandler().findUserById(followingid);
 
-         System.out.println(user);
-         System.out.println(following);
+         System.out.println("User:  "+ user);
+         System.out.println("User following:  " + following);
           if(following == null){
               Pet followingPet =db.getPetHandler().findPetById(followingid);
+              System.out.println("Pet Following:  " + followingPet);
               res.json(db.getUserHandler().updateList(user,followingPet));
 
           }else {
