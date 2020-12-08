@@ -22,6 +22,9 @@ public class User {
     private List<Post> posts = new ArrayList<>();
     private List<ObjectId> postIds = new ArrayList<>();
 
+    /* TODO
+    *   Create List for Followers and Following */
+
 
 
 

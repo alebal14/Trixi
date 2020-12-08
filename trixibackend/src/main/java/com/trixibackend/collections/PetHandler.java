@@ -79,4 +79,18 @@ public class PetHandler {
         return pets;
 
     }
+
+    public List<Pet> findPetsByPetType(String id){
+        List<Pet> pets = null;
+        try {
+            FindIterable<Pet> petsIter = petColl.find(eq("petTypeId", id));
+            pets = new ArrayList<>();
+            petsIter.forEach(pets::add);
+            pets.forEach(pet -> pet.setUid(pet.getId().toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return pets;
+    }
 }

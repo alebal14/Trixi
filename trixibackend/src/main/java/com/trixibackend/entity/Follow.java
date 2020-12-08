@@ -1,24 +1,27 @@
 package com.trixibackend.entity;
 
 public class Follow {
-    private String followerId;
-    private String followingId;
+    private String followedUserId;
+    private String followersId;
 
-    public Follow(){}
-
-    public String getFollowerId() {
-        return followerId;
+    public Follow() {
     }
 
-    public void setFollowerId(String followerId) {
-        this.followerId = followerId;
+    public String getFollowedUserId() {
+        return followedUserId;
     }
 
-    public String getFollowingId() {
-        return followingId;
+    public void setFollowedUserId(String followedUserId) {
+        this.followedUserId = followedUserId;
     }
 
-    public void setFollowingId(String followingId) {
-        this.followingId = followingId;
+    public String getFollowersId() {
+        return followersId;
     }
+
+    public void setFollowersId(String followersId) {
+        this.followersId = followersId;
+    }
+
+
 }

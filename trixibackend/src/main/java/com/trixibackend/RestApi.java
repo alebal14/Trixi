@@ -56,6 +56,9 @@ public class RestApi {
                     Category category = (Category) req.getBody(Category.class);
                     res.json(db.save(category));
                     break;
+                case "pet_types":
+                    PetType petType = (PetType) req.getBody(PetType.class);
+                    res.json(db.save(petType));
                 default:
                     break;
             }
@@ -65,7 +68,7 @@ public class RestApi {
     private void setUpGetApi(String collectionName) {
 
         app.get("/rest/" + collectionName, (req, res) -> res.json(db.getAll(collectionName)));
-        app.get("/rest/posts/byCategory/:id", (req, res) -> {
+        app.get("/rest/posts/by_category/:id", (req, res) -> {
 
             String id = req.getParam("id");
             var obj = db.getPostHandler().getPostsByCategory(id);
@@ -76,8 +79,20 @@ public class RestApi {
             res.json(db.getPostHandler().getPostsByCategory(id));
     });
 
+        app.get("/rest/pets/by_pet_type/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+            var obj = db.getPetHandler().findPetsByPetType(id);
+            if (obj == null) {
+                res.send("Error: no Object found");
+                return;
+            }
+            res.json(db.getPetHandler().findPetsByPetType(id));
+        });
+
+
         //b
-        app.get("/rest/" + collectionName + "/byowner/:id", (req, res) -> {
+        app.get("/rest/" + collectionName + "/by_owner/:id", (req, res) -> {
 
             String id = req.getParam("id");
             var obj = db.getByOwner(collectionName, id);
@@ -99,15 +114,5 @@ public class RestApi {
             res.json(db.getById(collectionName, id));
         });
 
-        app.get("/rest/" + collectionName + "/:name", ((req, res) -> {
-
-            String name = req.getParam("name");
-            var obj = db.getByName(collectionName, name);
-            if (obj == null) {
-                res.send("Error: no Object found");
-                return;
-            }
-            res.json(db.getByName(collectionName, name));
-        }));
     }
 }
