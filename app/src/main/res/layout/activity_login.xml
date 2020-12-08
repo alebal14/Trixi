@@ -18,11 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="-41dp">
 
-        <ImageView
-            android:id="@+id/login_logo"
-            android:layout_width="148dp"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+
 
         <EditText
             android:id="@+id/login_input_username_or_password"

@@ -21,8 +21,8 @@
         <ImageView
             android:id="@+id/register_profile_image"
             android:layout_width="148dp"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_height="148dp"
+           android:background="@drawable/image_btn_circle" />
 
         <EditText
             android:id="@+id/register_username"
