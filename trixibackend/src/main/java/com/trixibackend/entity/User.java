@@ -41,37 +41,40 @@ public class User extends UserPet{
 
     private UserPet prepareToAdd(UserPet userPet){
         ObjectMapper mapper = new ObjectMapper();
-        UserPet objectToAdd = null;
+        User objectToAddUser = null;
+        Pet objectToAddPet = null;
 
 
 
         if(userPet instanceof User){
             try {
                 //This is a shallow copy
-                User user = (User) userPet;
-                String json = mapper.writeValueAsString(user);
-                objectToAdd = mapper.readValue(json, User.class);
+                //User user = (User) userPet;
+                String json = mapper.writeValueAsString(userPet);
+                objectToAddUser = mapper.readValue(json, User.class);
 
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
 
-            objectToAdd = new User();
-            ((User) objectToAdd).setPets(null);
-            ((User)objectToAdd).setPosts(null);
-            //((User)objectToAdd).setFollowings(null);
-            ((User)objectToAdd).setFollowers(null);
+            objectToAddUser = new User();
+            objectToAddUser.setPets(null);
+            objectToAddUser.setPosts(null);
+            ((User)objectToAddUser).setFollowings(null);
+            objectToAddUser.setFollowers(null);
+            return objectToAddUser;
         }  else if (userPet instanceof Pet) {
             try {
                 //This is a shallow copy
                 String json = mapper.writeValueAsString(userPet);
-                objectToAdd = mapper.readValue(json, Pet.class);
+                objectToAddPet = mapper.readValue(json, Pet.class);
 
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            ((Pet)objectToAdd).setPosts(null);
-            ((Pet)objectToAdd).setFollowers(null);
+            objectToAddPet.setPosts(null);
+            objectToAddPet.setFollowers(null);
+            return objectToAddPet;
         }
         /*switch (userPet.getClass().getSimpleName()){
             case "User":
@@ -83,7 +86,8 @@ public class User extends UserPet{
                 break;
         }
 */
-        return objectToAdd;
+        ;
+        return null;
     }
 
     public void addToFollowings(UserPet userPet){
