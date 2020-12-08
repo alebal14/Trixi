@@ -24,14 +24,14 @@ public class RestApi {
             setUpGetApi(collectionName);
             setUpPostApi(collectionName);
             setUpDeleteApi(collectionName);
-            setUpUpdateApi(collectionName);
-        });
 
+        });
+        setUpUpdateApi();
 
 
     }
 
-    private void setUpUpdateApi(String collectionName) {
+    private void setUpUpdateApi() {
 
      app.post("api/users/addFollower/:userid/:followingid",(req,res) ->{
 
@@ -43,14 +43,12 @@ public class RestApi {
 
           if(following == null){
               Pet followingPet =db.getPetHandler().findPetById(followingid);
-              db.getUserHandler().updateList(user,followingPet);
+              res.json(db.getUserHandler().updateList(user,followingPet));
 
           }else {
-              db.getUserHandler().updateList(user,following);
+              res.json(db.getUserHandler().updateList(user,following));
 
           }
-
-
 
 
          //Map body = req.getBody();
