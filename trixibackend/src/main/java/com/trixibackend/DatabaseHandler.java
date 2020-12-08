@@ -1,6 +1,7 @@
 package com.trixibackend;
 
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
@@ -89,6 +90,25 @@ public class DatabaseHandler {
         collections.putIfAbsent(Comment.class, commentColl);
         collections.putIfAbsent(Category.class, categoryColl);
         collections.putIfAbsent(PetType.class, petTypeColl);
+
+        /*BasicDBObject doc = new BasicDBObject();
+        doc.put("userName", "snehal");
+
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.put("userName", "snehal2");
+
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$set", newDocument);
+
+        database.getCollection("users").updateOne(doc, updateObject);*/
+
+        userColl.updateOne(
+                new BasicDBObject().append("userName", "snehal2"),
+                new BasicDBObject().append("$set",
+                        new BasicDBObject().append("userName", "super-snehal"))
+        );
+
+
     }
 
     public <T> T save(Object object) {

@@ -1,5 +1,7 @@
 package com.trixibackend.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -7,9 +9,6 @@ import java.util.List;
 
 public class Pet {
     private ObjectId id;
-
-
-
     private String uid;
     private String name;
     private int age;
@@ -22,9 +21,9 @@ public class Pet {
     private String petTypeId;
 
     private List<Post> posts = new ArrayList<>();
-    private List<ObjectId> postIds = new ArrayList<>();
+    private List<User> followers = new ArrayList<>();
 
-    public Pet(){
+    public Pet() {
 
     }
 
@@ -36,6 +35,31 @@ public class Pet {
         this.bio = bio;
         this.imageUrl = imageUrl;
         this.ownerId = ownerId;
+    }
+
+    private User prepareToAdd(User user) {
+        ObjectMapper mapper = new ObjectMapper();
+        User userToAdd = null;
+
+        try {
+            //This is a shallow copy
+            String json = mapper.writeValueAsString(user);
+            userToAdd = mapper.readValue(json, User.class);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        userToAdd.setPets(null);
+        userToAdd.setPosts(null);
+        userToAdd.setFollowings(null);
+        userToAdd.setFollowers(null);
+
+        return userToAdd;
+    }
+
+    public void addToFollowers(User user){
+        followers.add(prepareToAdd(user));
     }
 
     public ObjectId getId() {
@@ -53,6 +77,7 @@ public class Pet {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
     public String getName() {
         return name;
     }
@@ -125,12 +150,12 @@ public class Pet {
         this.posts = posts;
     }
 
-    public List<ObjectId> getPostIds() {
-        return postIds;
+    public List<User> getFollowers() {
+        return followers;
     }
 
-    public void setPostIds(List<ObjectId> postIds) {
-        this.postIds = postIds;
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 
     @Override
@@ -147,7 +172,6 @@ public class Pet {
                 ", ownerId='" + ownerId + '\'' +
                 ", petTypeId='" + petTypeId + '\'' +
                 ", posts=" + posts +
-                ", postIds=" + postIds +
                 '}';
     }
 }
