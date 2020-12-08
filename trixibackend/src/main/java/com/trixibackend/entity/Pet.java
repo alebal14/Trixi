@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pet {
+public class Pet extends UserPet{
     private ObjectId id;
     private String uid;
     private String name;
@@ -24,7 +24,6 @@ public class Pet {
     private List<User> followers = new ArrayList<>();
 
     public Pet() {
-
     }
 
     public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
