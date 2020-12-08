@@ -1,5 +1,7 @@
 package com.trixibackend.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -17,16 +19,58 @@ public class User {
     private String role;
 
     private List<Pet> pets = new ArrayList<>();
-    private List<ObjectId> petIds = new ArrayList<>();
+    //private List<ObjectId> petIds = new ArrayList<>();
 
     private List<Post> posts = new ArrayList<>();
-    private List<ObjectId> postIds = new ArrayList<>();
+    //private List<ObjectId> postIds = new ArrayList<>();
+
+    private List<Object> following = new ArrayList<>();
+
+    private Object prepareToAdd(Object object){
+        ObjectMapper mapper = new ObjectMapper();
+        Object objectToAdd = null;
+
+        try {
+            //This is a shallow copy
+            String json = mapper.writeValueAsString(object);
+            objectToAdd = mapper.readValue(json, object.getClass());
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        switch (object.getClass().getSimpleName()){
+            case "User":
+                ((User) objectToAdd).setPets(null);
+                ((User)objectToAdd).setPosts(null);
+                ((User)objectToAdd).setFollowing(null);
+                break;
+            case "Pet":
+                ((Pet)objectToAdd).setPosts(null);
+                break;
+        }
+
+        return objectToAdd;
+    }
+
+    public void addToFollowing(Object object){
+
+
+
+        following.add(prepareToAdd(object));
+
+    }
 
     /* TODO
     *   Create List for Followers and Following */
 
 
+    public List<Object> getFollowing() {
+        return following;
+    }
 
+    public void setFollowing(List<Object> following) {
+        this.following = following;
+    }
 
     public User(){
 
@@ -111,13 +155,7 @@ public class User {
         this.pets = pets;
     }
 
-    public List<ObjectId> getPetIds() {
-        return petIds;
-    }
 
-    public void setPetIds(List<ObjectId> petIds) {
-        this.petIds = petIds;
-    }
 
     public List<Post> getPosts() {
         return posts;
@@ -127,13 +165,6 @@ public class User {
         this.posts = posts;
     }
 
-    public List<ObjectId> getPostIds() {
-        return postIds;
-    }
-
-    public void setPostIds(List<ObjectId> postIds) {
-        this.postIds = postIds;
-    }
 
     @Override
     public String toString() {
@@ -147,9 +178,9 @@ public class User {
                 ", imageUrl='" + imageUrl + '\'' +
                 ", role='" + role + '\'' +
                 ", pets=" + pets +
-                ", petIds=" + petIds +
+
                 ", posts=" + posts +
-                ", postIds=" + postIds +
+
                 '}';
     }
 }
