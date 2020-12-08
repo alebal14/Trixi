@@ -24,7 +24,7 @@ public class UserHandler {
         userColl = database.getCollection("users", User.class);
         postHandler = new PostHandler(database);
         petHandler = new PetHandler(database);
-        dbHandler = new DatabaseHandler();
+        //dbHandler = new DatabaseHandler();
     }
 
     public MongoCollection<User> getUserColl() {
@@ -102,17 +102,27 @@ public class UserHandler {
         switch (following.getClass().getSimpleName()) {
             case "User":
                 ((User) following).addToFollowers(user);
+                userColl.updateOne(
+                        new BasicDBObject().append("uid", ((User)following).getUid()),
+                        new BasicDBObject().append("$set",
+                                new BasicDBObject().append( "followers", ((User)following).getFollowers()))
+                );
                 break;
             case "Pet":
                 ((Pet) following).addToFollowers(user);
         }
+
         userColl.updateOne(
-                new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()),
+                new BasicDBObject().append("uid", user.getUid()),
                 new BasicDBObject().append("$set",
-                        new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()))
+                        new BasicDBObject().append( "followings", user.getFollowings()))
         );
-        dbHandler.save(user);
-        dbHandler.save(following);
+
+
+
+
+        //dbHandler.save(user);
+        //dbHandler.save(following);
 
 
     }
