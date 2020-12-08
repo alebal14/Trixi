@@ -1,7 +1,5 @@
 package com.trixibackend.collections;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -76,41 +74,48 @@ public class UserHandler {
         }
     }
 
-    public User updateList(User user,Object following) {
-        user.addToFollowing(following);
+//    public User updateFollowingsList(User user, Object following) {
+//        user.addToFollowings(following);
+//        userColl.updateOne(
+//                new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()),
+//                new BasicDBObject().append("$set",
+//                        new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()))
+//        );
+//        return dbHandler.save(user);
+//
+//
+//    }
+
+
+//    public User updateFollowersList(User user, User follower) {
+//        user.addToFollowers(follower);
+//        userColl.updateOne(
+//                new BasicDBObject().append(user.getUid() + ".followers", user.getFollowers()),
+//                new BasicDBObject().append("$set",
+//                        new BasicDBObject().append(user.getUid() + ".followers", user.getFollowers()))
+//        );
+//        return dbHandler.save(user);
+//    }
+
+    public void updateList(User user, Object following) {
+        user.addToFollowings(following);
+        switch (following.getClass().getSimpleName()) {
+            case "User":
+                ((User) following).addToFollowers(user);
+                break;
+            case "Pet":
+                ((Pet) following).addToFollowers(user);
+        }
         userColl.updateOne(
                 new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()),
                 new BasicDBObject().append("$set",
                         new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()))
         );
-        return dbHandler.save(user);
+        dbHandler.save(user);
+        dbHandler.save(following);
 
 
     }
-
-
-    public User updateFollwingsList(User user,Object following) {
-        user.addToFollowing(following);
-        userColl.updateOne(
-                new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()),
-                new BasicDBObject().append("$set",
-                        new BasicDBObject().append(user.getUid() + ".followings", user.getFollowings()))
-        );
-        return dbHandler.save(user);
-
-
-    }
-
-    public User updateFollowersList(User user, User follower){
-        user.addToFollower(follower);
-        userColl.updateOne(
-                new BasicDBObject().append(user.getUid() + ".followers", user.getFollowers()),
-                new BasicDBObject().append("$set",
-                        new BasicDBObject().append(user.getUid() + ".followers", user.getFollowers()))
-        );
-        return dbHandler.save(user);
-    }
-
 
 
 }

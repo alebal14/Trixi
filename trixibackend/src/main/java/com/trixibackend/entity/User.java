@@ -54,13 +54,13 @@ public class User {
         return objectToAdd;
     }
 
-    public void addToFollowing(Object object){
+    public void addToFollowings(Object object){
         followings.add(prepareToAdd(object));
 
 
     }
 
-    public void addToFollower(User user){
+    public void addToFollowers(User user){
         followers.add((User) prepareToAdd(user));
     }
 
