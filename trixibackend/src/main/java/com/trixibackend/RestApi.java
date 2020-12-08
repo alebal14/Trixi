@@ -33,7 +33,7 @@ public class RestApi {
 
     private void setUpUpdateApi() {
 
-     app.post("api/users/addFollower/:userid/:followingid",(req,res) ->{
+     app.post("/api/users/addFollower/:userid/:followingid",(req,res) ->{
 
           String userid = req.getParam("userid");
           String followingid= req.getParam("followingid");
@@ -41,6 +41,8 @@ public class RestApi {
           User user = db.getUserHandler().findUserById(userid);
           User following = db.getUserHandler().findUserById(followingid);
 
+         System.out.println(user);
+         System.out.println(following);
           if(following == null){
               Pet followingPet =db.getPetHandler().findPetById(followingid);
               res.json(db.getUserHandler().updateList(user,followingPet));
@@ -49,6 +51,7 @@ public class RestApi {
               res.json(db.getUserHandler().updateList(user,following));
 
           }
+
 
 
          //Map body = req.getBody();

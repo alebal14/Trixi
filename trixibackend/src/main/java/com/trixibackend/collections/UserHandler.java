@@ -78,21 +78,31 @@ public class UserHandler {
     //first parameter who wants to follow, second parameter the whom (I = user) want to follow
     public User updateList(User user, UserPet following) {
         user.addToFollowings(following);
+
         if( following instanceof User){
             ((User) following).addToFollowers(user);
-            userColl.updateOne(
-                    new BasicDBObject().append("uid", ((User)following).getUid()),
-                    new BasicDBObject().append("$set",
-                            new BasicDBObject().append( "followers", ((User)following).getFollowers()))
-            );
+            try {
+                userColl.updateOne(
+                        new BasicDBObject().append("_id", ((User) following).getId()),
+                        new BasicDBObject().append("$set",
+                                new BasicDBObject().append("followers", ((User) following).getFollowers()))
+                );
+            } catch (Exception e){
+                e.printStackTrace();
+            }
             User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
         }  else if( following instanceof Pet){
             ((Pet) following).addToFollowers(user);
-            petHandler.getPetColl().updateOne(
-                    new BasicDBObject().append("uid", ((Pet)following).getUid()),
-                    new BasicDBObject().append("$set",
-                            new BasicDBObject().append( "followers", ((Pet)following).getFollowers()))
-            );
+            try{
+                petHandler.getPetColl().updateOne(
+                        new BasicDBObject().append("_id", ((Pet)following).getId()),
+                        new BasicDBObject().append("$set",
+                                new BasicDBObject().append( "followers", ((Pet)following).getFollowers()))
+                );
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
             Pet updatedPet = petHandler.getPetColl().findOneAndReplace(eq("_id", ((Pet) following).getId()), (Pet) following);
         }
        /* switch (following.getClass().getSimpleName()) {
@@ -120,13 +130,15 @@ public class UserHandler {
                 break;
         }*/
 
-        userColl.updateOne(
-                new BasicDBObject().append("uid", user.getUid()),
-                new BasicDBObject().append("$set",
-                        new BasicDBObject().append( "followings", user.getFollowings()))
-        );
-
-
+        try {
+            userColl.updateOne(
+                    new BasicDBObject().append("_id", user.getId()),
+                    new BasicDBObject().append("$set",
+                            new BasicDBObject().append( "followings", user.getFollowings()))
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         User updated = userColl.findOneAndReplace(eq("_id", user.getId()), user);

@@ -1,5 +1,6 @@
 package com.trixibackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
@@ -8,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User extends UserPet{
-    private ObjectId id;
-    private String uid;
+    //private ObjectId id;
+    //private String uid;
     private String userName;
     private String email;
     private String password;
@@ -42,21 +43,33 @@ public class User extends UserPet{
         ObjectMapper mapper = new ObjectMapper();
         UserPet objectToAdd = null;
 
-        try {
-            //This is a shallow copy
-            String json = mapper.writeValueAsString(userPet);
-            objectToAdd = mapper.readValue(json, userPet.getClass());
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
 
         if(userPet instanceof User){
+            try {
+                //This is a shallow copy
+                User user = (User) userPet;
+                String json = mapper.writeValueAsString(user);
+                objectToAdd = mapper.readValue(json, User.class);
+
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+            objectToAdd = new User();
             ((User) objectToAdd).setPets(null);
             ((User)objectToAdd).setPosts(null);
             //((User)objectToAdd).setFollowings(null);
             ((User)objectToAdd).setFollowers(null);
         }  else if (userPet instanceof Pet) {
+            try {
+                //This is a shallow copy
+                String json = mapper.writeValueAsString(userPet);
+                objectToAdd = mapper.readValue(json, Pet.class);
+
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
             ((Pet)objectToAdd).setPosts(null);
             ((Pet)objectToAdd).setFollowers(null);
         }
@@ -108,7 +121,7 @@ public class User extends UserPet{
         this.role = role;
     }
 
-    public ObjectId getId() {
+   /* public ObjectId getId() {
         return id;
     }
 
@@ -122,7 +135,7 @@ public class User extends UserPet{
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
+    }*/
 
     public String getUserName() {
         return userName;
