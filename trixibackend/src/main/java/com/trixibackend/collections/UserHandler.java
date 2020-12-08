@@ -97,6 +97,7 @@ public class UserHandler {
 //        return dbHandler.save(user);
 //    }
 
+    //first parameter who wants to follow, second parameter the whom (I = user) want to follow
     public void updateList(User user, Object following) {
         user.addToFollowings(following);
         switch (following.getClass().getSimpleName()) {
@@ -107,9 +108,19 @@ public class UserHandler {
                         new BasicDBObject().append("$set",
                                 new BasicDBObject().append( "followers", ((User)following).getFollowers()))
                 );
+                User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
                 break;
             case "Pet":
                 ((Pet) following).addToFollowers(user);
+                petHandler.getPetColl().updateOne(
+                        new BasicDBObject().append("uid", ((Pet)following).getUid()),
+                        new BasicDBObject().append("$set",
+                                new BasicDBObject().append( "followers", ((Pet)following).getFollowers()))
+                );
+                Pet updatedPet = petHandler.getPetColl().findOneAndReplace(eq("_id", ((Pet) following).getId()), (Pet) following);
+                break;
+            default:
+                break;
         }
 
         userColl.updateOne(
@@ -121,8 +132,7 @@ public class UserHandler {
 
 
 
-        //dbHandler.save(user);
-        //dbHandler.save(following);
+        User updated = userColl.findOneAndReplace(eq("_id", user.getId()), user);
 
 
     }
