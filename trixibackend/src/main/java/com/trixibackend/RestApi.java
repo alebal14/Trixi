@@ -3,6 +3,8 @@ package com.trixibackend;
 import com.trixibackend.entity.*;
 import express.Express;
 
+import java.util.Map;
+
 public class RestApi {
 
     Express app = new Express();
@@ -31,10 +33,15 @@ public class RestApi {
 
     private void setUpUpdateApi(String collectionName) {
 
-//        app.post("rest/users/addFollower/:id/",(req,res) ->{
-//            Object object = req.getBody(Object.class);
-//
-//        })
+     app.post("api/users/addFollower/:userid/:followerid",(req,res) ->{
+          String userid = req.getParam("userid");
+          String followerid= req.getParam("followerid");
+          User user = db.getUserHandler().findUserById(userid);
+
+         Map body = req.getBody();
+         userid = body.get("userid").toString();
+
+       });
     }
 
     private void setUpDeleteApi(String collectionName) {
