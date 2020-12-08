@@ -8,15 +8,101 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_pic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="80dp"
-            android:src="@drawable/profile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginBottom="586dp"
+            android:src="@drawable/ic_circle_frame"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/user_profile_bio"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profile_name" />
+
+    <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="147dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="101dp"
+            android:layout_marginEnd="72dp"
+            android:text="@string/profileName"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/user_profile_bio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/user_profile_pic"
             app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+            android:id="@+id/user_profile_bio"
+            android:layout_width="208dp"
+            android:layout_height="121dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/bioText"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_pic"
+            app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+
+    <TextView
+            android:id="@+id/profile_followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="88dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="468dp"
+            android:text="@string/numberOfFollowers"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/profile_following"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_profile_pic" />
+
+    <TextView
+            android:id="@+id/profile_following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="468dp"
+            android:text="@string/numberOfFollowing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_profile_bio"
+            app:layout_constraintVertical_bias="1.0" />
+
+    <ImageButton
+            android:id="@+id/heart_follow"
+            android:layout_width="61dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="88dp"
+            android:background="@android:color/white"
+            android:contentDescription="@string/heart"
+            app:layout_constraintBottom_toTopOf="@+id/user_profile_bio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.901"
+            app:layout_constraintStart_toStartOf="@+id/profile_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_heart_empty" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="60dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="400dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

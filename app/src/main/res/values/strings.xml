@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="profileName">User/PetName</string>
+    <string name="numberOfFollowers">22 Followers</string>
+    <string name="numberOfFollowing">Following 18</string>
+    <string name="bioText">Lorem Ipsum This is my bio hello I am a nice person that likes to train sweet dogs, not naughty ones</string>
 </resources>
