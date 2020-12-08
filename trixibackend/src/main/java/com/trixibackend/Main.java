@@ -1,13 +1,9 @@
 package com.trixibackend;
 
-import com.trixibackend.entity.Post;
-import com.trixibackend.entity.User;
-import express.Express;
-
 public class Main {
 
     public static void main(String[] args) {
-        new Api();
+        new RestApi();
 
 
 

@@ -4,11 +4,8 @@ package com.trixibackend;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
-import com.trixibackend.collections.PostHandler;
-import com.trixibackend.collections.UserHandler;
-import com.trixibackend.entity.Post;
-import com.trixibackend.entity.User;
-import org.bson.Document;
+import com.trixibackend.collections.*;
+import com.trixibackend.entity.*;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
@@ -21,14 +18,24 @@ import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-public class Database {
+public class DatabaseHandler {
 
     MongoDatabase database;
     private UserHandler userHandler = null;
     private PostHandler postHandler = null;
+    private PetHandler petHandler = null;
+    private LikeHandler likeHandler = null;
+    private CommentHandler commentHandler = null;
+    private CategoryHandler categoryHandler = null;
+    private PetTypeHandler petTypeHandler = null;
 
     MongoCollection<User> userColl = null;
     MongoCollection<Post> postColl = null;
+    MongoCollection<Pet> petColl = null;
+    MongoCollection<Like> likeColl = null;
+    MongoCollection<Comment> commentColl = null;
+    MongoCollection<Category> categoryColl = null;
+    MongoCollection<PetType> petTypeColl = null;
 
     Map<Type, MongoCollection> collections = new HashMap<>();
 
@@ -36,7 +43,7 @@ public class Database {
 
     private final String dbname = "trixi";
 
-    public Database() {
+    public DatabaseHandler() {
         init();
     }
 
@@ -60,15 +67,28 @@ public class Database {
 
         userHandler = new UserHandler(database);
         postHandler = new PostHandler(database);
+        petHandler = new PetHandler(database);
+        likeHandler = new LikeHandler(database);
+        commentHandler = new CommentHandler(database);
+        categoryHandler = new CategoryHandler(database);
+        petTypeHandler = new PetTypeHandler(database);
 
         userColl = userHandler.getUserColl();
         postColl = postHandler.getPostColl();
-
+        petColl = petHandler.getPetColl();
+        likeColl = likeHandler.getLikeColl();
+        commentColl = commentHandler.getCommentColl();
+        categoryColl = categoryHandler.getCategoryColl();
+        petTypeColl = petTypeHandler.getPetTypeColl();
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
         collections.putIfAbsent(Post.class, postColl);
-
+        collections.putIfAbsent(Pet.class, petColl);
+        collections.putIfAbsent(Like.class, likeColl);
+        collections.putIfAbsent(Comment.class, commentColl);
+        collections.putIfAbsent(Category.class, categoryColl);
+        collections.putIfAbsent(PetType.class, petTypeColl);
     }
 
     public <T> T save(Object object) {
@@ -102,7 +122,11 @@ public class Database {
             case "posts":
                 return postHandler.getAllPosts();
             case "pets":
-                //return petHandler.getAllPets();
+                return petHandler.getAllPets();
+            case "categories":
+                return categoryHandler.getAllCategories();
+            case "pet_types":
+                return petTypeHandler.getAllPetTypes();
             default:
                 return null;
         }
@@ -116,12 +140,28 @@ public class Database {
             case "posts":
                 return postHandler.findPostById(id);
             case "pets":
-                //return petHandler.getAllPets(id);
+                return petHandler.findPetById(id);
+            case "categories":
+                return categoryHandler.findCategoryById(id);
+            case "pet_types":
+                return  petTypeHandler.findPetTypesById(id);
             default:
                 return null;
         }
-
     }
+
+
+    public Object getByOwner(String collectionName, String id){
+        switch (collectionName) {
+            case "posts":
+                return postHandler.findPostsByOwner(id);
+            case "pets":
+                return petHandler.findPetsByOwner(id);
+            default:
+                return null;
+        }
+    }
+
 
     public PostHandler getPostHandler() {
         return postHandler;
@@ -129,6 +169,14 @@ public class Database {
 
     public UserHandler getUserHandler() {
         return userHandler;
+    }
+
+    public PetHandler getPetHandler() {
+        return petHandler;
+    }
+
+    public CategoryHandler getCategoryHandler() {
+        return categoryHandler;
     }
 
     public MongoDatabase getDatabase() {
