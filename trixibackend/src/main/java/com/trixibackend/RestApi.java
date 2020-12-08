@@ -92,7 +92,7 @@ public class RestApi {
 
 
         //b
-        app.get("/rest/" + collectionName + "/byowner/:id", (req, res) -> {
+        app.get("/rest/" + collectionName + "/by_owner/:id", (req, res) -> {
 
             String id = req.getParam("id");
             var obj = db.getByOwner(collectionName, id);
