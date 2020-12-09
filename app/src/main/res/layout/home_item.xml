@@ -8,6 +8,7 @@
     app:cardCornerRadius="4dp">
 
     <ImageView
+        android:id="@+id/home_item_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -93,12 +94,14 @@
                 android:paddingLeft="20dp">
 
                 <ImageView
+                    android:id="@+id/home_item_profileimg"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/image_btn_circle"
                     tools:srcCompat="@drawable/ic_baseline_person_outline_24"></ImageView>
 
                 <TextView
+                    android:id="@+id/home_item_profileName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -122,7 +125,7 @@
 
 
                 <TextView
-                    android:id="@+id/editTextTextPersonName5"
+                    android:id="@+id/home_item_following"
                     android:layout_width="94dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -133,7 +136,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/editTextTextPersonName4"
+                    android:id="@+id/home_item_discover"
                     android:layout_width="72dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -162,7 +165,7 @@
             android:paddingTop="18dp">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/home_item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
@@ -171,7 +174,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/home_item_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="15dp"
@@ -179,7 +182,7 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/home_item_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tags"

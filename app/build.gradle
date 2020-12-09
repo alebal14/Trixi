@@ -67,5 +67,14 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc03"
 
     implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //groupie
+    implementation 'com.xwray:groupie:2.8.1'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.8.1'
+    implementation "com.xwray:groupie-databinding:2.8.1"
+    implementation "com.xwray:groupie-viewbinding:2.8.1"
+
+
 
 }
