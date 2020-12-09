@@ -16,7 +16,7 @@ class LoginActivity : AppCompatActivity() {
 
 
         login_no_account.setOnClickListener {
-            val intent = Intent(this, HomepageActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 

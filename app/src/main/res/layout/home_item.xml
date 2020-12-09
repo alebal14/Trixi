@@ -16,8 +16,7 @@
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
         android:background="@color/colorLightGreen"
-        android:foregroundGravity="center">
-    </ImageView>
+        android:foregroundGravity="center"></ImageView>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,12 +31,11 @@
             android:layout_marginBottom="0dp">
 
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:paddingLeft="20dp">
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp">
 
                 <ImageView
                     android:id="@+id/home_item_profileimg"
@@ -50,11 +48,11 @@
                     android:id="@+id/home_item_profileName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp"
                     android:layout_marginLeft="10dp"
-                    android:textStyle="bold"
-                    android:text="John Doe">
+                    android:gravity="center"
+                    android:text="John Doe"
+                    android:textSize="20sp"
+                    android:textStyle="bold">
 
                 </TextView>
 
@@ -62,12 +60,11 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:paddingLeft="230dp">
+                android:paddingLeft="230dp"
+                android:paddingTop="20dp">
 
 
                 <TextView
@@ -97,9 +94,9 @@
                 android:layout_width="101dp"
                 android:layout_height="414dp"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="-1dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginTop="80dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="5dp"
@@ -179,7 +176,6 @@
                 android:layout_height="wrap_content"
                 android:text="Tags"
                 android:textSize="15sp" />
-
 
 
         </LinearLayout>
