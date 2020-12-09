@@ -96,6 +96,10 @@ public class UserHandler {
 
         if (following instanceof User) {
             User u = (User) following;
+            u.setFollowings(null);
+            u.setFollowers(null);
+            u.setPets(null);
+            u.setPosts(null);
             userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", u));
 
             userColl.updateOne(eq("uid", u.getUid()), Updates.addToSet("followers", user));
@@ -112,6 +116,8 @@ public class UserHandler {
             //User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
         } else if (following instanceof Pet) {
             Pet p = (Pet) following;
+            p.setFollowers(null);
+            p.setPosts(null);
             userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", p));
 
             petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.addToSet("followers", user));
