@@ -2,6 +2,8 @@ package com.example.trixi.ui.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -22,6 +24,10 @@ class HomepageActivity : AppCompatActivity() {
         adapter.add(HomeItem())
 
         recyclerView_homepage.adapter = adapter;
+
+        val snapHelper: SnapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(recyclerView_homepage);
+
     }
 }
 
