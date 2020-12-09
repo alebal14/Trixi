@@ -10,58 +10,86 @@
             android:id="@+id/user_profile_pic"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="83dp"
+            android:layout_marginBottom="11dp"
             android:src="@drawable/ic_circle_frame"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="101dp" />
+            app:layout_constraintBottom_toTopOf="@+id/owner_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
             android:id="@+id/profile_name"
             android:layout_width="147dp"
             android:layout_height="45dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/profileName"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="198dp"
-            tools:layout_editor_absoluteY="101dp" />
+            app:layout_constraintBottom_toTopOf="@+id/user_profile_bio"
+            app:layout_constraintEnd_toStartOf="@+id/heart_follow"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_pic"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
             android:id="@+id/user_profile_bio"
             android:layout_width="208dp"
             android:layout_height="121dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="3dp"
             android:text="@string/bioText"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:layout_editor_absoluteX="199dp"
-            tools:layout_editor_absoluteY="146dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_pic"
+            app:layout_constraintTop_toBottomOf="@+id/profile_name" />
 
     <TextView
             android:id="@+id/profile_followers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="80dp"
             android:text="@string/numberOfFollowers"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:layout_editor_absoluteX="54dp"
-            tools:layout_editor_absoluteY="339dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/profile_following"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.413" />
 
     <TextView
             android:id="@+id/profile_following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="44dp"
             android:text="@string/numberOfFollowing"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:layout_editor_absoluteX="258dp"
-            tools:layout_editor_absoluteY="339dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.377" />
 
     <ImageButton
             android:id="@+id/heart_follow"
             android:layout_width="61dp"
             android:layout_height="58dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="3dp"
             android:background="@android:color/white"
             android:contentDescription="@string/heart"
-            app:srcCompat="@drawable/ic_heart_empty"
-            tools:layout_editor_absoluteX="346dp"
-            tools:layout_editor_absoluteY="88dp" />
+            app:layout_constraintBottom_toTopOf="@+id/user_profile_bio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profile_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_heart_empty" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -75,31 +103,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="400dp" />
+            app:layout_constraintGuide_begin="365dp" />
 
     <ImageView
             android:id="@+id/pet_icon"
             android:layout_width="30dp"
             android:layout_height="22dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="180dp"
-            android:layout_marginBottom="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="7dp"
             android:contentDescription="@string/iconOfPetType"
-            app:layout_constraintBottom_toTopOf="@+id/profile_followers"
+            app:layout_constraintEnd_toStartOf="@+id/owner_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/user_profile_pic"
+            app:layout_constraintTop_toBottomOf="@+id/user_profile_pic"
             app:srcCompat="@drawable/cat_icon" />
 
     <TextView
             android:id="@+id/owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="252dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
             android:text="Owner: micheil"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.473"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@+id/user_profile_bio"
             app:layout_constraintStart_toEndOf="@+id/pet_icon"
             app:layout_constraintTop_toBottomOf="@+id/user_profile_pic" />
 
