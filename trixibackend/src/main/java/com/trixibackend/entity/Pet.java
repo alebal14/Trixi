@@ -27,8 +27,12 @@ public class Pet extends UserPet{
     private List<Post> posts = new ArrayList<>();
     private List<User> followers = new ArrayList<>();
 
+
     public Pet() {
+
     }
+
+
 
 
 
