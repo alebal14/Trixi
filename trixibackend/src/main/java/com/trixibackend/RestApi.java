@@ -2,6 +2,7 @@ package com.trixibackend;
 
 import com.trixibackend.entity.*;
 import express.Express;
+import express.http.SessionCookie;
 
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class RestApi {
         });
         setUpUpdateApi();
         setLoginUser();
+        getLoggedinUser();
 
 
     }
@@ -168,6 +170,16 @@ public class RestApi {
 
         app.post("/rest/login", (req, res) ->{
 
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+            if(sessionCookie.getData() != null){
+                res.send("Already logged in");
+                System.out.println("in cookies");
+                return;
+            }
+
+            System.out.println("after cookies");
+
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
@@ -181,7 +193,31 @@ public class RestApi {
                 return;
             }
 
+            user.setPassword(null);
+            sessionCookie.setData(user);
             res.json(db.getLoginByNameOrEmail(user));
+        });
+    }
+
+    private void getLoggedinUser(){
+        app.get("/rest/login", (req, res) ->{
+
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+            if(sessionCookie.getData() == null) {
+                res.send("Not logged in");
+                return;
+            }
+
+            var user = (User) sessionCookie.getData();
+            user.setPassword(null); // sanitize password
+            res.json(user);
+
+        });
+
+        app.get("/rest/logout", (req, res) -> {
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+            sessionCookie.setData(null);
+            res.send("Successfully logged out");
         });
     }
 }
