@@ -1,5 +1,6 @@
 package com.trixibackend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trixibackend.entity.*;
 import express.Express;
 
@@ -48,7 +49,9 @@ public class RestApi {
               System.out.println("Pet Following:  " + followingPet);
               res.json(db.getUserHandler().updateList(user,followingPet));
 
+
           }else {
+
               res.json(db.getUserHandler().updateList(user,following));
 
           }

@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -77,6 +78,17 @@ public class UserHandler {
 
     //first parameter who wants to follow, second parameter the whom (I = user) want to follow
     public User updateList(User user, UserPet following) {
+        AtomicBoolean found = new AtomicBoolean(false);
+        user.getFollowings().forEach(u -> {
+            if(u.getId().equals(following.getId())){
+               found.set(true);
+            }
+        });
+
+        if(found.get()== true){
+            return null;
+        }
+
         user.addToFollowings(following);
 
         if( following instanceof User){
@@ -105,30 +117,6 @@ public class UserHandler {
 
             Pet updatedPet = petHandler.getPetColl().findOneAndReplace(eq("_id", ((Pet) following).getId()), (Pet) following);
         }
-       /* switch (following.getClass().getSimpleName()) {
-            case "User":
-                //((User) following).addToFollowers(user);
-                ((User) following).getFollowers().add(user);
-                userColl.updateOne(
-                        new BasicDBObject().append("uid", ((User)following).getUid()),
-                        new BasicDBObject().append("$set",
-                                new BasicDBObject().append( "followers", ((User)following).getFollowers()))
-                );
-                User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
-                break;
-            case "Pet":
-                //((Pet) following).addToFollowers(user);
-                ((Pet) following).getFollowers().add(user);
-                petHandler.getPetColl().updateOne(
-                        new BasicDBObject().append("uid", ((Pet)following).getUid()),
-                        new BasicDBObject().append("$set",
-                                new BasicDBObject().append( "followers", ((Pet)following).getFollowers()))
-                );
-                Pet updatedPet = petHandler.getPetColl().findOneAndReplace(eq("_id", ((Pet) following).getId()), (Pet) following);
-                break;
-            default:
-                break;
-        }*/
 
         try {
             userColl.updateOne(
@@ -143,7 +131,7 @@ public class UserHandler {
 
         User updated = userColl.findOneAndReplace(eq("_id", user.getId()), user);
 
-        return updated;
+        return user;
 
 
     }
