@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trixi.R
+import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -17,6 +18,8 @@ class RegisterActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+
+
 
 
     }

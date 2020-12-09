@@ -1,7 +1,9 @@
 package com.trixibackend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trixibackend.entity.*;
 import express.Express;
+import express.utils.Status;
 
 import java.util.Map;
 
@@ -27,47 +29,88 @@ public class RestApi {
 
         });
         setUpUpdateApi();
+        setLoginUser();
 
 
     }
 
     private void setUpUpdateApi() {
 
-     app.post("api/users/addFollower/:userid/:followingid",(req,res) ->{
+        app.post("/api/users/addFollower/:userid/:followingid", (req, res) -> {
 
-          String userid = req.getParam("userid");
-          String followingid= req.getParam("followingid");
+            String userid = req.getParam("userid");
+            String followingid = req.getParam("followingid");
 
-          User user = db.getUserHandler().findUserById(userid);
-          User following = db.getUserHandler().findUserById(followingid);
+            User user = db.getUserHandler().findUserById(userid);
+            User following = db.getUserHandler().findUserById(followingid);
 
-          if(following == null){
-              Pet followingPet =db.getPetHandler().findPetById(followingid);
-              res.json(db.getUserHandler().updateList(user,followingPet));
+            System.out.println("User:  " + user);
+            System.out.println("User following:  " + following);
+            if (following == null) {
+                Pet followingPet = db.getPetHandler().findPetById(followingid);
+                System.out.println("Pet Following:  " + followingPet);
+                var user1 = db.getUserHandler().updateList(user, followingPet);
+                if (user1 == null) {
+                    res.json(user1);
+                    res.send("Error: you are already following this Pet");
+                    //res.sendStatus(Status.valueOf("404"));
+                    return;
+                }
+                res.json(user1);
 
-          }else {
-              res.json(db.getUserHandler().updateList(user,following));
 
-          }
+            } else {
+                var user1 = db.getUserHandler().updateList(user, following);
+                if (user1 == null) {
+                    //res.json(user1);
+                    res.send("Error: you are already following this User");
+                    //res.sendStatus(Status.valueOf("404"));
+                    return;
+                }
+                res.json(user1);
+
+            }
+        });
 
 
-         //Map body = req.getBody();
-         //userid = body.get("userid").toString();
+        app.post("/api/users/unFollow/:userid/:followingid",(req,res)->{
 
-//         let addFollowerData = {
-//                 userid: "123",
-//                 followerid: "321",
-//                 typeOfFollower: "Pet"
-//}
-//
-//         await fetch('/api/users/addFollower', {
-//                 method: 'POST',
-//                 headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(addFollowerData)
-//})
+            String userid = req.getParam("userid");
+            String followingid = req.getParam("followingid");
 
-       });
+            User user = db.getUserHandler().findUserById(userid);
+            User following = db.getUserHandler().findUserById(followingid);
+
+            if (following == null) {
+                Pet followingPet = db.getPetHandler().findPetById(followingid);
+                System.out.println("Pet Following:  " + followingPet);
+                var user1 = db.getUserHandler().removeFromList(user, followingPet);
+                if (user1 == null) {
+                    res.json(user1);
+                    res.send("Error: you are not following this Pet");
+                    //res.sendStatus(Status.valueOf("404"));
+                    return;
+                }
+                res.json(user1);
+
+
+            } else {
+                var user1 = db.getUserHandler().removeFromList(user, following);
+                if (user1 == null) {
+                    //res.json(user1);
+                    res.send("Error: you are not following this user");
+                    //res.sendStatus(Status.valueOf("404"));
+                    return;
+                }
+                res.json(user1);
+
+            }
+
+
+        });
     }
+
+
 
     private void setUpDeleteApi(String collectionName) {
     }
@@ -120,7 +163,7 @@ public class RestApi {
                 return;
             }
             res.json(db.getPostHandler().getPostsByCategory(id));
-    });
+        });
 
         app.get("/rest/pets/by_pet_type/:id", (req, res) -> {
 
@@ -157,5 +200,27 @@ public class RestApi {
             res.json(db.getById(collectionName, id));
         });
 
+    }
+
+    private void setLoginUser() {
+
+        app.post("/rest/login", (req, res) ->{
+
+            User loggedInUser = (User) req.getBody(User.class);
+            User user = (User) db.getLoginByNameOrEmail(loggedInUser);
+
+
+
+           if (user == null) {
+                res.send((loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
+                return;
+            }
+            if(!loggedInUser.getPassword().equals(user.getPassword())){
+                res.send("password and username/email dont match");
+                return;
+            }
+
+            res.json(db.getLoginByNameOrEmail(user));
+        });
     }
 }

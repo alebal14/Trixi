@@ -1,5 +1,8 @@
 package com.trixibackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.types.ObjectId;
@@ -7,9 +10,10 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class User extends UserPet{
-    private ObjectId id;
-    private String uid;
+    //private ObjectId id;
+    //private String uid;
     private String userName;
     private String email;
     private String password;
@@ -26,51 +30,87 @@ public class User extends UserPet{
     private List<User> followers = new ArrayList<>();
 
 
-
+    @JsonIgnore
     public User(){
 
     }
 
-    /*public User(String userName, String email, String password,String role) {
+    public User(String userName, String email, String password, String bio, String imageUrl, String role, List<Pet> pets, List<Post> posts, List<UserPet> followings, List<User> followers) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.bio = bio;
+        this.imageUrl = imageUrl;
+        this.role = role;
+        this.pets = pets;
+        this.posts = posts;
+        this.followings = followings;
+        this.followers = followers;
+    }
+
+    @JsonIgnore
+    public User(ObjectId id, String uid, String userName, String email, String password, String bio, String imageUrl, String role, List<Pet> pets, List<Post> posts, List<UserPet> followings, List<User> followers) {
+        super(id, uid);
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.bio = bio;
+        this.imageUrl = imageUrl;
+        this.role = role;
+        this.pets = pets;
+        this.posts = posts;
+        this.followings = followings;
+        this.followers = followers;
+    }
+
+    public User(String userName, String email, String password, String role) {
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.role = role;
-    }*/
+    }
 
     private UserPet prepareToAdd(UserPet userPet){
         ObjectMapper mapper = new ObjectMapper();
-        UserPet objectToAdd = null;
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS);
+        User objectToAddUser = null;
+        Pet objectToAddPet = null;
 
-        try {
-            //This is a shallow copy
-            String json = mapper.writeValueAsString(userPet);
-            objectToAdd = mapper.readValue(json, userPet.getClass());
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
 
         if(userPet instanceof User){
-            ((User) objectToAdd).setPets(null);
-            ((User)objectToAdd).setPosts(null);
-            //((User)objectToAdd).setFollowings(null);
-            ((User)objectToAdd).setFollowers(null);
-        }  else if (userPet instanceof Pet) {
-            ((Pet)objectToAdd).setPosts(null);
-            ((Pet)objectToAdd).setFollowers(null);
-        }
-        /*switch (userPet.getClass().getSimpleName()){
-            case "User":
+            try {
+                //This is a shallow copy
+                User user = (User) userPet;
+                String json = mapper.writeValueAsString(user);
+                objectToAddUser = mapper.readValue(json, User.class);
 
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
 
-                break;
-            case "Pet":
-                (
-                break;
+            objectToAddUser.setPets(null);
+            objectToAddUser.setPosts(null);
+            objectToAddUser.setFollowings(null);
+            objectToAddUser.setFollowers(null);
+            return objectToAddUser;
+
+        } else if (userPet instanceof Pet) {
+            try {
+                //This is a shallow copy
+                Pet pet = (Pet) userPet;
+                String json = mapper.writeValueAsString(pet);
+                objectToAddPet = mapper.readValue(json, Pet.class);
+
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            objectToAddPet.setPosts(null);
+            objectToAddPet.setFollowers(null);
+            return objectToAddPet;
         }
-*/
-        return objectToAdd;
+
+        return null;
     }
 
     public void addToFollowings(UserPet userPet){
@@ -108,21 +148,18 @@ public class User extends UserPet{
         this.role = role;
     }
 
-    public ObjectId getId() {
+   /* public ObjectId getId() {
         return id;
     }
-
     public void setId(ObjectId id) {
         this.id = id;
     }
-
     public String getUid() {
         return uid;
     }
-
     public void setUid(String uid) {
         this.uid = uid;
-    }
+    }*/
 
     public String getUserName() {
         return userName;
