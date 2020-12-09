@@ -95,17 +95,11 @@ public class UserHandler {
 
         if (following instanceof User) {
             User u = (User) following;
-            u.setFollowings(null);
-            u.setFollowers(null);
-            u.setPets(null);
-            u.setPosts(null);
+            makeUsersListEmpty(u);
             userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", u));
 
             User e  = (User) user;
-            e.setFollowings(null);
-            e.setFollowers(null);
-            e.setPets(null);
-            e.setPosts(null);
+            makeUsersListEmpty(e);
             userColl.updateOne(eq("uid", u.getUid()), Updates.addToSet("followers", e));
 //            ((User) following).addToFollowers(user);
 //            try {
@@ -120,15 +114,11 @@ public class UserHandler {
             //User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
         } else if (following instanceof Pet) {
             Pet p = (Pet) following;
-            p.setFollowers(null);
-            p.setPosts(null);
+            makePetsListEmpty(p);
             userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", p));
 
             User j  = (User) user;
-            j.setFollowings(null);
-            j.setFollowers(null);
-            j.setPets(null);
-            j.setPosts(null);
+            makeUsersListEmpty(j);
             petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.addToSet("followers", j));
 //            ((Pet) following).addToFollowers(user);
 //            try {
@@ -158,6 +148,8 @@ public class UserHandler {
         // User updated = userColl.findOneAndReplace(eq("uid", user.getUid()), user);
 
         User updatedUser = findUserById(user.getUid());
+        System.out.println("---------------------------------------------------------------");
+        System.out.println(updatedUser);
         return updatedUser;
 
     }
@@ -184,8 +176,6 @@ public class UserHandler {
             userColl.updateOne(eq("uid", u.getUid()), Updates.pull("followers", new BasicDBObject("uid", user.getUid())));
 
 
-
-
         } else if (following instanceof Pet) {
             Pet p = (Pet) following;
             userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", new BasicDBObject("uid", p.getUid())));
@@ -197,6 +187,20 @@ public class UserHandler {
         User updatedUser = findUserById(user.getUid());
         return updatedUser;
 
+
+    }
+
+    private void makeUsersListEmpty(User u){
+        u.setFollowings(null);
+        u.setFollowers(null);
+        u.setPets(null);
+        u.setPosts(null);
+    }
+
+    private void makePetsListEmpty(Pet p){
+
+        p.setFollowers(null);
+        p.setPosts(null);
 
     }
 

@@ -55,7 +55,7 @@ public class RestApi {
                     //res.sendStatus(Status.valueOf("404"));
                     return;
                 }
-                res.json(db.getUserHandler().updateList(user, followingPet));
+                res.json(user1);
 
 
             } else {
@@ -66,7 +66,7 @@ public class RestApi {
                     //res.sendStatus(Status.valueOf("404"));
                     return;
                 }
-                res.json(db.getUserHandler().updateList(user, following));
+                res.json(user1);
 
             }
         });
