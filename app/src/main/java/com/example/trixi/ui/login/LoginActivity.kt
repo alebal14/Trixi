@@ -31,18 +31,14 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val username = login_input_username_or_password.text.toString()
-        val password = login_input_password.text.toString()
+
 
         login_button.setOnClickListener{
-            val id : ObjectId? = null
-            val email: String? = null
-            val bio: String? = null
-            val imageUrl: String? = null
-            val role: String? = null
-            val pets: ArrayList<Pet>? = null
-            val posts: ArrayList<Post>? = null
-            val user = User(id, username, email, password, bio, imageUrl, role, pets, posts)
+            val username = login_input_username_or_password.text.toString()
+            val password = login_input_password.text.toString()
+
+
+            val user = User("",username, "", password, "","","",null, null, "user")
 
             val post = PostToDb()
             post.PostLoginUser(user)
@@ -54,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         model.makeApiCall()
         model.getUserMutableLiveDataList().observe(this, Observer{
             it.forEach{
-                Log.d("uus", "UserName : ${it.userName} UserId : ${it.id!!}")
+                Log.d("uus", "UserName : ${it.userName!!}")
             }
         } )
 

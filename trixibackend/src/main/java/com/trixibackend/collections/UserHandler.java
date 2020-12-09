@@ -90,7 +90,6 @@ public class UserHandler {
 
            if (user == null) return null;
 
-           user.setUid(user.getId().toString());
            return user;
 
         } catch (Exception e) {

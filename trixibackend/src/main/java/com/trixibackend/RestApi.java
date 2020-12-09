@@ -172,7 +172,6 @@ public class RestApi {
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
 
-
            if (user == null) {
                 res.send((loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
