@@ -7,6 +7,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.trixi.R
+import com.example.trixi.entities.Pet
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
@@ -28,6 +30,25 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
+        val username = login_input_username_or_password.text.toString()
+        val password = login_input_password.text.toString()
+
+        login_button.setOnClickListener{
+            val id : ObjectId? = null
+            val email: String? = null
+            val bio: String? = null
+            val imageUrl: String? = null
+            val role: String? = null
+            val pets: ArrayList<Pet>? = null
+            val posts: ArrayList<Post>? = null
+            val user = User(id, username, email, password, bio, imageUrl, role, pets, posts)
+
+            val post = PostToDb()
+            post.PostLoginUser(user)
+        }
+
+
 
         //testObserver getAllUsers:
         model.makeApiCall()

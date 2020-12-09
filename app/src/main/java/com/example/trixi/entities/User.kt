@@ -4,7 +4,9 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import org.bson.types.ObjectId
 
-data class User ( val id: ObjectId?, val userName: String, val email: String, val password: String) {
+data class User ( val id: ObjectId?, val userName: String?, val email: String?, val password: String?, val bio: String?, val imageUrl: String?, val role: String?, val pets: ArrayList<Pet>?,
+                  val posts: ArrayList<Post>?) {
+
 }
 
 
