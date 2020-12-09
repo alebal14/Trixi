@@ -86,7 +86,7 @@ public class UserHandler {
             }
         });
 
-        if (found.get() == false) {
+        if (found.get() == true) {
             return null;
         }
 
@@ -179,18 +179,18 @@ public class UserHandler {
         if (following instanceof User) {
             User u = (User) following;
 
-            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", u));
+            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", new BasicDBObject("uid", u.getUid())));
 
-            userColl.updateOne(eq("uid", u.getUid()), Updates.pull("followers", user));
+            userColl.updateOne(eq("uid", u.getUid()), Updates.pull("followers", new BasicDBObject("uid", user.getUid())));
 
 
 
 
         } else if (following instanceof Pet) {
             Pet p = (Pet) following;
-            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", p));
+            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", new BasicDBObject("uid", p.getUid())));
 
-            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.pull("followers", user));
+            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.pull("followers", new BasicDBObject("uid", user.getUid())));
 
 
         }
