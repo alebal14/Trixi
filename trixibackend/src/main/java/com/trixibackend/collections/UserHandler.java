@@ -75,6 +75,30 @@ public class UserHandler {
     }
 
 
+    public User findUserByNameOrEmail(User loggedInUser) {
+        String emailOrUsername;
+        String fieldname;
+        if(loggedInUser.getUserName() == null){
+            emailOrUsername = loggedInUser.getEmail();
+            fieldname = "email";
+        }else{
+            emailOrUsername = loggedInUser.getUserName();
+            fieldname = "userName";
+        }
+        try {
+            var user = userColl.find(eq(fieldname, emailOrUsername)).first();
+
+           if (user == null) return null;
+
+           user.setUid(user.getId().toString());
+           return user;
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
     //first parameter who wants to follow, second parameter the whom (I = user) want to follow
     public User updateList(User user, UserPet following) {
         user.addToFollowings(following);
