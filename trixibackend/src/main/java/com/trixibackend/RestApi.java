@@ -29,6 +29,7 @@ public class RestApi {
 
         });
         setUpUpdateApi();
+        setLoginUser();
 
 
     }
@@ -199,5 +200,27 @@ public class RestApi {
             res.json(db.getById(collectionName, id));
         });
 
+    }
+
+    private void setLoginUser() {
+
+        app.post("/rest/login", (req, res) ->{
+
+            User loggedInUser = (User) req.getBody(User.class);
+            User user = (User) db.getLoginByNameOrEmail(loggedInUser);
+
+
+
+           if (user == null) {
+                res.send((loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
+                return;
+            }
+            if(!loggedInUser.getPassword().equals(user.getPassword())){
+                res.send("password and username/email dont match");
+                return;
+            }
+
+            res.json(db.getLoginByNameOrEmail(user));
+        });
     }
 }
