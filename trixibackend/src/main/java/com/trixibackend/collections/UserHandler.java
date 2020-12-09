@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.User;
 import com.trixibackend.entity.UserPet;
@@ -75,64 +76,74 @@ public class UserHandler {
         }
     }
 
-
     //first parameter who wants to follow, second parameter the whom (I = user) want to follow
     public User updateList(User user, UserPet following) {
-        AtomicBoolean found = new AtomicBoolean(false);
+        AtomicBoolean found = new AtomicBoolean(true);
+
         user.getFollowings().forEach(u -> {
-            if(u.getId().equals(following.getId())){
-               found.set(true);
+            if(u.getUid().equals(following.getUid())){
+                found.set(false);
             }
         });
 
-        if(found.get()== true){
+        if(found.get() == false){
             return null;
         }
 
-        user.addToFollowings(following);
 
-        if( following instanceof User){
-            ((User) following).addToFollowers(user);
-            try {
-                userColl.updateOne(
-                        new BasicDBObject().append("_id", ((User) following).getId()),
-                        new BasicDBObject().append("$set",
-                                new BasicDBObject().append("followers", ((User) following).getFollowers()))
-                );
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-            User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
-        }  else if( following instanceof Pet){
-            ((Pet) following).addToFollowers(user);
-            try{
-                petHandler.getPetColl().updateOne(
-                        new BasicDBObject().append("_id", ((Pet)following).getId()),
-                        new BasicDBObject().append("$set",
-                                new BasicDBObject().append( "followers", ((Pet)following).getFollowers()))
-                );
-            } catch (Exception e){
-                e.printStackTrace();
-            }
 
-            Pet updatedPet = petHandler.getPetColl().findOneAndReplace(eq("_id", ((Pet) following).getId()), (Pet) following);
+        //user.addToFollowings(following);
+
+        if (following instanceof User) {
+            User u = (User) following;
+            userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", u));
+
+            userColl.updateOne(eq("uid", u.getUid()), Updates.addToSet("followers", user));
+//            ((User) following).addToFollowers(user);
+//            try {
+//                userColl.updateOne(
+//                        new BasicDBObject().append("_id", ((User) following).getId()),
+//                        new BasicDBObject().append("$set",
+//                                new BasicDBObject().append("followers", ((User) following).getFollowers()))
+//                );
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+            //User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
+        } else if (following instanceof Pet) {
+            Pet p = (Pet) following;
+            userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", p));
+
+            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.addToSet("followers", user));
+//            ((Pet) following).addToFollowers(user);
+//            try {
+//                petHandler.getPetColl().updateOne(
+//                        new BasicDBObject().append("_id", ((Pet) following).getId()),
+//                        new BasicDBObject().append("$set",
+//                                new BasicDBObject().append("followers", ((Pet) following).getFollowers()))
+//                );
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+            //Pet updatedPet = petHandler.getPetColl().findOneAndReplace(eq("_id", ((Pet) following).getId()), (Pet) following);
         }
 
-        try {
-            userColl.updateOne(
-                    new BasicDBObject().append("_id", user.getId()),
-                    new BasicDBObject().append("$set",
-                            new BasicDBObject().append( "followings", user.getFollowings()))
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            userColl.updateOne(
+//                    new BasicDBObject().append("_id", user.getId()),
+//                    new BasicDBObject().append("$set",
+//                            new BasicDBObject().append("followings", user.getFollowings()))
+//            );
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+       // User updated = userColl.findOneAndReplace(eq("uid", user.getUid()), user);
 
-
-        User updated = userColl.findOneAndReplace(eq("_id", user.getId()), user);
-
-        return user;
-
+        User updatedUser = findUserById(user.getUid());
+        return updatedUser;
 
     }
 
