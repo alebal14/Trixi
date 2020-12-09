@@ -1,10 +1,10 @@
 package com.example.trixi.repository
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-
 import com.example.trixi.entities.User
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,22 +34,22 @@ class PostToDb {
         })
     }
 
-    fun PostLoginUser(user: User){
+    fun PostLoginUser(user: User, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance().create(Api::class.java)
 
         val call = retrofitClient.loginUser(user)
         call.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.d("uus", "login-user : onfailure " + t.message)
-
             }
             override fun onResponse(
                 call: Call<User>, response: Response<User>
             ) {
                 if(response.isSuccessful){
                     Log.d("uus", "login-user : onResponse success" + response.body())
+                    Log.d("uus", "login-user : onResponse success" + response.message())
                 }else{
-                    Log.d("uus", "login-user : onResponse else" + response.body())
+                    Log.d("uus", "login-user : onResponse else")
                 }
             }
         })

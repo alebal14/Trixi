@@ -31,17 +31,23 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
         login_button.setOnClickListener{
-            val username = login_input_username_or_password.text.toString()
+            val usernameOrEmail = login_input_username_or_password.text.toString()
             val password = login_input_password.text.toString()
 
+            if (usernameOrEmail.contains("@")){
+                val user = User("","", usernameOrEmail, password, "","","",null, null, "user")
+                val post = PostToDb()
+                post.PostLoginUser(user, this)
+            }else{
+                val user = User("",usernameOrEmail, "", password, "","","",null, null, "user")
+                val post = PostToDb()
+                post.PostLoginUser(user, this)
+            }
 
-            val user = User("",username, "", password, "","","",null, null, "user")
+            /*val intent = Intent(this, Home::class.java)
+            startActivity(intent)*/
 
-            val post = PostToDb()
-            post.PostLoginUser(user)
         }
 
 
@@ -54,16 +60,7 @@ class LoginActivity : AppCompatActivity() {
             }
         } )
 
-        //button register:
-     /*   val id : ObjectId? = null
-        val userName = "anna"
-        val email = "anna@a.com"
-        val password = "pass123"
 
-        val user = User(id, userName, email, password)
-
-        val post = PostToDb()
-        post. makeApiPost(user)*/
 
 
     }

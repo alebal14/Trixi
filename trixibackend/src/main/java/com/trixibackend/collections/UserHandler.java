@@ -78,7 +78,7 @@ public class UserHandler {
     public User findUserByNameOrEmail(User loggedInUser) {
         String emailOrUsername;
         String fieldname;
-        if(loggedInUser.getUserName() == null){
+        if(loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null){
             emailOrUsername = loggedInUser.getEmail();
             fieldname = "email";
         }else{
