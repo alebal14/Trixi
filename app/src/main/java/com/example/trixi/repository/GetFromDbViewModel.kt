@@ -12,7 +12,8 @@ import retrofit2.Response
 
 class GetFromDbViewModel : ViewModel() {
 
-    lateinit var userListData: MutableLiveData<List<User>>
+     var userListData: MutableLiveData<List<User>>
+
 
     init {
         userListData = MutableLiveData()
@@ -22,7 +23,7 @@ class GetFromDbViewModel : ViewModel() {
         return userListData
     }
 
-    fun makeApiCall(){
+    fun GetAllUsersFromDB(){
         val retrofitClient = RetrofitClient.getRetroInstance().create(Api::class.java)
 
         val call = retrofitClient.getAllUsers()
