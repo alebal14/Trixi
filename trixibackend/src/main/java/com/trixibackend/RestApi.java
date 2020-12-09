@@ -24,22 +24,47 @@ public class RestApi {
             setUpGetApi(collectionName);
             setUpPostApi(collectionName);
             setUpDeleteApi(collectionName);
-            setUpUpdateApi(collectionName);
-        });
 
+        });
+        setUpUpdateApi();
 
 
     }
 
-    private void setUpUpdateApi(String collectionName) {
+    private void setUpUpdateApi() {
 
-     app.post("api/users/addFollower/:userid/:followerid",(req,res) ->{
+     app.post("api/users/addFollower/:userid/:followingid",(req,res) ->{
+
           String userid = req.getParam("userid");
-          String followerid= req.getParam("followerid");
-          User user = db.getUserHandler().findUserById(userid);
+          String followingid= req.getParam("followingid");
 
-         Map body = req.getBody();
-         userid = body.get("userid").toString();
+          User user = db.getUserHandler().findUserById(userid);
+          User following = db.getUserHandler().findUserById(followingid);
+
+          if(following == null){
+              Pet followingPet =db.getPetHandler().findPetById(followingid);
+              res.json(db.getUserHandler().updateList(user,followingPet));
+
+          }else {
+              res.json(db.getUserHandler().updateList(user,following));
+
+          }
+
+
+         //Map body = req.getBody();
+         //userid = body.get("userid").toString();
+
+//         let addFollowerData = {
+//                 userid: "123",
+//                 followerid: "321",
+//                 typeOfFollower: "Pet"
+//}
+//
+//         await fetch('/api/users/addFollower', {
+//                 method: 'POST',
+//                 headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(addFollowerData)
+//})
 
        });
     }
