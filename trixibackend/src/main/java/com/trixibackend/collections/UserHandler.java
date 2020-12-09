@@ -78,18 +78,17 @@ public class UserHandler {
 
     //first parameter who wants to follow, second parameter the whom (I = user) want to follow
     public User updateList(User user, UserPet following) {
-        AtomicBoolean found = new AtomicBoolean(true);
+        AtomicBoolean found = new AtomicBoolean(false);
 
         user.getFollowings().forEach(u -> {
-            if(u.getUid().equals(following.getUid())){
-                found.set(false);
+            if (u.getUid().equals(following.getUid())) {
+                found.set(true);
             }
         });
 
-        if(found.get() == false){
+        if (found.get() == false) {
             return null;
         }
-
 
 
         //user.addToFollowings(following);
@@ -146,10 +145,48 @@ public class UserHandler {
 //        }
 //
 //
-       // User updated = userColl.findOneAndReplace(eq("uid", user.getUid()), user);
+        // User updated = userColl.findOneAndReplace(eq("uid", user.getUid()), user);
 
         User updatedUser = findUserById(user.getUid());
         return updatedUser;
+
+    }
+
+    public User removeFromList(User user, UserPet following) {
+        AtomicBoolean found = new AtomicBoolean(false);
+
+        user.getFollowings().forEach(u -> {
+            if (u.getUid().equals(following.getUid())) {
+                found.set(true);
+            }
+        });
+
+        if (found.get() == false) {
+            return null;
+        }
+
+
+        if (following instanceof User) {
+            User u = (User) following;
+
+            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", u));
+
+            userColl.updateOne(eq("uid", u.getUid()), Updates.pull("followers", user));
+
+
+
+
+        } else if (following instanceof Pet) {
+            Pet p = (Pet) following;
+            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", p));
+
+            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.pull("followers", user));
+
+
+        }
+        User updatedUser = findUserById(user.getUid());
+        return updatedUser;
+
 
     }
 

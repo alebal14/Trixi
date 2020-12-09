@@ -70,7 +70,46 @@ public class RestApi {
 
             }
         });
+
+
+        app.post("/api/users/unFollow/:userid/:followingid",(req,res)->{
+
+            String userid = req.getParam("userid");
+            String followingid = req.getParam("followingid");
+
+            User user = db.getUserHandler().findUserById(userid);
+            User following = db.getUserHandler().findUserById(followingid);
+
+            if (following == null) {
+                Pet followingPet = db.getPetHandler().findPetById(followingid);
+                System.out.println("Pet Following:  " + followingPet);
+                var user1 = db.getUserHandler().removeFromList(user, followingPet);
+                if (user1 == null) {
+                    res.json(user1);
+                    res.send("Error: you are not following this Pet");
+                    //res.sendStatus(Status.valueOf("404"));
+                    return;
+                }
+                res.json(user1);
+
+
+            } else {
+                var user1 = db.getUserHandler().removeFromList(user, following);
+                if (user1 == null) {
+                    //res.json(user1);
+                    res.send("Error: you are not following this user");
+                    //res.sendStatus(Status.valueOf("404"));
+                    return;
+                }
+                res.json(user1);
+
+            }
+
+
+        });
     }
+
+
 
     private void setUpDeleteApi(String collectionName) {
     }
