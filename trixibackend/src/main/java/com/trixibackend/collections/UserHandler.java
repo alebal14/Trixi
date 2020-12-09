@@ -102,7 +102,12 @@ public class UserHandler {
             u.setPosts(null);
             userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", u));
 
-            userColl.updateOne(eq("uid", u.getUid()), Updates.addToSet("followers", user));
+            User e  = (User) user;
+            e.setFollowings(null);
+            e.setFollowers(null);
+            e.setPets(null);
+            e.setPosts(null);
+            userColl.updateOne(eq("uid", u.getUid()), Updates.addToSet("followers", e));
 //            ((User) following).addToFollowers(user);
 //            try {
 //                userColl.updateOne(
@@ -120,7 +125,12 @@ public class UserHandler {
             p.setPosts(null);
             userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", p));
 
-            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.addToSet("followers", user));
+            User j  = (User) user;
+            j.setFollowings(null);
+            j.setFollowers(null);
+            j.setPets(null);
+            j.setPosts(null);
+            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.addToSet("followers", j));
 //            ((Pet) following).addToFollowers(user);
 //            try {
 //                petHandler.getPetColl().updateOne(

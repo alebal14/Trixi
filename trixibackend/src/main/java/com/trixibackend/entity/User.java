@@ -1,5 +1,6 @@
 package com.trixibackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,13 +30,40 @@ public class User extends UserPet{
     private List<User> followers = new ArrayList<>();
 
 
-
+    @JsonIgnore
     public User(){
 
     }
 
+    public User(String userName, String email, String password, String bio, String imageUrl, String role, List<Pet> pets, List<Post> posts, List<UserPet> followings, List<User> followers) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.bio = bio;
+        this.imageUrl = imageUrl;
+        this.role = role;
+        this.pets = pets;
+        this.posts = posts;
+        this.followings = followings;
+        this.followers = followers;
+    }
 
-    public User(String userName, String email, String password,String role) {
+    @JsonIgnore
+    public User(ObjectId id, String uid, String userName, String email, String password, String bio, String imageUrl, String role, List<Pet> pets, List<Post> posts, List<UserPet> followings, List<User> followers) {
+        super(id, uid);
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.bio = bio;
+        this.imageUrl = imageUrl;
+        this.role = role;
+        this.pets = pets;
+        this.posts = posts;
+        this.followings = followings;
+        this.followers = followers;
+    }
+
+    public User(String userName, String email, String password, String role) {
         this.userName = userName;
         this.email = email;
         this.password = password;
