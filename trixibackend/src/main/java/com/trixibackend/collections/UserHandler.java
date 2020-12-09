@@ -7,7 +7,6 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.User;
-import com.trixibackend.entity.UserPet;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -101,12 +100,11 @@ public class UserHandler {
         }
     }
 
-    //first parameter who wants to follow, second parameter the whom (I = user) want to follow
-    public User updateList(User user, UserPet following) {
+    public User updateFollowPetList(User user, Pet following){
         AtomicBoolean found = new AtomicBoolean(false);
 
-        user.getFollowings().forEach(u -> {
-            if (u.getUid().equals(following.getUid())) {
+        user.getFollowingsPet().forEach(u -> {
+            if (u.getId().equals(following.getId())) {
                 found.set(true);
             }
         });
@@ -115,74 +113,86 @@ public class UserHandler {
             return null;
         }
 
+        //Shadow copy
+        Pet p = following;
+        //Empty the list of the copy
+        makePetsListEmpty(p);
+        //update the user's list
+        userColl.updateOne(eq("_id", user.getId()), Updates.addToSet("followingsPet", p));
 
-        //user.addToFollowings(following);
+        //Shadow copy
+        User j  = user;
+        //Empty the list of the copy
+        makeUsersListEmpty(j);
+        //update the pet's list
+        petHandler.getPetColl().updateOne(eq("_id", following.getId()), Updates.addToSet("followers", j));
 
-        if (following instanceof User) {
-            User u = (User) following;
-            makeUsersListEmpty(u);
-            userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", u));
-
-            User e  = (User) user;
-            makeUsersListEmpty(e);
-            userColl.updateOne(eq("uid", u.getUid()), Updates.addToSet("followers", e));
-//            ((User) following).addToFollowers(user);
-//            try {
-//                userColl.updateOne(
-//                        new BasicDBObject().append("_id", ((User) following).getId()),
-//                        new BasicDBObject().append("$set",
-//                                new BasicDBObject().append("followers", ((User) following).getFollowers()))
-//                );
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-            //User updatedUser = userColl.findOneAndReplace(eq("_id", ((User) following).getId()), (User) following);
-        } else if (following instanceof Pet) {
-            Pet p = (Pet) following;
-            makePetsListEmpty(p);
-            userColl.updateOne(eq("uid", user.getUid()), Updates.addToSet("followings", p));
-
-            User j  = (User) user;
-            makeUsersListEmpty(j);
-            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.addToSet("followers", j));
-//            ((Pet) following).addToFollowers(user);
-//            try {
-//                petHandler.getPetColl().updateOne(
-//                        new BasicDBObject().append("_id", ((Pet) following).getId()),
-//                        new BasicDBObject().append("$set",
-//                                new BasicDBObject().append("followers", ((Pet) following).getFollowers()))
-//                );
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-            //Pet updatedPet = petHandler.getPetColl().findOneAndReplace(eq("_id", ((Pet) following).getId()), (Pet) following);
-        }
-
-//        try {
-//            userColl.updateOne(
-//                    new BasicDBObject().append("_id", user.getId()),
-//                    new BasicDBObject().append("$set",
-//                            new BasicDBObject().append("followings", user.getFollowings()))
-//            );
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-        // User updated = userColl.findOneAndReplace(eq("uid", user.getUid()), user);
 
         User updatedUser = findUserById(user.getUid());
         System.out.println("---------------------------------------------------------------");
         System.out.println(updatedUser);
         return updatedUser;
-
     }
 
-    public User removeFromList(User user, UserPet following) {
+    public User updateFollowUserList(User user, User following){
         AtomicBoolean found = new AtomicBoolean(false);
 
-        user.getFollowings().forEach(u -> {
+        user.getFollowingsUser().forEach(u -> {
+            if (u.getId().equals(following.getId())) {
+                found.set(true);
+            }
+        });
+
+        if (found.get() == true) {
+            return null;
+        }
+
+        //Shadow copy
+        User u = following;
+        //Empty the list of the copy
+        makeUsersListEmpty(u);
+        //update the user's list
+        userColl.updateOne(eq("_id", user.getId()), Updates.addToSet("followingsUser", u));
+
+        //Shadow copy
+        User e  = user;
+        //Empty the list of the copy
+        makeUsersListEmpty(e);
+        //update the user's list
+        userColl.updateOne(eq("_id", following.getId()), Updates.addToSet("followers", e));
+
+        User updatedUser = findUserById(user.getUid());
+        System.out.println("---------------------------------------------------------------");
+        System.out.println(updatedUser);
+        return updatedUser;
+    }
+
+    public User removeFromFollowPetList(User user, Pet following){
+        AtomicBoolean found = new AtomicBoolean(false);
+
+        user.getFollowingsPet().forEach(u -> {
+            if (u.getId().equals(following.getId())) {
+                found.set(true);
+            }
+        });
+
+        if (found.get() == false) {
+            return null;
+        }
+
+        //remove from the user's list and update
+        userColl.updateOne(eq("_id", user.getId()), Updates.pull("followingsPet", new BasicDBObject("_id", following.getId())));
+        //remove from the pet's list and update
+        petHandler.getPetColl().updateOne(eq("_id", following.getId()), Updates.pull("followers", new BasicDBObject("_id", user.getId())));
+
+        User updatedUser = findUserById(user.getUid());
+        return updatedUser;
+    }
+
+    public User removeFromFollowUserList(User user, User following){
+        AtomicBoolean found = new AtomicBoolean(false);
+
+        user.getFollowingsUser().forEach(u -> {
             if (u.getUid().equals(following.getUid())) {
                 found.set(true);
             }
@@ -192,42 +202,26 @@ public class UserHandler {
             return null;
         }
 
+        //remove from the user's list and update the list
+        userColl.updateOne(eq("_id", user.getUid()), Updates.pull("followingsUser", new BasicDBObject("_id", following.getId())));
+        //remove from the following's list
+        userColl.updateOne(eq("_id", following.getUid()), Updates.pull("followers", new BasicDBObject("_id", user.getId())));
 
-        if (following instanceof User) {
-            User u = (User) following;
-
-            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", new BasicDBObject("uid", u.getUid())));
-
-            userColl.updateOne(eq("uid", u.getUid()), Updates.pull("followers", new BasicDBObject("uid", user.getUid())));
-
-
-        } else if (following instanceof Pet) {
-            Pet p = (Pet) following;
-            userColl.updateOne(eq("uid", user.getUid()), Updates.pull("followings", new BasicDBObject("uid", p.getUid())));
-
-            petHandler.getPetColl().updateOne(eq("uid", p.getUid()), Updates.pull("followers", new BasicDBObject("uid", user.getUid())));
-
-
-        }
         User updatedUser = findUserById(user.getUid());
         return updatedUser;
-
-
     }
 
     private void makeUsersListEmpty(User u){
-        u.setFollowings(null);
+        u.setFollowingsUser(null);
+        u.setFollowingsPet(null);
         u.setFollowers(null);
         u.setPets(null);
         u.setPosts(null);
     }
 
     private void makePetsListEmpty(Pet p){
-
         p.setFollowers(null);
         p.setPosts(null);
-
     }
-
 
 }

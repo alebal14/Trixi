@@ -1,19 +1,15 @@
 package com.trixibackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Pet extends UserPet{
-    //private ObjectId id;
-    //private String uid;
+public class Pet{
+    private ObjectId id;
+    private String uid;
     private String name;
     private int age;
     private String gender;
@@ -32,11 +28,7 @@ public class Pet extends UserPet{
 
     }
 
-
-
-
-
-    public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
+    /*public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -44,33 +36,23 @@ public class Pet extends UserPet{
         this.bio = bio;
         this.imageUrl = imageUrl;
         this.ownerId = ownerId;
+    }*/
+
+    public ObjectId getId() {
+        return id;
     }
 
-    private User prepareToAdd(User user) {
-        ObjectMapper mapper = new ObjectMapper();
-        User userToAdd = null;
-
-        try {
-            //This is a shallow copy
-            String json = mapper.writeValueAsString(user);
-            userToAdd = mapper.readValue(json, User.class);
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        userToAdd.setPets(null);
-        userToAdd.setPosts(null);
-        userToAdd.setFollowings(null);
-        userToAdd.setFollowers(null);
-
-        return userToAdd;
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
-    public void addToFollowers(User user){
-        followers.add(prepareToAdd(user));
+    public String getUid() {
+        return uid;
     }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getName() {
         return name;
@@ -135,7 +117,7 @@ public class Pet extends UserPet{
     public void setPetTypeId(String petTypeId) {
         this.petTypeId = petTypeId;
     }
-    @JsonIgnore
+
     public List<Post> getPosts() {
         return posts;
     }
@@ -166,6 +148,7 @@ public class Pet extends UserPet{
                 ", ownerId='" + ownerId + '\'' +
                 ", petTypeId='" + petTypeId + '\'' +
                 ", posts=" + posts +
+                ", followers=" + followers +
                 '}';
     }
 }

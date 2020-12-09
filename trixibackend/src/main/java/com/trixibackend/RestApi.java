@@ -5,6 +5,7 @@ import com.trixibackend.entity.*;
 import express.Express;
 import express.utils.Status;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class RestApi {
@@ -35,79 +36,99 @@ public class RestApi {
     }
 
     private void setUpUpdateApi() {
-
-        app.post("/api/users/addFollower/:userid/:followingid", (req, res) -> {
+        app.post("/api/users/addFollowerToPet/:userid/:followPetid", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String followingid = req.getParam("followingid");
+            String petid = req.getParam("followPetid");
 
+            System.out.println(petid);
+
+            System.out.println(db.getPetHandler().findPetById("5fcf7f1a0c6ee97d97315054"));
+            //System.out.println(db.getPetHandler().findPetById((req.getParam("followPetid").toString())));
+
+            Pet followingPet = db.getPetHandler().findPetById(petid);
             User user = db.getUserHandler().findUserById(userid);
-            User following = db.getUserHandler().findUserById(followingid);
+
 
             System.out.println("User:  " + user);
-            System.out.println("User following:  " + following);
-            if (following == null) {
-                Pet followingPet = db.getPetHandler().findPetById(followingid);
-                System.out.println("Pet Following:  " + followingPet);
-                var user1 = db.getUserHandler().updateList(user, followingPet);
-                if (user1 == null) {
-                    res.json(user1);
-                    res.send("Error: you are already following this Pet");
-                    //res.sendStatus(Status.valueOf("404"));
-                    return;
-                }
-                res.json(user1);
+            System.out.println("User following Pet:  " + followingPet);
 
-
-            } else {
-                var user1 = db.getUserHandler().updateList(user, following);
-                if (user1 == null) {
-                    //res.json(user1);
-                    res.send("Error: you are already following this User");
-                    //res.sendStatus(Status.valueOf("404"));
-                    return;
-                }
-                res.json(user1);
-
+            /*var user1 = db.getUserHandler().updateFollowPetList(user, followingPet);
+            if (user1 == null) {
+                res.send("Error: you are already following this Pet");
+                //res.sendStatus(Status.valueOf("404"));
+                return;
             }
+            res.json(user1);*/
+
         });
 
-
-        app.post("/api/users/unFollow/:userid/:followingid",(req,res)->{
+        app.post("/api/users/addFollowerToUser/:userid/:followUserid", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String followingid = req.getParam("followingid");
+            String followUserid = req.getParam("followUserid");
 
             User user = db.getUserHandler().findUserById(userid);
-            User following = db.getUserHandler().findUserById(followingid);
+            User following = db.getUserHandler().findUserById(followUserid);
 
-            if (following == null) {
-                Pet followingPet = db.getPetHandler().findPetById(followingid);
-                System.out.println("Pet Following:  " + followingPet);
-                var user1 = db.getUserHandler().removeFromList(user, followingPet);
-                if (user1 == null) {
-                    res.json(user1);
-                    res.send("Error: you are not following this Pet");
-                    //res.sendStatus(Status.valueOf("404"));
-                    return;
-                }
-                res.json(user1);
+            System.out.println("User:  " + user);
+            System.out.println("User following User:  " + following);
 
-
-            } else {
-                var user1 = db.getUserHandler().removeFromList(user, following);
-                if (user1 == null) {
-                    //res.json(user1);
-                    res.send("Error: you are not following this user");
-                    //res.sendStatus(Status.valueOf("404"));
-                    return;
-                }
-                res.json(user1);
-
+            var user1 = db.getUserHandler().updateFollowUserList(user, following);
+            if (user1 == null) {
+                //res.json(user1);
+                res.send("Error: you are already following this User");
+                //res.sendStatus(Status.valueOf("404"));
+                return;
             }
-
+            res.json(user1);
 
         });
+
+        app.post("/api/users/unFollowPet/:userid/:followPetid", (req, res) -> {
+
+            String userid = req.getParam("userid");
+            String followingPetid = req.getParam("followingPetid");
+
+            User user = db.getUserHandler().findUserById(userid);
+            Pet following = db.getPetHandler().findPetById(followingPetid);
+
+            System.out.println("User:  " + user);
+            System.out.println("User unfollowing Pet:  " + following);
+
+            var user1 = db.getUserHandler().removeFromFollowPetList(user, following);
+            if (user1 == null) {
+                res.json(user1);
+                res.send("Error: you are not following this Pet");
+                //res.sendStatus(Status.valueOf("404"));
+                return;
+            }
+            res.json(user1);
+
+        });
+
+        app.post("/api/users/unFollowUser/:userid/:followUserid", (req, res) -> {
+
+            String userid = req.getParam("userid");
+            String followUserid = req.getParam("followUserid");
+
+            User user = db.getUserHandler().findUserById(userid);
+            User following = db.getUserHandler().findUserById(followUserid);
+
+            System.out.println("User:  " + user);
+            System.out.println("User unfollowing User:  " + following);
+
+            var user1 = db.getUserHandler().removeFromFollowUserList(user, following);
+            if (user1 == null) {
+                //res.json(user1);
+                res.send("Error: you are not following this user");
+                //res.sendStatus(Status.valueOf("404"));
+                return;
+            }
+            res.json(user1);
+
+        });
+
     }
 
 
