@@ -5,6 +5,7 @@ import express.Express;
 import express.http.Cookie;
 import express.http.SessionCookie;
 import express.middleware.Middleware;
+import express.utils.Status;
 
 import java.util.Map;
 
@@ -12,6 +13,7 @@ public class RestApi {
 
     Express app = new Express();
     DatabaseHandler db = new DatabaseHandler();
+
 
     public RestApi() {
         initApi();
@@ -191,6 +193,7 @@ public class RestApi {
                 return;
             }
             if(!loggedInUser.getPassword().equals(user.getPassword())){
+                res.setStatus(Status._401);
                 res.send("password and username/email dont match");
                 return;
             }
@@ -205,6 +208,7 @@ public class RestApi {
         app.get("/rest/login", (req, res) ->{
 
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
             if(sessionCookie.getData() == null) {
                 res.send("Not logged in");
                 return;
