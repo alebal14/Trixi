@@ -1,5 +1,6 @@
 package com.trixibackend;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trixibackend.entity.*;
 import express.Express;
@@ -124,6 +125,10 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     User user = (User) req.getBody(User.class);
+
+                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    user.setPassword(hashedPassword);
+
                     res.json(db.save(user));
                     break;
                 case "posts":
@@ -220,14 +225,16 @@ public class RestApi {
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
-
            if (user == null) {
                 res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
             }
-            if(!loggedInUser.getPassword().equals(user.getPassword())){
+
+            var result = BCrypt.verifyer().verify(loggedInUser.getPassword().toCharArray(), user.getPassword().toCharArray());
+            if(!result.verified) {
                 res.setStatus(Status._401);
                 res.send("password and username/email dont match");
+                res.json(user);
                 return;
             }
 
