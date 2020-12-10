@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+
         //testObserver getAllUsers:
         model.GetAllUsersFromDB()
         model.getUserMutableLiveDataList().observe(this, Observer{
