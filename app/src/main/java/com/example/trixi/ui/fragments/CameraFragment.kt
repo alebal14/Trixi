@@ -1,11 +1,16 @@
 package com.example.trixi.ui.fragments
 
+
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
 import com.example.trixi.R
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,12 +40,24 @@ class CameraFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_photo, container, false)
+        val launchCameraButton: Button = view.findViewById<View>(R.id.btn_launch_camera) as Button
 
-        TODO()//access the camera from here
+        launchCameraButton.setOnClickListener(View.OnClickListener {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent)
+        })
+
+
+        return view
 
 
     }
+
+    private fun startActivityForResult(cInt: Intent) {
+
+    }
+
 
     companion object {
         /**

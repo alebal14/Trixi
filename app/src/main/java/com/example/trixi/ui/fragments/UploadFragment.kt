@@ -1,11 +1,13 @@
 package com.example.trixi.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
 import com.example.trixi.R
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +37,14 @@ class UploadFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_upload, container, false)
+
+        val view: View = inflater.inflate(R.layout.fragment_upload, container, false)
+        val shareButton: Button = view.findViewById<View>(R.id.button_share) as Button
+
+
+        return view
+
+
     }
 
     companion object {
