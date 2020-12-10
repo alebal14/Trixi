@@ -15,8 +15,9 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="386dp"
-            android:layout_height="370dp"
+            android:layout_width="wrap_content"
+            android:layout_height="284dp"
+            android:layout_marginBottom="20dp"
             android:padding="20dp"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
@@ -24,6 +25,7 @@
             android:id="@+id/editTextTextPersonName5"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:paddingLeft="16dp"
             android:layout_marginBottom="20dp"
             android:ems="10"
             android:background="@android:color/white"
@@ -36,6 +38,8 @@
             android:layout_height="80dp"
             android:background="@android:color/white"
             android:ems="10"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="16dp"
            android:paddingTop="10dp"
             android:text="Description"
             android:inputType="textMultiLine" />
@@ -43,21 +47,20 @@
         <Spinner
             android:id="@+id/upload_spinner_add_pet"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@android:color/white"
-        >
-        </Spinner>
+            android:text="Select pet"
+            android:layout_marginBottom="20dp"
+            android:layout_height="50dp"
+            android:background="@android:color/white"></Spinner>
 
         <Spinner
             android:id="@+id/upload_spinner_add_category"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@android:color/white"
-           >
-        </Spinner>
+            android:text="Select category"
+            android:layout_height="50dp"
+            android:background="@android:color/white"></Spinner>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

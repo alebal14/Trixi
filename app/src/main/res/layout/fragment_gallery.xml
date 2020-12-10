@@ -28,13 +28,7 @@
                 android:scaleType="centerCrop">
             </ImageView>
 
-            <ProgressBar
-                android:id="@+id/gallery_progressbar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerInParent="true">
 
-            </ProgressBar>
         </RelativeLayout>
 
         <include layout="@layout/fragment_gallery_toolbar"/>
