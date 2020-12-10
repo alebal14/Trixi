@@ -53,6 +53,7 @@ public class RestApi {
                 System.out.println("(Pet) Following:  " + followingPet);
                 var updatedUser = db.getUserHandler().updateFollowPetList(user, followingPet);
                 if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are already following this Pet");
                     return;
                 }
@@ -61,6 +62,7 @@ public class RestApi {
                 System.out.println("(User) following:  " + followingUser);
                 var updatedUser = db.getUserHandler().updateFollowUserList(user, followingUser);
                 if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are already following this User");
                     return;
                 }
@@ -86,6 +88,7 @@ public class RestApi {
                 System.out.println("(Pet) unfollow:  " + followingPet);
                 var updatedUser = db.getUserHandler().removeFromFollowPetList(user, followingPet);
                 if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are not following this Pet");
                     return;
                 }
@@ -94,6 +97,7 @@ public class RestApi {
                 System.out.println("(User) unfollow:  " + followingUser);
                 var updatedUser = db.getUserHandler().removeFromFollowUserList(user, followingUser);
                 if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are not following this user");
                     return;
                 }
