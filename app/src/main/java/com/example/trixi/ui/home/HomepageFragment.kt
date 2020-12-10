@@ -10,15 +10,13 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
 import com.example.trixi.entities.Post
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.Item
+
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomepageFragment : Fragment() {
 
-    override fun onCreateView(
+    /*override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -53,7 +51,7 @@ class HomepageFragment : Fragment() {
 
     override fun getLayout(): Int {
         return R.layout.fragment_home_item;
-    }
+    }*/
 
 
     }
