@@ -25,6 +25,8 @@
 
         <activity android:name=".ui.home.HomepageActivity"/>
 
+        <activity android:name=".ui.post.PostActivity"/>
+
     </application>
 
 </manifest>
