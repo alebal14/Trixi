@@ -80,7 +80,7 @@ public class UserHandler {
     public User findUserByNameOrEmail(User loggedInUser) {
         String emailOrUsername;
         String fieldname;
-        if(loggedInUser.getUserName() == null){
+        if(loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null){
             emailOrUsername = loggedInUser.getEmail();
             fieldname = "email";
         }else{
@@ -92,7 +92,6 @@ public class UserHandler {
 
            if (user == null) return null;
 
-           user.setUid(user.getId().toString());
            return user;
 
         } catch (Exception e) {
