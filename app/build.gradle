@@ -63,4 +63,19 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
+    //recycleview for control over item selection of both touch and mouse driven selection
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc03"
+
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //groupie
+    implementation 'com.xwray:groupie:2.8.1'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.8.1'
+    implementation "com.xwray:groupie-databinding:2.8.1"
+    implementation "com.xwray:groupie-viewbinding:2.8.1"
+
+
+
 }
