@@ -1,5 +1,6 @@
 package com.trixibackend;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trixibackend.entity.*;
 import express.Express;
@@ -85,8 +86,8 @@ public class RestApi {
             String userid = req.getParam("userid");
             String followingId = req.getParam("followingId");
 
-            User user = db.getUserHandler().findUserById(userid);
             User followingUser = db.getUserHandler().findUserById(followingId);
+            User user = db.getUserHandler().findUserById(userid);
 
             System.out.println("User:  " + user);
 
@@ -124,6 +125,10 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     User user = (User) req.getBody(User.class);
+
+                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    user.setPassword(hashedPassword);
+
                     res.json(db.save(user));
                     break;
                 case "posts":
@@ -204,6 +209,22 @@ public class RestApi {
             res.json(db.getById(collectionName, id));
         });
 
+        app.get("/api/getUserFollowingPost/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+
+            User user = db.getUserHandler().findUserById(id);
+
+            var updatedUser = db.getUserHandler().findUserFollowingPostList(user);
+            if (updatedUser == null) {
+                res.setStatus(Status._403);
+                res.send("Error: you are not following this Pet");
+                return;
+            }
+            res.json(updatedUser);
+        });
+
+
     }
 
     private void setLoginUser() {
@@ -220,14 +241,16 @@ public class RestApi {
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
-
            if (user == null) {
                 res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
             }
-            if(!loggedInUser.getPassword().equals(user.getPassword())){
+
+            var result = BCrypt.verifyer().verify(loggedInUser.getPassword().toCharArray(), user.getPassword().toCharArray());
+            if(!result.verified) {
                 res.setStatus(Status._401);
                 res.send("password and username/email dont match");
+                res.json(user);
                 return;
             }
 

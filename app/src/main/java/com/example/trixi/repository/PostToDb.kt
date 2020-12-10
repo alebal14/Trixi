@@ -47,7 +47,9 @@ class PostToDb {
         val call = retrofitClient?.loginUser(user)
         call?.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("uus", "login-user : onfailure " + t.message)
+                Log.d("uus", "login-user : onfailure: " + t.message)
+                Log.d("uus", "login-user : onfailure: Username/email does not exist")
+                Toast.makeText(context, "Username/email does not exist", Toast.LENGTH_LONG).show()
             }
             override fun onResponse(
                 call: Call<User>, response: Response<User>
@@ -56,7 +58,8 @@ class PostToDb {
                     Log.d("uus", "login-user : onResponse success" + response.message())
                     GetLoggedInUserFromDB(context)
                 }else{
-                    Log.d("uus", "login-user : onResponse else")
+                    Log.d("uus", "login-user : onResponse else: password and username/email dont match")
+                    Toast.makeText(context, "Password and username/email dont match", Toast.LENGTH_LONG).show()
                 }
             }
         })
