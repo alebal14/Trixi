@@ -6,12 +6,14 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import com.trixibackend.entity.Pet;
+import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
 import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -75,6 +77,34 @@ public class UserHandler {
         }
     }
 
+    public List<Post> findUserFollowingPostList(User user){
+
+        List<User> getFollowingUser = user.getFollowingsUser();
+        List<Pet>  getFollowingPet = user.getFollowingsPet();
+
+        List<Post> allPostFromDB = postHandler.getAllPosts();
+        System.out.println(allPostFromDB);
+
+        Set<String> userid =
+                getFollowingUser.stream()
+                        .map(User::getUid)
+                        .collect(Collectors.toSet());
+
+        Set<String> petid = getFollowingPet.stream()
+                .map(Pet::getUid)
+                .collect(Collectors.toSet());
+
+        List<String> concatlist = Stream.concat(userid.stream(),petid.stream())
+                .collect(Collectors.toList());
+
+        List<Post> listOutput =
+                allPostFromDB.stream()
+                        .filter(e -> concatlist.contains(e.getOwnerId()))
+                        .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
+                        .collect(Collectors.toList());
+
+        return listOutput;
+    }
 
 
     public User findUserByNameOrEmail(User loggedInUser) {

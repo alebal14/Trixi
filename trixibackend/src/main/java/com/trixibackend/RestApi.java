@@ -78,8 +78,8 @@ public class RestApi {
             String userid = req.getParam("userid");
             String followingId = req.getParam("followingId");
 
-            User user = db.getUserHandler().findUserById(userid);
             User followingUser = db.getUserHandler().findUserById(followingId);
+            User user = db.getUserHandler().findUserById(userid);
 
             System.out.println("User:  " + user);
 
@@ -196,6 +196,22 @@ public class RestApi {
             }
             res.json(db.getById(collectionName, id));
         });
+
+        app.get("/api/getUserFollowingPost/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+
+            User user = db.getUserHandler().findUserById(id);
+
+            var updatedUser = db.getUserHandler().findUserFollowingPostList(user);
+            if (updatedUser == null) {
+                res.setStatus(Status._403);
+                res.send("Error: you are not following this Pet");
+                return;
+            }
+            res.json(updatedUser);
+        });
+
 
     }
 
