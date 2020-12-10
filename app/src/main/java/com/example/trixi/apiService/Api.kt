@@ -11,6 +11,10 @@ interface Api {
     @POST("users")
     fun createUser(@Body user: User): Call<User>
 
+    //@FormUrlEncoded
+    //@POST("")
+    //fun uploadProfileImage(@Body ): Call<>
+
     @POST("login")
     fun loginUser(@Body user: User): Call<User>
 

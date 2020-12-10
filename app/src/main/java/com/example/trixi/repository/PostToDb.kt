@@ -4,13 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.core.content.ContextCompat.startActivity
 
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
-import com.example.trixi.ui.login.LoginActivity
 import com.example.trixi.ui.register.RegisterActivity
 import retrofit2.Call
 import retrofit2.Callback

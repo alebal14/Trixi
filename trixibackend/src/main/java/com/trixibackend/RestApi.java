@@ -9,7 +9,12 @@ import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
 import express.utils.Status;
+import org.bson.internal.Base64;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Map;
 
@@ -125,7 +130,26 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     User user = (User) req.getBody(User.class);
+                   
+                    final String currentDir = System.getProperty("user.dir");
+                    String pathFile = currentDir + "/src/main/java/images";
 
+                    FileOutputStream imageOutFile = null;
+                    try {
+                        imageOutFile = new FileOutputStream(pathFile);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    byte[] imageByteArray = Base64.decode(user.getImageUrl());
+                    try {
+                        imageOutFile.write(imageByteArray);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    user.setImageUrl("");
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
 
