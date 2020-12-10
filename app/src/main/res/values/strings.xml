@@ -10,4 +10,7 @@
     <string name="icon_of_pet_type">icon of pet type</string>
     <string name="iconOfPetType">iconOfPetType</string>
     <string name="heart" />
+    <string name="owner_micheil">Owner: micheil</string>
+    <string name="profileVideos">Videos</string>
+    <string name="profileImages">Images</string>
 </resources>
