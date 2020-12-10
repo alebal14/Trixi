@@ -12,6 +12,8 @@ import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.home.HomepageActivity
+import com.example.trixi.ui.post.PostActivity
 import com.example.trixi.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Retrofit
@@ -29,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         post.GetLoggedInUserFromDB(this)
 
         login_no_account.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
+            val intent = Intent(this, HomepageActivity::class.java)
             startActivity(intent)
         }
 
