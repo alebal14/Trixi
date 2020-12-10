@@ -39,27 +39,23 @@ public class RestApi {
         app.post("/api/users/addFollowerToPet/:userid/:followPetid", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String petid = req.getParam("followPetid");
+            String followPetid = req.getParam("followPetid");
 
-            System.out.println(petid);
 
-            System.out.println(db.getPetHandler().findPetById("5fcf7f1a0c6ee97d97315054"));
-            //System.out.println(db.getPetHandler().findPetById((req.getParam("followPetid").toString())));
-
-            Pet followingPet = db.getPetHandler().findPetById(petid);
+            Pet followingPet = db.getPetHandler().findPetById(followPetid);
             User user = db.getUserHandler().findUserById(userid);
 
 
             System.out.println("User:  " + user);
             System.out.println("User following Pet:  " + followingPet);
 
-            /*var user1 = db.getUserHandler().updateFollowPetList(user, followingPet);
+            var user1 = db.getUserHandler().updateFollowPetList(user, followingPet);
             if (user1 == null) {
                 res.send("Error: you are already following this Pet");
                 //res.sendStatus(Status.valueOf("404"));
                 return;
             }
-            res.json(user1);*/
+            res.json(user1);
 
         });
 
@@ -88,7 +84,7 @@ public class RestApi {
         app.post("/api/users/unFollowPet/:userid/:followPetid", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String followingPetid = req.getParam("followingPetid");
+            String followingPetid = req.getParam("followPetid");
 
             User user = db.getUserHandler().findUserById(userid);
             Pet following = db.getPetHandler().findPetById(followingPetid);

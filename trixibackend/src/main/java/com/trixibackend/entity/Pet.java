@@ -28,7 +28,7 @@ public class Pet{
 
     }
 
-    /*public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
+    public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
         this.name = name;
         this.age = age;
         this.gender = gender;
@@ -36,7 +36,7 @@ public class Pet{
         this.bio = bio;
         this.imageUrl = imageUrl;
         this.ownerId = ownerId;
-    }*/
+    }
 
     public ObjectId getId() {
         return id;
