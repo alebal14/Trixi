@@ -3,8 +3,13 @@ package com.trixibackend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trixibackend.entity.*;
 import express.Express;
+import express.http.Cookie;
+import express.http.SessionCookie;
+import express.middleware.Middleware;
+import express.utils.Status;
 import express.utils.Status;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class RestApi {
@@ -18,6 +23,8 @@ public class RestApi {
 
     private void initApi() {
         app.listen(3000);
+        // sets a unique cookie on each client to track authentication
+        app.use(Middleware.cookieSession("f3v4", 60 * 60 * 24 * 7));
         System.out.println("server started on port 3000");
 
         var allCollectionsName = db.getDatabase().listCollectionNames();
@@ -30,86 +37,83 @@ public class RestApi {
         });
         setUpUpdateApi();
         setLoginUser();
+        getLoggedinUser();
+        logoutUser();
 
 
     }
 
     private void setUpUpdateApi() {
 
-        app.post("/api/users/addFollower/:userid/:followingid", (req, res) -> {
+        app.post("/api/users/follow/:userid/:followingId", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String followingid = req.getParam("followingid");
+            String followingId = req.getParam("followingId");
 
             User user = db.getUserHandler().findUserById(userid);
-            User following = db.getUserHandler().findUserById(followingid);
+            User followingUser = db.getUserHandler().findUserById(followingId);
 
             System.out.println("User:  " + user);
-            System.out.println("User following:  " + following);
-            if (following == null) {
-                Pet followingPet = db.getPetHandler().findPetById(followingid);
-                System.out.println("Pet Following:  " + followingPet);
-                var user1 = db.getUserHandler().updateList(user, followingPet);
-                if (user1 == null) {
-                    res.json(user1);
+
+            if (followingUser == null) {
+                Pet followingPet = db.getPetHandler().findPetById(followingId);
+                System.out.println("(Pet) Following:  " + followingPet);
+                var updatedUser = db.getUserHandler().updateFollowPetList(user, followingPet);
+                if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are already following this Pet");
-                    //res.sendStatus(Status.valueOf("404"));
                     return;
                 }
-                res.json(user1);
-
-
+                res.json(updatedUser);
             } else {
-                var user1 = db.getUserHandler().updateList(user, following);
-                if (user1 == null) {
-                    //res.json(user1);
+                System.out.println("(User) following:  " + followingUser);
+                var updatedUser = db.getUserHandler().updateFollowUserList(user, followingUser);
+                if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are already following this User");
-                    //res.sendStatus(Status.valueOf("404"));
                     return;
                 }
-                res.json(user1);
+                res.json(updatedUser);
 
             }
         });
 
 
-        app.post("/api/users/unFollow/:userid/:followingid",(req,res)->{
+
+        app.post("/api/users/un_follow/:userid/:followingId", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String followingid = req.getParam("followingid");
+            String followingId = req.getParam("followingId");
 
             User user = db.getUserHandler().findUserById(userid);
-            User following = db.getUserHandler().findUserById(followingid);
+            User followingUser = db.getUserHandler().findUserById(followingId);
 
-            if (following == null) {
-                Pet followingPet = db.getPetHandler().findPetById(followingid);
-                System.out.println("Pet Following:  " + followingPet);
-                var user1 = db.getUserHandler().removeFromList(user, followingPet);
-                if (user1 == null) {
-                    res.json(user1);
+            System.out.println("User:  " + user);
+
+            if (followingUser == null) {
+                Pet followingPet = db.getPetHandler().findPetById(followingId);
+                System.out.println("(Pet) unfollow:  " + followingPet);
+                var updatedUser = db.getUserHandler().removeFromFollowPetList(user, followingPet);
+                if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are not following this Pet");
-                    //res.sendStatus(Status.valueOf("404"));
                     return;
                 }
-                res.json(user1);
-
-
+                res.json(updatedUser);
             } else {
-                var user1 = db.getUserHandler().removeFromList(user, following);
-                if (user1 == null) {
-                    //res.json(user1);
+                System.out.println("(User) unfollow:  " + followingUser);
+                var updatedUser = db.getUserHandler().removeFromFollowUserList(user, followingUser);
+                if (updatedUser == null) {
+                    res.setStatus(Status._403);
                     res.send("Error: you are not following this user");
-                    //res.sendStatus(Status.valueOf("404"));
                     return;
                 }
-                res.json(user1);
+                res.json(updatedUser);
 
             }
-
-
         });
-    }
 
+    }
 
 
     private void setUpDeleteApi(String collectionName) {
@@ -206,21 +210,56 @@ public class RestApi {
 
         app.post("/rest/login", (req, res) ->{
 
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+            if(sessionCookie.getData() != null) {
+                res.send("Already logged in");
+                return;
+            }
+
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
 
-
            if (user == null) {
-                res.send((loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
+                res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
             }
             if(!loggedInUser.getPassword().equals(user.getPassword())){
+                res.setStatus(Status._401);
                 res.send("password and username/email dont match");
                 return;
             }
 
-            res.json(db.getLoginByNameOrEmail(user));
+            sessionCookie.setData(user);
+            user.setPassword(null); // sanitize password
+            res.json(user);
+        });
+    }
+
+    private void getLoggedinUser(){
+        app.get("/rest/login", (req, res) ->{
+
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+            if(sessionCookie.getData() == null) {
+                res.send("Not logged in");
+                return;
+            }
+
+            var user = (User) sessionCookie.getData();
+            user.setPassword(null); // sanitize password
+            res.json(user);
+
+        });
+
+    }
+
+    private void logoutUser(){
+        app.get("/rest/logout", (req, res) -> {
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+            sessionCookie.setData(null);
+            res.send("Successfully logged out");
         });
     }
 }

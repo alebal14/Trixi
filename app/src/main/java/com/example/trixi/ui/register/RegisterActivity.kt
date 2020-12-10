@@ -20,7 +20,16 @@ class RegisterActivity : AppCompatActivity() {
         }
 
 
+        //button register:
+        /*   val id : ObjectId? = null
+           val userName = "anna"
+           val email = "anna@a.com"
+           val password = "pass123"
 
+           val user = User(id, userName, email, password)
+
+           val post = PostToDb()
+           post. makeApiPost(user)*/
 
     }
 }
