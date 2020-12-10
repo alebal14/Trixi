@@ -1,12 +1,12 @@
 package com.example.trixi
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.Fragment
+import com.example.trixi.ui.fragments.PostFragment
+import com.example.trixi.ui.fragments.SearchFragment
+import com.example.trixi.ui.home.HomepageFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,20 +16,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+         val homepageFragment = HomepageFragment()
+         val postFragment = PostFragment()
+         val searchFragment = SearchFragment()
 
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+         makeCurrentFragment(homepageFragment)
 
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+         bottom_nav.setOnNavigationItemSelectedListener {
+             when(it.itemId){
+                 R.id.homeFooter -> makeCurrentFragment(homepageFragment)
+                 R.id.search -> makeCurrentFragment(searchFragment)
+                 R.id.post -> makeCurrentFragment(postFragment)
+
+             }
+             true
+         }
 
 
 
     }
 
+    private fun makeCurrentFragment(fragment: Fragment) =
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container,fragment)
+            commit()
+        }
+    }
 
-}
+
