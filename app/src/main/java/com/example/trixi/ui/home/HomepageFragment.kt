@@ -1,27 +1,40 @@
 package com.example.trixi.ui.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
+import com.example.trixi.entities.Post
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
-import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomepageActivity : AppCompatActivity() {
+class HomepageFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        //setContentView(R.layout.activity_home)
 
         val adapter = GroupAdapter<GroupieViewHolder> ()
 
-        adapter.add(HomeItem())
-        adapter.add(HomeItem())
-        adapter.add(HomeItem())
-        adapter.add(HomeItem())
+//        adapter.add(HomeItem())
+//        adapter.add(HomeItem())
+//        adapter.add(HomeItem())
+//        adapter.add(HomeItem())
 
         recyclerView_homepage.adapter = adapter;
 
@@ -31,8 +44,9 @@ class HomepageActivity : AppCompatActivity() {
     }
 }
 
-    class HomeItem : Item<GroupieViewHolder> (){
+    class HomeItem(val post: Post) : Item<GroupieViewHolder> (){
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+            //viewHolder.itemView.
 
         }
 
