@@ -35,98 +35,74 @@ public class RestApi {
 
     }
 
+
     private void setUpUpdateApi() {
-        app.post("/api/users/addFollowerToPet/:userid/:followPetid", (req, res) -> {
+
+        app.post("/api/users/follow/:userid/:followingId", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String followPetid = req.getParam("followPetid");
+            String followingId = req.getParam("followingId");
 
-
-            Pet followingPet = db.getPetHandler().findPetById(followPetid);
             User user = db.getUserHandler().findUserById(userid);
-
+            User followingUser = db.getUserHandler().findUserById(followingId);
 
             System.out.println("User:  " + user);
-            System.out.println("User following Pet:  " + followingPet);
 
-            var user1 = db.getUserHandler().updateFollowPetList(user, followingPet);
-            if (user1 == null) {
-                res.send("Error: you are already following this Pet");
-                //res.sendStatus(Status.valueOf("404"));
-                return;
+            if (followingUser == null) {
+                Pet followingPet = db.getPetHandler().findPetById(followingId);
+                System.out.println("(Pet) Following:  " + followingPet);
+                var updatedUser = db.getUserHandler().updateFollowPetList(user, followingPet);
+                if (updatedUser == null) {
+                    res.send("Error: you are already following this Pet");
+                    return;
+                }
+                res.json(updatedUser);
+            } else {
+                System.out.println("(User) following:  " + followingUser);
+                var updatedUser = db.getUserHandler().updateFollowUserList(user, followingUser);
+                if (updatedUser == null) {
+                    res.send("Error: you are already following this User");
+                    return;
+                }
+                res.json(updatedUser);
+
             }
-            res.json(user1);
-
         });
 
-        app.post("/api/users/addFollowerToUser/:userid/:followUserid", (req, res) -> {
+
+
+        app.post("/api/users/un_follow/:userid/:followingId", (req, res) -> {
 
             String userid = req.getParam("userid");
-            String followUserid = req.getParam("followUserid");
+            String followingId = req.getParam("followingId");
 
             User user = db.getUserHandler().findUserById(userid);
-            User following = db.getUserHandler().findUserById(followUserid);
+            User followingUser = db.getUserHandler().findUserById(followingId);
 
             System.out.println("User:  " + user);
-            System.out.println("User following User:  " + following);
 
-            var user1 = db.getUserHandler().updateFollowUserList(user, following);
-            if (user1 == null) {
-                //res.json(user1);
-                res.send("Error: you are already following this User");
-                //res.sendStatus(Status.valueOf("404"));
-                return;
+            if (followingUser == null) {
+                Pet followingPet = db.getPetHandler().findPetById(followingId);
+                System.out.println("(Pet) unfollow:  " + followingPet);
+                var updatedUser = db.getUserHandler().removeFromFollowPetList(user, followingPet);
+                if (updatedUser == null) {
+                    res.send("Error: you are not following this Pet");
+                    return;
+                }
+                res.json(updatedUser);
+            } else {
+                System.out.println("(User) unfollow:  " + followingUser);
+                var updatedUser = db.getUserHandler().removeFromFollowUserList(user, followingUser);
+                if (updatedUser == null) {
+                    res.send("Error: you are not following this user");
+                    return;
+                }
+                res.json(updatedUser);
+
             }
-            res.json(user1);
-
-        });
-
-        app.post("/api/users/unFollowPet/:userid/:followPetid", (req, res) -> {
-
-            String userid = req.getParam("userid");
-            String followingPetid = req.getParam("followPetid");
-
-            User user = db.getUserHandler().findUserById(userid);
-            Pet following = db.getPetHandler().findPetById(followingPetid);
-
-            System.out.println("User:  " + user);
-            System.out.println("User unfollowing Pet:  " + following);
-
-            var user1 = db.getUserHandler().removeFromFollowPetList(user, following);
-            if (user1 == null) {
-                res.json(user1);
-                res.send("Error: you are not following this Pet");
-                //res.sendStatus(Status.valueOf("404"));
-                return;
-            }
-            res.json(user1);
-
-        });
-
-        app.post("/api/users/unFollowUser/:userid/:followUserid", (req, res) -> {
-
-            String userid = req.getParam("userid");
-            String followUserid = req.getParam("followUserid");
-
-            User user = db.getUserHandler().findUserById(userid);
-            User following = db.getUserHandler().findUserById(followUserid);
-
-            System.out.println("User:  " + user);
-            System.out.println("User unfollowing User:  " + following);
-
-            var user1 = db.getUserHandler().removeFromFollowUserList(user, following);
-            if (user1 == null) {
-                //res.json(user1);
-                res.send("Error: you are not following this user");
-                //res.sendStatus(Status.valueOf("404"));
-                return;
-            }
-            res.json(user1);
-
         });
 
     }
-
 
 
     private void setUpDeleteApi(String collectionName) {
@@ -221,18 +197,17 @@ public class RestApi {
 
     private void setLoginUser() {
 
-        app.post("/rest/login", (req, res) ->{
+        app.post("/rest/login", (req, res) -> {
 
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
 
-
-           if (user == null) {
-                res.send((loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
+            if (user == null) {
+                res.send((loggedInUser.getUserName() == null ? "Email: " + loggedInUser.getEmail() : "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
             }
-            if(!loggedInUser.getPassword().equals(user.getPassword())){
+            if (!loggedInUser.getPassword().equals(user.getPassword())) {
                 res.send("password and username/email dont match");
                 return;
             }

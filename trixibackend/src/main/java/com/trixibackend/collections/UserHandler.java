@@ -203,9 +203,9 @@ public class UserHandler {
         }
 
         //remove from the user's list and update the list
-        userColl.updateOne(eq("_id", user.getUid()), Updates.pull("followingsUser", new BasicDBObject("_id", following.getId())));
+        userColl.updateOne(eq("_id", user.getId()), Updates.pull("followingsUser", new BasicDBObject("_id", following.getId())));
         //remove from the following's list
-        userColl.updateOne(eq("_id", following.getUid()), Updates.pull("followers", new BasicDBObject("_id", user.getId())));
+        userColl.updateOne(eq("_id", following.getId()), Updates.pull("followers", new BasicDBObject("_id", user.getId())));
 
         User updatedUser = findUserById(user.getUid());
         return updatedUser;
