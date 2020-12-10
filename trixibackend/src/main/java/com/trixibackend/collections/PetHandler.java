@@ -1,13 +1,17 @@
 package com.trixibackend.collections;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 import com.trixibackend.entity.Pet;
+import com.trixibackend.entity.User;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.mongodb.client.model.Filters.eq;
 
