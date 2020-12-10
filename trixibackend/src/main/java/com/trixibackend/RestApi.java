@@ -1,8 +1,13 @@
 package com.trixibackend;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trixibackend.entity.*;
 import express.Express;
+import express.http.Cookie;
+import express.http.SessionCookie;
+import express.middleware.Middleware;
+import express.utils.Status;
 import express.utils.Status;
 
 import java.util.Locale;
@@ -19,6 +24,8 @@ public class RestApi {
 
     private void initApi() {
         app.listen(3000);
+        // sets a unique cookie on each client to track authentication
+        app.use(Middleware.cookieSession("f3v4", 60 * 60 * 24 * 7));
         System.out.println("server started on port 3000");
 
         var allCollectionsName = db.getDatabase().listCollectionNames();
@@ -31,10 +38,11 @@ public class RestApi {
         });
         setUpUpdateApi();
         setLoginUser();
+        getLoggedinUser();
+        logoutUser();
 
 
     }
-
 
     private void setUpUpdateApi() {
 
@@ -117,6 +125,10 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     User user = (User) req.getBody(User.class);
+
+                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    user.setPassword(hashedPassword);
+
                     res.json(db.save(user));
                     break;
                 case "posts":
@@ -217,22 +229,60 @@ public class RestApi {
 
     private void setLoginUser() {
 
-        app.post("/rest/login", (req, res) -> {
+        app.post("/rest/login", (req, res) ->{
+
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+            if(sessionCookie.getData() != null) {
+                res.send("Already logged in");
+                return;
+            }
 
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
-
-            if (user == null) {
-                res.send((loggedInUser.getUserName() == null ? "Email: " + loggedInUser.getEmail() : "Username: " + loggedInUser.getUserName()) + " does not exist");
+           if (user == null) {
+                res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
             }
-            if (!loggedInUser.getPassword().equals(user.getPassword())) {
+
+            var result = BCrypt.verifyer().verify(loggedInUser.getPassword().toCharArray(), user.getPassword().toCharArray());
+            if(!result.verified) {
+                res.setStatus(Status._401);
                 res.send("password and username/email dont match");
+                res.json(user);
                 return;
             }
 
-            res.json(db.getLoginByNameOrEmail(user));
+            sessionCookie.setData(user);
+            user.setPassword(null); // sanitize password
+            res.json(user);
+        });
+    }
+
+    private void getLoggedinUser(){
+        app.get("/rest/login", (req, res) ->{
+
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+            if(sessionCookie.getData() == null) {
+                res.send("Not logged in");
+                return;
+            }
+
+            var user = (User) sessionCookie.getData();
+            user.setPassword(null); // sanitize password
+            res.json(user);
+
+        });
+
+    }
+
+    private void logoutUser(){
+        app.get("/rest/logout", (req, res) -> {
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+            sessionCookie.setData(null);
+            res.send("Successfully logged out");
         });
     }
 }

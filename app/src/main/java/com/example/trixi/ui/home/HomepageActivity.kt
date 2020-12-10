@@ -38,7 +38,7 @@ class HomepageActivity : AppCompatActivity() {
 
 
     override fun getLayout(): Int {
-        return R.layout.home_item;
+        return R.layout.fragment_home_item;
     }
 
 

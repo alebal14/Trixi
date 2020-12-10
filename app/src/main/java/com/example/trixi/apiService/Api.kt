@@ -14,6 +14,9 @@ interface Api {
     @POST("login")
     fun loginUser(@Body user: User): Call<User>
 
+    @GET("login")
+    fun getLoggedInUser(): Call<User>
+
     @GET("users")
     fun getAllUsers(): Call<List<User>>
 }
