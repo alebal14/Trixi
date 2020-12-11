@@ -52,12 +52,12 @@ class UploadFragment(context: Context) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selectPicture()
-        sendToPost()
+        //selectPicture()
+        //sendToPost()
 
     }
 
-    var selectedPicture: Uri? = null;
+    /*var selectedPicture: Uri? = null;
 
     private fun sendToPost() {
 
@@ -92,7 +92,7 @@ class UploadFragment(context: Context) : Fragment() {
             //the image URI
             val selectedImage = data.data
         }
-    }
+    }*/
 
     /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

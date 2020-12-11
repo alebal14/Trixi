@@ -96,64 +96,64 @@ class PostToDb {
         })
     }
 
-    fun postPostToDb(post: Post) {
+//    fun postPostToDb(post: Post) {
+//
+//
+//
+//      //  val file = File(file.getPath())
+//
+////        val fbody: RequestBody = RequestBody.create(
+////            MediaType.parse("image/*"),
+////            file
+////        )
+////
+////        RequestBody title = RequestBody.create(
+////            MediaType.parse("text/plain"),
+////            post.title.getText()
+////                .toString()
+////        )
+////
+////        val description: RequestBody = RequestBody.create(
+////            MediaType.parse("text/plain"),
+////            dessciption.getText()
+////                .toString()
+////        )
+////
+////        val ownerId: RequestBody = RequestBody.create(
+////            MediaType.parse("text/plain"),
+////            ownerId_field.getText()
+////                .toString()
+////        )
+////
+////        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+////
+////
+////        val call: Call<Post>? = retrofitClient?.postPost(
+////            file,
+////            title,
+////            description,
+////            ownerId);
+//
+////        call?.enqueue(object : Callback<Post> {
+////            override fun onFailure(call: Call<Post>, t: Throwable) {
+////                Log.d("post", "Post : onfailure " + t.message)
+////
+////            }
+////            override fun onResponse(
+////                call: Call<Post>, response: Response<Post>
+////            ) {
+////                if(response.isSuccessful){
+////                    Log.d("post", "Post : onResponse success" + response.body())
+////                }else{
+////                    Log.d("post", "Post : onResponse else" + response.body())
+////                }
+////            }
+//
+//        })
 
 
 
-        val file = File(file.getPath())
 
-        val fbody: RequestBody = RequestBody.create(
-            MediaType.parse("image/*"),
-            file
-        )
-
-        RequestBody title = RequestBody.create(
-            MediaType.parse("text/plain"),
-            post.title.getText()
-                .toString()
-        )
-
-        val description: RequestBody = RequestBody.create(
-            MediaType.parse("text/plain"),
-            dessciption.getText()
-                .toString()
-        )
-
-        val ownerId: RequestBody = RequestBody.create(
-            MediaType.parse("text/plain"),
-            ownerId_field.getText()
-                .toString()
-        )
-
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-
-
-        val call: Call<Post>? = retrofitClient?.postPost(
-            file,
-            title,
-            description,
-            ownerId);
-
-        call?.enqueue(object : Callback<Post> {
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                Log.d("post", "Post : onfailure " + t.message)
-
-            }
-            override fun onResponse(
-                call: Call<Post>, response: Response<Post>
-            ) {
-                if(response.isSuccessful){
-                    Log.d("post", "Post : onResponse success" + response.body())
-                }else{
-                    Log.d("post", "Post : onResponse else" + response.body())
-                }
-            }
-
-        })
-
-
-
-
-    }
+   // }
 
 }
