@@ -48,6 +48,14 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        model.getFollowingsPostFromDb("5fd14bd91bddf34c9236077f").observe(this,{
+            it.forEach{
+                //Log.d("post","postTitle: ${it.title}")
+                print("postTitle: ${it.title}")
+                Log.d("followings post", "post Title : ${it.title!!}")
+            }
+        })
+
 
         //testObserver getAllUsers:
         model.GetAllUsersFromDB()

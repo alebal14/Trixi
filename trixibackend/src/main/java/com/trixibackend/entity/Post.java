@@ -9,15 +9,13 @@ public class Post {
     private ObjectId id;
     private String uid;
     private String title;
-    private String filePath;
     private String description;
+    private String filePath;
 
     private String ownerId;
     private String categoryId;
 
     private List<Comment> comments = new ArrayList<>();
-    private List<ObjectId> commentIds = new ArrayList<>();
-
     private List<Like> likes = new ArrayList<>();
 
     public String getUid() {
@@ -107,13 +105,6 @@ public class Post {
         this.comments = comments;
     }
 
-    public List<ObjectId> getCommentIds() {
-        return commentIds;
-    }
-
-    public void setCommentIds(List<ObjectId> commentIds) {
-        this.commentIds = commentIds;
-    }
 
     public List<Like> getLikes() {
         return likes;
@@ -134,7 +125,7 @@ public class Post {
                 ", ownerId='" + ownerId + '\'' +
                 ", categoryId='" + categoryId + '\'' +
                 ", comments=" + comments +
-                ", commentIds=" + commentIds +
+
                 ", likes=" + likes +
                 '}';
     }
