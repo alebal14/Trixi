@@ -95,7 +95,7 @@ class ProfileFragment : Fragment() {
         adapter.add(MediaItem())
         adapter.add(MediaItem())
 
-        profile_media_grid.adapter = adapter;
+        gallery_gridView.adapter = adapter;
 
         adapter.apply {
             val gridLayoutManager = GridLayoutManager(
