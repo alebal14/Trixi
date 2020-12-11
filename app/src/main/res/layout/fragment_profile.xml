@@ -27,7 +27,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="100dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/profileName"
+            android:text="@string/profile_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/user_profile_bio"
@@ -41,7 +41,7 @@
             android:layout_height="121dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="3dp"
-            android:text="@string/bioText"
+            android:text="@string/bio_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/user_profile_pic"
@@ -54,7 +54,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="80dp"
-            android:text="@string/numberOfFollowers"
+            android:text="@string/number_of_followers"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/profile_following"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="44dp"
-            android:text="@string/numberOfFollowing"
+            android:text="@string/number_of_following"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +112,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="7dp"
-            android:contentDescription="@string/iconOfPetType"
+            android:contentDescription="@string/icon_of_pet_type"
             app:layout_constraintEnd_toStartOf="@+id/owner_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_profile_pic"
@@ -125,7 +125,7 @@
             android:layout_marginStart="3dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
-            android:text="@string/owner_micheil"
+            android:text="@string/pet_owner"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@+id/user_profile_bio"
             app:layout_constraintStart_toEndOf="@+id/pet_icon"
@@ -147,13 +147,13 @@
                 android:id="@+id/pics_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/profileImages" />
+                android:text="@string/profile_images" />
 
         <com.google.android.material.tabs.TabItem
                 android:id="@+id/video_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/profileVideos" />
+                android:text="@string/profile_videos" />
 
     </com.google.android.material.tabs.TabLayout>
 
