@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
                  R.id.search -> makeCurrentFragment(searchFragment)
                  R.id.post -> makeCurrentFragment(postFragment)
 
+                 
+
              }
              true
          }
