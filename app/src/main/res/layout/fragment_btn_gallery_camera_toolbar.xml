@@ -28,6 +28,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/btn_take_picure"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginRight="40dp"
@@ -36,6 +37,7 @@
                 </ImageButton>
 
                 <ImageButton
+                    android:id="@+id/btn_open_img_gallery"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_baseline_grid_on_24"></ImageButton>

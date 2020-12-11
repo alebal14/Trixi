@@ -1,11 +1,13 @@
 package com.example.trixi.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.add
 import com.example.trixi.R
 import kotlinx.android.synthetic.main.viewpager.*
 
@@ -21,57 +23,83 @@ private const val ARG_PARAM2 = "param2"
  */
 class PostFragment : Fragment() {
     // TODO: Rename and change types of parameters
+
     private var param1: String? = null
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
-        val adapter = activity?.supportFragmentManager?.let { ViewPagerAdapter(it) }
-        if (adapter != null) {
-            adapter.addFragment(CameraFragment(), "Camera")
-        };
-        if (adapter != null) {
-            adapter.addFragment(UploadFragment(), "Gallery")
-        };
-
-        view_pager.adapter = adapter;
-        tab_layout.setupWithViewPager(view_pager)
 
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post, container, false)
+    ): View? =// Inflate the layout for this fragment
+
+        inflater.inflate(R.layout.fragment_post, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        makeCurrentFragment(CameraFragment())
+    }
+
+
+    /*
+
+    private fun setupView(view: View) {
+        val fragmentList : MutableList <Fragment> = ArrayList ()
+        val titleList : MutableList <String> = ArrayList ()
+
+        val adapter : ViewPagerAdapter? = activity?.supportFragmentManager?.let { ViewPagerAdapter(it) }
+        adapter?.addFragment(CameraFragment(), "Camera");
+        adapter?.addFragment(UploadFragment(), "Gallery");
+
+        //view_pager?.adapter
+        view_pager.adapter = adapter;
+        tab_layout.setupWithViewPager(view_pager)
+
+    }
+
+     */
+
+
+
+
+
+    /*
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val adapter : ViewPagerAdapter? = activity?.supportFragmentManager?.let { ViewPagerAdapter(it) }
+        adapter?.addFragment(CameraFragment(), "Camera");
+        adapter?.addFragment(UploadFragment(), "Gallery");
+
+        view_pager?.adapter
+        view_pager.adapter = adapter;
+        tab_layout.setupWithViewPager(view_pager)
 
 
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PostFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PostFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+     */
+
+
+    private fun makeCurrentFragment(fragment: Fragment) =
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, fragment)
+            commit()
+        }
 }
+
+
+
+
+
+
+
