@@ -9,7 +9,9 @@ import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
 import express.utils.Status;
+import org.apache.commons.fileupload.FileItem;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -132,7 +134,18 @@ public class RestApi {
                     res.json(db.save(user));
                     break;
                 case "posts":
+                    String fileUrl = null;
+
+                    try {
+                        List<FileItem> files = req.getFormData("files");
+                        fileUrl = db.getPostHandler().uploadFile(files.get(0));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
                     Post post = (Post) req.getBody(Post.class);
+                    post.setFilePath(fileUrl);
+
                     res.json(db.save(post));
                     break;
                 case "pets":
