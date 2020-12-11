@@ -1,5 +1,6 @@
 package com.example.trixi.ui.register
 
+import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -37,6 +38,8 @@ class RegisterActivity : AppCompatActivity() {
            post. makeApiPost(user)*/
 
     }
+
+
 
         var selectedPhotouri: Uri? = null
 
