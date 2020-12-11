@@ -18,7 +18,10 @@ import retrofit2.Response
 
 class PostToDb {
 
-    var loggedInUser: User? = null
+    companion object {
+        var loggedInUser: User? = null
+    }
+
 
     fun PostRegisterUserToDb(user: User){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)

@@ -27,9 +27,9 @@ class MainActivity : AppCompatActivity() {
 
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
-                 R.id.homeFooter -> makeCurrentFragment(homepageFragment)
-                 R.id.search -> makeCurrentFragment(searchFragment)
-                 R.id.post -> makeCurrentFragment(postFragment)
+                 R.id.footer_home -> makeCurrentFragment(homepageFragment)
+                 R.id.footer_search -> makeCurrentFragment(searchFragment)
+                 R.id.footer_post -> makeCurrentFragment(postFragment)
                  R.id.profile -> makeCurrentFragment(profileFragment)
              }
              true

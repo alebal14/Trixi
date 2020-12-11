@@ -218,7 +218,7 @@ public class RestApi {
             var updatedUser = db.getUserHandler().findUserFollowingPostList(user);
             if (updatedUser == null) {
                 res.setStatus(Status._403);
-                res.send("Error: you are not following this Pet");
+                //res.send("Error: you are not following this Pet");
                 return;
             }
             res.json(updatedUser);
