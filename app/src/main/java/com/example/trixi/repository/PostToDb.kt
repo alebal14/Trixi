@@ -96,26 +96,26 @@ class PostToDb {
         })
     }
 
-    fun postPostToDb(post: Post){
+    fun postPostToDb(post: Post) {
 
 
 
-        val file = File(uploadImage.getPath())
+        val file = File(file.getPath())
 
         val fbody: RequestBody = RequestBody.create(
             MediaType.parse("image/*"),
             file
         )
 
-        val title: RequestBody = RequestBody.create(
+        RequestBody title = RequestBody.create(
             MediaType.parse("text/plain"),
-            title_field.getText()
+            post.title.getText()
                 .toString()
         )
 
         val description: RequestBody = RequestBody.create(
             MediaType.parse("text/plain"),
-            description_field.getText()
+            dessciption.getText()
                 .toString()
         )
 

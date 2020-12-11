@@ -137,7 +137,7 @@ public class RestApi {
                     String fileUrl = null;
 
                     try {
-                        List<FileItem> files = req.getFormData("files");
+                        List<FileItem> files = req.getFormData("file");
                         fileUrl = db.getPostHandler().uploadFile(files.get(0));
                     } catch (Exception e) {
                         e.printStackTrace();

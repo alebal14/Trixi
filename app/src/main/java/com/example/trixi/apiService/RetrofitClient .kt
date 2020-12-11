@@ -18,7 +18,7 @@ class RetrofitClient {
     companion object{
        lateinit var context: Context
        var instance: Retrofit? = null
-       val BASE_URL = "http://192.168.1.7:3000/rest/"
+       val BASE_URL = "http://192.168.1.7:3000/"
 
         fun okHttpClient() : OkHttpClient {
             var cookieManager: CookieManager = CookieManager()

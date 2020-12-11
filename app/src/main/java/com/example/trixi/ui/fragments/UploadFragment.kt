@@ -1,17 +1,18 @@
 package com.example.trixi.ui.fragments
 
-import android.content.ContentResolver
+import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.contentValuesOf
+import androidx.fragment.app.Fragment
 import com.example.trixi.R
-import kotlinx.android.synthetic.main.activity_register.*
+import com.example.trixi.entities.Post
+import com.example.trixi.repository.PostToDb
 import kotlinx.android.synthetic.main.fragment_upload.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,7 +25,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [UploadFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UploadFragment : Fragment() {
+class UploadFragment(context: Context) : Fragment() {
     /*// TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null*/
@@ -37,34 +38,66 @@ class UploadFragment : Fragment() {
         }
     }*/
 
+    val sendForm = PostToDb()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_upload, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         selectPicture()
+        sendToPost()
+
+    }
+
+    var selectedPicture: Uri? = null;
+
+    private fun sendToPost() {
+
+        val title = title_field.text.toString();
+        val description = description_field.text.toString();
+        val ownerId =  "";
+
+        button_post.setOnClickListener {
+            val post = Post("", title, description, "", null, ownerId, null, null)
+            sendForm.postPostToDb()
+        }
     }
 
 
 
-    var selectedPicture: Uri? = null
 
     private fun selectPicture() {
         uploadImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 0)
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 100)
         }
 
-
-        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPicture)
-        register_profile_image.setImageBitmap(bitmap)
     }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+            //the image URI
+            val selectedImage = data.data
+        }
+    }
+
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {}*/
+
 
 
 
@@ -91,3 +124,6 @@ class UploadFragment : Fragment() {
 }*/
 
 }
+
+
+
