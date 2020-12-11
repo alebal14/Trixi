@@ -10,7 +10,9 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.ui.register.RegisterActivity
 import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -96,6 +98,25 @@ class PostToDb {
         })
     }
 
+    fun PostImageToServer(image: File) {
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+        val call = retrofitClient?.uploadProfileImage(image)
+        call?.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("Image", "Image : onfailure " + t.message)
+            }
+            override fun onResponse(
+                    call: Call<ResponseBody>, response: Response<ResponseBody>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("Image", "Image : onResponse success" + response.message())
+                }else{
+                    Log.d("Image", "Image : onResponse else" + response.message())
+                }
+            }
+        })
+    }
 //    fun postPostToDb(post: Post) {
 //
 //

@@ -3,7 +3,9 @@ package com.example.trixi.apiService
 
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.io.File
@@ -17,12 +19,18 @@ interface Api {
     @POST("login")
     fun loginUser(@Body user: User): Call<User>
 
+    @Multipart
+    @POST("users")
+    fun uploadProfileImage(
+            @Part("file") file: File
+            //@Part files: MultipartBody.Part
+    ):Call<ResponseBody>
 
 
     @Multipart
     @POST("post")
     fun postPost(
-        @Part("file\"; filename=\"pp.png\" ") file: File,
+        //@Part("file") file: Files,
         @Part("title") title: RequestBody?,
         @Part("description") description: RequestBody?,
         @Part("ownerId") ownerId: RequestBody?,

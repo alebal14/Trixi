@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
+import com.example.trixi.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
                  R.id.homeFooter -> makeCurrentFragment(homepageFragment)
-                 R.id.search -> makeCurrentFragment(searchFragment)
+                 //R.id.search -> makeCurrentFragment(searchFragment)
                  R.id.post -> makeCurrentFragment(postFragment)
 
              }

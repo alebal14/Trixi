@@ -10,7 +10,10 @@ import express.middleware.Middleware;
 import express.utils.Status;
 import express.utils.Status;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.MultipartStream;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -126,15 +129,81 @@ public class RestApi {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
-                    User user = (User) req.getBody(User.class);
+                    /*User user = (User) req.getBody(User.class);
 
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
 
-                    res.json(db.save(user));
+                    res.json(db.save(user));*/
+
+                    System.out.println("Begin");
+
+                    String fileUrl = null;
+
+
+
+
+
+
+                    try {
+
+                        List<FileItem> files = req.getFormData("file");
+
+
+
+                        //List<FileItem> files = req.getFormData("file");
+                        fileUrl = db.getUserHandler().uploadProfileImage(files.get(0));
+                        System.out.println(files);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    //Post post = (Post) req.getBody(Post.class);
+                    //post.setFilePath(fileUrl);
+
+                   /* try {
+                        MultipartStream file = (MultipartStream) req.getFormData();
+                        System.out.println(file);
+                        res.json(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (FileUploadException e) {
+                        e.printStackTrace();
+                    }
+
+                    Image image = (Image) req.getBody(Image.class);
+                     System.out.println("image: " + image.getFile());*/
+                    //User user = new User();
+                    //  final String currentDir = System.getProperty("user.dir");
+                    // String pathFile = currentDir + "/src/main/java/images";
+
+                    /*String fileUrl = null;
+                    try{
+
+                        List<FileItem> files = req.getFormData("files");
+                        System.out.println("here");
+
+
+
+
+                        if(files == null){
+                            res.send("files null");
+                            return;
+                        }
+
+                        fileUrl = db.getUserHandler().uploadProfileImage(files.get(0));
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }*/
+
+                    // user.setImageUrl(fileUrl);
+                    //String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    //user.setPassword(hashedPassword);
+                    //res.json(image);
+                    //res.json(db.save(user));
                     break;
                 case "posts":
-                    String fileUrl = null;
+                    /*String fileUrl = null;
 
                     try {
                         List<FileItem> files = req.getFormData("file");
@@ -144,7 +213,9 @@ public class RestApi {
                     }
                     
                     Post post = (Post) req.getBody(Post.class);
-                    post.setFilePath(fileUrl);
+                    post.setFilePath(fileUrl);*/
+
+                    Post post = (Post) req.getBody(Post.class);
 
                     res.json(db.save(post));
                     break;

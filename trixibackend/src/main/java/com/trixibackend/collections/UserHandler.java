@@ -8,8 +8,13 @@ import com.mongodb.client.model.Updates;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
+import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -251,6 +256,48 @@ public class UserHandler {
     private void makePetsListEmpty(Pet p){
         p.setFollowers(null);
         p.setPosts(null);
+    }
+
+    public String uploadProfileImage(FileItem file) {
+
+
+        String fileUrl = file.getName();
+
+        try (var os = new FileOutputStream(Paths.get("images/").toString())) {
+            os.write(file.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return fileUrl;
+
+        /*InputStream inputStream = new ByteArrayInputStream(file.get());
+
+
+        StringBuilder textBuilder = new StringBuilder();
+        try (Reader reader = new BufferedReader(new InputStreamReader
+                (inputStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
+            int c = 0;
+            while ((c = reader.read()) != -1) {
+                textBuilder.append((char) c);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String fileUrl = textBuilder.toString();
+
+        try(var os = new FileOutputStream(Paths.get("/src/images" + fileUrl).toString())){
+            os.write(file.get());
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        System.out.println("inhandler: " + fileUrl);
+
+        return fileUrl;*/
     }
 
 }
