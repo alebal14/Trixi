@@ -30,13 +30,44 @@
                     android:gravity="right"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/single_post_profile_image"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp"
+                            android:background="@drawable/circle"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginTop="20dp">
+
+                        </ImageView>
+                        <TextView
+                            android:id="@+id/single_post_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginRight="50dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            tools:text="username" />
+
+
+                    </LinearLayout>
+
+
                     <ImageView
                         android:id="@+id/single_post_image"
                         android:layout_width="300dp"
                         android:layout_height="300dp"
                         android:layout_gravity="center"
-                        android:layout_margin="100dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="15dp"
                         android:elevation="8dp"
                         android:paddingTop="16dp"
                         tools:srcCompat="@tools:sample/avatars">
@@ -46,7 +77,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:gravity="center">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -60,7 +91,6 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="20dp"
                                 android:gravity="center"
-                                android:text="TextView"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Display3"
                                 android:textColor="@android:color/black"
                                 android:textSize="20sp"
@@ -81,7 +111,7 @@
                                 app:autoSizeMaxTextSize="100sp"
                                 app:autoSizeMinTextSize="10sp"
                                 app:autoSizeStepGranularity="1sp"
-                                tools:text="Walking out with my dog in a street of LA" />
+                                tools:text="Walking out with my dog in the street of LA" />
 
 
                         </LinearLayout>
@@ -97,11 +127,31 @@
                             android:paddingRight="5dp">
 
                             <ImageButton
-                                android:id="@+id/single_post_edit"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:id="@+id/single_post_report"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
                                 android:layout_marginBottom="20dp"
-                                android:background="@drawable/ic_baseline_edit_24" />
+                                android:background="@drawable/ic_baseline_report_24"
+
+                                />
+                            <ImageButton
+                                android:id="@+id/single_post_follow"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginBottom="20dp"
+                                android:background="@drawable/ic_baseline_tag_faces_24"
+
+                                />
+
+
+                            <ImageButton
+                                android:id="@+id/single_post_edit"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginBottom="20dp"
+                                android:background="@drawable/ic_baseline_edit_24"
+
+                               />
 
                            <RelativeLayout
                                android:layout_width="wrap_content"
@@ -110,8 +160,8 @@
                                android:orientation="vertical">
                                <ImageButton
                                    android:id="@+id/single_post_comment"
-                                   android:layout_width="50dp"
-                                   android:layout_height="50dp"
+                                   android:layout_width="40dp"
+                                   android:layout_height="40dp"
                                    android:layout_marginBottom="10dp"
                                    android:background="@drawable/ic_baseline_chat_bubble_outline_24" />
                                <TextView
@@ -137,8 +187,8 @@
 
                                 <ImageButton
                                     android:id="@+id/single_post_like"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
                                     android:layout_marginBottom="10dp"
                                     android:background="@drawable/ic_baseline_favorite_border_24" />
 
