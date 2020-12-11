@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat.startActivity
 
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.ui.login.LoginActivity
 import com.example.trixi.ui.register.RegisterActivity
@@ -93,6 +94,33 @@ class PostToDb {
                 }
             }
         })
+    }
+
+    fun postPostToDb(post: Post){
+
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.postPost(post)
+
+        call?.enqueue(object : Callback<Post> {
+            override fun onFailure(call: Call<Post>, t: Throwable) {
+                Log.d("post", "Post : onfailure " + t.message)
+
+            }
+            override fun onResponse(
+                call: Call<Post>, response: Response<Post>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("post", "Post : onResponse success" + response.body())
+                }else{
+                    Log.d("post", "Post : onResponse else" + response.body())
+                }
+            }
+
+        })
+
+
+
+
     }
 
 }
