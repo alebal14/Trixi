@@ -47,8 +47,29 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        makeCurrentFragment(CameraFragment())
+
+        makeCurrentFragment(UploadFragment())
+
     }
+
+
+    /*
+    private fun setUpViewPageAdapter(){
+        val adapter : ViewPagerAdapter? = activity?.supportFragmentManager?.let { ViewPagerAdapter(it) }
+        adapter?.addFragment(CameraFragment(), "Camera");
+        adapter?.addFragment(UploadFragment(), "Gallery");
+
+        view_pager?.adapter
+        view_pager.adapter = adapter;
+        tab_layout.setupWithViewPager(view_pager)
+
+
+
+    }
+
+     */
+
+
 
 
     /*
