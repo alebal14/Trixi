@@ -10,23 +10,18 @@
             android:id="@+id/user_profile_pic"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="83dp"
-            android:layout_marginBottom="11dp"
             android:src="@drawable/ic_circle_frame"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
-            app:layout_constraintBottom_toTopOf="@+id/owner_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:layout_editor_absoluteX="48dp"
+            tools:layout_editor_absoluteY="83dp" />
 
     <TextView
             android:id="@+id/profile_name"
             android:layout_width="147dp"
             android:layout_height="45dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="100dp"
-            android:layout_marginEnd="10dp"
             android:text="@string/profile_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
@@ -39,56 +34,42 @@
             android:id="@+id/user_profile_bio"
             android:layout_width="208dp"
             android:layout_height="121dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="3dp"
+            android:layout_below="@+id/profile_name"
             android:text="@string/bio_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_pic"
-            app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+            tools:layout_editor_absoluteX="211dp"
+            tools:layout_editor_absoluteY="145dp" />
 
     <TextView
             android:id="@+id/profile_followers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="80dp"
             android:text="@string/number_of_followers"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/profile_following"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.413" />
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="296dp" />
 
     <TextView
             android:id="@+id/profile_following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="44dp"
             android:text="@string/number_of_following"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.377" />
+            tools:layout_editor_absoluteX="242dp"
+            tools:layout_editor_absoluteY="296dp" />
 
     <ImageButton
             android:id="@+id/heart_follow"
             android:layout_width="61dp"
             android:layout_height="58dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginTop="87dp"
             android:background="@android:color/white"
             android:contentDescription="@string/heart"
+            android:layout_toTheRightOf="@+id/profile_name"
             app:layout_constraintBottom_toTopOf="@+id/user_profile_bio"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profile_name"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_heart_empty" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -109,39 +90,26 @@
             android:id="@+id/pet_icon"
             android:layout_width="30dp"
             android:layout_height="22dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="7dp"
             android:contentDescription="@string/icon_of_pet_type"
-            app:layout_constraintEnd_toStartOf="@+id/owner_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_profile_pic"
-            app:srcCompat="@drawable/cat_icon" />
+            app:srcCompat="@drawable/cat_icon"
+            tools:layout_editor_absoluteX="30dp"
+            tools:layout_editor_absoluteY="245dp" />
 
     <TextView
             android:id="@+id/owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="24dp"
             android:text="@string/pet_owner"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toStartOf="@+id/user_profile_bio"
-            app:layout_constraintStart_toEndOf="@+id/pet_icon"
-            app:layout_constraintTop_toBottomOf="@+id/user_profile_pic" />
+            tools:layout_editor_absoluteX="70dp"
+            tools:layout_editor_absoluteY="245dp" />
 
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/pics_videos_tab"
             android:layout_width="383dp"
             android:layout_height="39dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="344dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="349dp">
 
         <com.google.android.material.tabs.TabItem
                 android:id="@+id/pics_tab"
@@ -159,17 +127,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/profile_media_grid"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_width="361dp"
             android:layout_height="304dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab" />
+            tools:layout_editor_absoluteX="25dp"
+            tools:layout_editor_absoluteY="408dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

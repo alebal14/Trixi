@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                  R.id.footer_home -> makeCurrentFragment(homepageFragment)
                  R.id.footer_search -> makeCurrentFragment(searchFragment)
                  R.id.footer_post -> makeCurrentFragment(postFragment)
-                 R.id.profile -> makeCurrentFragment(profileFragment)
+                 R.id.footer_profile -> makeCurrentFragment(profileFragment)
              }
              true
          }
