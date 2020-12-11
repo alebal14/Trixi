@@ -3,9 +3,11 @@ package com.example.trixi.apiService
 
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
-
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.FileDescriptor
+
 
 interface Api {
 
@@ -17,6 +19,15 @@ interface Api {
 
     @POST("post")
     fun postPost(@Body post: Post): Call<Post>
+
+    @Multipart
+    @POST("post")
+    fun postPost(
+        @Part("file\"; filename=\"pp.png\" ") file: RequestBody?,
+        @Part("title") title: RequestBody?,
+        @Part("description") description: RequestBody?,
+        @Part("ownerId") ownerId: RequestBody?,
+    ) : Call<Post>?
 
     @GET("login")
     fun getLoggedInUser(): Call<User>

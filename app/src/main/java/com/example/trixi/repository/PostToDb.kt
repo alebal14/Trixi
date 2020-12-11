@@ -4,18 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.core.content.ContextCompat.startActivity
-
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
-import com.example.trixi.ui.login.LoginActivity
 import com.example.trixi.ui.register.RegisterActivity
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+
 
 class PostToDb {
 
@@ -98,8 +98,41 @@ class PostToDb {
 
     fun postPostToDb(post: Post){
 
+
+
+        val file = File(uploadImage.getPath())
+
+        val fbody: RequestBody = RequestBody.create(
+            MediaType.parse("image/*"),
+            file
+        )
+
+        val title: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            title_field.getText()
+                .toString()
+        )
+
+        val description: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            description_field.getText()
+                .toString()
+        )
+
+        val ownerId: RequestBody = RequestBody.create(
+            MediaType.parse("text/plain"),
+            ownerId_field.getText()
+                .toString()
+        )
+
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-        val call = retrofitClient?.postPost(post)
+
+
+        val call: Call<Post>? = retrofitClient?.postPost(
+            file,
+            title,
+            description,
+            ownerId);
 
         call?.enqueue(object : Callback<Post> {
             override fun onFailure(call: Call<Post>, t: Throwable) {
