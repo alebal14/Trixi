@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,10 +20,10 @@ import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -128,21 +129,46 @@ class RegisterActivity : AppCompatActivity() {
             bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
             register_profile_image.setImageBitmap(bitmap)
 
+
+
+
             cursor.close()
 
 
             postPath = mediaPath
 
+
+
             println("PATH: " + postPath)
 
+            val bm = BitmapFactory.decodeFile(postPath)
+            val baos = ByteArrayOutputStream()
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
 
-            val file = File(bitmap.toString())
+            val b = baos.toByteArray()
+
+            encodedImage = Base64.encodeToString(b, Base64.DEFAULT)
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+
+            val imageInByte: ByteArray = byteArrayOutputStream.toByteArray()
+            //encodedImage = Base64.encodeToString(imageInByte, Base64.DEFAULT)
+
+
+
+            val file = File (encodedImage)
+            val filename = postPath.toString()
+
+            Log.d("Image", "Path :  $postPath ")
+            Log.d("Image", "encode :  $encodedImage ")
+            Log.d("Image", "file :  $file ")
 
 
             val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
-            val body = MultipartBody.Part.createFormData("pic", file.getName(), reqFile)
-            val name = RequestBody.create(MediaType.parse("multipart/form-data"), "upload_test")
+            //val body = MultipartBody.Part.createFormData("pic", file.name, reqFile)
+            //val name = RequestBody.create(MediaType.parse("multipart/form-data"), "upload_test")
 
+            //Log.d("Image", "Image :  $filename ,  $reqFile , $body , $name")
 
             post.PostImageToServer(file)
         }

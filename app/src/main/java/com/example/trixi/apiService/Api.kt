@@ -3,7 +3,6 @@ package com.example.trixi.apiService
 
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -22,7 +21,8 @@ interface Api {
     @Multipart
     @POST("users")
     fun uploadProfileImage(
-            @Part("file") file: File
+            @Part("file") file: File,
+            //@Part("name") filename: String,
             //@Part files: MultipartBody.Part
     ):Call<ResponseBody>
 

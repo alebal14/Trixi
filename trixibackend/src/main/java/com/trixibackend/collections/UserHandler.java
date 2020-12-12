@@ -11,6 +11,8 @@ import com.trixibackend.entity.User;
 import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -263,8 +265,10 @@ public class UserHandler {
 
         String fileUrl = file.getName();
 
-        try (var os = new FileOutputStream(Paths.get("images/").toString())) {
-            os.write(file.get());
+
+
+        try (var os = new FileOutputStream(Paths.get("ava.jpg").toString())) {
+            os.write(file.getInputStream().readAllBytes());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
