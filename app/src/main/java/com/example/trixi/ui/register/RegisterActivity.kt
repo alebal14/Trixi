@@ -140,7 +140,7 @@ class RegisterActivity : AppCompatActivity() {
 
             //encoding the image
             encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
-           
+
             //sending the image
             post.PostImageToServer(encodedImage)
         }

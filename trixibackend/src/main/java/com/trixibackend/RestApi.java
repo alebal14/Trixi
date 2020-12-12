@@ -148,112 +148,15 @@ public class RestApi {
 
                     String fileUrl = null;
 
-
-
-
-
-
                     try {
 
                         List<FileItem> files = req.getFormData("file");
-
-                        for (FileItem item : files) {
-                            if (item.isFormField()) {
-                                // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
-                                String fieldName = item.getFieldName();
-                                String fieldValue = item.getString();
-                                String fieldValue2 = fieldValue.replace("\"", "");
-                                String resultFieldValue = fieldValue2.replace("\\n\"", "");
-
-                                System.out.println(resultFieldValue);
-                                System.out.println("Name "+ fieldName);
-                                System.out.println("Field: " + fieldValue);
-
-
-                                String fucksdkslakdö = resultFieldValue.replace("\\n", ";");
-
-
-                                ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-                                String[] strs = fucksdkslakdö.split(";");
-                                System.out.println("Substrings length:"+strs.length);
-                                for (int i=0; i < strs.length; i++) {
-                                    System.out.println(strs[i]);
-
-                                    output.write(Base64.getDecoder().decode(strs[i].getBytes()));
-
-                                    //decodedImgLoop = Base64.getDecoder().decode(strs[i].getBytes(StandardCharsets.UTF_8));
-
-                                }
-
-                                byte[] decodedImgLoop = output.toByteArray();
-
-                                System.out.println("outside " + decodedImgLoop);
-
-                                Path destinationFile = Paths.get("img/", "myImage.jpg");
-                                Files.write(destinationFile, decodedImgLoop);
-
-
-
-
-                                // ... (do your job here)
-                            } else {
-                                // Process form file field (input type="file").
-                                String fieldName = item.getFieldName();
-                                String fileName = FilenameUtils.getName(item.getName());
-                                InputStream fileContent = item.getInputStream();
-                                // ... (do your job here)
-                            }
-                        }
-
-
-
-
-                        //List<FileItem> files = req.getFormData("file");
-                        fileUrl = db.getUserHandler().uploadProfileImage(files.get(0));
+                        fileUrl = db.getUserHandler().uploadProfileImage(files);
                         System.out.println(fileUrl);
-                        System.out.println(files);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    //Post post = (Post) req.getBody(Post.class);
-                    //post.setFilePath(fileUrl);
-
-                   /* try {
-                        MultipartStream file = (MultipartStream) req.getFormData();
-                        System.out.println(file);
-                        res.json(file);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (FileUploadException e) {
-                        e.printStackTrace();
-                    }
-
-                    Image image = (Image) req.getBody(Image.class);
-                     System.out.println("image: " + image.getFile());*/
-                    //User user = new User();
-                    //  final String currentDir = System.getProperty("user.dir");
-                    // String pathFile = currentDir + "/src/main/java/images";
-
-                    /*String fileUrl = null;
-                    try{
-
-                        List<FileItem> files = req.getFormData("files");
-                        System.out.println("here");
-
-
-
-
-                        if(files == null){
-                            res.send("files null");
-                            return;
-                        }
-
-                        fileUrl = db.getUserHandler().uploadProfileImage(files.get(0));
-                    } catch(Exception e){
-                        e.printStackTrace();
-                    }*/
 
                     // user.setImageUrl(fileUrl);
                     //String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
