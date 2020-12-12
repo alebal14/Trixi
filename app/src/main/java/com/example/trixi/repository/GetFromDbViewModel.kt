@@ -119,8 +119,6 @@ class GetFromDbViewModel : ViewModel() {
                     Log.d("loggedInUser", "success")
                     loggedInUser.postValue(response.body())
 
-//                    val intent = Intent(context, RegisterActivity::class.java)
-//                    context.startActivity(intent)
 
                 } else {
                     loggedInUser.postValue(null)

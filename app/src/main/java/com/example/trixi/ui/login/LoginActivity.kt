@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.example.trixi.MainActivity
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
@@ -26,14 +27,14 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         val post = PostToDb()
         RetrofitClient.context = this
-        val user = User("","snehalP", "", "1234", "","","",null, null)
-        post.PostLoginUserToDb(user, this)
-//        var loggedInUser : User? = null
-//        model.GetLoggedInUserFromDB().observe(this,{
-//             loggedInUser = it
-//            Log.d("uus","log in user from login activity. ${it.userName}")
-//
-//        })
+
+        model.GetLoggedInUserFromDB().observe(this,{
+            if (it != null){
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
+            }
+        })
 
         login_no_account.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)

@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat.startActivity
+import com.example.trixi.MainActivity
 
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
@@ -59,6 +60,9 @@ class PostToDb {
             ) {
                 if(response.isSuccessful){
                     Log.d("uus", "login-user : onResponse success - " + response.message())
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+
                     //GetLoggedInUserFromDB(context)
                 }else{
                     Log.d("uus", "login-user : onResponse else: password and username/email dont match")
