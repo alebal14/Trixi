@@ -3,10 +3,9 @@ package com.example.trixi
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
-import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
-import com.example.trixi.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,16 +17,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
          val homepageFragment = HomepageFragment()
-         val postFragment = UploadFragment(this)
+         val postFragment = PostFragment()
          val searchFragment = SearchFragment()
 
          makeCurrentFragment(homepageFragment)
 
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
-                 R.id.homeFooter -> makeCurrentFragment(homepageFragment)
-                 //R.id.search -> makeCurrentFragment(searchFragment)
-                 R.id.post -> makeCurrentFragment(postFragment)
+                 R.id.footer_home -> makeCurrentFragment(homepageFragment)
+                 R.id.footer_search -> makeCurrentFragment(searchFragment)
+                 R.id.footer_post -> makeCurrentFragment(postFragment)
+
+                 
 
              }
              true
