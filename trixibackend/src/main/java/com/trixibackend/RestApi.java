@@ -215,13 +215,14 @@ public class RestApi {
 
             User user = db.getUserHandler().findUserById(id);
 
-            var updatedUser = db.getUserHandler().findUserFollowingPostList(user);
-            if (updatedUser == null) {
+            var followingPostList = db.getUserHandler().findUserFollowingPostList(user);
+            if (followingPostList == null) {
                 res.setStatus(Status._403);
                 //res.send("Error: you are not following this Pet");
                 return;
             }
-            res.json(updatedUser);
+            System.out.println(followingPostList.size());
+            res.json(followingPostList);
         });
 
 
@@ -271,6 +272,8 @@ public class RestApi {
             }
 
             var user = (User) sessionCookie.getData();
+            user.setUid(user.getId().toString());
+
             user.setPassword(null); // sanitize password
             res.json(user);
 

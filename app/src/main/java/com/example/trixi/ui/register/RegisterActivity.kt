@@ -16,7 +16,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
 
-        selectProfileImage()
+        //selectProfileImage()
 
 
         register_already_account.setOnClickListener {
@@ -38,17 +38,17 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-        var selectedPhotouri: Uri? = null
-
-        private fun selectProfileImage(){
-            register_profile_image.setOnClickListener {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "image/*"
-                startActivityForResult(intent, 0)
-            }
-
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotouri)
-            register_profile_image.setImageBitmap(bitmap)
-
-        }
+//        var selectedPhotouri: Uri? = null
+//
+//        private fun selectProfileImage(){
+//            register_profile_image.setOnClickListener {
+//                val intent = Intent(Intent.ACTION_PICK)
+//                intent.type = "image/*"
+//                startActivityForResult(intent, 0)
+//            }
+//
+//            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotouri)
+//            register_profile_image.setImageBitmap(bitmap)
+//
+//        }
 }

@@ -26,7 +26,14 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         val post = PostToDb()
         RetrofitClient.context = this
-        post.GetLoggedInUserFromDB(this)
+        val user = User("","snehalP", "", "1234", "","","",null, null)
+        post.PostLoginUserToDb(user, this)
+//        var loggedInUser : User? = null
+//        model.GetLoggedInUserFromDB().observe(this,{
+//             loggedInUser = it
+//            Log.d("uus","log in user from login activity. ${it.userName}")
+//
+//        })
 
         login_no_account.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -44,17 +51,9 @@ class LoginActivity : AppCompatActivity() {
                 val user = User("",usernameOrEmail, "", password, "","","",null, null)
                 post.PostLoginUserToDb(user, this)
             }
-
-
         }
 
-        model.getFollowingsPostFromDb("5fd14bd91bddf34c9236077f").observe(this,{
-            it.forEach{
-                //Log.d("post","postTitle: ${it.title}")
-                print("postTitle: ${it.title}")
-                Log.d("followings post", "post Title : ${it.title!!}")
-            }
-        })
+
 
 
         //testObserver getAllUsers:

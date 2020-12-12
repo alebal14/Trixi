@@ -36,7 +36,6 @@
         </activity>
         <activity android:name=".ui.register.RegisterActivity"/>
 
-<!--        <activity android:name=".ui.home.HomepageActivity"/>-->
 
     </application>
 
