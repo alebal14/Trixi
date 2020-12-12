@@ -163,24 +163,24 @@ public class RestApi {
                                 String fieldName = item.getFieldName();
                                 String fieldValue = item.getString();
                                 String fieldValue2 = fieldValue.replace("{\"path\":\"", "");
-                                String resultFieldValue = fieldValue2.replace("\"}", "");
+                                String resultFieldValue = fieldValue2.replace("\\n\"}", "");
 
                                 System.out.println(resultFieldValue);
                                 System.out.println("Name "+ fieldName);
                                 System.out.println("Field: " + fieldValue);
 
 
-                                String fucksdkslakdö = resultFieldValue.replace("\\n", ",");
+                                String fucksdkslakdö = resultFieldValue.replace("\\n", ";");
 
 
                                 ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-                                String[] strs = fucksdkslakdö.split(",");
+                                String[] strs = fucksdkslakdö.split(";");
                                 System.out.println("Substrings length:"+strs.length);
                                 for (int i=0; i < strs.length; i++) {
-                                    System.out.println("Str["+i+"]:"+strs[i]);
+                                    System.out.println(strs[i]);
 
-                                    output.write(Base64.getDecoder().decode(strs[i].getBytes(StandardCharsets.UTF_8)));
+                                    output.write(Base64.getDecoder().decode(strs[i].getBytes()));
 
                                     //decodedImgLoop = Base64.getDecoder().decode(strs[i].getBytes(StandardCharsets.UTF_8));
 

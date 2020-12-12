@@ -143,15 +143,15 @@ class RegisterActivity : AppCompatActivity() {
 
             val bm = BitmapFactory.decodeFile(postPath)
             val baos = ByteArrayOutputStream()
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
+            bm.compress(Bitmap.CompressFormat.JPEG,100,   baos) // bm is the bitmap object
 
             val b = baos.toByteArray()
 
             encodedImage = Base64.encodeToString(b, Base64.DEFAULT)
 
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
 
-            val imageInByte: ByteArray = byteArrayOutputStream.toByteArray()
+            //val imageInByte: ByteArray = byteArrayOutputStream.toByteArray()
             //encodedImage = Base64.encodeToString(imageInByte, Base64.DEFAULT)
 
 
