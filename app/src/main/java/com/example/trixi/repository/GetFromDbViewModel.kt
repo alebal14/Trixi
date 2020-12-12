@@ -105,34 +105,31 @@ class GetFromDbViewModel : ViewModel() {
     }
 
 
-    fun GetLoggedInUserFromDB(): MutableLiveData<User> {
+    fun getOneUserFromDb1(id: String?): User? {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-        val loggedInUser: MutableLiveData<User> = MutableLiveData()
-
-        val call = retrofitClient?.getLoggedInUser()
+        var user: User? = null
+        val call = retrofitClient?.getUserById(id)
         call?.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("uus", "user : onfailure " + t.message)
+
+            }
 
             override fun onResponse(
                 call: Call<User>, response: Response<User>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("loggedInUser", "success")
-                    loggedInUser.postValue(response.body())
-
-
+                    Log.d("uus", "success")
+                    user = response.body()!!
                 } else {
-                    loggedInUser.postValue(null)
-
+                    user = null
                 }
 
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("uus", "loggedInUser : onfailure " + t.message)
-            }
         })
-        return loggedInUser
-    }
+        return user
 
+    }
 
 }

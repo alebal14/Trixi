@@ -60,10 +60,8 @@ class PostToDb {
             ) {
                 if(response.isSuccessful){
                     Log.d("uus", "login-user : onResponse success - " + response.message())
-                    val intent = Intent(context, MainActivity::class.java)
-                    context.startActivity(intent)
 
-                    //GetLoggedInUserFromDB(context)
+                    GetLoggedInUserFromDB(context)
                 }else{
                     Log.d("uus", "login-user : onResponse else: password and username/email dont match")
                     Toast.makeText(context, "Password and username/email dont match", Toast.LENGTH_LONG).show()
@@ -72,6 +70,34 @@ class PostToDb {
         })
 
     }
+
+    fun GetLoggedInUserFromDB(context: Context){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+        val call = retrofitClient?.getLoggedInUser()
+        call?.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("uus", "loggedInUser : onfailure " + t.message)
+            }
+            override fun onResponse(
+                call: Call<User>, response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("loggedInUser", "success")
+                    loggedInUser = response.body()
+                    Log.d("loggedInUser", loggedInUser.toString())
+
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+
+                } else {
+
+                }
+            }
+        })
+    }
+
+
 
 
 }

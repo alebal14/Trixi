@@ -5,9 +5,10 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.trixi.apiService.RetrofitClient
+//import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
+import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.home.HomepageFragment
@@ -21,10 +22,12 @@ class MainActivity : AppCompatActivity() {
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-         RetrofitClient.context = this
+         //RetrofitClient.context = this
          val homepageFragment = HomepageFragment()
          val postFragment = PostFragment()
          val searchFragment = SearchFragment()
+
+         print("main login-user :${PostToDb.loggedInUser}")
 
 //         val bundle: Bundle = Bundle()
 //         model.GetLoggedInUserFromDB().observe(this,{

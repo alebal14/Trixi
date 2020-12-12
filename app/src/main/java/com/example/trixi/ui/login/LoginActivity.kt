@@ -27,14 +27,15 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         val post = PostToDb()
         RetrofitClient.context = this
+        post.GetLoggedInUserFromDB(this)
 
-        model.GetLoggedInUserFromDB().observe(this,{
-            if (it != null){
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-
-            }
-        })
+//        model.GetLoggedInUserFromDB().observe(this,{
+//            if (it != null){
+//                val intent = Intent(this, MainActivity::class.java)
+//                startActivity(intent)
+//
+//            }
+//        })
 
         login_no_account.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -58,12 +59,12 @@ class LoginActivity : AppCompatActivity() {
 
 
         //testObserver getAllUsers:
-        model.GetAllUsersFromDB()
-        model.getUserMutableLiveDataList().observe(this, Observer{
-            it.forEach{
-                Log.d("uus", "UserName : ${it.userName!!}")
-            }
-        } )
+//        model.GetAllUsersFromDB()
+//        model.getUserMutableLiveDataList().observe(this, Observer{
+//            it.forEach{
+//                Log.d("uus", "UserName : ${it.userName!!}")
+//            }
+//        } )
 
     }
 
