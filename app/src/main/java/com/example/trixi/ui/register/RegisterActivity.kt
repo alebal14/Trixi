@@ -105,14 +105,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
-            //check what the selected image is
 
-            /*selectedPhotouri = data.data
-
-            bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotouri)
-            register_profile_image.setImageBitmap(bitmap)*/
-
-            //---------------------------------------------------------------
 
             var selectedImage = data.getData()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
@@ -125,53 +118,31 @@ class RegisterActivity : AppCompatActivity() {
             mediaPath = cursor.getString(columnIndex)
             // Set the Image in ImageView for Previewing the Media
 
+            //Setting the image on frontend
             bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
             register_profile_image.setImageBitmap(bitmap)
 
-
-
-
             cursor.close()
-
 
             postPath = mediaPath
 
-
-
             println("PATH: " + postPath)
 
-            val bm = BitmapFactory.decodeFile(postPath)
+            //convert the image to bitmap
+            val convertImageBitmap = BitmapFactory.decodeFile(postPath)
+
             val baos = ByteArrayOutputStream()
-            bm.compress(Bitmap.CompressFormat.JPEG,100,   baos) // bm is the bitmap object
+            //compressing the bitmap
+            convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
 
-            val b = baos.toByteArray()
+            //coberting the image to bytearray
+            val imageByte = baos.toByteArray()
 
-            encodedImage = Base64.encodeToString(b, Base64.DEFAULT)
-
-            //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-
-            //val imageInByte: ByteArray = byteArrayOutputStream.toByteArray()
-            //encodedImage = Base64.encodeToString(imageInByte, Base64.DEFAULT)
-
-
-
-           // val file = File (encodedImage)
-
-            val file = encodedImage;
-            val filename = postPath.toString()
-
-            Log.d("Image", "Path :  $postPath ")
-            Log.d("Image", "encode :  $encodedImage ")
-            Log.d("Image", "file :  $file ")
-
-
-            val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
-            //val body = MultipartBody.Part.createFormData("pic", file.name, reqFile)
-            //val name = RequestBody.create(MediaType.parse("multipart/form-data"), "upload_test")
-
-            //Log.d("Image", "Image :  $filename ,  $reqFile , $body , $name")
-
-            post.PostImageToServer(file)
+            //encoding the image
+            encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
+           
+            //sending the image
+            post.PostImageToServer(encodedImage)
         }
     }
 

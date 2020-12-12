@@ -21,8 +21,6 @@ interface Api {
     @POST("users")
     fun uploadProfileImage(
             @Part("file") file: String,
-            //@Part("name") filename: String,
-            //@Part files: MultipartBody.Part
     ):Call<ResponseBody>
 
 
