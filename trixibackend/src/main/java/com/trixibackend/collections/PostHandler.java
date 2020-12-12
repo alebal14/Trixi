@@ -9,9 +9,14 @@ import org.bson.types.ObjectId;
 
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -98,6 +103,8 @@ public class PostHandler {
     public String uploadFile(FileItem file){
 
         String fileUrl = file.getName();
+
+
 
         try (var os = new FileOutputStream(Paths.get("/resFolder/" + fileUrl).toString())) {
             os.write(file.get());

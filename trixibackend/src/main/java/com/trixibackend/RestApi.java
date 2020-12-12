@@ -2,6 +2,7 @@ package com.trixibackend;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.trixibackend.entity.*;
 import express.Express;
 import express.http.Cookie;
@@ -12,11 +13,18 @@ import express.utils.Status;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.MultipartStream;
+import org.apache.commons.io.FilenameUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RestApi {
 
@@ -149,10 +157,61 @@ public class RestApi {
 
                         List<FileItem> files = req.getFormData("file");
 
+                        for (FileItem item : files) {
+                            if (item.isFormField()) {
+                                // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
+                                String fieldName = item.getFieldName();
+                                String fieldValue = item.getString();
+                                String fieldValue2 = fieldValue.replace("{\"path\":\"", "");
+                                String resultFieldValue = fieldValue2.replace("\"}", "");
+
+                                System.out.println(resultFieldValue);
+                                System.out.println("Name "+ fieldName);
+                                System.out.println("Field: " + fieldValue);
+
+
+                                String fucksdkslakdö = resultFieldValue.replace("\\n", ",");
+
+
+                                ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+                                String[] strs = fucksdkslakdö.split(",");
+                                System.out.println("Substrings length:"+strs.length);
+                                for (int i=0; i < strs.length; i++) {
+                                    System.out.println("Str["+i+"]:"+strs[i]);
+
+                                    output.write(Base64.getDecoder().decode(strs[i].getBytes(StandardCharsets.UTF_8)));
+
+                                    //decodedImgLoop = Base64.getDecoder().decode(strs[i].getBytes(StandardCharsets.UTF_8));
+
+                                }
+
+                                byte[] decodedImgLoop = output.toByteArray();
+
+                                System.out.println("outside " + decodedImgLoop);
+
+                                Path destinationFile = Paths.get("img/", "myImage.jpg");
+                                Files.write(destinationFile, decodedImgLoop);
+
+
+
+
+                                // ... (do your job here)
+                            } else {
+                                // Process form file field (input type="file").
+                                String fieldName = item.getFieldName();
+                                String fileName = FilenameUtils.getName(item.getName());
+                                InputStream fileContent = item.getInputStream();
+                                // ... (do your job here)
+                            }
+                        }
+
+
 
 
                         //List<FileItem> files = req.getFormData("file");
                         fileUrl = db.getUserHandler().uploadProfileImage(files.get(0));
+                        System.out.println(fileUrl);
                         System.out.println(files);
                     } catch (Exception e) {
                         e.printStackTrace();
