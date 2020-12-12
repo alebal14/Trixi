@@ -12,7 +12,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 
 class PostToDb {
@@ -94,7 +93,7 @@ class PostToDb {
         })
     }
 
-    fun PostImageToServer(image: File) {
+    fun PostImageToServer(image: String) {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
         val call = retrofitClient?.uploadProfileImage(image)

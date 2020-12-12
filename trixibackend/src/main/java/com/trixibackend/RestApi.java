@@ -162,8 +162,8 @@ public class RestApi {
                                 // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
                                 String fieldName = item.getFieldName();
                                 String fieldValue = item.getString();
-                                String fieldValue2 = fieldValue.replace("{\"path\":\"", "");
-                                String resultFieldValue = fieldValue2.replace("\\n\"}", "");
+                                String fieldValue2 = fieldValue.replace("\"", "");
+                                String resultFieldValue = fieldValue2.replace("\\n\"", "");
 
                                 System.out.println(resultFieldValue);
                                 System.out.println("Name "+ fieldName);

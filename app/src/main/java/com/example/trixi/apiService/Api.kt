@@ -7,7 +7,6 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.io.File
 
 
 interface Api {
@@ -21,7 +20,7 @@ interface Api {
     @Multipart
     @POST("users")
     fun uploadProfileImage(
-            @Part("file") file: File,
+            @Part("file") file: String,
             //@Part("name") filename: String,
             //@Part files: MultipartBody.Part
     ):Call<ResponseBody>

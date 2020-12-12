@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -156,7 +155,9 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
-            val file = File (encodedImage)
+           // val file = File (encodedImage)
+
+            val file = encodedImage;
             val filename = postPath.toString()
 
             Log.d("Image", "Path :  $postPath ")
