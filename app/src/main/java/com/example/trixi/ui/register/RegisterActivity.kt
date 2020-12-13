@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,10 +20,9 @@ import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
-import java.io.File
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -32,7 +32,6 @@ class RegisterActivity : AppCompatActivity() {
     var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
     var encodedImage: String = ""
     var filePath = ""
-    var hashMap = HashMap<String, String>()
 
 
     private val mMediaUri: Uri? = null
@@ -58,12 +57,12 @@ class RegisterActivity : AppCompatActivity() {
         register_profile_image.setOnClickListener {
             requestPermissions()
             val intent = Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
-           /* intent.type = "image/*"
-            intent.setAction(Intent.ACTION_GET_CONTENT)*/
-           */
+            /* intent.type = "image/*"
+             intent.setAction(Intent.ACTION_GET_CONTENT)*/
+            */
 
             startActivityForResult(intent, 0)
         }
@@ -74,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun hasWriteExternalStoragePermission() =
-        ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
     private fun requestPermissions() {
         var permissionsToRequest = mutableListOf<String>()
@@ -88,9 +87,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 0 && grantResults.isNotEmpty()) {
@@ -106,14 +105,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
-            //check what the selected image is
 
-            selectedPhotouri = data.data
-
-            bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotouri)
-            register_profile_image.setImageBitmap(bitmap)
-
-            //---------------------------------------------------------------
 
             var selectedImage = data.getData()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
@@ -126,21 +118,31 @@ class RegisterActivity : AppCompatActivity() {
             mediaPath = cursor.getString(columnIndex)
             // Set the Image in ImageView for Previewing the Media
 
+            //Setting the image on frontend
             bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
             register_profile_image.setImageBitmap(bitmap)
 
             cursor.close()
 
-
             postPath = mediaPath
 
             println("PATH: " + postPath)
 
+            //convert the image to bitmap
+            val convertImageBitmap = BitmapFactory.decodeFile(postPath)
 
-            val file = File(postPath)
+            val baos = ByteArrayOutputStream()
+            //compressing the bitmap
+            convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
 
+            //coberting the image to bytearray
+            val imageByte = baos.toByteArray()
 
-            post.PostImageToServer()
+            //encoding the image
+            encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
+
+            //sending the image
+            post.PostImageToServer(encodedImage)
         }
     }
 
@@ -151,7 +153,10 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-       
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+
+        val imageInByte: ByteArray = byteArrayOutputStream.toByteArray()
+        encodedImage = Base64.encodeToString(imageInByte, Base64.DEFAULT)
 
 
         registerUser()
@@ -167,9 +172,9 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val user = User("", userName, email, password, "", encodedImage, "user", null, null)
-            println("here")
-       // post.PostRegisterUserToDb(user)
+        val user = User("", userName, email, password, "", "", "user", null, null)
+        println("here")
+        post.PostRegisterUserToDb(user)
 
 
     }

@@ -4,12 +4,19 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.trixibackend.entity.Post;
-import com.trixibackend.entity.User;
+import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
-import java.awt.image.PackedColorModel;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -93,10 +100,27 @@ public class PostHandler {
         return posts;
     }
 
+    public String uploadFile(FileItem file){
+
+        String fileUrl = file.getName();
+
+
+
+        try (var os = new FileOutputStream(Paths.get("/resFolder/" + fileUrl).toString())) {
+            os.write(file.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return  fileUrl;
+    }
+
     public LikeHandler getLikeHandler() {
         return likeHandler;
     }
     public CommentHandler getCommentHandler() {
         return commentHandler;
     }
+
 }
