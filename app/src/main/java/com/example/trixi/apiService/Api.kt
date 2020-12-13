@@ -21,9 +21,9 @@ interface Api {
     fun loginUser(@Body user: User): Call<User>
 
     @Multipart
-    @POST("users")
-    fun uploadProfileImage(
-            @Part("file") file: String,
+    @POST("image")
+    fun postProfileImage(
+            @Part("file") file: String
     ):Call<ResponseBody>
 
 

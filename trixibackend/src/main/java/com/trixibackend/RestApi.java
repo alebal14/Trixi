@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.MultipartStream;
 import org.apache.commons.io.FilenameUtils;
 
+import javax.naming.Reference;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,8 +54,7 @@ public class RestApi {
         setLoginUser();
         getLoggedinUser();
         logoutUser();
-
-
+        setImagePostApi();
     }
 
     private void setUpUpdateApi() {
@@ -133,46 +133,34 @@ public class RestApi {
     private void setUpDeleteApi(String collectionName) {
     }
 
+    List<FileItem> files = null;
+    private void setImagePostApi(){
+        app.post("/rest/image", (req, res) -> {
+            try {
+                files = req.getFormData("file");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     private void setUpPostApi(String collectionName) {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
-                    /*User user = (User) req.getBody(User.class);
-
+                    String fileUrl = null;
+                    fileUrl = db.getUserHandler().uploadProfileImage(files);
+                    User user = (User) req.getBody(User.class);
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
-
-                    res.json(db.save(user));*/
-
-                    System.out.println("Begin");
-
-                    String fileUrl = null;
-
-                    try {
-
-                        List<FileItem> files = req.getFormData("file");
-                        fileUrl = db.getUserHandler().uploadProfileImage(files);
-                        System.out.println(fileUrl);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    // user.setImageUrl(fileUrl);
-                    //String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                    //user.setPassword(hashedPassword);
-                    //res.json(image);
-                    //res.json(db.save(user));
+                    user.setImageUrl(fileUrl);
+                    res.json(db.save(user));
+                    res.send("Created User");
                     break;
                 case "posts":
                     /*String fileUrl = null;
+                    fileUrl = db.getPostHandler().uploadFile(files.get(0));
 
-                    try {
-                        List<FileItem> files = req.getFormData("file");
-                        fileUrl = db.getPostHandler().uploadFile(files.get(0));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
                     Post post = (Post) req.getBody(Post.class);
                     post.setFilePath(fileUrl);*/

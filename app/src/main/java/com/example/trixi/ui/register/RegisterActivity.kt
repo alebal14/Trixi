@@ -27,21 +27,12 @@ import java.io.ByteArrayOutputStream
 class RegisterActivity : AppCompatActivity() {
 
     val post = PostToDb()
-    var selectedPhotouri: Uri? = null
+    var selectedImage: Uri? = null
     lateinit var bitmap : Bitmap
     var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
     var encodedImage: String = ""
     var filePath = ""
-
-
-    private val mMediaUri: Uri? = null
-
-    private var fileUri: Uri? = null
-
     private var mediaPath: String? = null
-
-    private var mImageFileLocation = ""
-    private lateinit var pDialog: ProgressDialog
     private var postPath: String? = null
 
 
@@ -60,10 +51,6 @@ class RegisterActivity : AppCompatActivity() {
                     Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
-            /* intent.type = "image/*"
-             intent.setAction(Intent.ACTION_GET_CONTENT)*/
-            */
-
             startActivityForResult(intent, 0)
         }
 
@@ -106,8 +93,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
 
-
-            var selectedImage = data.getData()
+            selectedImage = data.getData()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
             val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
@@ -125,39 +111,30 @@ class RegisterActivity : AppCompatActivity() {
             cursor.close()
 
             postPath = mediaPath
-
-            println("PATH: " + postPath)
-
-            //convert the image to bitmap
-            val convertImageBitmap = BitmapFactory.decodeFile(postPath)
-
-            val baos = ByteArrayOutputStream()
-            //compressing the bitmap
-            convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
-
-            //coberting the image to bytearray
-            val imageByte = baos.toByteArray()
-
-            //encoding the image
-            encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
-
-            //sending the image
-            post.PostImageToServer(encodedImage)
         }
     }
 
-
     private fun saveProfileImage(){
-        if (selectedPhotouri == null){
+        if (selectedImage == null){
             Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
             return
         }
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        //convert the image to bitmap
+        val convertImageBitmap = BitmapFactory.decodeFile(postPath)
 
-        val imageInByte: ByteArray = byteArrayOutputStream.toByteArray()
-        encodedImage = Base64.encodeToString(imageInByte, Base64.DEFAULT)
+        val baos = ByteArrayOutputStream()
+        //compressing the bitmap
+        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100, baos)
 
+        //coberting the image to bytearray
+        val imageByte = baos.toByteArray()
+
+        //encoding the image
+        encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
+
+        //sending the image
+        post.PostImageToDb(encodedImage)
 
         registerUser()
     }
@@ -172,10 +149,13 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val user = User("", userName, email, password, "", "", "user", null, null)
-        println("here")
-        post.PostRegisterUserToDb(user)
+        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            Toast.makeText(this, "Wrong email-Format, try again", Toast.LENGTH_LONG).show()
+            return
+        }
 
+        val user = User(null, userName, email, password, null, null, "user", null, null)
+        post.PostRegisterUserToDb(user, this)
 
     }
 }
