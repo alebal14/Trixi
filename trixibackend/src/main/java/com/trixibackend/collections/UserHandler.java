@@ -287,9 +287,9 @@ public class UserHandler {
                     System.out.println(fieldValuRemove);
                     System.out.println("Field: " + fieldValue);
 
-                    // replave /n with ;
-                    String replaveWhitespace = fieldValuRemove.replace("\\n", ";");
-                    String[] strs = replaveWhitespace.split(";");
+                    // replace /n with ;
+                    String replaceWhitespace = fieldValuRemove.replace("\\n", ";");
+                    String[] strs = replaceWhitespace.split(";");
 
                     //cut the string to byteArray
                     System.out.println("Substrings length:"+strs.length);
@@ -307,8 +307,6 @@ public class UserHandler {
                     String name = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
 
                     String path = "resFolder/images/" + name + ".jpg" ;
-
-
 
                     Path destinationFile = Paths.get(path);
                     Files.createDirectories(destinationFile.getParent());
