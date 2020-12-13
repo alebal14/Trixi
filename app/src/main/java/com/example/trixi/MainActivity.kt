@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 //import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity() {
          val homepageFragment = HomepageFragment()
          val postFragment = PostFragment()
          val searchFragment = SearchFragment()
+
+
 
          print("main login-user :${PostToDb.loggedInUser}")
 

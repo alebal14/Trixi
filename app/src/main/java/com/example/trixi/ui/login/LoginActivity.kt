@@ -29,13 +29,6 @@ class LoginActivity : AppCompatActivity() {
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)
 
-//        model.GetLoggedInUserFromDB().observe(this,{
-//            if (it != null){
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-//
-//            }
-//        })
 
         login_no_account.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
