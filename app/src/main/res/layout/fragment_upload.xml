@@ -18,11 +18,10 @@
 
         <ImageView
             android:id="@+id/uploadImage"
-            android:layout_width="wrap_content"
+            android:layout_width="361dp"
             android:layout_height="284dp"
             android:layout_marginBottom="20dp"
-            android:padding="20dp"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:padding="20dp" />
 
         <EditText
             android:id="@+id/title_field"

@@ -1,29 +1,17 @@
 package com.example.trixi.ui.fragments
 
-import android.app.Activity
-import android.app.Activity.RESULT_OK
-import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.app.ActivityCompat.requestPermissions
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
-import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.fragment_upload.*
-import java.io.ByteArrayOutputStream
-import androidx.core.app.ActivityCompat as ActivityCompat1
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,141 +37,42 @@ class UploadFragment(context: Context) : Fragment() {
         }
     }*/
 
+
+    //private var uploadImage: ImageView? = null
+
     val sendForm = PostToDb()
-    val post = PostToDb()
-    var selectedPhotouri: Uri? = null
-    lateinit var bitmap : Bitmap
-    var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
-    var encodedImage: String = ""
-    var filePath = ""
 
 
-    private val mMediaUri: Uri? = null
 
-    private var fileUri: Uri? = null
 
-    private var mediaPath: String? = null
-
-    private var mImageFileLocation = ""
-    private lateinit var pDialog: ProgressDialog
-    private var postPath: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_upload, container, false)
+        return  inflater.inflate(R.layout.fragment_upload, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        uploadImage.setOnClickListener(this)
-
-
-
+        setupViews(view)
     }
 
-    private fun startFragment(view: View) {
+    private fun setupViews(view: View) {
 
-        Log.d("test", "test1")
+        val buttonCalculate = view.findViewById(R.id.uploadImage) as ImageView
 
-        sendToPost()
+        val fuckButton = view.findViewById(R.id.button_post) as Button
 
-        uploadImage.setOnClickListener {
-            Log.d("test", "test2")
-            requestPermissions()
-            val intent = Intent(
-                    Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            )
-            /* intent.type = "image/*"
-             intent.setAction(Intent.ACTION_GET_CONTENT)*/
-            */
+        fuckButton.setOnClickListener() {
+            Toast.makeText(activity, "Hejho", Toast.LENGTH_SHORT).show()
+        }
 
-            startActivityForResult(intent, 0)
+        buttonCalculate.setOnClickListener() {
+            Toast.makeText(activity, "Hejho", Toast.LENGTH_SHORT).show()
         }
     }
 
-
-    private fun hasWriteExternalStoragePermission() =
-            context?.let { ActivityCompat1.checkSelfPermission(it, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) } == PackageManager.PERMISSION_GRANTED
-
-    private fun requestPermissions() {
-        var permissionsToRequest = mutableListOf<String>()
-        if(!hasWriteExternalStoragePermission()){
-            permissionsToRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        if(permissionsToRequest.isNotEmpty()){
-            ActivityCompat1.requestPermissions(context as Activity, permissionsToRequest.toTypedArray(), 0)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 0 && grantResults.isNotEmpty()) {
-            for (i in grantResults.indices){
-                if (grantResults[i] == PackageManager.PERMISSION_GRANTED){
-                    Log.d("permissionRequest", "${permissions[i]} granted.")
-                }
-            }
-        }
-    }
-
-
-    var selectedPicture: Uri? = null;
-
-    private fun sendToPost() {
-
-        val title = title_field.text.toString();
-        val description = description_field.text.toString();
-        val ownerId =  "fdsfsd";
-
-        button_post.setOnClickListener {
-            val post = Post("", title, description, "", ownerId, null , null)
-            sendForm.postPostToDb(post)
-        }
-    }
-
-   /* private fun selectPicture() {
-        uploadImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, 0)
-        }
-    }*/
-
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0 && resultCode == RESULT_OK && data != null) {
-            //the image URI
-            val selectedImage = data.data
-
-            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-
-            val cursor = context?.contentResolver?.query(selectedImage!!, filePathColumn, null, null, null)
-            assert(cursor != null)
-            cursor!!.moveToFirst()
-
-            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-            mediaPath = cursor.getString(columnIndex)
-            // Set the Image in ImageView for Previewing the Media
-
-            //Setting the image on frontend
-            bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImage)
-            register_profile_image.setImageBitmap(bitmap)
-        }
-    }
 
     /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -214,6 +103,10 @@ class UploadFragment(context: Context) : Fragment() {
         }
 }*/
 
+}
+
+private fun ImageView.setOnClickListener(uploadFragment: UploadFragment) {
+    Log.d("test", "test3")
 }
 
 
