@@ -1,10 +1,15 @@
 package com.example.trixi
 
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
+import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
          val homepageFragment = HomepageFragment()
-         val postFragment = PostFragment()
+         val postFragment = UploadFragment(this)
          val searchFragment = SearchFragment()
 
          makeCurrentFragment(homepageFragment)
@@ -36,6 +41,35 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+
+    private fun hasWriteExternalStoragePermission() =
+            ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+    private fun requestPermissions() {
+        var permissionsToRequest = mutableListOf<String>()
+        if(!hasWriteExternalStoragePermission()){
+            permissionsToRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if(permissionsToRequest.isNotEmpty()){
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 0)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 0 && grantResults.isNotEmpty()) {
+            for (i in grantResults.indices){
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                    Log.d("permissionRequest", "${permissions[i]} granted.")
+                }
+            }
+        }
     }
 
     private fun makeCurrentFragment(fragment: Fragment) =

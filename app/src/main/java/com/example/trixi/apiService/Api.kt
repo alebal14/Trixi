@@ -19,19 +19,15 @@ interface Api {
 
     @Multipart
     @POST("users")
-    fun uploadProfileImage(
-            @Part("file") file: String,
-    ):Call<ResponseBody>
+    fun uploadProfileImage(@Part("file") file: String,):Call<ResponseBody>
 
 
     @Multipart
-    @POST("post")
-    fun postPost(
-        //@Part("file") file: Files,
-        @Part("title") title: RequestBody?,
-        @Part("description") description: RequestBody?,
-        @Part("ownerId") ownerId: RequestBody?,
-    ) : Call<Post>?
+    @POST("posts")
+    fun postPicToDb(@Part("file") file: String,):Call<ResponseBody>
+
+    @POST("posts")
+    fun postPostToDb(@Body post: Post) : Call<Post>?
 
     @GET("login")
     fun getLoggedInUser(): Call<User>
