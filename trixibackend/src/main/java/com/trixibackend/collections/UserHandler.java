@@ -11,9 +11,10 @@ import com.trixibackend.entity.User;
 import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -262,29 +263,6 @@ public class UserHandler {
     public String uploadProfileImage(FileItem file) throws IOException {
 
 
-
-        InputStream inputStream = new ByteArrayInputStream(file.get());
-
-
-        StringBuilder textBuilder = new StringBuilder();
-        try (Reader reader = new BufferedReader(new InputStreamReader
-                (inputStream, Charset.forName(StandardCharsets.UTF_8.name())))) {
-            int c = 0;
-            while ((c = reader.read()) != -1) {
-                textBuilder.append((char) c);
-            }
-        }
-
-        String fileUrl = textBuilder.toString();
-
-        try(var os = new FileOutputStream(Paths.get("/src/images" + fileUrl).toString())){
-            os.write(file.get());
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-
-        System.out.println("inhandler: " + fileUrl);
 
         return fileUrl;
     }

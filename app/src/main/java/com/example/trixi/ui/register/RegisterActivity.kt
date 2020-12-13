@@ -32,6 +32,7 @@ class RegisterActivity : AppCompatActivity() {
     var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
     var encodedImage: String = ""
     var filePath = ""
+    var hashMap = HashMap<String, String>()
 
 
     private val mMediaUri: Uri? = null
@@ -107,10 +108,10 @@ class RegisterActivity : AppCompatActivity() {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             //check what the selected image is
 
-            /*selectedPhotouri = data.data
+            selectedPhotouri = data.data
 
             bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotouri)
-            register_profile_image.setImageBitmap(bitmap)*/
+            register_profile_image.setImageBitmap(bitmap)
 
             //---------------------------------------------------------------
 
@@ -139,12 +140,7 @@ class RegisterActivity : AppCompatActivity() {
             val file = File(postPath)
 
 
-            val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
-            val body = MultipartBody.Part.createFormData("pic", file.getName(), reqFile)
-            val name = RequestBody.create(MediaType.parse("multipart/form-data"), "upload_test")
-
-
-            post.PostImageToServer(body, name)
+            post.PostImageToServer()
         }
     }
 
@@ -155,10 +151,7 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-
-        val imageInByte: ByteArray = byteArrayOutputStream.toByteArray()
-        encodedImage = Base64.encodeToString(imageInByte, Base64.DEFAULT)
+       
 
 
         registerUser()
@@ -174,9 +167,9 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val user = User("", userName, email, password, "", "", "user", null, null)
+        val user = User("", userName, email, password, "", encodedImage, "user", null, null)
             println("here")
-        post.PostRegisterUserToDb(user)
+       // post.PostRegisterUserToDb(user)
 
 
     }

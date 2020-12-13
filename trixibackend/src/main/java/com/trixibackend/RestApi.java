@@ -10,12 +10,12 @@ import express.middleware.Middleware;
 import express.utils.Status;
 import express.utils.Status;
 import org.apache.commons.fileupload.FileItem;
-import org.bson.internal.Base64;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -132,20 +132,14 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
 
-                  //Image image = (Image) req.getBody(Image.class);
-                   // System.out.println("image: " + image.getFile());
+                 // User user = (User) req.getBody(User.class);
+
                     User user = new User();
-                  //  final String currentDir = System.getProperty("user.dir");
-                   // String pathFile = currentDir + "/src/main/java/images";
 
                     String fileUrl = null;
                     try{
-
-                        List<FileItem> files = req.getFormData("files");
+                        List<FileItem> files = req.getFormData("file");
                         System.out.println("here");
-
-
-
 
                         if(files == null){
                             res.send("files null");
@@ -157,9 +151,9 @@ public class RestApi {
                         e.printStackTrace();
                     }
 
-                   // user.setImageUrl(fileUrl);
-                    //String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                    //user.setPassword(hashedPassword);
+                    user.setImageUrl(fileUrl);
+                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    user.setPassword(hashedPassword);
                     res.json(user);
                     //res.json(db.save(user));
                     break;

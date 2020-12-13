@@ -15,11 +15,11 @@ interface Api {
     @POST("users")
     fun createUser(@Body user: User): Call<User>
 
-    @Multipart
+   @Multipart
     @POST("users")
     fun uploadProfileImage(
-        @Part files: MultipartBody.Part,
-        @Part ("name") name :RequestBody
+     //  @Part ("name") name :RequestBody,
+        @Part file: MultipartBody.Part
     ):Call<ResponseBody>
 
     //@Part files: MultipartBody.Part

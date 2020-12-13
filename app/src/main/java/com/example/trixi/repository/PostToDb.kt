@@ -44,10 +44,10 @@ class PostToDb {
         })
     }
 
-    fun PostImageToServer(image: MultipartBody.Part, name: RequestBody) {
+    fun PostImageToServer() {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.uploadProfileImage(image, name)
+        val call = retrofitClient?.uploadProfileImage()
         call?.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("Image", "Image : onfailure " + t.message)
