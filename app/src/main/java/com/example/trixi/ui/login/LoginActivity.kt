@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.trixi.NetworkStateReceiver
 
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb

@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
+import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.ui.login.LoginActivity

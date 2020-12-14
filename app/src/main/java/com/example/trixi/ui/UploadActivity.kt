@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import kotlinx.android.synthetic.main.activity_upload.*
@@ -146,7 +147,7 @@ class UploadActivity : AppCompatActivity() {
     private fun sendPost(){
         val title = title_field.text.toString()
         val description = description_field.text.toString()
-        val ownerId = PostToDb.loggedInUser?.uid
+        val ownerId = PostToDb.loggedInUser?.uid.toString()
 
 
 

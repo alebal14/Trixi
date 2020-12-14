@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.trixi.apiService.Api
+import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import retrofit2.Call
