@@ -37,7 +37,9 @@ class PostToDb {
                 call: Call<User>, response: Response<User>
             ) {
                 if(response.isSuccessful){
+
                     Log.d("user", "login-user : onResponse success" + response.message())
+
                     GetLoggedInUserFromDB(context)
                 }else{
                     Log.d("user", "login-user : onResponse else: password and username/email dont match")
@@ -142,5 +144,8 @@ class PostToDb {
         })
 
     }
+
+
+
 
 }

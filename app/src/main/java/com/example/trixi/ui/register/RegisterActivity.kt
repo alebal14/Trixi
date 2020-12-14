@@ -158,4 +158,5 @@ class RegisterActivity : AppCompatActivity() {
         post.PostRegisterUserToDb(user, this)
 
     }
+
 }
