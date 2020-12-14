@@ -172,10 +172,10 @@ public class RestApi {
                         post.setFilePath(filePostImage);
 
 
-                    var result = db.postColl.insertOne(post);
-                    post.setId(result.getInsertedId().asObjectId().getValue());
-                    post.setUid(post.getId().toString());
-                    res.json(db.save(post));
+
+                    Post p = db.save(post);
+                    p.setUid(p.getUid().toString());
+                    res.json(db.save(p));
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);
