@@ -101,31 +101,4 @@ class GetFromDbViewModel : ViewModel() {
     }
 
 
-    fun getOneUserFromDb1(id: String?): User? {
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-        var user: User? = null
-        val call = retrofitClient?.getUserById(id)
-        call?.enqueue(object : Callback<User> {
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("uus", "user : onfailure " + t.message)
-
-            }
-
-            override fun onResponse(
-                call: Call<User>, response: Response<User>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("uus", "success")
-                    user = response.body()!!
-                } else {
-                    user = null
-                }
-
-            }
-
-        })
-        return user
-
-    }
-
 }
