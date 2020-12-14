@@ -18,8 +18,6 @@ import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.register.RegisterActivity
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 
 

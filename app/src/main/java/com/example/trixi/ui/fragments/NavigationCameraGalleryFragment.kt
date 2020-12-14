@@ -2,6 +2,7 @@ package com.example.trixi.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,16 @@ class NavigationCameraGalleryFragment : Fragment() {
         // Inflate the layout for this fragment
         val view : View =  inflater.inflate(R.layout.fragment_btn_gallery_camera_toolbar, container, false)
         val goToGallery = view.findViewById<View>(R.id.btn_open_img_gallery) as ImageButton
-        val goToGamera : ImageButton = view.findViewById<View>(R.id.btn_take_picure) as ImageButton
+        val goToCamera : ImageButton = view.findViewById<View>(R.id.btn_take_picure) as ImageButton
+
+        goToCamera.setOnClickListener{view ->
+            Log.d("button", "Button clicked")
+        }
+
+        goToGallery.setOnClickListener{view ->
+            Log.d("button", "Button clicked")
+        }
+
         return view;
 
     }
