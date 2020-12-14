@@ -149,6 +149,11 @@ public class RestApi {
                 e.printStackTrace();
             }
         });
+        try{
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpPostApi(String collectionName) {
