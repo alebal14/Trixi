@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,6 +21,8 @@ import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_upload.*
 import java.io.ByteArrayOutputStream
 
@@ -117,8 +121,12 @@ class UploadActivity : AppCompatActivity() {
             // Set the Image in ImageView for Previewing the Media
 
             //Setting the image on frontend
-            bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
-            uploadImage.setImageBitmap(bitmap)
+            //bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+            //uploadImage.setImageBitmap(bitmap)
+
+            val totheView = findViewById<View>(R.id.uploadImage) as ImageView
+
+            Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)
 
             cursor.close()
 
