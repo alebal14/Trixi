@@ -20,7 +20,7 @@ import com.example.trixi.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 
-class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityReceiverListener {
+class LoginActivity : AppCompatActivity() {
 
     val model: GetFromDbViewModel by viewModels()
     val post = PostToDb()
@@ -33,12 +33,6 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)
 
-
-
-        registerReceiver(
-            NetworkStateReceiver(),
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        )
 
         login_no_account.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -75,36 +69,12 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
 
     }
 
-    private fun showMessage(isConnected: Boolean) {
-        if (!isConnected) {
-            Toast.makeText(
-                applicationContext,
-                "Internet Not Available",
-                Toast.LENGTH_LONG
-            ).show()
-        } else {
-            Log.d("networkaccess", "connected")
-        }
-    }
-
         /*model.GetAllUsersFromDB()
         model.getUserMutableLiveDataList().observe(this, Observer{
             it.forEach{
                 Log.d("uus", "UserName : ${it.userName!!}")
             }
         } )*/
-
-
-    override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        showMessage(isConnected)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        NetworkStateReceiver.connectivityReceiverListener = this
-    }
-
-
 
 
 }

@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
+import com.example.trixi.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityReceiverListener {
 
 
     val model: GetFromDbViewModel by viewModels()
@@ -30,9 +32,14 @@ class MainActivity : AppCompatActivity() {
 
         //setContentView(R.layout.fragment_share)
 
+         registerReceiver(
+             NetworkStateReceiver(),
+             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+         )
+
 
          val homepageFragment = HomepageFragment()
-         val postFragment = UploadFragment()
+         val postFragment = PostFragment()
          val searchFragment = SearchFragment()
 
 
@@ -74,8 +81,27 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    private fun showMessage(isConnected: Boolean) {
+        if (!isConnected) {
+            Toast.makeText(
+                applicationContext,
+                "Internet Not Available",
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            Log.d("networkaccess", "connected")
+        }
+    }
 
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        showMessage(isConnected)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        NetworkStateReceiver.connectivityReceiverListener = this
+    }
+    
     }
 
 

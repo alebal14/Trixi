@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import com.example.trixi.R
 import com.example.trixi.entities.Comment
 import com.example.trixi.entities.User
