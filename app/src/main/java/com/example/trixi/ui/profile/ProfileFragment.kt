@@ -1,50 +1,25 @@
 package com.example.trixi.ui.profile
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.trixi.R
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
-
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.profile_media_thumbnail.view.*
 
 class ProfileFragment : Fragment() {
 
-    var user: User? = PostToDb.loggedInUser
-    private lateinit var name: String
-    private lateinit var description: String
-    private lateinit var profile_url: String
-    private lateinit var following: String
-    private lateinit var followers: String
-    private lateinit var owner: String
-    private lateinit var listener: OnProfileSelected
+    val loggedInUser: User? = PostToDb.loggedInUser
 
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context != null) {
-            val resources = context.resources
-            name = getString(R.string.profile_name)
-            description = getString(R.string.bio_text)
-            owner = getString(R.string.pet_owner)
-            followers = getString(R.string.number_of_followers)
-            following = getString(R.string.number_of_following)
-
-            setUpProfile()
-        }
-    }
-
-    private fun setUpProfile() {
-        name = user!!.userName.toString()
-    }
 
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -56,41 +31,43 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setRecycleView(view)
+        populateProfile()
+        populateMediaGrid()
     }
 
-    private fun setRecycleView(view: View) {
+    private fun populateProfile() {
 
-        val adapter = GroupAdapter<com.xwray.groupie.GroupieViewHolder>()
+        if(loggedInUser != null) {
+            profile_name.text = loggedInUser.userName
+            profile_bio.text = loggedInUser.bio
+            //use your ip here
+            Picasso.get().load("http://192.168.8.101:3000/" + loggedInUser.imageUrl).fit().into(profile_image)
+            owner_name.visibility = View.INVISIBLE
 
-        adapter.add(MediaItem())
-        adapter.add(MediaItem())
-        adapter.add(MediaItem())
-        adapter.add(MediaItem())
-
-        media_grid.adapter = adapter;
-
-        adapter.apply {
-            val gridLayoutManager = GridLayoutManager(
-                context,
-                3,
-                GridLayoutManager.VERTICAL,
-                false
-            )
+            //TODO: get followers & following
+//            profile_followers
+//            profile_following
         }
     }
 
+    private fun populateMediaGrid() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        val adapter = GroupAdapter<GroupieViewHolder>()
+        media_grid.adapter = adapter
+
+        adapter.add(MediaItem())
+        adapter.add(MediaItem())
+        adapter.add(MediaItem())
+        adapter.add(MediaItem())
     }
 
     class MediaItem() : Item() {
-
+        //TODO make it post
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-            //viewHolder.itemView.background = post.path
+            viewHolder.itemView.apply {
+                Picasso.get().load("https://imgur.com/IjMSpbA").into(media_item)
+            }
         }
-
         override fun getLayout() : Int = R.layout.profile_media_thumbnail
     }
 
@@ -99,9 +76,9 @@ class ProfileFragment : Fragment() {
 
     }
 
-    interface OnProfileSelected {
-        fun onProfileSelected(profileModel: ProfileViewModel)
-    }
+//    interface OnProfileSelected {
+//        fun onProfileSelected(profileModel: ProfileViewModel)
+//    }
 
 
 }

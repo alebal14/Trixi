@@ -57,8 +57,6 @@ public class RestApi {
         setImagePostApi();
     }
 
-
-
     private void setUpUpdateApi() {
 
         app.post("/api/users/follow/:userid/:followingId", (req, res) -> {
@@ -144,7 +142,6 @@ public class RestApi {
                 e.printStackTrace();
             }
         });
-
         try{
             app.use(Middleware.statics(Paths.get("").toString()));
         } catch (IOException e) {

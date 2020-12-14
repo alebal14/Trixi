@@ -10,10 +10,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.45"
-         />
+            app:layout_constraintGuide_percent="0.45" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
             android:layout_width="153dp"
             android:layout_height="177dp"
@@ -21,7 +20,6 @@
             android:contentDescription="profile image"
             android:paddingLeft="20dp"
             android:paddingTop="30dp"
-            android:src="@drawable/ic_circle_frame"
             app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.062"
@@ -29,25 +27,39 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.451">
 
-    </ImageView>
+    </de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
             android:id="@+id/profile_name"
-            android:layout_width="215dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:drawablePadding="20dp"
+            android:paddingLeft="20dp"
             android:paddingTop="20dp"
-            android:text="@string/profile_name"
+            android:text="@string/profile_userName"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorTeal"
             android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ic_heart_empty"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/mid_screen"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.061" />
+
+
+    <ImageButton
+            android:id="@+id/follow_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/white"
+            android:paddingTop="15dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/ic_heart_empty"
+            app:layout_constraintLeft_toRightOf="@id/profile_name"
+            app:layout_constraintBottom_toBottomOf="@id/profile_name"
+          />
 
     <TextView
             android:id="@+id/profile_bio"
@@ -161,10 +173,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab"
             app:layout_constraintVertical_bias="0.448"
-            tools:itemCount="20"
+            tools:itemCount="10"
             tools:layoutManager="GridLayoutManager"
             tools:listitem="@layout/profile_media_thumbnail"
-            tools:spanCount="5" />
+            tools:spanCount="4" />
 
     <TextView
             android:id="@+id/owner_name"
