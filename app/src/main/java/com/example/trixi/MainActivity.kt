@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
@@ -49,8 +48,6 @@ class MainActivity : AppCompatActivity() {
 //         homepageFragment.arguments = bundle
 
          makeCurrentFragment(homepageFragment)
-
-
 
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){

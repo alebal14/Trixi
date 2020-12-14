@@ -25,16 +25,16 @@ interface Api {
 
 
     @Multipart
-    @POST("image")
+    @POST("rest/image")
     fun postProfileImage(
             @Part("file") file: String
     ):Call<ResponseBody>
 
 
-    @POST("posts")
+    @POST("rest/posts")
     fun postPostToDb(@Body post: Post) : Call<Post>
 
-    @GET("login")
+    @GET("rest/login")
 
     fun getLoggedInUser(): Call<User>
 
