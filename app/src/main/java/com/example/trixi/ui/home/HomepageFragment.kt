@@ -74,6 +74,7 @@ class HomepageFragment : Fragment() {
 
         if (PostToDb.loggedInUser != null) {
             val adapter = GroupAdapter<GroupieViewHolder>()
+            adapter.clear()
             model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
                     Log.d("uus", "total posts : ${posts.size}")
