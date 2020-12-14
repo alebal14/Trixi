@@ -105,30 +105,30 @@
 
                 <ImageButton
                     android:id="@+id/home_item_edit"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ic_baseline_edit_24" />
 
                 <ImageButton
                     android:id="@+id/home_item_profile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ic_baseline_pets_24" />
 
 
                 <ImageButton
                     android:id="@+id/home_item_chat"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ic_baseline_chat_bubble_outline_24" />
 
                 <ImageButton
                     android:id="@+id/home_item_like"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/ic_baseline_favorite_border_24" />
 
