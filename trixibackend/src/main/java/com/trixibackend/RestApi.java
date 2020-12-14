@@ -144,6 +144,7 @@ public class RestApi {
         app.post("/rest/image", (req, res) -> {
             try {
                 files = req.getFormData("file");
+                System.out.println(files);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -164,16 +165,12 @@ public class RestApi {
                     res.send("Created User");
                     break;
                 case "posts":
-                    //String filePostImage = null;
                     Post post = (Post) req.getBody(Post.class);
-                    String filePostImage = db.getPostHandler().uploadImage(files);
-                    System.out.println(filePostImage);
-                    post.setFilePath(filePostImage);
-                    /*if(files != null){
+
                         String filePostImage = db.getPostHandler().uploadImage(files);
                         System.out.println(filePostImage);
                         post.setFilePath(filePostImage);
-                    }*/
+
                     res.json(db.save(post));
                     break;
                 case "pets":
