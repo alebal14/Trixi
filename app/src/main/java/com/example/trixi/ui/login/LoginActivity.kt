@@ -35,10 +35,14 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
 
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)
+
+
         registerReceiver(
             NetworkStateReceiver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
+
+
 
         login_no_account.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -61,6 +65,7 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         }
 
         //testObserver getAllUsers:
+        /*
 
         model.GetAllUsersFromDB()
         model.getUserMutableLiveDataList().observe(this, Observer {
@@ -68,6 +73,8 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
                 Log.d("uus", "UserName : ${it.userName!!}")
             }
         })
+
+         */
 
     }
 
@@ -99,6 +106,8 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         super.onResume()
         NetworkStateReceiver.connectivityReceiverListener = this
     }
+
+
 
 
 }
