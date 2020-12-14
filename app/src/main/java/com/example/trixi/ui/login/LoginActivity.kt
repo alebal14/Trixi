@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.trixi.NetworkStateReceiver
+import androidx.activity.viewModels
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
@@ -20,18 +21,18 @@ import com.example.trixi.ui.register.RegisterActivity
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
-import retrofit2.Retrofit
 
 
 class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityReceiverListener {
 
     val model: GetFromDbViewModel by viewModels()
+    val post = PostToDb()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val post = PostToDb()
+
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)
         registerReceiver(
@@ -60,6 +61,7 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         }
 
         //testObserver getAllUsers:
+
         model.GetAllUsersFromDB()
         model.getUserMutableLiveDataList().observe(this, Observer {
             it.forEach {
@@ -80,6 +82,14 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
             Log.d("networkaccess", "connected")
         }
     }
+
+        /*model.GetAllUsersFromDB()
+        model.getUserMutableLiveDataList().observe(this, Observer{
+            it.forEach{
+                Log.d("uus", "UserName : ${it.userName!!}")
+            }
+        } )*/
+
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         showMessage(isConnected)
