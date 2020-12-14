@@ -142,6 +142,11 @@ public class RestApi {
                 e.printStackTrace();
             }
         });
+        try{
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpPostApi(String collectionName) {
@@ -318,4 +323,5 @@ public class RestApi {
             res.send("Successfully logged out");
         });
     }
+
 }
