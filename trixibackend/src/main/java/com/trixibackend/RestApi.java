@@ -161,7 +161,7 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     String fileUrl = null;
-                    fileUrl = db.getUserHandler().uploadImage(files);
+                    fileUrl = db.uploadImage(files);
                     User user = (User) req.getBody(User.class);
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
@@ -172,11 +172,15 @@ public class RestApi {
                 case "posts":
                     Post post = (Post) req.getBody(Post.class);
 
-                        String filePostImage = db.getPostHandler().uploadImage(files);
+                        String filePostImage = db.uploadImage(files);
                         System.out.println(filePostImage);
                         post.setFilePath(filePostImage);
 
-                    res.json(db.save(post));
+
+
+                    Post p = db.save(post);
+                    p.setUid(p.getUid().toString());
+                    res.json(db.save(p));
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);
@@ -259,13 +263,14 @@ public class RestApi {
 
             User user = db.getUserHandler().findUserById(id);
 
-            var updatedUser = db.getUserHandler().findUserFollowingPostList(user);
-            if (updatedUser == null) {
+            var followingPostList = db.getUserHandler().findUserFollowingPostList(user);
+            if (followingPostList == null) {
                 res.setStatus(Status._403);
                 //res.send("Error: you are not following this Pet");
                 return;
             }
-            res.json(updatedUser);
+            System.out.println(followingPostList.size());
+            res.json(followingPostList);
         });
 
 
@@ -315,6 +320,8 @@ public class RestApi {
             }
 
             var user = (User) sessionCookie.getData();
+            user.setUid(user.getId().toString());
+
             user.setPassword(null); // sanitize password
             res.json(user);
 

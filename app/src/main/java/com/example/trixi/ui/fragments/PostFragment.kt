@@ -5,7 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.viewpager.widget.ViewPager
 import com.example.trixi.R
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabItem
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.viewpager.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +29,8 @@ class PostFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,6 +38,7 @@ class PostFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+
         }
 
     }
@@ -41,14 +50,13 @@ class PostFragment : Fragment() {
 
         inflater.inflate(R.layout.fragment_post, container, false)
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        makeCurrentFragment(UploadFragment())
+        makeCurrentFragment(CameraFragment())
 
     }
-
-
 
 
     private fun makeCurrentFragment(fragment: Fragment) =
@@ -57,6 +65,12 @@ class PostFragment : Fragment() {
             commit()
         }
 }
+
+
+
+
+
+
 
 
 

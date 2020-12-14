@@ -9,18 +9,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
+
 import com.example.trixi.NetworkStateReceiver
-import androidx.activity.viewModels
+
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.register.RegisterActivity
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -39,12 +36,11 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         post.GetLoggedInUserFromDB(this)
 
 
+
         registerReceiver(
             NetworkStateReceiver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
-
-
 
         login_no_account.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -62,11 +58,12 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
                 val user = User("", usernameOrEmail, "", password, "", "", "", null, null)
                 post.PostLoginUserToDb(user, this)
             }
-
-
         }
 
+
+
         //testObserver getAllUsers:
+
         /*
 
         model.GetAllUsersFromDB()
