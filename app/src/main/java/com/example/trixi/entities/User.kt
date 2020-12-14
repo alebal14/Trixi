@@ -12,9 +12,5 @@ data class User(
     val role: String?,
     val pets: ArrayList<Pet>?,
     val posts: ArrayList<Post>?
-) {
-
-
-}
-
+) : Serializable
 
