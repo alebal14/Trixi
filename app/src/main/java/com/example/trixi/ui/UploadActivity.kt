@@ -1,4 +1,4 @@
-package com.example.trixi.ui.register
+package com.example.trixi.ui
 
 import android.app.Activity
 import android.app.ProgressDialog
@@ -15,48 +15,53 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.trixi.R
-import com.example.trixi.entities.User
+import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.login.LoginActivity
-import kotlinx.android.synthetic.main.activity_register.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
+import kotlinx.android.synthetic.main.activity_upload.*
 import java.io.ByteArrayOutputStream
 
+class UploadActivity : AppCompatActivity() {
 
-class RegisterActivity : AppCompatActivity() {
-
-    val post = PostToDb()
+    val db = PostToDb()
     var selectedImage: Uri? = null
     lateinit var bitmap : Bitmap
     var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
     var encodedImage: String = ""
     var filePath = ""
+
+
+    private val mMediaUri: Uri? = null
+
+    private var fileUri: Uri? = null
+
     private var mediaPath: String? = null
+
+    private var mImageFileLocation = ""
+    private lateinit var pDialog: ProgressDialog
     private var postPath: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.activity_upload)
+        RetrofitClient.context = this
 
-        register_already_account.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
-
-        register_profile_image.setOnClickListener {
+        uploadImage.setOnClickListener {
             requestPermissions()
             val intent = Intent(
                     Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
+
             startActivityForResult(intent, 0)
         }
 
-        button_register.setOnClickListener {
-            saveProfileImage()
+        button_post.setOnClickListener(){
+            sendImage()
         }
+
+
     }
 
     private fun hasWriteExternalStoragePermission() =
@@ -93,7 +98,8 @@ class RegisterActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
 
-            selectedImage = data.getData()
+
+            var selectedImage = data.getData()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
             val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
@@ -106,26 +112,25 @@ class RegisterActivity : AppCompatActivity() {
 
             //Setting the image on frontend
             bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
-            register_profile_image.setImageBitmap(bitmap)
+            uploadImage.setImageBitmap(bitmap)
 
             cursor.close()
 
             postPath = mediaPath
+
+
         }
     }
 
-    private fun saveProfileImage(){
-        if (selectedImage == null){
-            Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
-            return
-        }
+    private fun sendImage(){
+
 
         //convert the image to bitmap
         val convertImageBitmap = BitmapFactory.decodeFile(postPath)
 
         val baos = ByteArrayOutputStream()
         //compressing the bitmap
-        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100, baos)
+        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
 
         //coberting the image to bytearray
         val imageByte = baos.toByteArray()
@@ -134,28 +139,27 @@ class RegisterActivity : AppCompatActivity() {
         encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
 
         //sending the image
-        post.PostImageToDb(encodedImage)
+        db.PostImageToDb(encodedImage)
 
-        registerUser()
+        sendPost()
     }
 
-    private fun registerUser(){
-        val userName = register_username.text.toString()
-        val email = register_email.text.toString()
-        val password = register_password.text.toString()
+    private fun sendPost(){
+        val title = title_field.text.toString()
+        val description = description_field.text.toString()
+        val ownerId = "5fd717a13a10671714c367eb"
 
-        if (userName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
+
+
+        if (title.isEmpty()) {
+            Toast.makeText(this, "Please enter a title", Toast.LENGTH_LONG).show()
             return
         }
 
-        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(this, "Wrong email-Format, try again", Toast.LENGTH_LONG).show()
-            return
-        }
+        val post = Post("", title, description, ownerId, null, null)
 
-        val user = User(null, userName, email, password, null, null, "user", null, null)
-        post.PostRegisterUserToDb(user, this)
+        db.sendPostToDb(post)
+
 
     }
 

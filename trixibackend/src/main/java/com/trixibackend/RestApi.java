@@ -2,6 +2,7 @@ package com.trixibackend;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.trixibackend.entity.*;
 import express.Express;
 import express.http.Cookie;
@@ -9,9 +10,22 @@ import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
 import express.utils.Status;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.MultipartStream;
+import org.apache.commons.io.FilenameUtils;
 
-import java.util.Locale;
-import java.util.Map;
+import javax.naming.Reference;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RestApi {
 
@@ -40,8 +54,13 @@ public class RestApi {
         setLoginUser();
         getLoggedinUser();
         logoutUser();
+        setImagePostApi();
 
-
+        try {
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpUpdateApi() {
@@ -120,19 +139,38 @@ public class RestApi {
     private void setUpDeleteApi(String collectionName) {
     }
 
+    List<FileItem> files = null;
+    private void setImagePostApi(){
+        app.post("/rest/image", (req, res) -> {
+            try {
+                files = req.getFormData("file");
+                System.out.println(files);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     private void setUpPostApi(String collectionName) {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
+                    String fileUrl = null;
+                    fileUrl = db.getUserHandler().uploadImage(files);
                     User user = (User) req.getBody(User.class);
-
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
-
+                    user.setImageUrl(fileUrl);
                     res.json(db.save(user));
+                    res.send("Created User");
                     break;
                 case "posts":
                     Post post = (Post) req.getBody(Post.class);
+
+                        String filePostImage = db.getPostHandler().uploadImage(files);
+                        System.out.println(filePostImage);
+                        post.setFilePath(filePostImage);
+
                     res.json(db.save(post));
                     break;
                 case "pets":
@@ -280,6 +318,8 @@ public class RestApi {
         });
 
     }
+
+
 
     private void logoutUser(){
         app.get("/rest/logout", (req, res) -> {
