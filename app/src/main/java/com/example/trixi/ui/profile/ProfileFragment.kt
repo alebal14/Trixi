@@ -15,6 +15,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.profile_media_item.*
 import kotlinx.android.synthetic.main.profile_media_item.view.*
 
 class ProfileFragment : Fragment() {

@@ -36,7 +36,7 @@
             android:drawablePadding="20dp"
             android:paddingLeft="20dp"
             android:paddingTop="20dp"
-            android:text="@string/profile_userName"
+            android:text="@string/profile_user_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorTeal"
             android:textStyle="bold"
@@ -59,7 +59,7 @@
             android:src="@drawable/ic_heart_empty"
             app:layout_constraintLeft_toRightOf="@id/profile_name"
             app:layout_constraintBottom_toBottomOf="@id/profile_name"
-          />
+            />
 
     <TextView
             android:id="@+id/profile_bio"
