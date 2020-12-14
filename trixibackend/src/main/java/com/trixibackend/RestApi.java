@@ -165,26 +165,18 @@ public class RestApi {
                     res.json(db.save(user));
                     break;
                 case "posts":
-                    /*String fileUrl = null;
-
-                    try {
-                        List<FileItem> files = req.getFormData("file");
-                        fileUrl = db.getPostHandler().uploadFile(files.get(0));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    
-                    Post post = (Post) req.getBody(Post.class);
-                    post.setFilePath(fileUrl);*/
-
-
 
                     try {
 
                         List<FileItem> files = req.getFormData("file");
-                        fileUrl = db.getPostHandler().uploadPostImage(files);
+
+                        if(files != null){
+                            fileUrl = db.getPostHandler().uploadPostImage(files);
+                            Post post = (Post) req.getBody(Post.class);
+                            post.setFilePath(fileUrl);
+                            res.json(db.save(post));
+                        }
                         Post post = (Post) req.getBody(Post.class);
-                        post.setFilePath(fileUrl);
                         res.json(db.save(post));
 
                     } catch (Exception e) {

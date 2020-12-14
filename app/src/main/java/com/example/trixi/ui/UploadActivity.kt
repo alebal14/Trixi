@@ -1,4 +1,4 @@
-package com.example.trixi
+package com.example.trixi.ui
 
 import android.app.Activity
 import android.app.ProgressDialog
@@ -14,11 +14,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.login.LoginActivity
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_upload.*
 import java.io.ByteArrayOutputStream
 
@@ -46,7 +45,7 @@ class UploadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload)
-
+        RetrofitClient.context = this
 
         uploadImage.setOnClickListener {
             requestPermissions()
@@ -157,7 +156,7 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-        val post = Post("", title, description, "", ownerId, null, null)
+        val post = Post("", title, description, ownerId, null, null)
 
         db.sendPostToDb(post)
 

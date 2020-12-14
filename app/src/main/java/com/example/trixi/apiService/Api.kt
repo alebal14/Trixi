@@ -23,11 +23,11 @@ interface Api {
 
 
     @Multipart
-    @POST("posts")
+    @POST("posts/file")
     fun postPicToDb(@Part("file") file: String,):Call<ResponseBody>
 
     @POST("posts")
-    fun postPostToDb(@Body post: Post) : Call<Post>?
+    fun postPostToDb(@Body post: Post) : Call<Post>
 
     @GET("login")
     fun getLoggedInUser(): Call<User>

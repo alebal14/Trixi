@@ -39,7 +39,7 @@
 
         </activity>
         <activity android:name=".ui.register.RegisterActivity"/>
-        <activity android:name=".UploadActivity"/>
+        <activity android:name=".ui.UploadActivity"/>
 
         <!--        <activity android:name=".ui.home.HomepageActivity"/>-->
 
