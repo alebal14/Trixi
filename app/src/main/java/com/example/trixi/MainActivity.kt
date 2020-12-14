@@ -1,6 +1,7 @@
 package com.example.trixi
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.trixi.entities.User
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
          }
 
     }
+
 
     private fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
