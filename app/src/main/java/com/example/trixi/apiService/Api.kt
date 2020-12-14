@@ -27,14 +27,8 @@ interface Api {
     ):Call<ResponseBody>
 
 
-    @Multipart
-    @POST("post")
-    fun postPost(
-        //@Part("file") file: Files,
-        @Part("title") title: RequestBody?,
-        @Part("description") description: RequestBody?,
-        @Part("ownerId") ownerId: RequestBody?,
-    ) : Call<Post>?
+    @POST("posts")
+    fun postPostToDb(@Body post: Post) : Call<Post>
 
     @GET("login")
     fun getLoggedInUser(): Call<User>

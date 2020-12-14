@@ -55,6 +55,12 @@ public class RestApi {
         getLoggedinUser();
         logoutUser();
         setImagePostApi();
+
+        try {
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpUpdateApi() {
@@ -138,6 +144,7 @@ public class RestApi {
         app.post("/rest/image", (req, res) -> {
             try {
                 files = req.getFormData("file");
+                System.out.println(files);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -149,7 +156,7 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     String fileUrl = null;
-                    fileUrl = db.getUserHandler().uploadProfileImage(files);
+                    fileUrl = db.getUserHandler().uploadImage(files);
                     User user = (User) req.getBody(User.class);
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
@@ -158,14 +165,12 @@ public class RestApi {
                     res.send("Created User");
                     break;
                 case "posts":
-                    /*String fileUrl = null;
-                    fileUrl = db.getPostHandler().uploadFile(files.get(0));
-
-
                     Post post = (Post) req.getBody(Post.class);
-                    post.setFilePath(fileUrl);*/
 
-                    Post post = (Post) req.getBody(Post.class);
+                        String filePostImage = db.getPostHandler().uploadImage(files);
+                        System.out.println(filePostImage);
+                        post.setFilePath(filePostImage);
+
                     res.json(db.save(post));
                     break;
                 case "pets":
@@ -310,6 +315,8 @@ public class RestApi {
         });
 
     }
+
+
 
     private void logoutUser(){
         app.get("/rest/logout", (req, res) -> {

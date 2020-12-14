@@ -3,10 +3,11 @@ package com.example.trixi
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
+import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.fragment_share)
 
          val homepageFragment = HomepageFragment()
-         val postFragment = PostFragment()
+         val postFragment = UploadFragment()
          val searchFragment = SearchFragment()
 
          makeCurrentFragment(homepageFragment)
@@ -27,16 +28,12 @@ class MainActivity : AppCompatActivity() {
                  R.id.footer_home -> makeCurrentFragment(homepageFragment)
                  R.id.footer_search -> makeCurrentFragment(searchFragment)
                  R.id.footer_post -> makeCurrentFragment(postFragment)
-
-                 
-
              }
              true
          }
 
-
-
     }
+
 
     private fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {

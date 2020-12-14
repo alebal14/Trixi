@@ -267,7 +267,7 @@ public class UserHandler {
         p.setPosts(null);
     }
 
-    public String uploadProfileImage(List<FileItem> file) {
+    public String uploadImage(List<FileItem> file) {
 
         String fileUrl = null;
 
@@ -308,6 +308,8 @@ public class UserHandler {
 
                     String path = "resFolder/images/" + name + ".jpg" ;
 
+
+
                     Path destinationFile = Paths.get(path);
                     Files.createDirectories(destinationFile.getParent());
                     Files.createFile(destinationFile);
@@ -323,5 +325,6 @@ public class UserHandler {
         return fileUrl;
 
     }
+
 
 }

@@ -7,12 +7,19 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.trixibackend.collections.*;
 import com.trixibackend.entity.*;
+import org.apache.commons.fileupload.FileItem;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -164,6 +171,8 @@ public class DatabaseHandler {
                 return null;
         }
     }
+
+
 
     public Object getLoginByNameOrEmail(User user){
         return userHandler.findUserByNameOrEmail(user);
