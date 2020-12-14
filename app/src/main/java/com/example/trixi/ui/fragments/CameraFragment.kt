@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
+import javax.annotation.Nullable
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,6 +25,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class CameraFragment : Fragment() {
     // TODO: Rename and change types of parameters
+    private lateinit var launchCameraButton : Button
+    private var image_CapTure_Code = 1
     private var param1: String? = null
     private var param2: String? = null
 
@@ -35,28 +38,20 @@ class CameraFragment : Fragment() {
         }
     }
 
+    @Nullable
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_photo, container, false)
-        val launchCameraButton: Button = view.findViewById<View>(R.id.btn_launch_camera) as Button
-
-        launchCameraButton.setOnClickListener(View.OnClickListener {
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent)
-        })
-
 
         return view
 
 
     }
 
-    private fun startActivityForResult(cInt: Intent) {
 
-    }
 
 
     companion object {

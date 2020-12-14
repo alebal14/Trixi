@@ -9,6 +9,10 @@
 
     <include layout="@layout/fragment_btn_gallery_camera_toolbar"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,9 +21,10 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="284dp"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
             android:padding="20dp"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
@@ -70,4 +75,5 @@
             android:text="Share" />
 
     </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

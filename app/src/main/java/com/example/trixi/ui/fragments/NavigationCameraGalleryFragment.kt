@@ -2,13 +2,14 @@ package com.example.trixi.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,19 +40,8 @@ class NavigationCameraGalleryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view : View =  inflater.inflate(R.layout.fragment_btn_gallery_camera_toolbar, container, false)
-        val btn : Button = view.findViewById(R.id.btn_take_picure);
-
-        btn.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View) {
-                Log.d("navigation", "Clicking on the camera button")
-                val intent = Intent(view.context, UploadFragment::class.java)
-                view.context.startActivity(intent)
-                activity!!.finish()
-            }
-        })
-
-
-
+        val goToGallery = view.findViewById<View>(R.id.btn_open_img_gallery) as ImageButton
+        val goToGamera : ImageButton = view.findViewById<View>(R.id.btn_take_picure) as ImageButton
         return view;
 
     }
@@ -61,11 +51,7 @@ class NavigationCameraGalleryFragment : Fragment() {
 
     }
 
-    fun onClick( view: View) {
-        val intent = Intent(view.context, CameraFragment::class.java)
-        view.context.startActivity(intent)
-        requireActivity().finish()
-    }
+
 
     companion object {
         /**
@@ -88,9 +74,10 @@ class NavigationCameraGalleryFragment : Fragment() {
     }
 }
 
-private fun Button.setOnClickListener(view: View) {
-    val intent = Intent(view.context, CameraFragment::class.java)
-    view.context.startActivity(intent)
 
-}
+
+
+
+
+
 

@@ -53,62 +53,6 @@ class PostFragment : Fragment() {
     }
 
 
-    /*
-    private fun setUpViewPageAdapter(){
-        val adapter : ViewPagerAdapter? = activity?.supportFragmentManager?.let { ViewPagerAdapter(it) }
-        adapter?.addFragment(CameraFragment(), "Camera");
-        adapter?.addFragment(UploadFragment(), "Gallery");
-
-        view_pager?.adapter
-        view_pager.adapter = adapter;
-        tab_layout.setupWithViewPager(view_pager)
-
-
-
-    }
-
-     */
-
-
-
-
-    /*
-
-    private fun setupView(view: View) {
-        val fragmentList : MutableList <Fragment> = ArrayList ()
-        val titleList : MutableList <String> = ArrayList ()
-
-        val adapter : ViewPagerAdapter? = activity?.supportFragmentManager?.let { ViewPagerAdapter(it) }
-        adapter?.addFragment(CameraFragment(), "Camera");
-        adapter?.addFragment(UploadFragment(), "Gallery");
-
-        //view_pager?.adapter
-        view_pager.adapter = adapter;
-        tab_layout.setupWithViewPager(view_pager)
-
-    }
-
-     */
-
-
-
-
-
-    /*
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val adapter : ViewPagerAdapter? = activity?.supportFragmentManager?.let { ViewPagerAdapter(it) }
-        adapter?.addFragment(CameraFragment(), "Camera");
-        adapter?.addFragment(UploadFragment(), "Gallery");
-
-        view_pager?.adapter
-        view_pager.adapter = adapter;
-        tab_layout.setupWithViewPager(view_pager)
-
-
-    }
-
-     */
 
 
     private fun makeCurrentFragment(fragment: Fragment) =
