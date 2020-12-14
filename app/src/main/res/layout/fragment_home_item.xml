@@ -91,6 +91,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="370dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="80dp"
+                android:layout_marginEnd="-1dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:paddingTop="20dp"
+                android:paddingRight="5dp">
+
+                <ImageView
+                    android:id="@+id/home_item_post_image"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginBottom="15dp"
+                    android:elevation="8dp"
+                    android:paddingTop="16dp"
+                    tools:srcCompat="@tools:sample/backgrounds/scenic">
+
+                </ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="101dp"
                 android:layout_height="414dp"
                 android:layout_alignParentEnd="true"
@@ -118,19 +147,65 @@
                     android:background="@drawable/ic_baseline_pets_24" />
 
 
-                <ImageButton
-                    android:id="@+id/home_item_chat"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/ic_baseline_chat_bubble_outline_24" />
 
-                <ImageButton
-                    android:id="@+id/home_item_like"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/ic_baseline_favorite_border_24" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/home_item_chat"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/ic_baseline_chat_bubble_outline_24" />
+
+                    <TextView
+                        android:id="@+id/home_item_chat_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="0dp"
+                        android:background="@drawable/count"
+                        android:minWidth="20dp"
+                        android:padding="3dp"
+                        android:text="0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="11dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/home_item_like"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/ic_baseline_favorite_border_24" />
+
+                    <TextView
+                        android:id="@+id/home_item_like_count"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/count"
+                        android:padding="3dp"
+                        android:text="0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="9dp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
 
 
             </LinearLayout>
@@ -145,13 +220,15 @@
         android:layout_marginTop="479dp">
 
         <LinearLayout
+            android:id="@+id/home_item_post_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#1A000000"
             android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingTop="18dp"
-            android:paddingRight="20dp">
+            android:paddingRight="20dp"
+            >
 
             <TextView
                 android:id="@+id/home_item_title"
@@ -179,6 +256,9 @@
 
 
         </LinearLayout>
+
+
+
 
     </RelativeLayout>
 

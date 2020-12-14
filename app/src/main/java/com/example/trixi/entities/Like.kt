@@ -1,4 +1,5 @@
-package com.example.trixi.entities;
+package com.example.trixi.entities
 
-public class Like {
-}
+data class Like(val postId: String,
+                val userId:String
+)

@@ -7,12 +7,19 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.trixibackend.collections.*;
 import com.trixibackend.entity.*;
+import org.apache.commons.fileupload.FileItem;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -164,6 +171,65 @@ public class DatabaseHandler {
                 return null;
         }
     }
+
+    public String uploadImage(List<FileItem> file) {
+
+        String fileUrl = null;
+
+        try {
+            for (FileItem item : file) {
+                if (item.isFormField()) {
+
+                    ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+                    //getting the value
+                    String fieldValue = item.getString();
+
+                    //remove the ""
+                    String fieldValuRemove = fieldValue.replace("\"", "");
+
+
+                    System.out.println(fieldValuRemove);
+                    System.out.println("Field: " + fieldValue);
+
+                    // replace /n with ;
+                    String replaceWhitespace = fieldValuRemove.replace("\\n", ";");
+                    String[] strs = replaceWhitespace.split(";");
+
+                    //cut the string to byteArray
+                    System.out.println("Substrings length:"+strs.length);
+                    for (int i=0; i < strs.length; i++) {
+                        System.out.println(strs[i]);
+
+                        output.write(Base64.getDecoder().decode(strs[i].getBytes()));
+                    }
+
+                    //decode the bytearray
+                    byte[] decodedImgLoop = output.toByteArray();
+
+                    System.out.println("outside " + decodedImgLoop);
+
+                    String name = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
+
+                    String path = "resFolder/images/" + name + ".jpg" ;
+
+                    Path destinationFile = Paths.get(path);
+                    Files.createDirectories(destinationFile.getParent());
+                    Files.createFile(destinationFile);
+                    Files.write(destinationFile, decodedImgLoop);
+
+                    return path;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fileUrl;
+
+    }
+
+
 
     public Object getLoginByNameOrEmail(User user){
         return userHandler.findUserByNameOrEmail(user);

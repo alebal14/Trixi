@@ -1,3 +1,4 @@
+
 package com.example.trixi.entities;
 
 import java.io.File
@@ -13,3 +14,4 @@ data class Post(
     val comments: ArrayList<Comment>?, 
     val likes: ArrayList<Like>?) {
 }
+

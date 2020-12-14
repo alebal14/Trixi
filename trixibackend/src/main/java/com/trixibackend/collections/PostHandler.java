@@ -8,12 +8,16 @@ import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -100,21 +104,8 @@ public class PostHandler {
         return posts;
     }
 
-    public String uploadFile(FileItem file){
-
-        String fileUrl = file.getName();
 
 
-
-        try (var os = new FileOutputStream(Paths.get("/resFolder/" + fileUrl).toString())) {
-            os.write(file.get());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return  fileUrl;
-    }
 
     public LikeHandler getLikeHandler() {
         return likeHandler;
