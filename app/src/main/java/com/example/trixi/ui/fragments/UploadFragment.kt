@@ -1,17 +1,29 @@
 package com.example.trixi.ui.fragments
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.trixi.MainActivity
 import com.example.trixi.R
+import com.example.trixi.UploadActivity
 import com.example.trixi.repository.PostToDb
+import kotlinx.android.synthetic.main.fragment_upload.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,7 +36,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [UploadFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UploadFragment(context: Context) : Fragment() {
+class UploadFragment(val help: Context) : Fragment() {
     /*// TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null*/
@@ -40,45 +52,92 @@ class UploadFragment(context: Context) : Fragment() {
 
     //private var uploadImage: ImageView? = null
 
-    val sendForm = PostToDb()
 
 
 
+    //private val permissionsRequestCode = 0
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return  inflater.inflate(R.layout.fragment_upload, container, false)
+
+       var rootView = inflater.inflate(R.layout.fragment_upload, container, false)
+
+       /* activity?.let{
+            when{
+                permissionGranted() -> Log.e("granted--","granted")
+                shouldShowRationale() -> {}// Show the rationale UI and then request permission
+                else -> requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        permissionsRequestCode)
+            }
+        }*/
+
+        activity?.let{
+            val intent = Intent (it, UploadActivity::class.java)
+            it.startActivity(intent)
+        }
+
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViews(view)
+        //setupViews(view)
     }
 
-    private fun setupViews(view: View) {
+   /* private fun shouldShowRationale() = ActivityCompat.shouldShowRequestPermissionRationale(
+            requireActivity(),
+            Manifest.permission.READ_EXTERNAL_STORAGE)
 
-        val buttonCalculate = view.findViewById(R.id.uploadImage) as ImageView
+    private fun permissionGranted() = ContextCompat.checkSelfPermission(
+            requireActivity(),
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    ) == PackageManager.PERMISSION_GRANTED
 
-        val fuckButton = view.findViewById(R.id.button_post) as Button
-
-        fuckButton.setOnClickListener() {
-            Toast.makeText(activity, "Hejho", Toast.LENGTH_SHORT).show()
-        }
-
-        buttonCalculate.setOnClickListener() {
-            Toast.makeText(activity, "Hejho", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+    // this is called when user closes the permission request dialog
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == permissionsRequestCode) {
+            if (permissions[0]  == Manifest.permission.READ_EXTERNAL_STORAGE &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted, do your work
+            }
         }
     }*/
+
+
+
+
+    /*private fun setupViews(view: View) {
+
+        //val buttonImage = view.findViewById(R.id.uploadImage) as ImageView
+
+        //val sendButton = view.findViewById(R.id.button_post) as Button
+
+
+
+      /* buttonImage.setOnClickListener() {
+            val frag = this
+            val intent = Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            startActivityForResult(intent, 0)
+        }
+
+        sendButton.setOnClickListener() {
+            //Toast.makeText(activity, "Hejho", Toast.LENGTH_SHORT).show()
+        }*/
+    }*/
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        
+    }
+
+
 
 
 
@@ -103,11 +162,12 @@ class UploadFragment(context: Context) : Fragment() {
         }
 }*/
 
+
 }
 
-private fun ImageView.setOnClickListener(uploadFragment: UploadFragment) {
-    Log.d("test", "test3")
-}
+
+
+
 
 
 
