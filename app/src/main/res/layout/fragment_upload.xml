@@ -20,8 +20,6 @@
         android:padding="20dp"
         android:layout_marginBottom="40dp">
 
-        <include layout="@layout/fragment_btn_gallery_camera_toolbar"/>
-
 
         <ImageView
             android:id="@+id/uploadImage"
