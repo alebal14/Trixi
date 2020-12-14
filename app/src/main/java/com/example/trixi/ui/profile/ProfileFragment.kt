@@ -1,12 +1,13 @@
 package com.example.trixi.ui.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.trixi.R
-import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.squareup.picasso.Picasso
@@ -14,12 +15,16 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.profile_media_thumbnail.view.*
+import kotlinx.android.synthetic.main.profile_media_item.view.*
 
 class ProfileFragment : Fragment() {
 
     val loggedInUser: User? = PostToDb.loggedInUser
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        populateMediaGrid()
+    }
 
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +37,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         populateProfile()
-        populateMediaGrid()
     }
 
     private fun populateProfile() {
@@ -53,22 +57,25 @@ class ProfileFragment : Fragment() {
     private fun populateMediaGrid() {
 
         val adapter = GroupAdapter<GroupieViewHolder>()
-        media_grid.adapter = adapter
+        media_grid.layoutManager = GridLayoutManager(context, 4)
 
         adapter.add(MediaItem())
         adapter.add(MediaItem())
         adapter.add(MediaItem())
         adapter.add(MediaItem())
+
+        media_grid.adapter = adapter
+
     }
 
     class MediaItem() : Item() {
         //TODO make it post
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
             viewHolder.itemView.apply {
-                Picasso.get().load("https://imgur.com/IjMSpbA").into(media_item)
+                Picasso.get().load("https://imgur.com/IjMSpbA").into(media_item_thumbnail)
             }
         }
-        override fun getLayout() : Int = R.layout.profile_media_thumbnail
+        override fun getLayout() : Int = R.layout.profile_media_item
     }
 
     private fun fetchUserPosts() {
