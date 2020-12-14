@@ -156,7 +156,7 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     String fileUrl = null;
-                    fileUrl = db.getUserHandler().uploadImage(files);
+                    fileUrl = db.uploadImage(files);
                     User user = (User) req.getBody(User.class);
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
@@ -167,7 +167,7 @@ public class RestApi {
                 case "posts":
                     Post post = (Post) req.getBody(Post.class);
 
-                        String filePostImage = db.getPostHandler().uploadImage(files);
+                        String filePostImage = db.uploadImage(files);
                         System.out.println(filePostImage);
                         post.setFilePath(filePostImage);
 
