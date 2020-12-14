@@ -8,20 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.trixi.R
-import com.example.trixi.entities.Pet
 import com.example.trixi.entities.User
-import com.example.trixi.ui.home.HomeItem
+import com.example.trixi.repository.PostToDb
+
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
-
-private const val PROFILEMODEL = "model"
 
 class ProfileFragment : Fragment() {
 
+    var user: User? = PostToDb.loggedInUser
     private lateinit var name: String
     private lateinit var description: String
     private lateinit var profile_url: String
@@ -30,28 +27,24 @@ class ProfileFragment : Fragment() {
     private lateinit var owner: String
     private lateinit var listener: OnProfileSelected
 
-    fun newInstance(userModel: User): ProfileFragment {
-        val args = Bundle()
-        args.putSerializable(PROFILEMODEL, userModel)
-        val fragment = ProfileFragment()
-        fragment.arguments = args
-        return fragment
-    }
 
-    fun newInstance(petModel: Pet): ProfileFragment {
-        val args = Bundle()
-        args.putSerializable(PROFILEMODEL, petModel)
-        val fragment = ProfileFragment()
-        fragment.arguments = args
-        return fragment
-    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context != null) {
+            val resources = context.resources
+            name = getString(R.string.profile_name)
+            description = getString(R.string.bio_text)
+            owner = getString(R.string.pet_owner)
+            followers = getString(R.string.number_of_followers)
+            following = getString(R.string.number_of_following)
 
-    companion object {
-        fun newInstance(): ProfileFragment {
-            return ProfileFragment()
+            setUpProfile()
         }
     }
 
+    private fun setUpProfile() {
+        name = user!!.userName.toString()
+    }
 
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -60,26 +53,6 @@ class ProfileFragment : Fragment() {
     {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
-
-//     override fun onAttach(context: Context?) {
-//        super(onAttach(context))
-//        if (context != null) {
-//            val resources = context.resources
-//            name = getString(R.string.profile_name)
-//            description = getString(R.string.bio_text)
-//            owner = getString(R.string.pet_owner)
-//            followers = getString(R.string.number_of_followers)
-//            following = getString(R.string.number_of_following)
-//
-//            val typedArray = resources.obtainTypedArray(R.array.images)
-//            val imageCount = name.size
-//            val imageResIds = IntArray(imageCount)
-//            for (i in 0 until imageCount) {
-//                imageResIds[i] = typedArray.getResourceId(i, 0)
-//            }
-//            typedArray.recycle()
-//        }
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
