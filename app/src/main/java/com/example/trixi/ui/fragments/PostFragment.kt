@@ -48,7 +48,7 @@ class PostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? =// Inflate the layout for this fragment
 
-        inflater.inflate(R.layout.fragment_post, container, false)
+        inflater.inflate(R.layout.fragment_upload, container, false)
 
 
 
