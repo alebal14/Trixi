@@ -137,14 +137,14 @@ public class RestApi {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
-                    /*User user = (User) req.getBody(User.class);
+                    User user = (User) req.getBody(User.class);
 
-                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                    user.setPassword(hashedPassword);
+                    //String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    //user.setPassword(hashedPassword);
 
-                    res.json(db.save(user));*/
+                    res.json(db.save(user));
 
-                    System.out.println("Begin");
+
 
                     String fileUrl = null;
 
@@ -158,11 +158,11 @@ public class RestApi {
                         e.printStackTrace();
                     }
 
-                    // user.setImageUrl(fileUrl);
-                    //String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                    //user.setPassword(hashedPassword);
+                    user.setImageUrl(fileUrl);
+                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    user.setPassword(hashedPassword);
                     //res.json(image);
-                    //res.json(db.save(user));
+                    res.json(db.save(user));
                     break;
                 case "posts":
                     /*String fileUrl = null;
@@ -177,9 +177,20 @@ public class RestApi {
                     Post post = (Post) req.getBody(Post.class);
                     post.setFilePath(fileUrl);*/
 
-                    Post post = (Post) req.getBody(Post.class);
 
-                    res.json(db.save(post));
+
+                    try {
+
+                        List<FileItem> files = req.getFormData("file");
+                        fileUrl = db.getPostHandler().uploadPostImage(files);
+                        Post post = (Post) req.getBody(Post.class);
+                        post.setFilePath(fileUrl);
+                        res.json(db.save(post));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);

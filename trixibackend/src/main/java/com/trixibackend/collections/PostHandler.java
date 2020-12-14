@@ -8,12 +8,16 @@ import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -100,20 +104,63 @@ public class PostHandler {
         return posts;
     }
 
-    public String uploadFile(FileItem file){
+    public String uploadPostImage(List<FileItem> file) {
 
-        String fileUrl = file.getName();
+        String fileUrl = null;
+
+        try {
+            for (FileItem item : file) {
+                if (item.isFormField()) {
+
+                    ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+                    //getting the value
+                    String fieldValue = item.getString();
+
+                    //remove the ""
+                    String fieldValuRemove = fieldValue.replace("\"", "");
+
+
+                    System.out.println(fieldValuRemove);
+                    System.out.println("Field: " + fieldValue);
+
+                    // replave /n with ;
+                    String replaveWhitespace = fieldValuRemove.replace("\\n", ";");
+                    String[] strs = replaveWhitespace.split(";");
+
+                    //cut the string to byteArray
+                    System.out.println("Substrings length:"+strs.length);
+                    for (int i=0; i < strs.length; i++) {
+                        System.out.println(strs[i]);
+
+                        output.write(Base64.getDecoder().decode(strs[i].getBytes()));
+                    }
+
+                    //decode the bytearray
+                    byte[] decodedImgLoop = output.toByteArray();
+
+                    System.out.println("outside " + decodedImgLoop);
+
+                    String name = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
+
+                    String path = "resFolder/images/" + name + ".jpg" ;
 
 
 
-        try (var os = new FileOutputStream(Paths.get("/resFolder/" + fileUrl).toString())) {
-            os.write(file.get());
-        } catch (Exception e) {
+                    Path destinationFile = Paths.get(path);
+                    Files.createDirectories(destinationFile.getParent());
+                    Files.createFile(destinationFile);
+                    Files.write(destinationFile, decodedImgLoop);
+
+                    return path;
+                }
+            }
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
 
-        return  fileUrl;
+        return fileUrl;
+
     }
 
     public LikeHandler getLikeHandler() {

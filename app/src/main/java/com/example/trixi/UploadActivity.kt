@@ -25,7 +25,7 @@ import java.io.ByteArrayOutputStream
 class UploadActivity : AppCompatActivity() {
 
     val db = PostToDb()
-    var selectedPhotouri: Uri? = null
+    var selectedImage: Uri? = null
     lateinit var bitmap : Bitmap
     var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
     var encodedImage: String = ""
@@ -59,7 +59,7 @@ class UploadActivity : AppCompatActivity() {
         }
 
         button_post.setOnClickListener(){
-            sendPost()
+            sendImage()
         }
 
 
@@ -119,30 +119,38 @@ class UploadActivity : AppCompatActivity() {
 
             postPath = mediaPath
 
-            println("PATH: " + postPath)
 
-            //convert the image to bitmap
-            val convertImageBitmap = BitmapFactory.decodeFile(postPath)
-
-            val baos = ByteArrayOutputStream()
-            //compressing the bitmap
-            convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
-
-            //coberting the image to bytearray
-            val imageByte = baos.toByteArray()
-
-            //encoding the image
-            encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
-
-            //sending the image
-            db.PostImageToPost(encodedImage)
         }
+    }
+
+    private fun sendImage(){
+
+
+        //convert the image to bitmap
+        val convertImageBitmap = BitmapFactory.decodeFile(postPath)
+
+        val baos = ByteArrayOutputStream()
+        //compressing the bitmap
+        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
+
+        //coberting the image to bytearray
+        val imageByte = baos.toByteArray()
+
+        //encoding the image
+        encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
+
+        //sending the image
+        db.PostImageToPost(encodedImage)
+
+        sendPost()
     }
 
     private fun sendPost(){
         val title = title_field.text.toString()
         val description = description_field.text.toString()
-        val ownerId = ""
+        val ownerId = "5fd717a13a10671714c367eb"
+
+
 
         if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_LONG).show()
