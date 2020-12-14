@@ -171,6 +171,10 @@ public class RestApi {
                         System.out.println(filePostImage);
                         post.setFilePath(filePostImage);
 
+
+                    var result = db.postColl.insertOne(post);
+                    post.setId(result.getInsertedId().asObjectId().getValue());
+                    post.setUid(post.getId().toString());
                     res.json(db.save(post));
                     break;
                 case "pets":

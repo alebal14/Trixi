@@ -44,6 +44,10 @@ interface Api {
     @GET("rest/users/{id}")
     fun getUserById(@Path(value="id") id : String?): Call<User>
 
+
+    @GET("rest/post/{id}")
+    fun getPostById(@Path(value="id") id : String?): Call<Post>
+
     @GET("api/getUserFollowingPost/{id}")
     fun getFollowingsPost(@Path(value="id") id : String?):Call<List<Post>>
 
