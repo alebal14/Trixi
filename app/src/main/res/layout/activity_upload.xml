@@ -26,7 +26,7 @@
                 android:layout_width="361dp"
                 android:layout_height="284dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/image_btn_circle"
+                android:src="@drawable/ic_baseline_cloud_upload_24"
                 android:padding="20dp" />
 
             <EditText
