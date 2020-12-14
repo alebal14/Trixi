@@ -21,11 +21,6 @@ class ProfileFragment : Fragment() {
 
     val loggedInUser: User? = PostToDb.loggedInUser
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        populateMediaGrid()
-    }
-
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
@@ -37,6 +32,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         populateProfile()
+        populateMediaGrid()
     }
 
     private fun populateProfile() {
