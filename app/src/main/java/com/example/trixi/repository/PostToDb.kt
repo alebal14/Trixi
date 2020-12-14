@@ -22,8 +22,6 @@ class PostToDb {
     }
 
 
-
-
     fun PostLoginUserToDb(user: User, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
@@ -65,7 +63,7 @@ class PostToDb {
                     loggedInUser = response.body()
                     Log.d("loggedInUser", loggedInUser.toString())
 
-                    val intent = Intent(context, HomepageFragment::class.java)
+                    val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
 
                 } else {

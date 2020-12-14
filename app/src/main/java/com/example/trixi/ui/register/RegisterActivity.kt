@@ -49,7 +49,7 @@ class RegisterActivity : AppCompatActivity() {
             requestPermissions()
             val intent = Intent(
                     Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI
             )
             startActivityForResult(intent, 0)
         }
