@@ -55,6 +55,12 @@ public class RestApi {
         getLoggedinUser();
         logoutUser();
         setImagePostApi();
+
+        try {
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpUpdateApi() {
@@ -138,6 +144,7 @@ public class RestApi {
         app.post("/rest/image", (req, res) -> {
             try {
                 files = req.getFormData("file");
+                System.out.println(files);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -149,7 +156,7 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     String fileUrl = null;
-                    fileUrl = db.getUserHandler().uploadProfileImage(files);
+                    fileUrl = db.uploadImage(files);
                     User user = (User) req.getBody(User.class);
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
@@ -158,15 +165,17 @@ public class RestApi {
                     res.send("Created User");
                     break;
                 case "posts":
-                    /*String fileUrl = null;
-                    fileUrl = db.getPostHandler().uploadFile(files.get(0));
-
-
                     Post post = (Post) req.getBody(Post.class);
-                    post.setFilePath(fileUrl);*/
 
-                    Post post = (Post) req.getBody(Post.class);
-                    res.json(db.save(post));
+                        String filePostImage = db.uploadImage(files);
+                        System.out.println(filePostImage);
+                        post.setFilePath(filePostImage);
+
+
+
+                    Post p = db.save(post);
+                    p.setUid(p.getUid().toString());
+                    res.json(db.save(p));
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);
@@ -248,13 +257,14 @@ public class RestApi {
 
             User user = db.getUserHandler().findUserById(id);
 
-            var updatedUser = db.getUserHandler().findUserFollowingPostList(user);
-            if (updatedUser == null) {
+            var followingPostList = db.getUserHandler().findUserFollowingPostList(user);
+            if (followingPostList == null) {
                 res.setStatus(Status._403);
                 //res.send("Error: you are not following this Pet");
                 return;
             }
-            res.json(updatedUser);
+            System.out.println(followingPostList.size());
+            res.json(followingPostList);
         });
 
 
@@ -304,12 +314,16 @@ public class RestApi {
             }
 
             var user = (User) sessionCookie.getData();
+            user.setUid(user.getId().toString());
+
             user.setPassword(null); // sanitize password
             res.json(user);
 
         });
 
     }
+
+
 
     private void logoutUser(){
         app.get("/rest/logout", (req, res) -> {

@@ -7,8 +7,8 @@ import android.widget.Toast
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
-import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.login.LoginActivity
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -36,7 +36,9 @@ class PostToDb {
                 call: Call<User>, response: Response<User>
             ) {
                 if(response.isSuccessful){
+
                     Log.d("user", "login-user : onResponse success" + response.message())
+
                     GetLoggedInUserFromDB(context)
                 }else{
                     Log.d("user", "login-user : onResponse else: password and username/email dont match")
@@ -80,15 +82,15 @@ class PostToDb {
 
         call?.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("user", "User: onfailure " + t.message)
+                //Log.d("user", "User: onfailure " + t.message)
             }
             override fun onResponse(
                     call: Call<ResponseBody>, response: Response<ResponseBody>
             ) {
                 if(response.isSuccessful){
-                    Log.d("user", "User : onResponse success" + response.message())
+                    //Log.d("user", "User : onResponse success" + response.message())
                 }else{
-                    Log.d("user", "User : onResponse else, failed" + response.message())
+                    //Log.d("user", "User : onResponse else, failed" + response.message())
                 }
             }
         })
@@ -114,61 +116,35 @@ class PostToDb {
             }
         })
     }
-//    fun postPostToDb(post: Post) {
-//
-//
-//
-//      //  val file = File(file.getPath())
-//
-////        val fbody: RequestBody = RequestBody.create(
-////            MediaType.parse("image/*"),
-////            file
-////        )
-////
-////        RequestBody title = RequestBody.create(
-////            MediaType.parse("text/plain"),
-////            post.title.getText()
-////                .toString()
-////        )
-////
-////        val description: RequestBody = RequestBody.create(
-////            MediaType.parse("text/plain"),
-////            dessciption.getText()
-////                .toString()
-////        )
-////
-////        val ownerId: RequestBody = RequestBody.create(
-////            MediaType.parse("text/plain"),
-////            ownerId_field.getText()
-////                .toString()
-////        )
-////
-////        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-////
-////
-////        val call: Call<Post>? = retrofitClient?.postPost(
-////            file,
-////            title,
-////            description,
-////            ownerId);
-//
-////        call?.enqueue(object : Callback<Post> {
-////            override fun onFailure(call: Call<Post>, t: Throwable) {
-////                Log.d("post", "Post : onfailure " + t.message)
-////
-////            }
-////            override fun onResponse(
-////                call: Call<Post>, response: Response<Post>
-////            ) {
-////                if(response.isSuccessful){
-////                    Log.d("post", "Post : onResponse success" + response.body())
-////                }else{
-////                    Log.d("post", "Post : onResponse else" + response.body())
-////                }
-////            }
-//
-//        })
 
-   // }
+
+    fun sendPostToDb(post: Post) {
+
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+        val call = retrofitClient?.postPostToDb(post)
+
+
+        call?.enqueue(object : Callback<Post> {
+            override fun onFailure(call: Call<Post>, t: Throwable) {
+                Log.d("post", "Post : onfailure " + t.message)
+
+            }
+            override fun onResponse(
+                call: Call<Post>, response: Response<Post>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("post", "Post : onResponse success" + (response.body()!!.uid  ))
+                }else{
+                    Log.d("post", "Post : onResponse else" + response.body()!!.uid)
+                }
+            }
+
+        })
+
+    }
+
+
+
 
 }
