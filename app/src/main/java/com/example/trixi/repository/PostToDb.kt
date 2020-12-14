@@ -81,15 +81,15 @@ class PostToDb {
 
         call?.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("user", "User: onfailure " + t.message)
+                //Log.d("user", "User: onfailure " + t.message)
             }
             override fun onResponse(
                     call: Call<ResponseBody>, response: Response<ResponseBody>
             ) {
                 if(response.isSuccessful){
-                    Log.d("user", "User : onResponse success" + response.message())
+                    //Log.d("user", "User : onResponse success" + response.message())
                 }else{
-                    Log.d("user", "User : onResponse else, failed" + response.message())
+                    //Log.d("user", "User : onResponse else, failed" + response.message())
                 }
             }
         })
@@ -133,9 +133,9 @@ class PostToDb {
                 call: Call<Post>, response: Response<Post>
             ) {
                 if(response.isSuccessful){
-                    Log.d("post", "Post : onResponse success" + response.body())
+                    Log.d("post", "Post : onResponse success" + (response.body()!!.uid  ))
                 }else{
-                    Log.d("post", "Post : onResponse else" + response.body())
+                    Log.d("post", "Post : onResponse else" + response.body()!!.uid)
                 }
             }
 

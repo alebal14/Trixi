@@ -1,7 +1,11 @@
 package com.example.trixi
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -32,6 +36,7 @@ class MainActivity : AppCompatActivity() {
          val postFragment = UploadFragment()
          val searchFragment = SearchFragment()
          val profileFragment = ProfileFragment()
+
 
 
 
@@ -71,6 +76,13 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fragment_container,fragment)
             commit()
         }
+
+
+
+
+
     }
+
+
 
 

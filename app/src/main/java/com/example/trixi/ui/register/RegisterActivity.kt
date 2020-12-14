@@ -1,7 +1,6 @@
 package com.example.trixi.ui.register
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,6 +10,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -18,9 +19,9 @@ import com.example.trixi.R
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.login.LoginActivity
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_register.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
 
 
@@ -105,8 +106,12 @@ class RegisterActivity : AppCompatActivity() {
             // Set the Image in ImageView for Previewing the Media
 
             //Setting the image on frontend
-            bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
-            register_profile_image.setImageBitmap(bitmap)
+            //bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+            //register_profile_image.setImageBitmap(bitmap)
+
+            val ivBasicImage = findViewById<View>(R.id.register_profile_image) as ImageView
+
+            Picasso.get().load(selectedImage).transform(CropCircleTransformation()).fit().into(ivBasicImage)
 
             cursor.close()
 

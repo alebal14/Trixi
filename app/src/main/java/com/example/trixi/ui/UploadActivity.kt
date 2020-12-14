@@ -14,6 +14,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.trixi.MainActivity
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
@@ -55,6 +56,11 @@ class UploadActivity : AppCompatActivity() {
             )
 
             startActivityForResult(intent, 0)
+        }
+
+        button_cancel.setOnClickListener(){
+            val intent = Intent (this, MainActivity::class.java)
+            this.startActivity(intent)
         }
 
         button_post.setOnClickListener(){
