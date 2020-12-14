@@ -17,7 +17,7 @@ class RetrofitClient {
     companion object{
        lateinit var context: Context
        var instance: Retrofit? = null
-       val BASE_URL = "http://192.168.0.162:3000/rest/"
+       val BASE_URL = "http://192.168.1.71:3000/rest/"
 
 
         fun okHttpClient() : OkHttpClient {
@@ -25,8 +25,8 @@ class RetrofitClient {
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL)
             val cookieJar = MyPersistentCookieJar(context)
             val client = OkHttpClient.Builder().connectTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(10, TimeUnit.MINUTES) // write timeout
-                .readTimeout(10, TimeUnit.MINUTES) // read timeout
+                .writeTimeout(2, TimeUnit.MINUTES) // write timeout
+                .readTimeout(2, TimeUnit.MINUTES) // read timeout
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY

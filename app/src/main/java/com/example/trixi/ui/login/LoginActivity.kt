@@ -2,11 +2,8 @@ package com.example.trixi.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
@@ -14,17 +11,17 @@ import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import retrofit2.Retrofit
 
 
 class LoginActivity : AppCompatActivity() {
 
     val model: GetFromDbViewModel by viewModels()
+    val post = PostToDb()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val post = PostToDb()
+
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)
 
@@ -50,12 +47,12 @@ class LoginActivity : AppCompatActivity() {
 
 
         //testObserver getAllUsers:
-        model.GetAllUsersFromDB()
+        /*model.GetAllUsersFromDB()
         model.getUserMutableLiveDataList().observe(this, Observer{
             it.forEach{
                 Log.d("uus", "UserName : ${it.userName!!}")
             }
-        } )
+        } )*/
 
     }
 
