@@ -117,13 +117,13 @@ class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() 
         viewHolder.itemView.home_item_description.text = post.description
         viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
         viewHolder.itemView.home_item_like_count.text = post.likes?.size.toString()
-        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).fit().into(viewHolder.itemView.home_item_post_image)
+        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(viewHolder.itemView.home_item_media)
 
     }
 
 
     override fun getLayout(): Int {
-        return R.layout.home_item;
+        return R.layout.fragment_home_item;
     }
 
 }
