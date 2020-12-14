@@ -139,7 +139,7 @@ class UploadActivity : AppCompatActivity() {
         encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
 
         //sending the image
-        db.PostImageToPost(encodedImage)
+        db.PostImageToDb(encodedImage)
 
         sendPost()
     }

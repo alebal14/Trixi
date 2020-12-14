@@ -149,7 +149,7 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
                     String fileUrl = null;
-                    fileUrl = db.getUserHandler().uploadProfileImage(files);
+                    fileUrl = db.getUserHandler().uploadImage(files);
                     User user = (User) req.getBody(User.class);
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
@@ -158,14 +158,14 @@ public class RestApi {
                     res.send("Created User");
                     break;
                 case "posts":
-                    /*String fileUrl = null;
-                    fileUrl = db.getPostHandler().uploadFile(files.get(0));
-
-
+                    //String filePostImage = null;
+                    setImagePostApi();
                     Post post = (Post) req.getBody(Post.class);
-                    post.setFilePath(fileUrl);*/
-
-                    Post post = (Post) req.getBody(Post.class);
+                    if(files != null){
+                        String filePostImage = db.getPostHandler().uploadImage(files);
+                        System.out.println(filePostImage);
+                        post.setFilePath(filePostImage);
+                    }
                     res.json(db.save(post));
                     break;
                 case "pets":

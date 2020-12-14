@@ -116,27 +116,6 @@ class PostToDb {
         })
     }
 
-    //later remove
-    fun PostImageToPost(image: String) {
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-
-        val call = retrofitClient?.postPicToDb(image)
-
-        call?.enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("Image", "Image : onfailure " + t.message)
-            }
-            override fun onResponse(
-                    call: Call<ResponseBody>, response: Response<ResponseBody>
-            ) {
-                if(response.isSuccessful){
-                    Log.d("Image", "Image : onResponse success" + response.message())
-                }else{
-                    Log.d("Image", "Image : onResponse else" + response.message())
-                }
-            }
-        })
-    }
 
     fun sendPostToDb(post: Post) {
 

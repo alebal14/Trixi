@@ -104,7 +104,7 @@ public class PostHandler {
         return posts;
     }
 
-    public String uploadPostImage(List<FileItem> file) {
+    public String uploadImage(List<FileItem> file) {
 
         String fileUrl = null;
 
@@ -124,9 +124,9 @@ public class PostHandler {
                     System.out.println(fieldValuRemove);
                     System.out.println("Field: " + fieldValue);
 
-                    // replave /n with ;
-                    String replaveWhitespace = fieldValuRemove.replace("\\n", ";");
-                    String[] strs = replaveWhitespace.split(";");
+                    // replace /n with ;
+                    String replaceWhitespace = fieldValuRemove.replace("\\n", ";");
+                    String[] strs = replaceWhitespace.split(";");
 
                     //cut the string to byteArray
                     System.out.println("Substrings length:"+strs.length);
@@ -162,6 +162,7 @@ public class PostHandler {
         return fileUrl;
 
     }
+
 
     public LikeHandler getLikeHandler() {
         return likeHandler;

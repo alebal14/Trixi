@@ -26,9 +26,6 @@ interface Api {
             @Part("file") file: String
     ):Call<ResponseBody>
 
-    @Multipart
-    @POST("posts/file")
-    fun postPicToDb(@Part("file") file: String,):Call<ResponseBody>
 
     @POST("posts")
     fun postPostToDb(@Body post: Post) : Call<Post>
