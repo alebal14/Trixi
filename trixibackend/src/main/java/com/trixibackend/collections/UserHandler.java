@@ -8,8 +8,22 @@ import com.mongodb.client.model.Updates;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
+import jdk.jfr.Timestamp;
+import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -251,6 +265,65 @@ public class UserHandler {
     private void makePetsListEmpty(Pet p){
         p.setFollowers(null);
         p.setPosts(null);
+    }
+
+    public String uploadProfileImage(List<FileItem> file) {
+
+        String fileUrl = null;
+
+        try {
+            for (FileItem item : file) {
+                if (item.isFormField()) {
+
+                    ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+                    //getting the value
+                    String fieldValue = item.getString();
+
+                    //remove the ""
+                    String fieldValuRemove = fieldValue.replace("\"", "");
+
+
+                    System.out.println(fieldValuRemove);
+                    System.out.println("Field: " + fieldValue);
+
+                    // replave /n with ;
+                    String replaveWhitespace = fieldValuRemove.replace("\\n", ";");
+                    String[] strs = replaveWhitespace.split(";");
+
+                    //cut the string to byteArray
+                    System.out.println("Substrings length:"+strs.length);
+                    for (int i=0; i < strs.length; i++) {
+                        System.out.println(strs[i]);
+
+                        output.write(Base64.getDecoder().decode(strs[i].getBytes()));
+                    }
+
+                    //decode the bytearray
+                    byte[] decodedImgLoop = output.toByteArray();
+
+                    System.out.println("outside " + decodedImgLoop);
+
+                    String name = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
+
+                    String path = "resFolder/images/" + name + ".jpg" ;
+
+
+
+                    Path destinationFile = Paths.get(path);
+                    Files.createDirectories(destinationFile.getParent());
+                    Files.createFile(destinationFile);
+                    Files.write(destinationFile, decodedImgLoop);
+
+                    return path;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fileUrl;
+
     }
 
 }

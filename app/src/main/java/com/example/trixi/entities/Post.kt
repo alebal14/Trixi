@@ -1,15 +1,15 @@
-package com.example.trixi.entities
+package com.example.trixi.entities;
 
-import java.io.Serializable
+import java.io.File
 
-data class Post (
-                val _id: String,
-                val commentIds: ArrayList<String>?,
-                val comments: ArrayList<String>?,
-                val description: String?,
-                val filePath: String?,
-                val likes: ArrayList<String>?,
-                val ownerId: String,
-                val title: String
-) : Serializable
 
+data class Post(
+    val uid: String?, 
+    val title:String?, 
+    val description:String?, 
+    val filePath:String?, 
+    val file:File?, 
+    val ownerId:String?, 
+    val comments: ArrayList<Comment>?, 
+    val likes: ArrayList<Like>?) {
+}
