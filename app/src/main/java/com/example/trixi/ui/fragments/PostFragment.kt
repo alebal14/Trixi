@@ -11,7 +11,7 @@ import com.example.trixi.R
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.viewpager.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
