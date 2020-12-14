@@ -10,41 +10,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.trixi.R
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
-
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
 
-    var user: User? = PostToDb.loggedInUser
-    private lateinit var name: String
-    private lateinit var description: String
-    private lateinit var profile_url: String
-    private lateinit var following: String
-    private lateinit var followers: String
-    private lateinit var owner: String
-    private lateinit var listener: OnProfileSelected
+    val user: User? = PostToDb.loggedInUser
 
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context != null) {
-            val resources = context.resources
-            name = getString(R.string.profile_name)
-            description = getString(R.string.bio_text)
-            owner = getString(R.string.pet_owner)
-            followers = getString(R.string.number_of_followers)
-            following = getString(R.string.number_of_following)
-
-            setUpProfile()
-        }
-    }
-
-    private fun setUpProfile() {
-        name = user!!.userName.toString()
-    }
 
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +33,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecycleView(view)
+        setUpProfile()
+    }
+
+    private fun setUpProfile() {
+
+        if(user != null) {
+            profile_name.text = user.userName
+            profile_bio.text = user.bio
+            //TODO load image from user
+            Picasso.get().load("http://i.imgur.com/IjMSpbA.jpg").fit().into(profile_image)
+            owner_name.visibility = View.INVISIBLE
+        }
+
     }
 
     private fun setRecycleView(view: View) {
