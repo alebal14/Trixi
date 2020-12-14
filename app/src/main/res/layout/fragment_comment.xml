@@ -7,7 +7,8 @@
     android:layout_marginRight="15dp"
     android:layout_marginLeft="15dp"
     android:layout_height="300dp"
-    tools:context="ui.fragments.PopUpChat">
+    android:background="@color/colorTeal"
+    tools:context="ui.fragments.PopUpCommentWindow">
 
 
     <LinearLayout
@@ -33,7 +34,7 @@
         android:layout_marginTop="50dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_popup_view"
+            android:id="@+id/recyclerView_popup_comment"
             android:layout_marginStart="15dp"
             android:layout_width="350dp"
             android:layout_height="300dp"
