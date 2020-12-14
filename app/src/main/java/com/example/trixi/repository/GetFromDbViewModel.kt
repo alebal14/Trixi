@@ -1,16 +1,12 @@
 package com.example.trixi.repository
 
-import android.content.Context
-import android.content.Intent
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
-import com.example.trixi.ui.register.RegisterActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -104,32 +100,5 @@ class GetFromDbViewModel : ViewModel() {
 
     }
 
-
-    fun getOneUserFromDb1(id: String?): User? {
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-        var user: User? = null
-        val call = retrofitClient?.getUserById(id)
-        call?.enqueue(object : Callback<User> {
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("uus", "user : onfailure " + t.message)
-
-            }
-
-            override fun onResponse(
-                call: Call<User>, response: Response<User>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("uus", "success")
-                    user = response.body()!!
-                } else {
-                    user = null
-                }
-
-            }
-
-        })
-        return user
-
-    }
 
 }

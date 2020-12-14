@@ -147,7 +147,7 @@ class UploadActivity : AppCompatActivity() {
     private fun sendPost(){
         val title = title_field.text.toString()
         val description = description_field.text.toString()
-        val ownerId = "5fd717a13a10671714c367eb"
+        val ownerId = PostToDb.loggedInUser?.uid.toString()
 
 
 
