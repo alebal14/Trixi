@@ -1,219 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-            android:id="@+id/relative_layout_1"
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/mid_screen"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.45"
+         />
+
+    <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="153dp"
+            android:layout_height="177dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="profile image"
+            android:paddingLeft="20dp"
+            android:paddingTop="30dp"
+            android:src="@drawable/ic_circle_frame"
+            app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.451">
+
+    </ImageView>
+
+    <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="215dp"
+            android:layout_height="48dp"
+            android:drawablePadding="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/profile_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorTeal"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_heart_empty"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/mid_screen"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.061" />
+
+    <TextView
+            android:id="@+id/profile_bio"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:paddingTop="5dp"
+            android:text="This is my bio hahah hello i have a dog and hes really nice and sweet and cool"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/mid_screen"
+            app:layout_constraintTop_toBottomOf="@+id/profile_name"
+            app:layout_constraintVertical_bias="0.026" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="253dp"
+            android:layout_marginBottom="13dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
+            app:layout_constraintEnd_toStartOf="@+id/profile_bio"
+            app:layout_constraintGuide_percent="0.35"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/users_pet_list"
+            android:layout_width="393dp"
+            android:layout_height="81dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.384"
+            app:spanCount="2"
+            tools:itemCount="3"
+            tools:layoutManager="GridLayoutManager"
+            tools:listitem="@layout/profile_user_pet" />
+
+    <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/pics_videos_tab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/users_pet_list">
+
+        <TextView
+                android:id="@+id/profile_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="60dp"
+                android:text="@string/number_of_followers"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+                android:id="@+id/profile_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="60dp"
+                android:text="@string/number_of_following"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/pics_videos_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/media_grid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+        <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/images_tab" />
+
+        <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_videos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Videos" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/media_grid"
+            android:layout_width="381dp"
+            android:layout_height="246dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab"
+            app:layout_constraintVertical_bias="0.448"
+            tools:itemCount="20"
+            tools:layoutManager="GridLayoutManager"
+            tools:listitem="@layout/profile_media_thumbnail"
+            tools:spanCount="5" />
+
+    <TextView
+            android:id="@+id/owner_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/ic_baseline_pets_24"
+            android:text="@string/pet_owner"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/mid_screen"
+            app:layout_constraintTop_toBottomOf="@+id/profile_bio"
+            app:layout_constraintVertical_bias="0.083" />
 
 
-        <LinearLayout
-                android:id="@+id/gallery_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:orientation="vertical"
-                android:weightSum="100">
-
-            <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="270dp"
-                    android:layout_weight="40">
-
-            <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-
-                <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-
-                    <ImageView
-                            android:id="@+id/profile_image"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:paddingLeft="20dp"
-                            android:paddingTop="30dp"
-                            android:src="@drawable/ic_circle_frame">
-
-                    </ImageView>
-
-                    <TextView
-                            android:id="@+id/owner_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="@string/pet_owner"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                        android:id="@+id/linear_layout_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="104dp"
-                        android:gravity="right">
-
-
-                    <LinearLayout
-                            android:layout_width="251dp"
-                            android:layout_height="101dp"
-                            android:orientation="horizontal">
-
-
-                        <ImageView
-                                android:id="@+id/pet_icon"
-                                android:layout_width="36dp"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/icon_of_pet_type"
-                                android:paddingTop="30dp"
-                                app:srcCompat="@drawable/cat_icon" />
-
-                        <TextView
-                                android:id="@+id/profile_name"
-                                android:layout_width="147dp"
-                                android:layout_height="45dp"
-                                android:layout_marginStart="12dp"
-                                android:layout_marginTop="50dp"
-
-                                android:text="@string/profile_name"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                                android:textStyle="bold" />
-
-                        <ImageButton
-                                android:id="@+id/heart_follow"
-                                android:layout_width="61dp"
-                                android:layout_height="58dp"
-                                android:layout_marginTop="42dp"
-                                android:background="@android:color/white"
-                                android:contentDescription="@string/heart"
-                                android:src="@drawable/ic_heart_empty" />
-
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="229dp">
-                    
-                    <TextView
-                            android:id="@+id/user_profile_bio"
-                            android:layout_width="237dp"
-                            android:layout_height="119dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginEnd="9dp"
-                            android:layout_marginBottom="9dp"
-                            android:text="@string/bio_text"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    android:layout_height="100dp"
-                    android:layout_weight="40">
-
-
-                    <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="318dp"
-                        android:layout_marginBottom="94dp"
-                        android:text="Hallåååå">
-
-                </TextView>
-
-            </RelativeLayout>
-
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:paddingBottom="20dp">
-
-                    <TextView
-                            android:id="@+id/profile_followers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="60dp"
-                            android:text="@string/number_of_followers"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-                    <TextView
-                            android:id="@+id/profile_following"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="60dp"
-                            android:text="@string/number_of_following"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-                </LinearLayout>
-
-
-            </RelativeLayout>
-
-
-            <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/pics_videos_tab"
-                    android:layout_width="383dp"
-                    android:layout_height="39dp"
-                    android:layout_gravity="center">
-
-                <com.google.android.material.tabs.TabItem
-                        android:id="@+id/pics_tab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_images" />
-
-                <com.google.android.material.tabs.TabItem
-                        android:id="@+id/video_tab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_videos" />
-
-            </com.google.android.material.tabs.TabLayout>
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/gallery_gridView"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_weight="40"
-                    android:gravity="center"
-                    android:horizontalSpacing="1dp"
-                    android:numColumns="5"
-                    android:stretchMode="none"
-                    android:verticalSpacing="1dp">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
-
-    </RelativeLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,4 +13,5 @@
     <string name="pet_owner">Owner: micheil</string>
     <string name="profile_videos">Videos</string>
     <string name="profile_images">Images</string>
+    <string name="images_tab">Images</string>
 </resources>

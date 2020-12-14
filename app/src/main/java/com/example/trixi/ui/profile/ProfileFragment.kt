@@ -95,7 +95,7 @@ class ProfileFragment : Fragment() {
         adapter.add(MediaItem())
         adapter.add(MediaItem())
 
-        gallery_gridView.adapter = adapter;
+        media_grid.adapter = adapter;
 
         adapter.apply {
             val gridLayoutManager = GridLayoutManager(
@@ -118,7 +118,7 @@ class ProfileFragment : Fragment() {
             //viewHolder.itemView.background = post.path
         }
 
-        override fun getLayout() : Int = R.layout.profile_media_item
+        override fun getLayout() : Int = R.layout.profile_media_thumbnail
     }
 
     private fun fetchUserPosts() {
