@@ -5,66 +5,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTeal">
-
-    <include layout="@layout/fragment_btn_gallery_camera_toolbar"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:background="@color/colorTeal"
+    android:scrollbars = "vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="20dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="40dp">
+
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="350dp"
-            android:layout_height="350dp"
+            android:id="@+id/uploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="284dp"
             android:layout_marginBottom="20dp"
-            android:layout_gravity="center"
             android:padding="20dp"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName5"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingLeft="16dp"
             android:layout_marginBottom="20dp"
-            android:ems="10"
             android:background="@android:color/white"
+            android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:paddingLeft="16dp"
+            android:text="Title" />
 
         <EditText
-            android:id="@+id/editTextTextMultiLine"
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:layout_marginBottom="20dp"
             android:background="@android:color/white"
             android:ems="10"
-            android:layout_marginBottom="20dp"
+            android:inputType="textMultiLine"
             android:paddingLeft="16dp"
-           android:paddingTop="10dp"
-            android:text="Description"
-            android:inputType="textMultiLine" />
+            android:paddingTop="10dp"
+            android:text="Description" />
 
         <Spinner
             android:id="@+id/upload_spinner_add_pet"
             android:layout_width="match_parent"
-            android:text="Select pet"
-            android:layout_marginBottom="20dp"
             android:layout_height="50dp"
-            android:background="@android:color/white"></Spinner>
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/white"
+            android:text="Select pet"></Spinner>
 
         <Spinner
             android:id="@+id/upload_spinner_add_category"
             android:layout_width="match_parent"
-            android:text="Select category"
             android:layout_height="50dp"
-            android:background="@android:color/white"></Spinner>
+            android:background="@android:color/white"
+            android:text="Select category"></Spinner>
 
         <Button
             android:id="@+id/button_share"
@@ -74,6 +70,6 @@
             android:background="@drawable/btn_rounded_corners"
             android:text="Share" />
 
+
     </LinearLayout>
-    </ScrollView>
 </RelativeLayout>

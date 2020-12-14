@@ -10,3 +10,4 @@
 trixibackend/.idea/
 trixibackend/target/
 .RetrofitClient.kt
+app/src/main/java/com/example/trixi/apiService/RetrofitClient.kt

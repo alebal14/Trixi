@@ -2,6 +2,7 @@ package com.trixibackend;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.trixibackend.entity.*;
 import express.Express;
 import express.http.Cookie;
@@ -9,9 +10,21 @@ import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
 import express.utils.Status;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.MultipartStream;
+import org.apache.commons.io.FilenameUtils;
 
-import java.util.Locale;
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RestApi {
 
@@ -124,15 +137,48 @@ public class RestApi {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
-                    User user = (User) req.getBody(User.class);
+                    /*User user = (User) req.getBody(User.class);
 
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
 
-                    res.json(db.save(user));
+                    res.json(db.save(user));*/
+
+                    System.out.println("Begin");
+
+                    String fileUrl = null;
+
+                    try {
+
+                        List<FileItem> files = req.getFormData("file");
+                        fileUrl = db.getUserHandler().uploadProfileImage(files);
+                        System.out.println(fileUrl);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // user.setImageUrl(fileUrl);
+                    //String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                    //user.setPassword(hashedPassword);
+                    //res.json(image);
+                    //res.json(db.save(user));
                     break;
                 case "posts":
+                    /*String fileUrl = null;
+
+                    try {
+                        List<FileItem> files = req.getFormData("file");
+                        fileUrl = db.getPostHandler().uploadFile(files.get(0));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
                     Post post = (Post) req.getBody(Post.class);
+                    post.setFilePath(fileUrl);*/
+
+                    Post post = (Post) req.getBody(Post.class);
+
                     res.json(db.save(post));
                     break;
                 case "pets":
