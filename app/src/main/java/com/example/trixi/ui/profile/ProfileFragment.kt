@@ -45,7 +45,7 @@ class ProfileFragment : Fragment() {
             profile_name.text = loggedInUser.userName
             profile_bio.text = loggedInUser.bio
             //use your ip here
-            Picasso.get().load("http://192.168.8.101:3000/" + loggedInUser.imageUrl).fit().into(profile_image)
+            Picasso.get().load("http://192.168.1.71:3000/" + loggedInUser.imageUrl).fit().into(profile_image)
             owner_name.visibility = View.INVISIBLE
 
             //TODO: get followers & following
@@ -56,7 +56,7 @@ class ProfileFragment : Fragment() {
 
     private fun populateMediaGrid() {
 
-        val adapter = GroupAdapter<GroupieViewHolder>()
+       /* val adapter = GroupAdapter<GroupieViewHolder>()
         media_grid.layoutManager = GridLayoutManager(context, 4)
 
         adapter.add(MediaItem())
@@ -64,7 +64,7 @@ class ProfileFragment : Fragment() {
         adapter.add(MediaItem())
         adapter.add(MediaItem())
 
-        media_grid.adapter = adapter
+        media_grid.adapter = adapter*/
 
     }
 

@@ -156,9 +156,9 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-        val post = Post("", title, description, ownerId, null, null)
+        //val post = Post("", title, description, ownerId, null, null, null)
 
-        db.sendPostToDb(post)
+      //  db.sendPostToDb(post)
 
 
     }

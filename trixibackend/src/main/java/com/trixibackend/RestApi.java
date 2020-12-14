@@ -201,6 +201,7 @@ public class RestApi {
                     break;
             }
         });
+
     }
 
     private void setUpGetApi(String collectionName) {
