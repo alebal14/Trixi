@@ -55,6 +55,12 @@ public class RestApi {
         getLoggedinUser();
         logoutUser();
         setImagePostApi();
+
+        try {
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpUpdateApi() {
@@ -159,13 +165,15 @@ public class RestApi {
                     break;
                 case "posts":
                     //String filePostImage = null;
-                    setImagePostApi();
                     Post post = (Post) req.getBody(Post.class);
-                    if(files != null){
+                    String filePostImage = db.getPostHandler().uploadImage(files);
+                    System.out.println(filePostImage);
+                    post.setFilePath(filePostImage);
+                    /*if(files != null){
                         String filePostImage = db.getPostHandler().uploadImage(files);
                         System.out.println(filePostImage);
                         post.setFilePath(filePostImage);
-                    }
+                    }*/
                     res.json(db.save(post));
                     break;
                 case "pets":
@@ -310,6 +318,8 @@ public class RestApi {
         });
 
     }
+
+
 
     private void logoutUser(){
         app.get("/rest/logout", (req, res) -> {

@@ -145,8 +145,6 @@ public class PostHandler {
 
                     String path = "resFolder/images/" + name + ".jpg" ;
 
-
-
                     Path destinationFile = Paths.get(path);
                     Files.createDirectories(destinationFile.getParent());
                     Files.createFile(destinationFile);
