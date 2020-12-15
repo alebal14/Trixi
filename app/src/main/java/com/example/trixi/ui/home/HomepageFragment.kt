@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 
 class HomepageFragment : Fragment() {
-
+    val adapter = GroupAdapter<GroupieViewHolder>()
     val model: GetFromDbViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +53,6 @@ class HomepageFragment : Fragment() {
 //            val fm = fragmentManager
 //            fm?.let {popupChat.show(fm, PopUpChat.TAG)}
 //        }
-
-
         return view
 
 
@@ -73,7 +71,8 @@ class HomepageFragment : Fragment() {
 
 
         if (PostToDb.loggedInUser != null) {
-            val adapter = GroupAdapter<GroupieViewHolder>()
+
+            adapter.clear()
             model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
                     Log.d("uus", "total posts : ${posts.size}")
@@ -100,8 +99,8 @@ class HomepageFragment : Fragment() {
         }
 
 
-        val snapHelper: SnapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(recyclerView_homepage);
+//        val snapHelper: SnapHelper = LinearSnapHelper()
+//        snapHelper.attachToRecyclerView(recyclerView_homepage);
 
 
     }

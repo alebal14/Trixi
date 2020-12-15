@@ -23,7 +23,7 @@
             <ImageView
                 android:id="@+id/uploadImage"
                 android:layout_width="match_parent"
-                android:layout_height="284dp"
+                android:layout_height="270dp"
                 android:layout_marginBottom="20dp"
                 android:src="@drawable/ic_baseline_cloud_upload_24"/>
 
@@ -79,6 +79,7 @@
                 android:orientation="horizontal"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
+                android:layout_marginBottom="50dp"
                 >
                 <Button
                     android:id="@+id/button_cancel"

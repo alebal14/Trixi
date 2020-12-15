@@ -16,7 +16,6 @@ class GetFromDbViewModel : ViewModel() {
     var userListData: MutableLiveData<List<User>>
     var followingsPost: MutableLiveData<List<Post>>
 
-
     init {
         userListData = MutableLiveData()
         followingsPost = MutableLiveData()
