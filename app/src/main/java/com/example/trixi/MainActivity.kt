@@ -12,6 +12,7 @@ import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.fragments.singlePostFragment
 import com.example.trixi.ui.home.HomepageFragment
+import com.example.trixi.ui.profile.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
          val homepageFragment = HomepageFragment()
          val postFragment = UploadFragment()
          val searchFragment = SearchFragment()
+         val profileFragment = ProfileFragment()
          val singleFragment = singlePostFragment()
 
          val post = PostToDb.latestPost
@@ -72,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                  R.id.footer_home -> makeCurrentFragment(homepageFragment)
                  R.id.footer_search -> makeCurrentFragment(searchFragment)
                  R.id.footer_post -> makeCurrentFragment(postFragment)
+                 R.id.footer_profile -> makeCurrentFragment(profileFragment)
              }
              true
          }

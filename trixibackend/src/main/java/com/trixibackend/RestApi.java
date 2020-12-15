@@ -9,23 +9,11 @@ import express.http.Cookie;
 import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
-import express.utils.Status;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.MultipartStream;
-import org.apache.commons.io.FilenameUtils;
-
-import javax.naming.Reference;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 public class RestApi {
 
@@ -149,6 +137,11 @@ public class RestApi {
                 e.printStackTrace();
             }
         });
+        try{
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpPostApi(String collectionName) {
@@ -341,4 +334,5 @@ public class RestApi {
             res.send("Successfully logged out");
         });
     }
+
 }
