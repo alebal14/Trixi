@@ -16,7 +16,6 @@ class GetFromDbViewModel : ViewModel() {
     var userListData: MutableLiveData<List<User>>
     var followingsPost: MutableLiveData<List<Post>>
 
-
     init {
         userListData = MutableLiveData()
         followingsPost = MutableLiveData()
@@ -26,6 +25,7 @@ class GetFromDbViewModel : ViewModel() {
         return userListData
     }
 
+    
 
     fun GetAllUsersFromDB() {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -99,6 +99,7 @@ class GetFromDbViewModel : ViewModel() {
         return user
 
     }
+
 
 
 }

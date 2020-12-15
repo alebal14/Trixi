@@ -22,7 +22,6 @@ class PostToDb {
         var latestPost: Post? = null
     }
 
-
     fun PostLoginUserToDb(user: User, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
@@ -137,6 +136,29 @@ class PostToDb {
                     context.startActivity(intent)
                 }else{
                     Log.d("uus", "REGuser : onResponse else" + response.body())
+                }
+            }
+        })
+    }
+
+    fun logOutUser(context: Context?) {
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+        val call = retrofitClient?.logOutUser()
+        call?.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("logout", "logout user : onfailure " + t.message)
+            }
+            override fun onResponse(
+                call: Call<ResponseBody>, response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("logout", "User logged out successfully" + response.message())
+                    val intent = Intent(context, LoginActivity::class.java)
+                    context!!.startActivity(intent)
+
+                } else {
+                    Log.d("logout", "User failed to logout")
                 }
             }
         })
