@@ -53,8 +53,6 @@ class HomepageFragment : Fragment() {
 //            val fm = fragmentManager
 //            fm?.let {popupChat.show(fm, PopUpChat.TAG)}
 //        }
-
-
         return view
 
 
