@@ -109,9 +109,9 @@ class RegisterActivity : AppCompatActivity() {
             //bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
             //register_profile_image.setImageBitmap(bitmap)
 
-            val ivBasicImage = findViewById<View>(R.id.register_profile_image) as ImageView
+            val container = findViewById<View>(R.id.register_profile_image) as ImageView
 
-            Picasso.get().load(selectedImage).transform(CropCircleTransformation()).fit().into(ivBasicImage)
+            Picasso.get().load(selectedImage).transform(CropCircleTransformation()).fit().into(container)
 
             cursor.close()
 
