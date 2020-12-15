@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
@@ -24,8 +25,6 @@ import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.fragments.DrawerMenuFragment
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_btn_gallery_camera_toolbar.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -96,9 +95,7 @@ class ProfileFragment : Fragment() {
                     requireActivity().supportFragmentManager.popBackStack()
                 }
             }
-            R.id.edit_user ->{
-                println("EDIISCLICKED")
-            }
+
         }
         return super.onOptionsItemSelected(item)
     }
