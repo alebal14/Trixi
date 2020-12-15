@@ -173,9 +173,9 @@ public class RestApi {
 
 
 
-                    Post p = db.save(post);
-                    p.setUid(p.getUid().toString());
-                    res.json(db.save(p));
+                    //Post p = db.save(post);
+                    //p.setUid(p.getUid().toString());
+                    res.json(db.save(post));
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);

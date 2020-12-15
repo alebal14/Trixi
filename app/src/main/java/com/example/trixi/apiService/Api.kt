@@ -7,9 +7,8 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.ProfileImage
 
 import com.example.trixi.entities.User
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import okhttp3.MultipartBody
+
 
 
 import retrofit2.Call
@@ -35,8 +34,10 @@ interface Api {
     fun postPostToDb(@Body post: Post) : Call<Post>
 
     @GET("rest/login")
-
     fun getLoggedInUser(): Call<User>
+
+    @GET("api/getLatestPost/{id}")
+    fun getLatestPost(@Path(value="id") id : String?):Call<Post>
 
     @GET("rest/users")
     fun getAllUsers(): Call<List<User>>

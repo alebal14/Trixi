@@ -19,6 +19,7 @@ class PostToDb {
 
     companion object {
         var loggedInUser: User? = null
+        var latestPost: Post? = null
     }
 
 
@@ -70,6 +71,30 @@ class PostToDb {
 
                 } else {
                     Log.d("loggedInUser", "User failed to login")
+                }
+            }
+        })
+    }
+
+    fun GetLatestPostFromDB(id :String){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+        val call = retrofitClient?.getLatestPost(id)
+        call?.enqueue(object : Callback<Post> {
+            override fun onFailure(call: Call<Post>, t: Throwable) {
+                Log.d("uus", "loggedInUser : onfailure " + t.message)
+            }
+            override fun onResponse(
+                call: Call<Post>, response: Response<Post>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("latestPost", "Latest Post")
+                    latestPost = response.body()
+                    Log.d("loggedInUser", loggedInUser.toString())
+
+
+                } else {
+                    Log.d("latestPost", "Latest Post")
                 }
             }
         })
