@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -74,6 +76,12 @@ class UploadActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.empty_menu, menu)
+        supportActionBar!!.setTitle("Upload Post")
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun hasWriteExternalStoragePermission() =
@@ -155,8 +163,8 @@ class UploadActivity : AppCompatActivity() {
         encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
 
         //sending the image
-       // db.PostImageToDb(encodedImage)
-
+        db.PostImageToDb(encodedImage)
+        Thread.sleep(1_000)
         sendPost()
     }
 
@@ -172,7 +180,7 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-        val post = Post("", title, description,"", ownerId, null, null)
+        val post = Post("", title, description, ownerId, null, null, null, null)
 
         db.sendPostToDb(post)
         Thread.sleep(6_000)

@@ -22,6 +22,11 @@ interface Api {
     @POST("rest/login")
     fun loginUser(@Body user: User): Call<User>
 
+    @GET("rest/login")
+    fun getLoggedInUser(): Call<User>
+
+    @GET("rest/logout")
+    fun logOutUser():Call<ResponseBody>
 
     @Multipart
     @POST("rest/image")
@@ -33,8 +38,7 @@ interface Api {
     @POST("rest/posts")
     fun postPostToDb(@Body post: Post) : Call<Post>
 
-    @GET("rest/login")
-    fun getLoggedInUser(): Call<User>
+
 
     @GET("api/getLatestPost/{id}")
     fun getLatestPost(@Path(value="id") id : String?):Call<Post>

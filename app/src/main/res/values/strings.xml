@@ -3,6 +3,19 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="number_of_followers">22 Followers</string>
+    <string name="number_of_following">Following 18</string>
+    <string name="bio_text">Lorem Ipsum This is my bio hello I am a nice person that likes to train sweet dogs, not naughty ones</string>
+    <string name="icon_of_pet_type">icon of pet type</string>
+    <string name="icon_pet_type">iconOfPetType</string>
+    <string name="heart" />
+    <string name="pet_owner">Owner: micheil</string>
+    <string name="profile_videos">Videos</string>
+    <string name="profile_images">Images</string>
+    <string name="images_tab">Images</string>
+    <string name="open">OPEN</string>
+    <string name="close">CLOSE</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_user_name">User/Petname</string>
 </resources>

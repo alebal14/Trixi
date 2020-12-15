@@ -1,8 +1,6 @@
 package com.example.trixi.entities
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-import org.bson.types.ObjectId
+import java.io.Serializable
 
 data class User(
     val uid: String?,
@@ -14,9 +12,5 @@ data class User(
     val role: String?,
     val pets: ArrayList<Pet>?,
     val posts: ArrayList<Post>?
-) {
-
-
-}
-
+) : Serializable
 

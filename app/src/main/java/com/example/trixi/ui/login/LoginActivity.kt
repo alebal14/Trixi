@@ -2,6 +2,7 @@ package com.example.trixi.ui.login
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.AnimationDrawable
 import android.net.ConnectivityManager
 import android.os.Build
@@ -31,10 +32,12 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
     val post = PostToDb()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorTeal)))
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
 
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)

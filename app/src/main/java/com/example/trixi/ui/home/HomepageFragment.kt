@@ -4,9 +4,8 @@ package com.example.trixi.ui.home
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
@@ -53,19 +51,24 @@ class HomepageFragment : Fragment() {
 //            val fm = fragmentManager
 //            fm?.let {popupChat.show(fm, PopUpChat.TAG)}
 //        }
-
-
         return view
 
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
         setupRecycleView(view)
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.empty_menu, menu)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Trixi")
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 
