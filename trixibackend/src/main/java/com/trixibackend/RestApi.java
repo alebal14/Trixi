@@ -267,6 +267,19 @@ public class RestApi {
             res.json(followingPostList);
         });
 
+        app.get("/api/getLatestPost/:id", (req, res) -> {
+            String id = req.getParam("id");
+            User user = db.getUserHandler().findUserById(id);
+            var post = db.getUserHandler().userLatestPost(user);
+
+            if (post == null) {
+                res.setStatus(Status._403);
+                //res.send("Error: you are not following this Pet");
+                return;
+            }
+            res.json(post);
+        });
+
 
     }
 

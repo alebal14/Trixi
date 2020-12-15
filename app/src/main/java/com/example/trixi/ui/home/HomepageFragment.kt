@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -73,6 +74,7 @@ class HomepageFragment : Fragment() {
 
         if (PostToDb.loggedInUser != null) {
             val adapter = GroupAdapter<GroupieViewHolder>()
+            adapter.clear()
             model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
                     Log.d("uus", "total posts : ${posts.size}")
@@ -115,15 +117,16 @@ class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() 
         viewHolder.itemView.home_item_profileName.text = postOwner.userName
         viewHolder.itemView.home_item_title.text = post.title
         viewHolder.itemView.home_item_description.text = post.description
+        viewHolder.itemView.home_item_edit.isVisible = false
         viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
         viewHolder.itemView.home_item_like_count.text = post.likes?.size.toString()
-        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).fit().into(viewHolder.itemView.home_item_post_image)
+        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(viewHolder.itemView.home_item_media)
 
     }
 
 
     override fun getLayout(): Int {
-        return R.layout.home_item;
+        return R.layout.fragment_home_item;
     }
 
 }
