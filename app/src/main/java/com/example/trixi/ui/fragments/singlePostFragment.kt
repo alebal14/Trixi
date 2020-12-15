@@ -37,6 +37,7 @@ class singlePostFragment : Fragment() {
         //val filePath = requireArguments().getString("url")
         //val descripton = requireArguments().getString("description")
 
+
         val post = PostToDb.latestPost
 
         single_item_title.text = post?.title
