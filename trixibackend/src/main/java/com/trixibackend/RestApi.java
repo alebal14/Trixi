@@ -99,7 +99,6 @@ public class RestApi {
         });
 
 
-
         app.post("/api/users/un_follow/:userid/:followingId", (req, res) -> {
 
             String userid = req.getParam("userid");
@@ -140,7 +139,8 @@ public class RestApi {
     }
 
     List<FileItem> files = null;
-    private void setImagePostApi(){
+
+    private void setImagePostApi() {
         app.post("/rest/image", (req, res) -> {
             try {
                 files = req.getFormData("file");
@@ -167,12 +167,9 @@ public class RestApi {
                 case "posts":
                     Post post = (Post) req.getBody(Post.class);
 
-                        String filePostImage = db.uploadImage(files);
-                        System.out.println(filePostImage);
-                        post.setFilePath(filePostImage);
-
-
-
+                    String filePostImage = db.uploadImage(files);
+                    System.out.println(filePostImage);
+                    post.setFilePath(filePostImage);
                     //Post p = db.save(post);
                     //p.setUid(p.getUid().toString());
                     res.json(db.save(post));
@@ -285,11 +282,11 @@ public class RestApi {
 
     private void setLoginUser() {
 
-        app.post("/rest/login", (req, res) ->{
+        app.post("/rest/login", (req, res) -> {
 
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
-            if(sessionCookie.getData() != null) {
+            if (sessionCookie.getData() != null) {
                 res.send("Already logged in");
                 return;
             }
@@ -297,13 +294,13 @@ public class RestApi {
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
-           if (user == null) {
-                res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
+            if (user == null) {
+                res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null ? "Email: " + loggedInUser.getEmail() : "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
             }
 
             var result = BCrypt.verifyer().verify(loggedInUser.getPassword().toCharArray(), user.getPassword().toCharArray());
-            if(!result.verified) {
+            if (!result.verified) {
                 res.setStatus(Status._401);
                 res.send("password and username/email dont match");
                 res.json(user);
@@ -316,12 +313,12 @@ public class RestApi {
         });
     }
 
-    private void getLoggedinUser(){
-        app.get("/rest/login", (req, res) ->{
+    private void getLoggedinUser() {
+        app.get("/rest/login", (req, res) -> {
 
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
-            if(sessionCookie.getData() == null) {
+            if (sessionCookie.getData() == null) {
                 res.send("Not logged in");
                 return;
             }
@@ -337,8 +334,7 @@ public class RestApi {
     }
 
 
-
-    private void logoutUser(){
+    private void logoutUser() {
         app.get("/rest/logout", (req, res) -> {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
             sessionCookie.setData(null);
