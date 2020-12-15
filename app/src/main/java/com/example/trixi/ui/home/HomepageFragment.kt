@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 
 class HomepageFragment : Fragment() {
-
+    val adapter = GroupAdapter<GroupieViewHolder>()
     val model: GetFromDbViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,15 +45,12 @@ class HomepageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater!!.inflate(R.layout.fragment_home, container, false)
 
-
 //        val chatButton = view.findViewById(R.id.single_post_comment) as ImageButton
 //        chatButton.setOnClickListener { view ->
 //            val popupChat = PopUpChat()
 //            val fm = fragmentManager
 //            fm?.let {popupChat.show(fm, PopUpChat.TAG)}
 //        }
-
-
         return view
 
 
@@ -62,7 +59,7 @@ class HomepageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
-        //(activity as AppCompatActivity?)!!.supportActionBar!!.setLogo()
+
         setupRecycleView(view)
 
 
@@ -79,7 +76,8 @@ class HomepageFragment : Fragment() {
 
 
         if (PostToDb.loggedInUser != null) {
-            val adapter = GroupAdapter<GroupieViewHolder>()
+
+            adapter.clear()
             model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
                     Log.d("uus", "total posts : ${posts.size}")
@@ -87,8 +85,7 @@ class HomepageFragment : Fragment() {
 
                         Log.d("uus", "post Title : ${post.title!!}")
                         Log.d("uus", "post Description : ${post.description}")
-                        model.getOneUserFromDb(post.ownerId).observe(
-                            viewLifecycleOwner
+                        model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
                         ) { postOwner ->
                             adapter.add(HomeItem(post, postOwner))
                         }
@@ -107,8 +104,8 @@ class HomepageFragment : Fragment() {
         }
 
 
-        val snapHelper: SnapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(recyclerView_homepage);
+//        val snapHelper: SnapHelper = LinearSnapHelper()
+//        snapHelper.attachToRecyclerView(recyclerView_homepage);
 
 
     }
@@ -118,9 +115,7 @@ class HomepageFragment : Fragment() {
 class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl).transform(
-            CropCircleTransformation()
-        ).fit().into(viewHolder.itemView.home_item_profileimg)
+        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl).transform(CropCircleTransformation()).fit().into(viewHolder.itemView.home_item_profileimg)
 
         viewHolder.itemView.home_item_profileName.text = postOwner.userName
         viewHolder.itemView.home_item_title.text = post.title
@@ -128,9 +123,7 @@ class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() 
         viewHolder.itemView.home_item_edit.isVisible = false
         viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
         viewHolder.itemView.home_item_like_count.text = post.likes?.size.toString()
-        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(
-            viewHolder.itemView.home_item_media
-        )
+        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(viewHolder.itemView.home_item_media)
 
     }
 

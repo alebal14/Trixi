@@ -1,14 +1,11 @@
 package com.example.trixi
 
-import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-
 import androidx.activity.viewModels
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.trixi.repository.GetFromDbViewModel
 import com.example.trixi.repository.PostToDb
@@ -16,6 +13,7 @@ import com.example.trixi.entities.User
 import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
+import com.example.trixi.ui.fragments.singlePostFragment
 import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.profile.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,14 +30,17 @@ class MainActivity : AppCompatActivity() {
          //RetrofitClient.context = this
 
         //setContentView(R.layout.fragment_share)
-
+        val single = intent.getStringExtra("EXTRA")
 
          val homepageFragment = HomepageFragment()
          val postFragment = UploadFragment()
          val searchFragment = SearchFragment()
          val profileFragment = ProfileFragment()
+         val singleFragment = singlePostFragment()
 
+         val post = PostToDb.latestPost
 
+         Log.d("post", " $post")
 
 
          print("main login-user :${PostToDb.loggedInUser}")
@@ -56,7 +57,17 @@ class MainActivity : AppCompatActivity() {
 //
 //         homepageFragment.arguments = bundle
 
-         makeCurrentFragment(homepageFragment)
+         if(single.isNullOrEmpty()){
+             makeCurrentFragment(homepageFragment)
+         } else {
+             val bundle = Bundle()
+             //bundle.putString("edttext", "From Activity")
+             bundle.putString("title", post?.title.toString())
+             bundle.putString("url", post?.filePath.toString())
+             bundle.putString("description", post?.description.toString())
+             singleFragment.arguments = bundle;
+             makeCurrentFragment(singleFragment);
+         }
 
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
@@ -71,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun makeCurrentFragment(fragment: Fragment) =
+    fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container,fragment)
             commit()

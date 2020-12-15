@@ -1,11 +1,17 @@
 package com.example.trixi.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.repository.PostToDb
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_home_item.view.*
+import kotlinx.android.synthetic.main.fragment_single_post.*
 
 
 class singlePostFragment : Fragment() {
@@ -20,8 +26,25 @@ class singlePostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_single_post, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //val title = requireArguments().getString("title")
+        //val filePath = requireArguments().getString("url")
+        //val descripton = requireArguments().getString("description")
+
+        val post = PostToDb.latestPost
+
+        single_item_title.text = post?.title
+        single_item_description.text = post?.description
+
+
+        Picasso.get().load(RetrofitClient.BASE_URL + post?.filePath).centerCrop().fit().into(single_item_media)
+
     }
 
 

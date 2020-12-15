@@ -23,19 +23,21 @@ import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.fragments.singlePostFragment
 import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_upload.*
 import java.io.ByteArrayOutputStream
+
 
 class UploadActivity : AppCompatActivity() {
 
     val db = PostToDb()
     var selectedImage: Uri? = null
-    lateinit var bitmap : Bitmap
     var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
     var encodedImage: String = ""
     var filePath = ""
+
+    private val mainActivity: MainActivity? = null
 
 
     private val mMediaUri: Uri? = null
@@ -154,14 +156,14 @@ class UploadActivity : AppCompatActivity() {
         //compressing the bitmap
         convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
 
-        //coberting the image to bytearray
+        //converting the image to bytearray
         val imageByte = baos.toByteArray()
 
         //encoding the image
         encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
 
         //sending the image
-        db.PostImageToDb(encodedImage)
+       // db.PostImageToDb(encodedImage)
 
         sendPost()
     }
@@ -178,11 +180,24 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-        val post = Post("", title, description,"", ownerId, null, null)
+        val post = Post("", title, description, ownerId, null, null, null, null)
 
         db.sendPostToDb(post)
+        Thread.sleep(6_000)
+        db.GetLatestPostFromDB(ownerId)
+        Thread.sleep(2_000)
+
+        Thread.sleep(5_000)
+        toAnotherActivity()
 
 
+    }
+
+    private fun toAnotherActivity(){
+        val intent = Intent (this, MainActivity::class.java)
+        intent.putExtra("EXTRA", "openSingle");
+
+        this.startActivity(intent)
     }
 
 }

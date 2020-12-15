@@ -2,15 +2,24 @@ package com.example.trixi.ui.profile
 
 import android.app.Activity
 import android.content.Context
+import android.net.sip.SipSession
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import android.view.*
 import android.widget.ToggleButton
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.fragments.DrawerMenuFragment
@@ -18,19 +27,19 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_btn_gallery_camera_toolbar.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Item
+import kotlinx.android.synthetic.main.fragment_home_item.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.media_grid
+import kotlinx.android.synthetic.main.media_grid.*
 import kotlinx.android.synthetic.main.profile_media_item.view.*
 
 class ProfileFragment : Fragment() {
 
     val loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu:Boolean = false
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        populateMediaGrid()
-
-    }
 
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +53,20 @@ class ProfileFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
+        media_grid.layoutManager = GridLayoutManager(context,4)
 
-        populateProfile()
+        //media_grid.addItemDecoration(GridItemDecoration(10, 2))
+        if (loggedInUser != null) {
+            if(!loggedInUser.posts?.isEmpty()!!) {
+                val mediaGridAdapter = ProfileMediaGridAdapter(loggedInUser.posts)
+                media_grid.adapter = mediaGridAdapter
+            }
+            else profile_no_posts.visibility = TextView.VISIBLE
 
+            populateProfile()
+        }
+        //populateMediaGrid()
+        //populatePetList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -85,11 +105,15 @@ class ProfileFragment : Fragment() {
 
 
 
+    private fun populatePetList() {
+        TODO("Populate list with users pets")
+    }
+
     private fun populateProfile() {
 
-        if(loggedInUser != null) {
-            profile_name.text = loggedInUser.userName
+            profile_name.text = loggedInUser!!.userName
             profile_bio.text = loggedInUser.bio
+            Picasso.get().load(RetrofitClient.BASE_URL + loggedInUser.imageUrl).fit().into(profile_image)
             //use your ip here
             Picasso.get().load("http://192.168.1.71:3000/" + loggedInUser.imageUrl).fit().into(profile_image)
             owner_name.visibility = View.INVISIBLE
@@ -100,33 +124,8 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun populateMediaGrid() {
-
-       /* val adapter = GroupAdapter<GroupieViewHolder>()
-        media_grid.layoutManager = GridLayoutManager(context, 4)
-
-        adapter.add(MediaItem())
-        adapter.add(MediaItem())
-        adapter.add(MediaItem())
-        adapter.add(MediaItem())
-
-        media_grid.adapter = adapter*/
-
-    }
-
-    class MediaItem() : Item() {
-        //TODO make it post
-        override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-            viewHolder.itemView.apply {
-                Picasso.get().load("https://imgur.com/IjMSpbA").into(media_item_thumbnail)
-            }
-        }
-        override fun getLayout() : Int = R.layout.profile_media_item
-    }
-
     private fun fetchUserPosts() {
-        //TODO: fetch the posts for the user and show in grid,
-
+        //TODO: send posts to adapter
     }
 
 //    interface OnProfileSelected {
@@ -134,7 +133,7 @@ class ProfileFragment : Fragment() {
 //    }
 
 
-}
+
 
 
 

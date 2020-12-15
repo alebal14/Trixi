@@ -3,12 +3,17 @@ package com.example.trixi.ui.login
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.AnimationDrawable
 import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 import com.example.trixi.NetworkStateReceiver
 
@@ -37,6 +42,13 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)
 
+        var background = findViewById<ConstraintLayout>(R.id.layout)
+        var animation = background.background as AnimationDrawable
+
+        animation.setEnterFadeDuration(5000);
+        animation.setExitFadeDuration(5000)
+
+        animation.start()
 
 
         registerReceiver(

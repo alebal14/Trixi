@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/profileFragmentHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mid_screen"
@@ -34,37 +31,38 @@
     </de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
-        android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawablePadding="20dp"
-        android:fontFamily="@font/playfair_display"
-        android:paddingLeft="20dp"
-        android:paddingTop="20dp"
-        android:text="@string/profile_userName"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/colorTeal"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/mid_screen"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.061" />
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/profile_user_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorTeal"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/mid_screen"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.061" />
 
 
     <ImageButton
             android:id="@+id/follow_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="@android:color/white"
-            android:paddingTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:background="?android:attr/windowBackground"
             android:paddingLeft="10dp"
+            android:paddingTop="15dp"
+            android:paddingRight="10dp"
             android:src="@drawable/ic_heart_empty"
-            app:layout_constraintLeft_toRightOf="@id/profile_name"
             app:layout_constraintBottom_toBottomOf="@id/profile_name"
-          />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/profile_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
     <TextView
             android:id="@+id/profile_bio"
@@ -91,7 +89,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
             app:layout_constraintEnd_toStartOf="@+id/profile_bio"
-            app:layout_constraintGuide_percent="0.35"
+            app:layout_constraintGuide_begin="235dp"
             app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -106,7 +104,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.384"
+            app:layout_constraintVertical_bias="0.351"
             app:spanCount="2"
             tools:itemCount="3"
             tools:layoutManager="GridLayoutManager"
@@ -116,7 +114,6 @@
             android:id="@+id/linearLayout6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:paddingTop="20dp"
@@ -149,10 +146,9 @@
             android:id="@+id/pics_videos_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toTopOf="@+id/media_grid"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
 
@@ -169,10 +165,25 @@
                 android:text="Videos" />
     </com.google.android.material.tabs.TabLayout>
 
+
+    <TextView
+            android:id="@+id/profile_no_posts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No posts yet"
+            android:visibility="invisible"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab"
+            app:layout_constraintVertical_bias="0.112" />
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/media_grid"
-            android:layout_width="381dp"
-            android:layout_height="246dp"
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -213,4 +224,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
