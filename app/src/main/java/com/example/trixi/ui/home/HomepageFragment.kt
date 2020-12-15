@@ -5,9 +5,11 @@ package com.example.trixi.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -29,7 +31,6 @@ import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 
 class HomepageFragment : Fragment() {
-    val adapter = GroupAdapter<GroupieViewHolder>()
     val model: GetFromDbViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +52,7 @@ class HomepageFragment : Fragment() {
 //            val fm = fragmentManager
 //            fm?.let {popupChat.show(fm, PopUpChat.TAG)}
 //        }
+       // adapter.clear()
         return view
 
 
@@ -74,6 +76,8 @@ class HomepageFragment : Fragment() {
 
     private fun setupRecycleView(view: View) {
 
+        val adapter = GroupAdapter<GroupieViewHolder>()
+        val fm = fragmentManager
 
         if (PostToDb.loggedInUser != null) {
 
@@ -87,20 +91,20 @@ class HomepageFragment : Fragment() {
                         Log.d("uus", "post Description : ${post.description}")
                         model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
                         ) { postOwner ->
-                            adapter.add(HomeItem(post, postOwner))
+                            adapter.add(HomeItem(post, postOwner, fm!!))
                         }
                     }
                 }
             recyclerView_homepage.adapter = adapter
 
-            adapter.setOnItemClickListener { item, view ->
-                val homeItem = item as HomeItem
-                val popUp = PopUpCommentWindow(homeItem.post.comments!!)
-                val fm = fragmentManager
-                if (fm != null) {
-                    popUp.show(fm, PopUpCommentWindow.TAG)
-                }
-            }
+//            adapter.setOnItemClickListener { item, view ->
+//                val homeItem = item as HomeItem
+//                val popUp = PopUpCommentWindow(homeItem.post.comments!!)
+//                val fm = fragmentManager
+//                if (fm != null) {
+//                    popUp.show(fm, PopUpCommentWindow.TAG)
+//                }
+//            }
         }
 
 
@@ -112,7 +116,7 @@ class HomepageFragment : Fragment() {
 
 }
 
-class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() {
+class HomeItem(val post: Post, val postOwner: User,val fm:FragmentManager) : Item<GroupieViewHolder>() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl).transform(CropCircleTransformation()).fit().into(viewHolder.itemView.home_item_profileimg)
@@ -124,6 +128,18 @@ class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() 
         viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
         viewHolder.itemView.home_item_like_count.text = post.likes?.size.toString()
         Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(viewHolder.itemView.home_item_media)
+
+        var commentIcon :ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
+        commentIcon.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+                val popUp = PopUpCommentWindow(post.comments!!)
+
+                if (fm != null) {
+                    popUp.show(fm, PopUpCommentWindow.TAG)
+                }
+            }
+
+        })
 
     }
 
