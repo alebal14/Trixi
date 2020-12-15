@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
+    android:id="@+id/layout"
+    android:background="@drawable/animation"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,7 +13,6 @@
         android:id="@+id/login_activity_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorTeal"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,6 +20,13 @@
         tools:layout_editor_absoluteY="-41dp">
 
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/logo"
+            android:padding="60dp"
+            />
 
         <EditText
             android:id="@+id/login_input_username_or_password"
