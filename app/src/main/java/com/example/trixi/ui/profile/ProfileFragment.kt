@@ -115,6 +115,7 @@ class ProfileFragment : Fragment() {
             Picasso.get().load("http://192.168.1.71:3000/" + loggedInUser.imageUrl).fit().into(profile_image)
             owner_name.visibility = View.INVISIBLE
 
+
             //TODO: get followers & following
 //            profile_followers
 //            profile_following
