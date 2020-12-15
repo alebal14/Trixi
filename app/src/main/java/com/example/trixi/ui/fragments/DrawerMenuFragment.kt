@@ -4,10 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.trixi.R
-import com.example.trixi.ui.profile.ProfileFragment
+import com.example.trixi.repository.PostToDb
 import kotlinx.android.synthetic.main.fragment_drawer_menu.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -36,9 +34,11 @@ class DrawerMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logout.setOnClickListener({
+        logout.setOnClickListener {
             println("LOGOUT")
-        })
+            val post = PostToDb()
+            post.logOutUser(context)
+        }
     }
 
 

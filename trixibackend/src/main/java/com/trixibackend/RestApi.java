@@ -342,8 +342,6 @@ public class RestApi {
 
     }
 
-
-
     private void logoutUser(){
         app.get("/rest/logout", (req, res) -> {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");

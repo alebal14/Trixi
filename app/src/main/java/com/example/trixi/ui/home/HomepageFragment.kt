@@ -4,9 +4,8 @@ package com.example.trixi.ui.home
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.GetFromDbViewModel
@@ -47,6 +45,7 @@ class HomepageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater!!.inflate(R.layout.fragment_home, container, false)
 
+
 //        val chatButton = view.findViewById(R.id.single_post_comment) as ImageButton
 //        chatButton.setOnClickListener { view ->
 //            val popupChat = PopUpChat()
@@ -61,11 +60,18 @@ class HomepageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
-
+        //(activity as AppCompatActivity?)!!.supportActionBar!!.setLogo()
         setupRecycleView(view)
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.empty_menu, menu)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Trixi")
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 
@@ -81,7 +87,8 @@ class HomepageFragment : Fragment() {
 
                         Log.d("uus", "post Title : ${post.title!!}")
                         Log.d("uus", "post Description : ${post.description}")
-                        model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
+                        model.getOneUserFromDb(post.ownerId).observe(
+                            viewLifecycleOwner
                         ) { postOwner ->
                             adapter.add(HomeItem(post, postOwner))
                         }
@@ -111,7 +118,9 @@ class HomepageFragment : Fragment() {
 class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl).transform(CropCircleTransformation()).fit().into(viewHolder.itemView.home_item_profileimg)
+        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl).transform(
+            CropCircleTransformation()
+        ).fit().into(viewHolder.itemView.home_item_profileimg)
 
         viewHolder.itemView.home_item_profileName.text = postOwner.userName
         viewHolder.itemView.home_item_title.text = post.title
@@ -119,7 +128,9 @@ class HomeItem(val post: Post, val postOwner: User) : Item<GroupieViewHolder>() 
         viewHolder.itemView.home_item_edit.isVisible = false
         viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
         viewHolder.itemView.home_item_like_count.text = post.likes?.size.toString()
-        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(viewHolder.itemView.home_item_media)
+        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(
+            viewHolder.itemView.home_item_media
+        )
 
     }
 

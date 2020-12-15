@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ToggleButton
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -43,12 +44,14 @@ class ProfileFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
+
         populateProfile()
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.profile_nav_menu, menu)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Profile")
         super.onCreateOptionsMenu(menu, inflater)
     }
 

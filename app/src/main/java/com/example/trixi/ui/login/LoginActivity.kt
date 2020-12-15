@@ -32,6 +32,8 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         setContentView(R.layout.activity_login)
 
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorTeal)))
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
         RetrofitClient.context = this
         post.GetLoggedInUserFromDB(this)
 
