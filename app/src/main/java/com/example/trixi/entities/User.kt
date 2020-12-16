@@ -1,16 +1,19 @@
 package com.example.trixi.entities
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
+@Parcelize
 data class User(
     val uid: String?,
     val userName: String?,
-    var email: String?,
+    val email: String?,
     val password: String?,
     val bio: String?,
     val imageUrl: String?,
     val role: String?,
     val pets: ArrayList<Pet>?,
     val posts: ArrayList<Post>?
-) : Serializable
+) : Parcelable
 

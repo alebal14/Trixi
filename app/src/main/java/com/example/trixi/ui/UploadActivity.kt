@@ -180,11 +180,11 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-        val post = Post("", title, description, null,null, ownerId, null, null)
+        val post = Post("", title, description, null, ownerId, null, null)
 
         db.sendPostToDb(post)
         Thread.sleep(2_000)
-        db.GetLatestPostFromDB(ownerId)
+       // db.GetLatestPostFromDB(ownerId)
         Thread.sleep(2_000)
 
         Thread.sleep(2_000)

@@ -1,12 +1,20 @@
 package com.example.trixi.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.dao.RealmHandler
+import com.example.trixi.dao.RealmHandler.Companion.realm
+import com.example.trixi.dao.asLiveData
 import com.example.trixi.entities.Post
+import com.example.trixi.entities.RealmUserEntity
 import com.example.trixi.entities.User
+import io.realm.Realm
+import io.realm.RealmResults
+import io.realm.Sort
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,8 +25,23 @@ class DataViewModel : ViewModel() {
     // TODO: get all category, get all pet types
     // TODO: 2020-12-16 get all pets, get pets by pet Types, get pet by pet_id , get pet by owner_id 
 
+    val realm: Realm by lazy {
+        Realm.getDefaultInstance()
+    }
 
-    fun getAllUsersFromDB(): MutableLiveData<List<User>> {
+    val api = RealmHandler(realm)
+
+
+    val getAllUsersResults:LiveData<RealmResults<RealmUserEntity>> by lazy {
+        realm.where(RealmUserEntity::class.java).findAllAsync().asLiveData()
+    }
+    fun getAllUsersData(): LiveData<RealmResults<RealmUserEntity>>{
+        api.getAllUsersFromDB()
+        return getAllUsersResults
+    }
+
+
+    /*fun getAllUsersFromDB(): MutableLiveData<List<User>> {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         var userListData: MutableLiveData<List<User>> = MutableLiveData()
         val call = retrofitClient?.getAllUsers()
@@ -39,7 +62,7 @@ class DataViewModel : ViewModel() {
             }
         })
         return userListData
-    }
+    }*/
 
     //    fun GetLatestPostFromDB(id :String){
 //        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)

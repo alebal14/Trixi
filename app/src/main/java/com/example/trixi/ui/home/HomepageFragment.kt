@@ -58,6 +58,15 @@ class HomepageFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
+
+
+        model.getAllUsersData().observe(viewLifecycleOwner, {
+            it.forEach { user ->
+                Log.d("realmUser", "UserName : ${user.userName}")
+                Log.d("realmUser", "email : ${user.email}")
+            }
+        })
+
         setupRecycleView(view)
 
 

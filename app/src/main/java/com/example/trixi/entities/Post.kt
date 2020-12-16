@@ -9,7 +9,6 @@ data class Post(
     val title:String?,
     val description:String?,
     val filePath:String?,
-    val file:File?,
     val ownerId:String?,
     val comments: ArrayList<Comment>?,
     val likes: ArrayList<Like>?) {
