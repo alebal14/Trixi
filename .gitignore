@@ -8,7 +8,6 @@
 .externalNativeBuild
 .cxx
 trixibackend/.idea/
-trixibackend/.idea/compiler.xml
-trixibackend/.idea/compiler.xml
 trixibackend/target/
-trixibackend/.idea/compiler.xml
+.RetrofitClient.kt
+app/src/main/java/com/example/trixi/apiService/RetrofitClient.kt

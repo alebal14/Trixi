@@ -1,11 +1,13 @@
 package com.trixibackend.entity;
 
+
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+
+public class User{
     private ObjectId id;
     private String uid;
     private String userName;
@@ -17,30 +19,22 @@ public class User {
     private String role;
 
     private List<Pet> pets = new ArrayList<>();
-    private List<ObjectId> petIds = new ArrayList<>();
 
     private List<Post> posts = new ArrayList<>();
-    private List<ObjectId> postIds = new ArrayList<>();
 
+    private List<User> followingsUser = new ArrayList<>();
+    private List<Pet> followingsPet = new ArrayList<>();
+    private List<User> followers = new ArrayList<>();
 
 
 
     public User(){
-
     }
 
-    public User(String userName, String email, String password,String role) {
+    public User(String userName, String email, String password, String role) {
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.role = role;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
         this.role = role;
     }
 
@@ -100,20 +94,20 @@ public class User {
         this.imageUrl = imageUrl;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public List<Pet> getPets() {
         return pets;
     }
 
     public void setPets(List<Pet> pets) {
         this.pets = pets;
-    }
-
-    public List<ObjectId> getPetIds() {
-        return petIds;
-    }
-
-    public void setPetIds(List<ObjectId> petIds) {
-        this.petIds = petIds;
     }
 
     public List<Post> getPosts() {
@@ -124,12 +118,28 @@ public class User {
         this.posts = posts;
     }
 
-    public List<ObjectId> getPostIds() {
-        return postIds;
+    public List<User> getFollowingsUser() {
+        return followingsUser;
     }
 
-    public void setPostIds(List<ObjectId> postIds) {
-        this.postIds = postIds;
+    public void setFollowingsUser(List<User> followingsUser) {
+        this.followingsUser = followingsUser;
+    }
+
+    public List<Pet> getFollowingsPet() {
+        return followingsPet;
+    }
+
+    public void setFollowingsPet(List<Pet> followingsPet) {
+        this.followingsPet = followingsPet;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 
     @Override
@@ -137,16 +147,17 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", uid='" + uid + '\'' +
-                ", name='" + userName + '\'' +
+                ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", bio='" + bio + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", role='" + role + '\'' +
                 ", pets=" + pets +
-                ", petIds=" + petIds +
                 ", posts=" + posts +
-                ", postIds=" + postIds +
+                ", followingsUser=" + followingsUser +
+                ", followingsPet=" + followingsPet +
+                ", followers=" + followers +
                 '}';
     }
 }

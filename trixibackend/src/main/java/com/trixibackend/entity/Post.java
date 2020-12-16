@@ -7,23 +7,38 @@ import java.util.List;
 
 public class Post {
     private ObjectId id;
+    private String uid;
     private String title;
-    private String filePath;
     private String description;
+    private String filePath;
 
     private String ownerId;
     private String categoryId;
 
     private List<Comment> comments = new ArrayList<>();
-    private List<ObjectId> commentIds = new ArrayList<>();
-
     private List<Like> likes = new ArrayList<>();
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public Post() {
 
     }
 
-    public Post(String title, String filePath, String description,String ownerId) {
+    public Post(String title, String filePath, String description, String ownerId, String categoryId) {
+        this.title = title;
+        this.filePath = filePath;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.categoryId = categoryId;
+    }
+
+    public Post(String title, String filePath, String description, String ownerId) {
         this.title = title;
         this.filePath = filePath;
         this.description = description;
@@ -90,13 +105,6 @@ public class Post {
         this.comments = comments;
     }
 
-    public List<ObjectId> getCommentIds() {
-        return commentIds;
-    }
-
-    public void setCommentIds(List<ObjectId> commentIds) {
-        this.commentIds = commentIds;
-    }
 
     public List<Like> getLikes() {
         return likes;
@@ -110,13 +118,14 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "id=" + id +
+                ", uid='" + uid + '\'' +
                 ", title='" + title + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", description='" + description + '\'' +
                 ", ownerId='" + ownerId + '\'' +
                 ", categoryId='" + categoryId + '\'' +
                 ", comments=" + comments +
-                ", commentIds=" + commentIds +
+
                 ", likes=" + likes +
                 '}';
     }

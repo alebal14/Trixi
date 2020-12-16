@@ -1,12 +1,15 @@
 package com.trixibackend.entity;
 
+
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pet {
+
+public class Pet{
     private ObjectId id;
+    private String uid;
     private String name;
     private int age;
     private String gender;
@@ -18,19 +21,21 @@ public class Pet {
     private String petTypeId;
 
     private List<Post> posts = new ArrayList<>();
-    private List<ObjectId> postIds = new ArrayList<>();
+    private List<User> followers = new ArrayList<>();
 
-    public Pet(){
+
+    public Pet() {
 
     }
 
-    public Pet(String name, int age, String gender, String breed, String bio, String imageUrl) {
+    public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.breed = breed;
         this.bio = bio;
         this.imageUrl = imageUrl;
+        this.ownerId = ownerId;
     }
 
     public ObjectId getId() {
@@ -39,6 +44,14 @@ public class Pet {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -113,18 +126,19 @@ public class Pet {
         this.posts = posts;
     }
 
-    public List<ObjectId> getPostIds() {
-        return postIds;
+    public List<User> getFollowers() {
+        return followers;
     }
 
-    public void setPostIds(List<ObjectId> postIds) {
-        this.postIds = postIds;
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 
     @Override
     public String toString() {
         return "Pet{" +
                 "id=" + id +
+                ", uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
@@ -134,7 +148,7 @@ public class Pet {
                 ", ownerId='" + ownerId + '\'' +
                 ", petTypeId='" + petTypeId + '\'' +
                 ", posts=" + posts +
-                ", postIds=" + postIds +
+                ", followers=" + followers +
                 '}';
     }
 }
