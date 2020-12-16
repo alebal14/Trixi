@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import com.example.trixi.R
 import com.example.trixi.entities.Comment
 import com.example.trixi.entities.User
-import com.example.trixi.repository.GetFromDbViewModel
+import com.example.trixi.repository.DataViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
 
 class PopUpCommentWindow(val comments: List<Comment>) : DialogFragment() {
-    val model: GetFromDbViewModel by viewModels()
+    val model: DataViewModel by viewModels()
 
     companion object {
         const val TAG = "popUpChat"

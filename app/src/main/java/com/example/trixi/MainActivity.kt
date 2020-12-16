@@ -3,14 +3,10 @@ package com.example.trixi
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.example.trixi.repository.GetFromDbViewModel
+import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.entities.User
-import com.example.trixi.ui.fragments.PostFragment
 import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.fragments.singlePostFragment
@@ -21,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
 
-    val model: GetFromDbViewModel by viewModels()
+    val model: DataViewModel by viewModels()
 
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

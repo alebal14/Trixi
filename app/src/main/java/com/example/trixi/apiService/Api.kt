@@ -2,23 +2,19 @@
 package com.example.trixi.apiService
 
 
-import com.example.trixi.entities.Post
+import com.example.trixi.entities.*
 
-import com.example.trixi.entities.ProfileImage
-
-import com.example.trixi.entities.User
 import okhttp3.ResponseBody
 
 
 
 import retrofit2.Call
 import retrofit2.http.*
+import java.util.*
 
 interface Api {
 
-    @POST("rest/users")
-    fun createUser(@Body user: User): Call<User>
-
+    //Login/Log Out
     @POST("rest/login")
     fun loginUser(@Body user: User): Call<User>
 
@@ -28,6 +24,8 @@ interface Api {
     @GET("rest/logout")
     fun logOutUser():Call<ResponseBody>
 
+
+    //Posting Images
     @Multipart
     @POST("rest/image")
     fun postProfileImage(
@@ -35,13 +33,9 @@ interface Api {
     ):Call<ResponseBody>
 
 
-    @POST("rest/posts")
-    fun postPostToDb(@Body post: Post) : Call<Post>
-
-
-
-    @GET("api/getLatestPost/{id}")
-    fun getLatestPost(@Path(value="id") id : String?):Call<Post>
+    //Api User Collection
+    @POST("rest/users")
+    fun createUser(@Body user: User): Call<User>
 
     @GET("rest/users")
     fun getAllUsers(): Call<List<User>>
@@ -49,12 +43,68 @@ interface Api {
     @GET("rest/users/{id}")
     fun getUserById(@Path(value="id") id : String?): Call<User>
 
+    //Api Pet Collection
+    @GET("rest/pets")
+    fun getAllPets(): Call<List<Pet>>
 
-    @GET("rest/post/{id}")
+    @GET("rest/pets/{id}")
+    fun getPetById(@Path(value = "id") id: String?): Call<Pet>
+
+    @GET("rest/pets/by_pet_type/{pet_type_id}")
+    fun getPetsByPetType(@Path(value = "pet_type_id") id: String?): Call<List<Pet>>
+
+    @GET("rest/pets/by_ownerId/{ownerid}")
+    fun getPetsByOwnerId(@Path(value = "ownerid") id: String?): Call<List<Pet>>
+
+    @POST("rest/pets")
+    fun postPet(@Body pet: Pet): Call<Pet>
+
+    //Pet type
+    @GET("rest/pet_types")
+    fun getAllPetTypes(): Call<List<PetType>>
+
+    //Posts
+    @GET("rest/posts")
+    fun getAllPosts(): Call<List<Post>>
+
+    @POST("rest/posts")
+    fun postPostToDb(@Body post: Post) : Call<Post>
+
+    @GET("rest/posts/{id}")
     fun getPostById(@Path(value="id") id : String?): Call<Post>
+
+    @GET("rest/posts/by_owner/{owner_id}")
+    fun getPostByOwnerId(@Path(value="owner_id") id : String?): Call<List<Post>>
+
+    @GET("rest/posts/by_category/{category_id}")
+    fun getPostByCategoryId(@Path(value="category_id") id : String?): Call<List<Post>>
 
     @GET("api/getUserFollowingPost/{id}")
     fun getFollowingsPost(@Path(value="id") id : String?):Call<List<Post>>
+
+    //Category
+   @GET("rest/categories")
+   fun getAllCategories(): Call<List<Category>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+   // @GET("api/getLatestPost/{id}")
+   // fun getLatestPost(@Path(value="id") id : String?):Call<Post>
+
+
+
+
+
 
 
 }
