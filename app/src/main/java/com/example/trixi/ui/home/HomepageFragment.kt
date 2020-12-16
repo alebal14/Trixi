@@ -12,13 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
-import com.example.trixi.repository.GetFromDbViewModel
+import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.squareup.picasso.Picasso
@@ -31,7 +29,10 @@ import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 
 class HomepageFragment : Fragment() {
-    val model: GetFromDbViewModel by viewModels()
+
+    val adapter = GroupAdapter<GroupieViewHolder>()
+    val model: DataViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

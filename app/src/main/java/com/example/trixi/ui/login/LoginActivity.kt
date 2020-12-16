@@ -5,13 +5,10 @@ import android.content.IntentFilter
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.AnimationDrawable
 import android.net.ConnectivityManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 
@@ -20,7 +17,7 @@ import com.example.trixi.NetworkStateReceiver
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
-import com.example.trixi.repository.GetFromDbViewModel
+import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -28,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityReceiverListener {
 
-    val model: GetFromDbViewModel by viewModels()
+    val model: DataViewModel by viewModels()
     val post = PostToDb()
 
 
@@ -39,7 +36,7 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorTeal)))
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        RetrofitClient.context = this
+
         post.GetLoggedInUserFromDB(this)
 
         var background = findViewById<ConstraintLayout>(R.id.layout)

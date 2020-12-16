@@ -1,11 +1,8 @@
 package com.trixibackend;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.trixibackend.entity.*;
 import express.Express;
-import express.http.Cookie;
 import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
@@ -137,11 +134,6 @@ public class RestApi {
                 e.printStackTrace();
             }
         });
-        try{
-            app.use(Middleware.statics(Paths.get("").toString()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void setUpPostApi(String collectionName) {
@@ -150,11 +142,21 @@ public class RestApi {
                 case "users":
                     String fileUrl = null;
                     fileUrl = db.uploadImage(files);
+
                     User user = (User) req.getBody(User.class);
+
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
                     user.setImageUrl(fileUrl);
-                    res.json(db.save(user));
+
+                    db.save(user);
+
+                    var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+                    user.setPassword(null);
+                    sessionCookie.setData(user);
+
+                    res.json(user);
                     res.send("Created User");
                     break;
                 case "posts":
