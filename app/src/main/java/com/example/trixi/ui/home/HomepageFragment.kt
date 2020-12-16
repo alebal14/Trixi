@@ -36,34 +36,21 @@ class HomepageFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater!!.inflate(R.layout.fragment_home, container, false)
-
-//        val chatButton = view.findViewById(R.id.single_post_comment) as ImageButton
-//        chatButton.setOnClickListener { view ->
-//            val popupChat = PopUpChat()
-//            val fm = fragmentManager
-//            fm?.let {popupChat.show(fm, PopUpChat.TAG)}
-//        }
-       // adapter.clear()
         return view
-
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
-
         setupRecycleView(view)
-
 
     }
 
@@ -96,15 +83,6 @@ class HomepageFragment : Fragment() {
                     }
                 }
             recyclerView_homepage.adapter = adapter
-
-//            adapter.setOnItemClickListener { item, view ->
-//                val homeItem = item as HomeItem
-//                val popUp = PopUpCommentWindow(homeItem.post.comments!!)
-//                val fm = fragmentManager
-//                if (fm != null) {
-//                    popUp.show(fm, PopUpCommentWindow.TAG)
-//                }
-//            }
         }
 
 
@@ -117,6 +95,7 @@ class HomepageFragment : Fragment() {
 }
 
 class HomeItem(val post: Post, val postOwner: User,val fm:FragmentManager) : Item<GroupieViewHolder>() {
+    //val fm = fragmentManager
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
