@@ -75,28 +75,7 @@ class PostToDb {
         })
     }
 
-    fun GetLatestPostFromDB(id :String){
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.getLatestPost(id)
-        call?.enqueue(object : Callback<Post> {
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-
-            }
-            override fun onResponse(
-                call: Call<Post>, response: Response<Post>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("latestPost SuccessFul", "Latest Post")
-                    latestPost = response.body()
-                    Log.d("latestPost SuccessFul", latestPost.toString())
-
-                } else {
-                    Log.d("latestPost", "Latest Post")
-                }
-            }
-        })
-    }
 
     fun PostImageToDb(image: String) {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
