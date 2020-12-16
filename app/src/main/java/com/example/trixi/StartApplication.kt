@@ -12,12 +12,12 @@ class StartApplication: Application() {
         super.onCreate()
      RetrofitClient.context = this
 
-      Realm.init(this)
+        Realm.init(this)
         val configuration = RealmConfiguration.Builder()
-            .name("comicDb")
-            .schemaVersion(1)
-            .deleteRealmIfMigrationNeeded()
-            .build()
+                .name("trixiDB")
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build()
         Realm.setDefaultConfiguration(configuration)
     }
 
