@@ -6,9 +6,7 @@ import android.view.Gravity.apply
 import androidx.core.view.GravityCompat.apply
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Pet
-import com.example.trixi.entities.RealmUserEntity
-import com.example.trixi.entities.User
+import com.example.trixi.entities.*
 import io.realm.Realm
 import io.realm.RealmList
 import retrofit2.Call
@@ -46,15 +44,15 @@ class RealmHandler(realm: Realm){
     }
 
 
-    private fun saveAllUsersToRealm(user: List<User>) {
+    private fun saveAllUsersToRealm(users: List<User>) {
         //realm.deleteAll()
         realm.executeTransactionAsync(fun(realm: Realm) {
-            user.forEach { u ->
+            users.forEach { u ->
                 /* val usersFromDb = realm.where(RealmUserEntity::class.java)
                     .equalTo("uid", u.uid)
                     .findFirst()*/
 
-                val users = RealmUserEntity().apply {
+                val user = RealmUser().apply {
                     //realm = respones.body
                     uid = u.uid
                     userName = u.userName
@@ -63,19 +61,63 @@ class RealmHandler(realm: Realm){
                     imageUrl = u.imageUrl
                     role = u.role
 
-                  /*  u.pets.forEach{ pet ->
+                    pets?.addAll(u.pets!!.map {
+                        RealmPet().apply {
+                            uid = it.uid
+                            ownerId = it.ownerId
+                            name = it.name
+                            imageUrl= it.imageUrl
+                            age= it.age
+                            bio= it.bio
+                            breed=it.breed
+                            gender=it.gender
 
-                    }
+                        }
+                    })
 
-                    pets!!.addAll(u.pets!!.map {
-                        RealmUserEntity.apply {
-                            type = it.type
-                            url = it.url
-                        })
-                    pets = u.pets
-                    posts = u.posts*/
+                    posts?.addAll(u.posts!!.map {
+                        RealmPost().apply {
+                            uid = it.uid
+                            title = it.title
+                            description = it.description
+                            filePath = it.filePath
+                            ownerId = it.ownerId
+                            comments?.addAll( it.comments!!.map {
+                                RealmComment().apply {
+                                    comment = it.comment
+                                    userId = it.userId
+                                    postId = it.postId
+                                }
+                            })
+                            likes?.addAll(it.likes!!.map {
+                                RealmLike().apply {
+                                    userId = it.userId
+                                    postId = it.postId
+                                }
+                            })
+                        }
+                    })
+
+                    followers?.addAll(u.followers!!.map {
+                        RealmUser().apply {
+                            uid = it.uid
+                            userName=it.userName
+                        }
+                    })
+                    followingsUser?.addAll(u.followingsUser!!.map {
+                        RealmUser().apply {
+                            uid = it.uid
+                            userName=it.userName
+                        }
+                    })
+                    followingsPet?.addAll(u.followingsPet!!.map {
+                        RealmPet().apply {
+                            uid = it.uid
+                            name=it.name
+                        }
+                    })
                 }
-                realm.insertOrUpdate(users)
+                realm.insertOrUpdate(user)
             }
         }, fun() {
             Log.d("realm", "user uploaded to realm")

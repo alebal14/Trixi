@@ -7,7 +7,7 @@ import io.realm.annotations.RealmClass
 import java.io.File
 
 @RealmClass
-open  class RealmUserEntity: RealmObject(){
+open  class RealmUser: RealmObject(){
     @PrimaryKey
     //var id: Int? = null
     var uid: String? = null
@@ -16,36 +16,53 @@ open  class RealmUserEntity: RealmObject(){
     var bio: String? = null
     var imageUrl: String? = null
     var role: String? = null
-    //var pets: RealmList<Pet>? = RealmList()
-  //  var posts: RealmList<Post>? = RealmList()
+    var pets: RealmList<RealmPet>? = RealmList()
+    var posts: RealmList<RealmPost>? = RealmList()
+    val followingsUser: RealmList<RealmUser>? = RealmList()
+    val followingsPet: RealmList<RealmPet>?= RealmList()
+    val followers: RealmList<RealmUser>?= RealmList()
 
 }
 
 
 @RealmClass
-open  class RealmPetEntity: RealmObject(){
+open  class RealmPet: RealmObject(){
     @PrimaryKey
     var uid: String? = null
-   // var posts: RealmList<Post>? = null
+    var posts: RealmList<RealmPost>? = null
     var ownerId: String? = null
     var name: String? = null
     var imageUrl: String? = null
     var age: Int? = null
     var bio: String?= null
     var breed: String? = null
-   // var followers: RealmList<User>? = null
+    var followers: RealmList<RealmUser>? = null
     var gender: String? = null
 }
 
 
 @RealmClass
-open class RealmPostEntity: RealmObject(){
+open class RealmPost: RealmObject(){
     @PrimaryKey
     var uid: String? = null
     var title:String? = null
     var description:String? = null
     var filePath:String? = null
     var ownerId:String?= null
-  //  var comments: RealmList<Comment>? = null
-  //  var likes: RealmList<Like>? = null
+    var comments: RealmList<RealmComment>? = null
+    var likes: RealmList<RealmLike>? = null
+}
+
+@RealmClass
+open class RealmComment:RealmObject(){
+    var comment:String? = null
+    var postId: String? = null
+    var userId:String? = null
+}
+
+@RealmClass
+open class RealmLike:RealmObject(){
+    var postId :String?=null
+    var userId:String?= null
+
 }

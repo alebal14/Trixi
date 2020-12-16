@@ -10,7 +10,7 @@ import com.example.trixi.dao.RealmHandler
 import com.example.trixi.dao.RealmHandler.Companion.realm
 import com.example.trixi.dao.asLiveData
 import com.example.trixi.entities.Post
-import com.example.trixi.entities.RealmUserEntity
+import com.example.trixi.entities.RealmUser
 import com.example.trixi.entities.User
 import io.realm.Realm
 import io.realm.RealmResults
@@ -32,10 +32,10 @@ class DataViewModel : ViewModel() {
     val api = RealmHandler(realm)
 
 
-    val getAllUsersResults:LiveData<RealmResults<RealmUserEntity>> by lazy {
-        realm.where(RealmUserEntity::class.java).findAllAsync().asLiveData()
+    val getAllUsersResults:LiveData<RealmResults<RealmUser>> by lazy {
+        realm.where(RealmUser::class.java).findAllAsync().asLiveData()
     }
-    fun getAllUsersData(): LiveData<RealmResults<RealmUserEntity>>{
+    fun getAllUsersData(): LiveData<RealmResults<RealmUser>>{
         api.getAllUsersFromDB()
         return getAllUsersResults
     }

@@ -15,7 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.trixi.NetworkStateReceiver
 
 import com.example.trixi.R
-import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.User
 import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
@@ -63,10 +62,10 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
             val password = login_input_password.text.toString()
 
             if (usernameOrEmail.contains("@")) {
-                val user = User("", "", usernameOrEmail, password, "", "", "", null, null)
+                val user = User("", "", usernameOrEmail, password, "", "", "", null, null,null,null,null)
                 post.PostLoginUserToDb(user, this)
             } else {
-                val user = User("", usernameOrEmail, "", password, "", "", "", null, null)
+                val user = User("", usernameOrEmail, "", password, "", "", "", null, null,null,null,null)
                 post.PostLoginUserToDb(user, this)
             }
         }
