@@ -50,6 +50,7 @@
 
     <ImageButton
             android:id="@+id/follow_button"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -111,34 +112,35 @@
             tools:listitem="@layout/profile_user_pet" />
 
     <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="match_parent"
+        android:id="@+id/linearLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.449">
+
+        <TextView
+            android:id="@+id/profile_followers"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:paddingTop="20dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/pics_videos_tab"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/users_pet_list">
+            android:paddingRight="60dp"
+            android:text="@string/number_of_followers"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-                android:id="@+id/profile_followers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="60dp"
-                android:text="@string/number_of_followers"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-        <TextView
-                android:id="@+id/profile_following"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="60dp"
-                android:text="@string/number_of_following"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:id="@+id/profile_following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="60dp"
+            android:text="@string/number_of_following"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     </LinearLayout>
 

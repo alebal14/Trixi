@@ -81,16 +81,15 @@ class PostToDb {
         val call = retrofitClient?.getLatestPost(id)
         call?.enqueue(object : Callback<Post> {
             override fun onFailure(call: Call<Post>, t: Throwable) {
-                Log.d("uus", "loggedInUser : onfailure " + t.message)
+
             }
             override fun onResponse(
                 call: Call<Post>, response: Response<Post>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("latestPost", "Latest Post")
+                    Log.d("latestPost SuccessFul", "Latest Post")
                     latestPost = response.body()
-                    Log.d("loggedInUser", loggedInUser.toString())
-
+                    Log.d("latestPost SuccessFul", latestPost.toString())
 
                 } else {
                     Log.d("latestPost", "Latest Post")

@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_single_post.*
 class singlePostFragment : Fragment() {
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,11 +41,11 @@ class singlePostFragment : Fragment() {
 
         val post = PostToDb.latestPost
 
-        single_item_title.text = post?.title
-        single_item_description.text = post?.description
+        single_item_title.text = post?.title.toString()
+        single_item_description.text = post?.description.toString()
 
 
-        Picasso.get().load(RetrofitClient.BASE_URL + post?.filePath).centerCrop().fit().into(single_item_media)
+        Picasso.get().load(RetrofitClient.BASE_URL + post?.filePath.toString()).centerCrop().fit().into(single_item_media)
 
     }
 

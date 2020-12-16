@@ -1,11 +1,8 @@
 package com.trixibackend;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.trixibackend.entity.*;
 import express.Express;
-import express.http.Cookie;
 import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
@@ -137,11 +134,6 @@ public class RestApi {
                 e.printStackTrace();
             }
         });
-        try{
-            app.use(Middleware.statics(Paths.get("").toString()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void setUpPostApi(String collectionName) {
