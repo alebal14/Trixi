@@ -1,51 +1,59 @@
 package com.example.marvelisimo.adapter
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Post
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.profile_media_item.view.*
+import retrofit2.Retrofit
 
 
 class ProfileMediaGridAdapter(
     private var posts: ArrayList<Post>)
-    //private val listener:(Post) -> Unit)
-    : RecyclerView.Adapter<ProfileMediaGridAdapter.ProfileViewHolder>() {
+//private val listener:(Post) -> Unit)
+    : RecyclerView.Adapter<ProfileMediaGridAdapter.ProfileMediaGridViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
+    override fun getItemCount() = posts.size
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileMediaGridViewHolder {
         val gridView = (LayoutInflater.from(parent.context).inflate(
-            R.layout.media_grid,
+            R.layout.profile_media_item,
             parent, false
         ))
-        return ProfileViewHolder(gridView)
+        return ProfileMediaGridViewHolder(gridView)
     }
 
-    override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
-        holder.bindView(posts[position]
+    override fun onBindViewHolder(holder: ProfileMediaGridViewHolder, position: Int) {
+        holder.bindThumbnail(
+            posts[position]
             //,listener
-    )
+        )
     }
 
-    override fun getItemCount(): Int {
-        return posts.size
-    }
+    class ProfileMediaGridViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        val mediaItem = itemView.profile_media_thumbnail
 
-    class ProfileViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val mediaItem: ImageView = itemView.media_item_thumbnail
+        init{
+            view.setOnClickListener(this)
+        }
 
-        fun bindView(post: Post
-                     //listener: (Post) -> Unit) {
-        ){
-            Picasso.get().load(post.filePath!!).into(mediaItem)
-            //itemView.setOnClickListener { listener(post) }
+        override fun onClick(view: View){
+            Log.d("Recyclerview", "click!")
+        }
+        fun bindThumbnail(post: Post) {
+            Picasso.get().load(BASE_URL + post.filePath!!).into(mediaItem)
         }
 
     }
-
 
 
 //    class MediaItem() : Item<GroupieViewHolder>() {
@@ -57,4 +65,5 @@ class ProfileMediaGridAdapter(
 //        }
 //        override fun getLayout() : Int = R.layout.profile_media_item
 //    }
+
 }

@@ -317,10 +317,15 @@ public class RestApi {
 
             var user = (User) sessionCookie.getData();
             user.setUid(user.getId().toString());
-
+            user.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
+            user.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+            user.getPosts().forEach(post -> {
+                post.setUid(post.getId().toString());
+                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+            });
             user.setPassword(null); // sanitize password
             res.json(user);
-
         });
 
     }

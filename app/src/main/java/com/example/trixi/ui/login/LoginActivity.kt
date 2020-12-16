@@ -5,13 +5,10 @@ import android.content.IntentFilter
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.AnimationDrawable
 import android.net.ConnectivityManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 
@@ -66,10 +63,10 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
             val password = login_input_password.text.toString()
 
             if (usernameOrEmail.contains("@")) {
-                val user = User("", "", usernameOrEmail, password, "", "", "", null, null)
+                val user = User("", "", usernameOrEmail, password, "", "", "", null,null, null, null, null)
                 post.PostLoginUserToDb(user, this)
             } else {
-                val user = User("", usernameOrEmail, "", password, "", "", "", null, null)
+                val user = User("", usernameOrEmail, "", password, "", "", "", null, null, null, null, null)
                 post.PostLoginUserToDb(user, this)
             }
         }

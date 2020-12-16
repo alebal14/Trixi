@@ -11,6 +11,9 @@ data class User(
     val imageUrl: String?,
     val role: String?,
     val pets: ArrayList<Pet>?,
-    val posts: ArrayList<Post>?
+    val posts: ArrayList<Post>?,
+    val followingsUser: ArrayList<User>?,
+    val followingsPet: ArrayList<Pet>?,
+    val followers: ArrayList<User>?
 ) : Serializable
 
