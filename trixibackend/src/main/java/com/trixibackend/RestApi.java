@@ -155,7 +155,7 @@ public class RestApi {
 
                     user.setPassword(null);
                     sessionCookie.setData(user);
-                    
+
                     res.json(user);
                     res.send("Created User");
                     break;
