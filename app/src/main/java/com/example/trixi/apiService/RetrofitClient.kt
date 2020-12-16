@@ -17,7 +17,7 @@ class RetrofitClient {
     companion object{
        lateinit var context: Context
        var instance: Retrofit? = null
-       val BASE_URL = "http://192.168.1.71:3000/"
+       val BASE_URL = "http://192.168.8.101:3000/"
 
 
         fun okHttpClient() : OkHttpClient {
@@ -35,7 +35,6 @@ class RetrofitClient {
                 .build()
                 return client
             }
-
         var gson = GsonBuilder()
             .setLenient()
             .create()
@@ -51,8 +50,4 @@ class RetrofitClient {
             return instance
         }
     }
-
-
-
-
 }

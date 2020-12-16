@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.view.*
+import android.widget.Adapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -31,8 +32,6 @@ class ProfileFragment : Fragment() {
 
     val loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu: Boolean = false
-    private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: ProfileMediaGridAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,21 +47,22 @@ class ProfileFragment : Fragment() {
         media_grid.apply {
 
             //set up post thumbnails for user or show text:"no posts"
-            if (loggedInUser != null) {
-                if (!loggedInUser.posts?.isEmpty()!!) {
-                    media_grid.layoutManager = GridLayoutManager(context, 3)
-                    adapter = ProfileMediaGridAdapter(loggedInUser.posts)
-                    media_grid.adapter = adapter
-                } else profile_no_posts.visibility = TextView.VISIBLE
-                if(loggedInUser.pets?.isEmpty()!!){
-                    users_pet_list.apply {
-                        //set pest list for user if not empty
-                    }
-                }
+            if (!loggedInUser?.posts?.isEmpty()!!) {
+                media_grid.layoutManager = GridLayoutManager(context, 3)
+                media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts)
+            } else profile_no_posts.visibility = TextView.VISIBLE
+        }
 
-                populateProfile()
+        users_pet_list.apply {
+            if (!loggedInUser?.pets?.isEmpty()!!) {
+                //set pest list for user if not empty
+                users_pet_list.layoutManager = GridLayoutManager(context, 2)
+                adapter = ProfilePetListAdapter(loggedInUser.pets)
+                users_pet_list.adapter = adapter
             }
         }
+
+        populateProfile()
     }
 
 
@@ -100,19 +100,13 @@ class ProfileFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-
-    fun populatePetList() {
-        TODO("Populate list with users pets")
-    }
-
     private fun populateProfile() {
 
         profile_name.text = loggedInUser!!.userName
         profile_bio.text = loggedInUser.bio
         Picasso.get().load(BASE_URL + loggedInUser.imageUrl).fit().into(user_profile_pet_image)
-        resources.getString(R.string.number_of_following, loggedInUser.followingsPet?.size?.plus(loggedInUser.followingsUser!!.size).toString())
-        //getString(R.string.number_of_followers, loggedInUser.followers?.size.toString())
-        //profile_following.text = "Following " + (loggedInUser.followingsPet.size + loggedInUser.followingsUser.size).toString()
+        profile_following.text = "Following " + (loggedInUser.followingsPet?.size?.plus(loggedInUser.followingsUser!!.size)).toString()
+        profile_followers.text= loggedInUser.followers?.size.toString() + " Followers"
 
         owner_name.visibility = View.INVISIBLE
         follow_button.visibility = View.INVISIBLE

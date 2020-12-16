@@ -3,8 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="number_of_followers">%1$s Followers</string>
-    <string name="number_of_following">Following %1$s</string>
+    <string name="number_of_followers">%1s Followers</string>
+    <string name="number_of_following">Following %1s</string>
     <string name="bio_text">Lorem Ipsum This is my bio hello I am a nice person that likes to train sweet dogs, not naughty ones</string>
     <string name="icon_of_pet_type">icon of pet type</string>
     <string name="icon_pet_type">iconOfPetType</string>
@@ -18,4 +18,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_user_name">User/Petname</string>
+    <string name="pet_name">Fido</string>
 </resources>
