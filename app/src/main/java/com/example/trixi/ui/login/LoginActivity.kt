@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorTeal)))
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        RetrofitClient.context = this
+
         post.GetLoggedInUserFromDB(this)
 
         var background = findViewById<ConstraintLayout>(R.id.layout)
