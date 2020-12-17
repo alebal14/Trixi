@@ -32,40 +32,47 @@ class DataViewModel : ViewModel() {
     val api = RealmHandler(realm)
 
 
-    val getAllUsersResults:LiveData<RealmResults<RealmUser>> by lazy {
+    val getAllUsersResults: LiveData<RealmResults<RealmUser>> by lazy {
         realm.where(RealmUser::class.java).findAllAsync().asLiveData()
     }
-    fun getAllUsersData(): LiveData<RealmResults<RealmUser>>{
+
+    fun getAllUsersData(): LiveData<RealmResults<RealmUser>> {
         api.getAllUsersFromDB()
         return getAllUsersResults
     }
 
-    val getFollowingsPostsResults:LiveData<RealmResults<RealmFollowingPost>> by lazy {
+    val getFollowingsPostsResults: LiveData<RealmResults<RealmFollowingPost>> by lazy {
         realm.where(RealmFollowingPost::class.java).findAllAsync().asLiveData()
     }
-    fun getFollowingsPostsData(uid: String): LiveData<RealmResults<RealmFollowingPost>>{
+
+    fun getFollowingsPostsData(uid: String): LiveData<RealmResults<RealmFollowingPost>> {
         api.getFollowingsPostsFromDb(uid)
         return getFollowingsPostsResults
     }
 
 
-
-    val getUserPostsResults:LiveData<RealmResults<RealmUserPost>> by lazy {
+    val getUserPostsResults: LiveData<RealmResults<RealmUserPost>> by lazy {
         realm.where(RealmUserPost::class.java).findAllAsync().asLiveData()
     }
 
-    fun getUserPostsData(uid: String): LiveData<RealmResults<RealmUserPost>>{
+    fun getUserPostsData(uid: String): LiveData<RealmResults<RealmUserPost>> {
         api.getUserPostsFromDb(uid)
         return getUserPostsResults
     }
 
-    val getAllPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
+    val getAllPostsResults: LiveData<RealmResults<RealmPost>> by lazy {
         realm.where(RealmPost::class.java).findAllAsync().asLiveData()
     }
 
-    fun getAllPostsData(): LiveData<RealmResults<RealmPost>>{
+    fun getAllPostsData(): LiveData<RealmResults<RealmPost>> {
         api.getALLPostsFromDb()
         return getAllPostsResults
+    }
+
+    fun findUserFromRealmById(uid: String): LiveData<RealmResults<RealmUser>> {
+        return realm.where(RealmUser::class.java)
+            .equalTo("uid", uid)
+            .findAllAsync().asLiveData()
     }
 
 
@@ -164,7 +171,6 @@ class DataViewModel : ViewModel() {
         return user
 
     }
-
 
 
 }

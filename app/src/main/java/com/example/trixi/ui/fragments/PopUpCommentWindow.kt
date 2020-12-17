@@ -1,7 +1,6 @@
 package com.example.trixi.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,8 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.trixi.R
-import com.example.trixi.entities.Comment
+import com.example.trixi.entities.RealmComment
+import com.example.trixi.entities.RealmUser
 import com.example.trixi.entities.User
 import com.example.trixi.repository.DataViewModel
 import com.xwray.groupie.GroupAdapter
@@ -17,8 +17,9 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
+import org.w3c.dom.Comment
 
-class PopUpCommentWindow(val comments: List<Comment>) : DialogFragment() {
+class PopUpCommentWindow(val comments: List<RealmComment>) : DialogFragment() {
     val model: DataViewModel by viewModels()
 
     companion object {
@@ -55,12 +56,14 @@ class PopUpCommentWindow(val comments: List<Comment>) : DialogFragment() {
     private fun setUpCommentsView() {
         val adapterChat = GroupAdapter<GroupieViewHolder>()
         comments.forEach { comment ->
-            model.getOneUserFromDb(comment.userId).observe(this, { commnetOwner ->
-                Log.d("uus", "Comment owner ${commnetOwner.userName}")
-                Log.d("uus", "Comment  ${comment.comment}")
-
-                adapterChat.add(CommentItem(comment,commnetOwner))
-            })
+//
+            comment.userId?.let {
+                model.findUserFromRealmById(it).observe(viewLifecycleOwner){
+                    it.forEach { commentOwner ->
+                        adapterChat.add(CommentItem(comment,commentOwner))
+                    }
+                }
+            }
 
         }
 
@@ -71,7 +74,7 @@ class PopUpCommentWindow(val comments: List<Comment>) : DialogFragment() {
 
 }
 
-class CommentItem(val comment: Comment, val commentOwner: User) : Item<GroupieViewHolder>() {
+class CommentItem(val comment: RealmComment, val commentOwner: RealmUser) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.comment_sender_name.text = commentOwner.userName
         viewHolder.itemView.comment_description.text = comment.comment
