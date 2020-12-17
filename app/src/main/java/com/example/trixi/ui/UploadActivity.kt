@@ -12,7 +12,6 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -23,7 +22,6 @@ import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.fragments.singlePostFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_upload.*
 import java.io.ByteArrayOutputStream
