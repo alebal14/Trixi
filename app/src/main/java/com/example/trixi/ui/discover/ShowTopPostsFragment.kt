@@ -24,11 +24,13 @@ class ShowTopPostsFragment : Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         media_grid_top_posts.layoutManager = GridLayoutManager(context,2)
+
+        addData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.profile_nav_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Discover")
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Discover"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
