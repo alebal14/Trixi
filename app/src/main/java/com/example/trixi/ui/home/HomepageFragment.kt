@@ -55,6 +55,7 @@ class HomepageFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
+<<<<<<< HEAD
         PostToDb.loggedInUser!!.uid?.let {
             model.getUserPostsData(it)
                 .observe(viewLifecycleOwner) { postsU ->
@@ -78,11 +79,23 @@ class HomepageFragment : Fragment() {
 
 
         model.getAllUsersData().observe(viewLifecycleOwner, {
+=======
+
+
+        model.getAllPostsData()
+                .observe(viewLifecycleOwner) { postsA ->
+                    Log.d("post", " all posts : ${postsA.size}")
+                }
+
+
+
+       /* model.getAllUsersData().observe(viewLifecycleOwner, {
+>>>>>>> dev
             it.forEach { user ->
                 Log.d("realmUser", "UserName : ${user.userName}")
                 Log.d("realmUser", "email : ${user.email}")
             }
-        })
+        })*/
 
 
         setupRecycleView()
