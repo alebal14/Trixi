@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 class ShowTopPostsFragment : Fragment()  {
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,7 +26,7 @@ class ShowTopPostsFragment : Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         media_grid_top_posts.layoutManager = GridLayoutManager(context,2)
-
+        //media_grid_top_posts.adapter = DiscoverMediaGridAdapter(posts)
         addData()
     }
 

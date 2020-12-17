@@ -12,7 +12,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter (private var posts: ArrayList<Post>) : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
+class DiscoverMediaGridAdapter
+    (private var posts: ArrayList<Post>) : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
