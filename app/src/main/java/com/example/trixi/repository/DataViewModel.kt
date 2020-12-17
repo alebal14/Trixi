@@ -9,6 +9,10 @@ import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.dao.RealmHandler
 import com.example.trixi.dao.asLiveData
 import com.example.trixi.entities.*
+import com.example.trixi.entities.RealmFollowingPost
+import com.example.trixi.entities.RealmPost
+import com.example.trixi.entities.RealmUser
+import com.example.trixi.entities.User
 import io.realm.Realm
 import io.realm.RealmResults
 import retrofit2.Call
