@@ -5,23 +5,21 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
-class ShowTopPostsFragment : Fragment()  {
-    //val post: Post? =
-
+class ShowTopPostsFragment : Fragment() {
+    //Add variable to fetch data
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?
-    {
+    ): View? {
         return inflater.inflate(R.layout.fragment_top_liked_posts, container, false)
     }
 
@@ -29,10 +27,11 @@ class ShowTopPostsFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
 
         media_grid_top_posts.apply {
-                users_pet_list.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, true)
-                //adapter = DiscoverMediaGridAdapter(loggedInUser.pets)
-                users_pet_list.adapter = adapter
-            }
+            media_grid_top_posts.layoutManager =
+                StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
+            //adapter = DiscoverMediaGridAdapter(posts)
+            media_grid_top_posts.adapter = adapter
+        }
         addData()
     }
 

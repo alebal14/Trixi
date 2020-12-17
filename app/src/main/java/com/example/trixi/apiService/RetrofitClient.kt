@@ -18,7 +18,7 @@ class RetrofitClient {
        lateinit var context: Context
        var instance: Retrofit? = null
 
-        val BASE_URL = "http://192.168.0.2:3000/"
+        val BASE_URL = "http://192.168.65.2:3000/"
 
 
         fun okHttpClient() : OkHttpClient {

@@ -12,8 +12,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter
-    (private var posts: ArrayList<Post>) : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
+class DiscoverMediaGridAdapter(private var posts: ArrayList <Post?>)
+    : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
@@ -27,8 +27,10 @@ class DiscoverMediaGridAdapter
     }
 
     override fun onBindViewHolder(holder: DiscoverViewHolder, position: Int) {
-        holder.bindView(posts[position]);
+        posts[position]?.let { holder.bindView(it) }
     }
+
+
 
 
     class DiscoverViewHolder (view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -38,15 +40,18 @@ class DiscoverMediaGridAdapter
             view.setOnClickListener(this)
         }
 
-        fun bindView(post: Post) {
-            Picasso.get().load(BASE_URL + post.filePath!!).into(postItem)
-        }
-
         override fun onClick(p0: View?) {
             Log.d("click", "click")
         }
 
+        fun bindView(post: Post) {
+            Picasso.get().load(BASE_URL + post.filePath!!).into(postItem)
+        }
+
+
+
     }
+
 
 
 
