@@ -262,7 +262,7 @@ public class RestApi {
             res.json(followingPostList);
         });
 
-      
+
     }
 
     private void setLoginUser() {
