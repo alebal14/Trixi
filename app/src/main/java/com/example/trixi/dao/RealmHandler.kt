@@ -46,14 +46,9 @@ class RealmHandler(realm: Realm) {
 
 
     private fun saveAllUsersToRealm(users: List<User>) {
-        //realm.deleteAll()
         realm.executeTransactionAsync(fun(realm: Realm) {
             users.forEach { u ->
-                /* val usersFromDb = realm.where(RealmUserEntity::class.java)
-                    .equalTo("uid", u.uid)
-                    .findFirst()*/
-
-                val user = RealmUser().apply {
+               val user = RealmUser().apply {
                     //realm = respones.body
                     uid = u.uid
                     userName = u.userName
@@ -72,7 +67,6 @@ class RealmHandler(realm: Realm) {
                             bio = it.bio
                             breed = it.breed
                             gender = it.gender
-
                         }
                     })
 
@@ -125,39 +119,63 @@ class RealmHandler(realm: Realm) {
         })
     }
 
-
-    /*
-
     fun getUserPostsFromDb(id: String) {
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-        //var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
-        val call = retrofitClient?.getPostByOwnerId(id)
+        val call = service?.getPostByOwnerId(id)
         call?.enqueue(object : Callback<List<Post>> {
             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
                 Log.d("posts", "posts : onfailure " + t.message)
             }
-
             override fun onResponse(
                     call: Call<List<Post>>, response: Response<List<Post>>
             ) {
                 if (response.isSuccessful) {
-                    savePost(response.body()!!)
+                    saveUserPost(response.body()!!)
                 } else {
 
                 }
             }
         })
         return
-    }*/
+    }
+
+    private fun saveUserPost(posts: List<Post>) {
+        realm.executeTransactionAsync(fun(realm: Realm) {
+            var userPosts = RealmUserPost().apply {
+                userAllPosts?.addAll(posts.map {
+                    RealmPost().apply {
+                        //realm = respones.body
+                        uid = it.uid
+                        title = it.title
+                        description = it.description
+                        filePath = it.filePath
+                        ownerId = it.ownerId
+                        comments?.addAll(it.comments!!.map {
+                            RealmComment().apply {
+                                comment = it.comment
+                                userId = it.userId
+                                postId = it.postId
+                            }
+                        })
+                        likes?.addAll(it.likes!!.map {
+                            RealmLike().apply {
+                                userId = it.userId
+                                postId = it.postId
+                            }
+                        })
+                    }
+                })
+            }
+            realm.insertOrUpdate(userPosts)
+        })
+
+    }
 
     fun getALLPostsFromDb() {
-
         val call = service?.getAllPosts()
         call?.enqueue(object : Callback<List<Post>> {
             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
                 Log.d("posts", "posts : onfailure " + t.message)
             }
-
             override fun onResponse(
                     call: Call<List<Post>>, response: Response<List<Post>>
             ) {
@@ -203,7 +221,6 @@ class RealmHandler(realm: Realm) {
         })
     }
 
-
     fun getFollowingsPostsFromDb(id: String) {
 
         val call = service?.getFollowingsPost(id)
@@ -223,43 +240,6 @@ class RealmHandler(realm: Realm) {
             }
         })
         return
-    }
-
-    private fun saveUserPost(posts: List<Post>) {
-        realm.executeTransactionAsync(fun(realm: Realm) {
-
-
-            //realm = respones.body
-
-            var userPosts = RealmUserPost().apply {
-                userAllPosts?.addAll(posts.map {
-                    RealmPost().apply {
-                        //realm = respones.body
-                        uid = it.uid
-                        title = it.title
-                        description = it.description
-                        filePath = it.filePath
-                        ownerId = it.ownerId
-                        comments?.addAll(it.comments!!.map {
-                            RealmComment().apply {
-                                comment = it.comment
-                                userId = it.userId
-                                postId = it.postId
-                            }
-                        })
-                        likes?.addAll(it.likes!!.map {
-                            RealmLike().apply {
-                                userId = it.userId
-                                postId = it.postId
-                            }
-                        })
-                    }
-                })
-            }
-
-            realm.insertOrUpdate(userPosts)
-        })
-
     }
 
     private fun saveFollowingPost(posts: List<Post>) {
@@ -290,20 +270,17 @@ class RealmHandler(realm: Realm) {
                     }
                 })
             }
-
             realm.insertOrUpdate(followPosts)
         })
 
     }
 
     fun getAllPetsFromDB() {
-
         val call = service?.getAllPets()
         call?.enqueue(object : Callback<List<Pet>> {
             override fun onFailure(call: Call<List<Pet>>, t: Throwable) {
                 Log.d("uus", "users : onfailure " + t.message)
             }
-
             override fun onResponse(
                 call: Call<List<Pet>>, response: Response<List<Pet>>
             ) {
@@ -320,7 +297,6 @@ class RealmHandler(realm: Realm) {
     private fun saveAllPetsToRealm(pets: List<Pet>) {
         realm.executeTransactionAsync(fun(realm: Realm) {
             pets.forEach { p ->
-
                 val pet = RealmPet().apply {
                     //realm = respones.body
                     uid = p.uid
@@ -362,7 +338,6 @@ class RealmHandler(realm: Realm) {
                             userName = it.userName
                         }
                     })
-
                 }
                 realm.insertOrUpdate(pet)
             }
@@ -377,7 +352,6 @@ class RealmHandler(realm: Realm) {
             override fun onFailure(call: Call<List<Pet>>, t: Throwable) {
                 Log.d("posts", "posts : onfailure " + t.message)
             }
-
             override fun onResponse(
                 call: Call<List<Pet>>, response: Response<List<Pet>>
             ) {
@@ -393,7 +367,6 @@ class RealmHandler(realm: Realm) {
 
     private fun savePetsByOwner(pet: List<Pet>) {
         realm.executeTransactionAsync(fun(realm: Realm) {
-
             var petsbyOwner = RealmPetByOwner().apply {
                 petByOwner?.addAll(pet.map {
                     RealmPet().apply {
