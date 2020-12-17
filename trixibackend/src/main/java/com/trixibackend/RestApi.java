@@ -37,7 +37,7 @@ public class RestApi {
         });
         setUpUpdateApi();
         setLoginUser();
-        getLoggedinUser();
+        //getLoggedinUser();
         logoutUser();
         setImagePostApi();
 
@@ -154,34 +154,40 @@ public class RestApi {
                     String password = null;
                     try {
                         files = req.getFormData("file");
-                        userName = req.getFormData("userName").get(0).getString();
-                        email = req.getFormData("email").get(0).getString();
-                        password = req.getFormData("password").get(0).getString();
+                        userName = req.getFormData("userName").get(0).getString().replace("\"", "");
+                        email = req.getFormData("email").get(0).getString().replace("\"", "");
+                        password = req.getFormData("password").get(0).getString().replace("\"", "");
 
                         fileUrl = db.uploadImage(files.get(0));
                         System.out.println(fileUrl + userName + email + password);
 
-                       // res.json(Map.of("url", files.get(0).getName()));
+                        User user = new User();
+                        user.setUserName(userName);
+                        user.setEmail(email);
+                        user.setPassword(password);
+                        String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                        user.setPassword(hashedPassword);
+
+                        user.setImageUrl(fileUrl);
+                        user.setRole("user");
+
+                        System.out.println(user.getUserName());
+                        db.save(user);
+
+                        var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+                        user.setPassword(null);
+                        sessionCookie.setData(user);
+
+                        var userLoggedIn = getLoggedinUser(sessionCookie);
+                        res.json(userLoggedIn);
+                        res.send("Created User");
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                   /* User user = (User) req.getBody(User.class);
 
-                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                    user.setPassword(hashedPassword);
-                    user.setImageUrl(fileUrl);
-
-                    db.save(user);
-
-                    var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
-
-                    user.setPassword(null);
-                    sessionCookie.setData(user);
-
-                    res.json(user);
-                    res.send("Created User");*/
                     break;
                 case "posts":
                     Post post = (Post) req.getBody(Post.class);
@@ -327,27 +333,27 @@ public class RestApi {
 
             sessionCookie.setData(user);
             user.setPassword(null); // sanitize password
-            res.json(user);
+
+            var userLoggedIn = getLoggedinUser(sessionCookie);
+            res.json(userLoggedIn);
         });
     }
 
-    private void getLoggedinUser() {
-        app.get("/rest/login", (req, res) -> {
-
-            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+    private User getLoggedinUser(SessionCookie sessionCookie) {
+           //var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
             if (sessionCookie.getData() == null) {
-                res.send("Not logged in");
-                return;
+               // res.send("Not logged in");
+                return null;
             }
 
             var user = (User) sessionCookie.getData();
             user.setUid(user.getId().toString());
 
             user.setPassword(null); // sanitize password
-            res.json(user);
+            return user;
 
-        });
+
 
     }
 

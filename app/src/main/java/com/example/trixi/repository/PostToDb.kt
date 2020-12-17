@@ -39,10 +39,12 @@ class PostToDb {
                 call: Call<User>, response: Response<User>
             ) {
                 if(response.isSuccessful){
+                    Log.d("loggedInUser", "User logged in successfully")
+                    loggedInUser = response.body()
+                    Log.d("loggedInUser", loggedInUser.toString())
 
-                    Log.d("user", "login-user : onResponse success" + response.message())
-
-                    GetLoggedInUserFromDB(context)
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
                 }else{
                     Log.d("user", "login-user : onResponse else: password and username/email dont match")
                     Toast.makeText(context, "Password and username/email dont match", Toast.LENGTH_LONG).show()
@@ -130,14 +132,16 @@ class PostToDb {
          override fun onFailure(call: Call<User>, t: Throwable) {
              Log.d("uus", "REG-user : onfailure " + t.message)
          }
-
          override fun onResponse(
              call: Call<User>, response: Response<User>
          ) {
              if (response.isSuccessful) {
                  Log.d("uus", "REGuser : onResponse success" + response.body())
-                 GetLoggedInUserFromDB(context)
+                 loggedInUser = response.body()
+                 Log.d("loggedInUser", loggedInUser.toString())
 
+                 val intent = Intent(context, MainActivity::class.java)
+                 context.startActivity(intent)
              } else {
                  Log.d("uus", "REGuser : onResponse else" + response.body())
 
