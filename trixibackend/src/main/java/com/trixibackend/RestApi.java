@@ -123,13 +123,19 @@ public class RestApi {
     private void setUpDeleteApi(String collectionName) {
     }
 
-    List<FileItem> files = null;
+
 
     private void setImagePostApi() {
         app.post("/rest/image", (req, res) -> {
+            List<FileItem> files = null;
+            String fileUrl = null;
             try {
                 files = req.getFormData("file");
-                System.out.println(files);
+                fileUrl = db.uploadImage(files.get(0));
+                System.out.println(files.get(0).getName());
+                //res.json(files.get(0).getName());
+                res.json(Map.of("url", files.get(0).getName()));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -140,14 +146,12 @@ public class RestApi {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
-                    String fileUrl = null;
-                    fileUrl = db.uploadImage(files);
 
                     User user = (User) req.getBody(User.class);
 
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
-                    user.setImageUrl(fileUrl);
+                    //user.setImageUrl();
 
                     db.save(user);
 

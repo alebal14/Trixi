@@ -13,6 +13,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -172,12 +173,15 @@ public class DatabaseHandler {
         }
     }
 
-    public String uploadImage(List<FileItem> file) {
+    public String uploadImage(FileItem file) {
 
         String fileUrl = null;
 
-        try {
-            for (FileItem item : file) {
+        try(var os = new FileOutputStream(Paths.get("resFolder/images/" + file.getName()).toString())) {
+            os.write(file.get());
+
+
+            /*for (FileItem item : file) {
                 if (item.isFormField()) {
 
                     ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -220,7 +224,7 @@ public class DatabaseHandler {
 
                     return path;
                 }
-            }
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }

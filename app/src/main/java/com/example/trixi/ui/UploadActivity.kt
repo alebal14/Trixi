@@ -163,7 +163,7 @@ class UploadActivity : AppCompatActivity() {
         encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
 
         //sending the image
-        db.PostImageToDb(encodedImage)
+        //db.PostImageToDb(encodedImage)
         Thread.sleep(1_000)
         sendPost()
     }

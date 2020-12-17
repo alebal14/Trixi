@@ -22,7 +22,11 @@ import com.example.trixi.ui.login.LoginActivity
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_register.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -116,6 +120,16 @@ class RegisterActivity : AppCompatActivity() {
             cursor.close()
 
             postPath = mediaPath
+
+            val file = File(postPath)
+
+            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+
+            val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+            post.PostImageToDb(imagenPerfil)
+
+
         }
     }
 
@@ -130,7 +144,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val baos = ByteArrayOutputStream()
         //compressing the bitmap
-        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100, baos)
+        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
         //coberting the image to bytearray
         val imageByte = baos.toByteArray()
@@ -139,7 +153,7 @@ class RegisterActivity : AppCompatActivity() {
         encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
 
         //sending the image
-        post.PostImageToDb(encodedImage)
+
 
         registerUser()
     }
@@ -159,8 +173,10 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val user = User(null, userName, email, password, null, null, "user", null, null,null,null,null)
-        post.PostRegisterUserToDb(user, this)
+
+
+        val user = User(null, userName, email, password, null, null, "user", null, null, null, null, null)
+        /*post.PostImageToDb(encodedImage, user, this)*/
 
     }
 
