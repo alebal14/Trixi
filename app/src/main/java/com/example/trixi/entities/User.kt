@@ -1,11 +1,13 @@
 package com.example.trixi.entities
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 
 data class User(
     val uid: String?,
     val userName: String?,
-    var email: String?,
+    val email: String?,
     val password: String?,
     val bio: String?,
     val imageUrl: String?,
@@ -14,6 +16,6 @@ data class User(
     val posts: ArrayList<Post>?,
     val followingsUser: ArrayList<User>?,
     val followingsPet: ArrayList<Pet>?,
-    val followers: ArrayList<User>?
-) : Serializable
+    val followers: ArrayList<User>?,
+)
 

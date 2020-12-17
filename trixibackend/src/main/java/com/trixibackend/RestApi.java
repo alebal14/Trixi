@@ -161,9 +161,9 @@ public class RestApi {
                     break;
                 case "posts":
                     Post post = (Post) req.getBody(Post.class);
-//                    String filePostImage = db.uploadImage(files);
-//                    System.out.println(filePostImage);
-//                    post.setFilePath(filePostImage);
+                    //String filePostImage = db.uploadImage(files);
+                    //System.out.println(filePostImage);
+                    //post.setFilePath(filePostImage);
                     //Post p = db.save(post);
                     //p.setUid(p.getUid());
                     res.json(db.save(post));
