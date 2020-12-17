@@ -184,7 +184,7 @@ class UploadActivity : AppCompatActivity() {
 
         db.sendPostToDb(post)
         Thread.sleep(2_000)
-        db.GetLatestPostFromDB(ownerId)
+        //db.GetLatestPostFromDB(ownerId)
         Thread.sleep(2_000)
 
         Thread.sleep(2_000)

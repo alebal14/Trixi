@@ -55,16 +55,14 @@ class ProfileFragment : Fragment() {
 
         users_pet_list.apply {
             if (!loggedInUser?.pets?.isEmpty()!!) {
-                //set pest list for user if not empty
-                users_pet_list.layoutManager = GridLayoutManager(context, 2)
+                //set pet list for user if not empty
+                users_pet_list.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, true)
                 adapter = ProfilePetListAdapter(loggedInUser.pets)
                 users_pet_list.adapter = adapter
             }
         }
-
         populateProfile()
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.profile_nav_menu, menu)
