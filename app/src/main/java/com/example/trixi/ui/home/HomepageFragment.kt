@@ -82,16 +82,22 @@ class HomepageFragment : Fragment() {
     private fun setupRecycleView(view: View) {
 
 
+
         if (PostToDb.loggedInUser != null) {
+
+           /* model.getUserPostsData(PostToDb.loggedInUser!!.uid)
+                    .observe(viewLifecycleOwner) { posts ->
+                        Log.d("post", "all posts : ${posts.size}")
+                    }*/
 
             adapter.clear()
             model.getFollowingsPostsData(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
-                    Log.d("uus", "total posts : ${posts.size}")
+                    Log.d("post", "total posts : ${posts.size}")
                     posts.forEach { post ->
 
-                        Log.d("uus", "post Title : ${post.title!!}")
-                        Log.d("uus", "post Description : ${post.description}")
+                        Log.d("post", "post Title : ${post.title!!}")
+                        Log.d("post", "post Description : ${post.description}")
                         model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
                         ) { postOwner ->
                            // adapter.add(HomeItem(post, postOwner))

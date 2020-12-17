@@ -145,7 +145,28 @@ class RealmHandler(realm: Realm) {
             }
         })
         return
+    }
 
+    fun getUserPostsFromDb(id: String?) {
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        //var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
+        val call = retrofitClient?.getPostByOwnerId(id)
+        call?.enqueue(object : Callback<List<Post>> {
+            override fun onFailure(call: Call<List<Post>>, t: Throwable) {
+                Log.d("posts", "posts : onfailure " + t.message)
+            }
+
+            override fun onResponse(
+                    call: Call<List<Post>>, response: Response<List<Post>>
+            ) {
+                if (response.isSuccessful) {
+                    savePostList(response.body()!!)
+                } else {
+
+                }
+            }
+        })
+        return
     }
 
     private fun savePostList(posts: List<Post>) {

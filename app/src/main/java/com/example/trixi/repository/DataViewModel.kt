@@ -47,13 +47,14 @@ class DataViewModel : ViewModel() {
     }
 
 
-    /*val getUserPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
+    val getUserPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
         realm.where(RealmPost::class.java).findAllAsync().asLiveData()
     }
+
     fun getUserPostsData(uid: String?): LiveData<RealmResults<RealmPost>>{
         api.getUserPostsFromDb(uid)
         return getUserPostsResults
-    }*/
+    }
 
 
     /*fun getAllUsersFromDB(): MutableLiveData<List<User>> {
