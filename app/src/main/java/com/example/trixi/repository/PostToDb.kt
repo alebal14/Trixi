@@ -122,10 +122,10 @@ class PostToDb {
             }
         })
     }*/
-     fun PostRegisterUserToDb(image: String, user: User, context: Context){
+     fun PostRegisterUserToDb(image: MultipartBody.Part, userName:String, email:String, password:String, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.createUser(user, image)
+        val call = retrofitClient?.createUser(image, userName, email,password)
      call?.enqueue(object : Callback<User> {
          override fun onFailure(call: Call<User>, t: Throwable) {
              Log.d("uus", "REG-user : onfailure " + t.message)
@@ -136,11 +136,11 @@ class PostToDb {
          ) {
              if (response.isSuccessful) {
                  Log.d("uus", "REGuser : onResponse success" + response.body())
-                 
                  GetLoggedInUserFromDB(context)
 
              } else {
                  Log.d("uus", "REGuser : onResponse else" + response.body())
+
              }
          }
      })

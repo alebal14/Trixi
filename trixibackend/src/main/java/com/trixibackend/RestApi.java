@@ -147,11 +147,31 @@ public class RestApi {
             switch (collectionName) {
                 case "users":
 
-                    User user = (User) req.getBody(User.class);
+                    List<FileItem> files = null;
+                    String fileUrl = null;
+                    String userName = null;
+                    String email = null;
+                    String password = null;
+                    try {
+                        files = req.getFormData("file");
+                        userName = req.getFormData("userName").get(0).getString();
+                        email = req.getFormData("email").get(0).getString();
+                        password = req.getFormData("password").get(0).getString();
+
+                        fileUrl = db.uploadImage(files.get(0));
+                        System.out.println(fileUrl + userName + email + password);
+
+                       // res.json(Map.of("url", files.get(0).getName()));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                   /* User user = (User) req.getBody(User.class);
 
                     String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                     user.setPassword(hashedPassword);
-                    //user.setImageUrl();
+                    user.setImageUrl(fileUrl);
 
                     db.save(user);
 
@@ -161,7 +181,7 @@ public class RestApi {
                     sessionCookie.setData(user);
 
                     res.json(user);
-                    res.send("Created User");
+                    res.send("Created User");*/
                     break;
                 case "posts":
                     Post post = (Post) req.getBody(Post.class);
