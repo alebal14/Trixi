@@ -7,14 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.dao.RealmHandler
-import com.example.trixi.dao.RealmHandler.Companion.realm
 import com.example.trixi.dao.asLiveData
-import com.example.trixi.entities.Post
+import com.example.trixi.entities.RealmPost
 import com.example.trixi.entities.RealmUser
 import com.example.trixi.entities.User
 import io.realm.Realm
 import io.realm.RealmResults
-import io.realm.Sort
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +37,23 @@ class DataViewModel : ViewModel() {
         api.getAllUsersFromDB()
         return getAllUsersResults
     }
+
+    val getFollowingsPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
+        realm.where(RealmPost::class.java).findAllAsync().asLiveData()
+    }
+    fun getFollowingsPostsData(uid: String?): LiveData<RealmResults<RealmPost>>{
+        api.getFollowingsPostsFromDb(uid)
+        return getFollowingsPostsResults
+    }
+
+
+    /*val getUserPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
+        realm.where(RealmPost::class.java).findAllAsync().asLiveData()
+    }
+    fun getUserPostsData(uid: String?): LiveData<RealmResults<RealmPost>>{
+        api.getUserPostsFromDb(uid)
+        return getUserPostsResults
+    }*/
 
 
     /*fun getAllUsersFromDB(): MutableLiveData<List<User>> {
@@ -87,7 +102,7 @@ class DataViewModel : ViewModel() {
 //        })
 //    }
 
-    fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
+    /*fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
         val call = retrofitClient?.getFollowingsPost(id)
@@ -108,7 +123,7 @@ class DataViewModel : ViewModel() {
         })
         return followingsPost;
 
-    }
+    }*/
 
     fun getOneUserFromDb(id: String?): MutableLiveData<User> {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)

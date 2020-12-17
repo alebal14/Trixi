@@ -85,7 +85,7 @@ class HomepageFragment : Fragment() {
         if (PostToDb.loggedInUser != null) {
 
             adapter.clear()
-            model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
+            model.getFollowingsPostsData(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
                     Log.d("uus", "total posts : ${posts.size}")
                     posts.forEach { post ->
@@ -94,7 +94,7 @@ class HomepageFragment : Fragment() {
                         Log.d("uus", "post Description : ${post.description}")
                         model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
                         ) { postOwner ->
-                            adapter.add(HomeItem(post, postOwner))
+                           // adapter.add(HomeItem(post, postOwner))
                         }
                     }
                 }

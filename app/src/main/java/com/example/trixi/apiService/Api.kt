@@ -59,9 +59,11 @@ interface Api {
     @POST("rest/pets")
     fun postPet(@Body pet: Pet): Call<Pet>
 
+
     //Pet type
     @GET("rest/pet_types")
     fun getAllPetTypes(): Call<List<PetType>>
+
 
     //Posts
     @GET("rest/posts")
@@ -81,6 +83,7 @@ interface Api {
 
     @GET("api/getUserFollowingPost/{id}")
     fun getFollowingsPost(@Path(value="id") id : String?):Call<List<Post>>
+
 
     //Category
    @GET("rest/categories")
