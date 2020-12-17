@@ -159,7 +159,7 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val user = User(null, userName, email, password, null, null, "user", null, null)
+        val user = User(null, userName, email, password, null, null, "user", null, null,null,null,null)
         post.PostRegisterUserToDb(user, this)
 
     }

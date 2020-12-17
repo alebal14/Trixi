@@ -38,6 +38,7 @@ class HomepageFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +52,37 @@ class HomepageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
+
+        PostToDb.loggedInUser!!.uid?.let {
+            model.getUserPostsData(it)
+                .observe(viewLifecycleOwner) { postsU ->
+                    Log.d("post", "user all posts : ${postsU.size}")
+                }
+        }
+
+        PostToDb.loggedInUser?.uid?.let {
+            model.getFollowingsPostsData(it)
+                .observe(viewLifecycleOwner) { postsF ->
+                    Log.d("post", "following all posts : ${postsF.size}")
+                }
+        }
+
+        model.getAllPostsData()
+            .observe(viewLifecycleOwner) { postsA ->
+                Log.d("post", " all posts : ${postsA.size}")
+            }
+
+
+
+
+        model.getAllUsersData().observe(viewLifecycleOwner, {
+            it.forEach { user ->
+                Log.d("realmUser", "UserName : ${user.userName}")
+                Log.d("realmUser", "email : ${user.email}")
+            }
+        })
+
+
         setupRecycleView(view)
 
     }
@@ -67,40 +99,51 @@ class HomepageFragment : Fragment() {
         val adapter = GroupAdapter<GroupieViewHolder>()
         val fm = fragmentManager
 
+
         if (PostToDb.loggedInUser != null) {
 
-            adapter.clear()
-            model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
+            /*adapter.clear()
+           model.getFollowingsPostsData(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
-                    Log.d("uus", "total posts : ${posts.size}")
+                    Log.d("post", "followers posts : ${posts.size}")
                     posts.forEach { post ->
 
-                        Log.d("uus", "post Title : ${post.title!!}")
-                        Log.d("uus", "post Description : ${post.description}")
+                        /*Log.d("post", "post Title : ${post.title!!}")
+                        //Log.d("post", "post Description : ${post.description}")*/
                         model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
                         ) { postOwner ->
+<<<<<<< HEAD
                             adapter.add(HomeItem(post, postOwner, fm!!))
                         }
                     }
                 }
             recyclerView_homepage.adapter = adapter
-        }
+=======
+                           // adapter.add(HomeItem(post, postOwner))
+                        }
+                    }
+                }
+            recyclerView_homepage.adapter = adapter*/
 
 
 //        val snapHelper: SnapHelper = LinearSnapHelper()
 //        snapHelper.attachToRecyclerView(recyclerView_homepage);
 
 
-    }
+        }
 
+    }
 }
 
-class HomeItem(val post: Post, val postOwner: User,val fm:FragmentManager) : Item<GroupieViewHolder>() {
+class HomeItem(val post: Post, val postOwner: User, val fm: FragmentManager) :
+    Item<GroupieViewHolder>() {
     //val fm = fragmentManager
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl).transform(CropCircleTransformation()).fit().into(viewHolder.itemView.home_item_profileimg)
+        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl)
+            .transform(CropCircleTransformation()).fit()
+            .into(viewHolder.itemView.home_item_profileimg)
 
         viewHolder.itemView.home_item_profileName.text = postOwner.userName
         viewHolder.itemView.home_item_title.text = post.title
@@ -108,10 +151,11 @@ class HomeItem(val post: Post, val postOwner: User,val fm:FragmentManager) : Ite
         viewHolder.itemView.home_item_edit.isVisible = false
         viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
         viewHolder.itemView.home_item_like_count.text = post.likes?.size.toString()
-        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit().into(viewHolder.itemView.home_item_media)
+        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit()
+            .into(viewHolder.itemView.home_item_media)
 
-        var commentIcon :ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
-        commentIcon.setOnClickListener(object : View.OnClickListener{
+        var commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
+        commentIcon.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
                 val popUp = PopUpCommentWindow(post.comments!!)
 
