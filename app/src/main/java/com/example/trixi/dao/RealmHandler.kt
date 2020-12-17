@@ -147,6 +147,8 @@ class RealmHandler(realm: Realm) {
         return
     }
 
+    /*
+
     fun getUserPostsFromDb(id: String) {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         //var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
@@ -167,7 +169,7 @@ class RealmHandler(realm: Realm) {
             }
         })
         return
-    }
+    }*/
 
     fun getALLPostsFromDb() {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -189,6 +191,44 @@ class RealmHandler(realm: Realm) {
         })
         return
     }
+
+    /*private fun saveFollowingPost(posts: List<Post>) {
+        realm.executeTransactionAsync(fun(realm: Realm) {
+
+
+                    //realm = respones.body
+                    var followingPost?.addAll(posts!!.map{
+                        RealmFollowingPost().apply {
+                            uid = p.uid
+                            title = p.title
+                            description = p.description
+                            filePath = p.filePath
+                            ownerId = p.ownerId
+                            comments?.addAll(p.comments!!.map {
+                                RealmComment().apply {
+                                    comment = it.comment
+                                    userId = it.userId
+                                    postId = it.postId
+                                }
+                            })
+                            likes?.addAll(p.likes!!.map {
+                                RealmLike().apply {
+                                    userId = it.userId
+                                    postId = it.postId
+                                }
+                            })
+                        }
+
+
+
+
+                }
+                realm.insertOrUpdate(post)
+            }
+        }, fun() {
+            Log.d("realm", "all posts uploaded to realm")
+        })
+    }*/
 
     private fun savePost(posts: List<Post>) {
         realm.executeTransactionAsync(fun(realm: Realm) {

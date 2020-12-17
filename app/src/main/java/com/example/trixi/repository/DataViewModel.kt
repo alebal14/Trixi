@@ -46,6 +46,7 @@ class DataViewModel : ViewModel() {
         return getFollowingsPostsResults
     }
 
+/*
 
     val getUserPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
         realm.where(RealmPost::class.java).findAllAsync().asLiveData()
@@ -54,7 +55,7 @@ class DataViewModel : ViewModel() {
     fun getUserPostsData(uid: String): LiveData<RealmResults<RealmPost>>{
         api.getUserPostsFromDb(uid)
         return getUserPostsResults
-    }
+    }*/
 
     val getAllPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
         realm.where(RealmPost::class.java).findAllAsync().asLiveData()
