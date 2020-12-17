@@ -4,6 +4,7 @@ package com.example.trixi.apiService
 
 import com.example.trixi.entities.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 import okhttp3.ResponseBody
 
@@ -39,10 +40,19 @@ interface Api {
             @Part file: MultipartBody.Part
     ):Call<Image>
 
+    @Multipart
+    @POST("rest/users")
+    fun createUser(
+        @Part file: MultipartBody.Part,
+        @Part("userName") userName: String,
+        @Part("email") email: String,
+        @Part("password") password:String
+    ):Call<User>
+
 
     //Api User Collection
-    @POST("rest/users")
-    fun createUser(@Body user: User, @Query("imageUrl") url: String): Call<User>
+   /* @POST("rest/users")
+    fun createUser(@Body user: User, @Query("imageUrl") url: String): Call<User>*/
 
     @GET("rest/users")
     fun getAllUsers(): Call<List<User>>

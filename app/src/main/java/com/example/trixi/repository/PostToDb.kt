@@ -39,10 +39,12 @@ class PostToDb {
                 call: Call<User>, response: Response<User>
             ) {
                 if(response.isSuccessful){
+                    Log.d("loggedInUser", "User logged in successfully")
+                    loggedInUser = response.body()
+                    Log.d("loggedInUser", loggedInUser.toString())
 
-                    Log.d("user", "login-user : onResponse success" + response.message())
-
-                    GetLoggedInUserFromDB(context)
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
                 }else{
                     Log.d("user", "login-user : onResponse else: password and username/email dont match")
                     Toast.makeText(context, "Password and username/email dont match", Toast.LENGTH_LONG).show()
@@ -122,25 +124,27 @@ class PostToDb {
             }
         })
     }*/
-     fun PostRegisterUserToDb(image: String, user: User, context: Context){
+     fun PostRegisterUserToDb(image: MultipartBody.Part, userName:String, email:String, password:String, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.createUser(user, image)
+        val call = retrofitClient?.createUser(image, userName, email,password)
      call?.enqueue(object : Callback<User> {
          override fun onFailure(call: Call<User>, t: Throwable) {
              Log.d("uus", "REG-user : onfailure " + t.message)
          }
-
          override fun onResponse(
              call: Call<User>, response: Response<User>
          ) {
              if (response.isSuccessful) {
                  Log.d("uus", "REGuser : onResponse success" + response.body())
-                 
-                 GetLoggedInUserFromDB(context)
+                 loggedInUser = response.body()
+                 Log.d("loggedInUser", loggedInUser.toString())
 
+                 val intent = Intent(context, MainActivity::class.java)
+                 context.startActivity(intent)
              } else {
                  Log.d("uus", "REGuser : onResponse else" + response.body())
+
              }
          }
      })
