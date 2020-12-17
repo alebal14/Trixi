@@ -1,15 +1,11 @@
 package com.example.trixi.dao
 
-import android.graphics.ColorSpace.Model
 import android.util.Log
-import android.view.Gravity.apply
-import androidx.core.view.GravityCompat.apply
-import androidx.lifecycle.MutableLiveData
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.*
 import io.realm.Realm
-import io.realm.RealmList
+import io.realm.RealmResults
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -140,7 +136,9 @@ class RealmHandler(realm: Realm) {
 
     private fun saveUserPost(posts: List<Post>) {
         realm.executeTransactionAsync(fun(realm: Realm) {
+
             var userPosts = RealmUserPost().apply {
+                listUserId = 1
                 userAllPosts?.addAll(posts.map {
                     RealmPost().apply {
                         //realm = respones.body
@@ -243,9 +241,11 @@ class RealmHandler(realm: Realm) {
     }
 
     private fun saveFollowingPost(posts: List<Post>) {
+
         realm.executeTransactionAsync(fun(realm: Realm) {
 
             var followPosts = RealmFollowingPost().apply {
+                listId = 2
                 followingPost?.addAll(posts.map {
                     RealmPost().apply {
                         //realm = respones.body
@@ -287,6 +287,7 @@ class RealmHandler(realm: Realm) {
                 if (response.isSuccessful) {
                     saveAllPetsToRealm(response.body()!!)
                 } else {
+
 
                 }
             }

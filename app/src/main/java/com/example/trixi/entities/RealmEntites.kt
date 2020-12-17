@@ -55,11 +55,15 @@ open class RealmPost: RealmObject(){
 
 @RealmClass
 open class RealmFollowingPost: RealmObject(){
+    @PrimaryKey
+    var listId: Int? = null
     var followingPost : RealmList<RealmPost>? = null
 }
 
 @RealmClass
 open class RealmUserPost: RealmObject(){
+    @PrimaryKey
+    var listUserId: Int? = null
     var userAllPosts : RealmList<RealmPost>? = null
 }
 
