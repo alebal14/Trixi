@@ -1,13 +1,16 @@
 package com.example.trixi.apiService
 
 import android.content.Context
+import android.text.format.Formatter.formatIpAddress
+import android.util.Log
+import com.example.trixi.ui.fragments.PopUpCommentWindow.Companion.TAG
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.CookieManager
-import java.net.CookiePolicy
+import java.net.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -17,7 +20,8 @@ class RetrofitClient {
     companion object{
        lateinit var context: Context
        var instance: Retrofit? = null
-       val BASE_URL = "http://192.168.1.71:3000/"
+
+        val BASE_URL = "http://192.168.0.166:3000/"
 
 
         fun okHttpClient() : OkHttpClient {
@@ -28,9 +32,9 @@ class RetrofitClient {
                 .writeTimeout(2, TimeUnit.MINUTES) // write timeout
                 .readTimeout(2, TimeUnit.MINUTES) // read timeout
             .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
+                    HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    }
             ).cookieJar(cookieJar)
                 .build()
                 return client
