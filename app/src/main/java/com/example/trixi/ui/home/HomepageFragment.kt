@@ -59,15 +59,17 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        model.getUserPostsData("5fd622cc746f5a50f0f10ed9")
+        /*model.getUserPostsData("5fd622cc746f5a50f0f10ed9")
                 .observe(viewLifecycleOwner) { postsU ->
                     Log.d("post", "user all posts : ${postsU.size}")
-                }
+                }*/
 
-        model.getFollowingsPostsData("5fd622cc746f5a50f0f10ed9")
+        PostToDb.loggedInUser?.uid?.let {
+            model.getFollowingsPostsData(it)
                 .observe(viewLifecycleOwner) { postsF ->
                     Log.d("post", "following all posts : ${postsF.size}")
                 }
+        }
 
         model.getAllPostsData()
                 .observe(viewLifecycleOwner) { postsA ->

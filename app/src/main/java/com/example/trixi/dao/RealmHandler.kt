@@ -138,7 +138,7 @@ class RealmHandler(realm: Realm) {
                     call: Call<List<Post>>, response: Response<List<Post>>
             ) {
                 if (response.isSuccessful) {
-                    savePost(response.body()!!)
+                    saveFollowingPost(response.body()!!)
                 } else {
 
                 }
@@ -192,43 +192,42 @@ class RealmHandler(realm: Realm) {
         return
     }
 
-    /*private fun saveFollowingPost(posts: List<Post>) {
+    private fun saveFollowingPost(posts: List<Post>) {
         realm.executeTransactionAsync(fun(realm: Realm) {
 
 
-                    //realm = respones.body
-                    var followingPost?.addAll(posts!!.map{
-                        RealmFollowingPost().apply {
-                            uid = p.uid
-                            title = p.title
-                            description = p.description
-                            filePath = p.filePath
-                            ownerId = p.ownerId
-                            comments?.addAll(p.comments!!.map {
-                                RealmComment().apply {
-                                    comment = it.comment
-                                    userId = it.userId
-                                    postId = it.postId
-                                }
-                            })
-                            likes?.addAll(p.likes!!.map {
-                                RealmLike().apply {
-                                    userId = it.userId
-                                    postId = it.postId
-                                }
-                            })
-                        }
+            //realm = respones.body
 
-
-
-
-                }
-                realm.insertOrUpdate(post)
+            var followPosts = RealmFollowingPost().apply {
+                followingPost?.addAll(posts.map {
+                    RealmPost().apply {
+                        //realm = respones.body
+                        uid = it.uid
+                        title = it.title
+                        description = it.description
+                        filePath = it.filePath
+                        ownerId = it.ownerId
+                        comments?.addAll(it.comments!!.map {
+                            RealmComment().apply {
+                                comment = it.comment
+                                userId = it.userId
+                                postId = it.postId
+                            }
+                        })
+                        likes?.addAll(it.likes!!.map {
+                            RealmLike().apply {
+                                userId = it.userId
+                                postId = it.postId
+                            }
+                        })
+                    }
+                })
             }
-        }, fun() {
-            Log.d("realm", "all posts uploaded to realm")
+
+            realm.insertOrUpdate(followPosts)
         })
-    }*/
+
+    }
 
     private fun savePost(posts: List<Post>) {
         realm.executeTransactionAsync(fun(realm: Realm) {
