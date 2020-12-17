@@ -59,6 +59,26 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        model.getUserPostsData("5fd622cc746f5a50f0f10ed9")
+                .observe(viewLifecycleOwner) { postsU ->
+                    Log.d("post", "user all posts : ${postsU.size}")
+                }
+
+        model.getFollowingsPostsData("5fd622cc746f5a50f0f10ed9")
+                .observe(viewLifecycleOwner) { postsF ->
+                    Log.d("post", "following all posts : ${postsF.size}")
+                }
+
+        model.getAllPostsData()
+                .observe(viewLifecycleOwner) { postsA ->
+                    Log.d("post", " all posts : ${postsA.size}")
+                }
+
+
+
+
+
+
 
         model.getAllUsersData().observe(viewLifecycleOwner, {
             it.forEach { user ->
@@ -66,6 +86,8 @@ class HomepageFragment : Fragment() {
                 Log.d("realmUser", "email : ${user.email}")
             }
         })
+
+
 
         setupRecycleView(view)
 
@@ -85,26 +107,21 @@ class HomepageFragment : Fragment() {
 
         if (PostToDb.loggedInUser != null) {
 
-           /* model.getUserPostsData(PostToDb.loggedInUser!!.uid)
-                    .observe(viewLifecycleOwner) { posts ->
-                        Log.d("post", "all posts : ${posts.size}")
-                    }*/
-
-            adapter.clear()
-            model.getFollowingsPostsData(PostToDb.loggedInUser!!.uid)
+            /*adapter.clear()
+           model.getFollowingsPostsData(PostToDb.loggedInUser!!.uid)
                 .observe(viewLifecycleOwner) { posts ->
-                    Log.d("post", "total posts : ${posts.size}")
+                    Log.d("post", "followers posts : ${posts.size}")
                     posts.forEach { post ->
 
-                        Log.d("post", "post Title : ${post.title!!}")
-                        Log.d("post", "post Description : ${post.description}")
+                        /*Log.d("post", "post Title : ${post.title!!}")
+                        //Log.d("post", "post Description : ${post.description}")*/
                         model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
                         ) { postOwner ->
                            // adapter.add(HomeItem(post, postOwner))
                         }
                     }
                 }
-            recyclerView_homepage.adapter = adapter
+            recyclerView_homepage.adapter = adapter*/
 
             adapter.setOnItemClickListener { item, view ->
                 val homeItem = item as HomeItem
