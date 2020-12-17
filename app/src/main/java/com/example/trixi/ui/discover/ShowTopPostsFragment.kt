@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.trixi.R
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
-class ShowTopPostsFragment : Fragment() {
+class ShowTopPostsFragment : Fragment()  {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

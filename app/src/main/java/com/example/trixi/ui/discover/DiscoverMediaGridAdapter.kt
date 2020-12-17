@@ -1,19 +1,25 @@
 package com.example.trixi.ui.discover
 
 import android.R
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
+import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Post
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
 class DiscoverMediaGridAdapter (
     private var posts: ArrayList<Post>)
     : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
 
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
+        val gridView = (LayoutInflater.from(parent.context).inflate(R.layout., parent, false))
+        return DiscoverViewHolder(gridView)
+    }
 
 
     override fun getItemCount(): Int {
@@ -24,19 +30,20 @@ class DiscoverMediaGridAdapter (
         holder.bindView(posts[position]);
     }
 
-    fun setData(){
 
-    }
+    class DiscoverViewHolder (view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        val postItem = itemView.image_top_post
 
+        init {
+            view.setOnClickListener(this)
+        }
 
-    class DiscoverViewHolder (view: View) : RecyclerView.ViewHolder(view) {
+        fun bindView(post: Post) {
+            Picasso.get().load(BASE_URL + post.filePath!!).into(postItem)
+        }
 
-
-        fun bindView(post: Post
-            //listener: (Post) -> Unit) {
-        ){
-
-
+        override fun onClick(p0: View?) {
+            Log.d("click", "click")
         }
 
     }
