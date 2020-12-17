@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 class ShowTopPostsFragment : Fragment() {
     //Add variable to fetch data
+    //val allPosts : ArrayList<Post> = PostToDb.
 
 
     override fun onCreateView(
@@ -29,7 +30,7 @@ class ShowTopPostsFragment : Fragment() {
         media_grid_top_posts.apply {
             media_grid_top_posts.layoutManager =
                 StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
-            //adapter = DiscoverMediaGridAdapter(posts)
+            //adapter = DiscoverMediaGridAdapter(allPosts)
             media_grid_top_posts.adapter = adapter
         }
         addData()

@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter(private var posts: ArrayList <Post?>)
+class DiscoverMediaGridAdapter(private var posts: ArrayList <Post>)
     : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
 
 
