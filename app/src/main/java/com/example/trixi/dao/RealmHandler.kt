@@ -147,7 +147,7 @@ class RealmHandler(realm: Realm) {
         return
     }
 
-    /*
+
 
     fun getUserPostsFromDb(id: String) {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -162,14 +162,14 @@ class RealmHandler(realm: Realm) {
                     call: Call<List<Post>>, response: Response<List<Post>>
             ) {
                 if (response.isSuccessful) {
-                    savePost(response.body()!!)
+                    saveUserPost(response.body()!!)
                 } else {
 
                 }
             }
         })
         return
-    }*/
+    }
 
     fun getALLPostsFromDb() {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -190,6 +190,43 @@ class RealmHandler(realm: Realm) {
             }
         })
         return
+    }
+
+    private fun saveUserPost(posts: List<Post>) {
+        realm.executeTransactionAsync(fun(realm: Realm) {
+
+
+            //realm = respones.body
+
+            var userPosts = RealmUserPost().apply {
+                userAllPosts?.addAll(posts.map {
+                    RealmPost().apply {
+                        //realm = respones.body
+                        uid = it.uid
+                        title = it.title
+                        description = it.description
+                        filePath = it.filePath
+                        ownerId = it.ownerId
+                        comments?.addAll(it.comments!!.map {
+                            RealmComment().apply {
+                                comment = it.comment
+                                userId = it.userId
+                                postId = it.postId
+                            }
+                        })
+                        likes?.addAll(it.likes!!.map {
+                            RealmLike().apply {
+                                userId = it.userId
+                                postId = it.postId
+                            }
+                        })
+                    }
+                })
+            }
+
+            realm.insertOrUpdate(userPosts)
+        })
+
     }
 
     private fun saveFollowingPost(posts: List<Post>) {

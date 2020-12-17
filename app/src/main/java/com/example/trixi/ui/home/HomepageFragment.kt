@@ -59,10 +59,12 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        /*model.getUserPostsData("5fd622cc746f5a50f0f10ed9")
+        PostToDb.loggedInUser!!.uid?.let {
+            model.getUserPostsData(it)
                 .observe(viewLifecycleOwner) { postsU ->
                     Log.d("post", "user all posts : ${postsU.size}")
-                }*/
+                }
+        }
 
         PostToDb.loggedInUser?.uid?.let {
             model.getFollowingsPostsData(it)

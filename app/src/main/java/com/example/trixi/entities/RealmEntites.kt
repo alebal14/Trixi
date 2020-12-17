@@ -58,6 +58,11 @@ open class RealmFollowingPost: RealmObject(){
     var followingPost : RealmList<RealmPost>? = null
 }
 
+@RealmClass
+open class RealmUserPost: RealmObject(){
+    var userAllPosts : RealmList<RealmPost>? = null
+}
+
 
 @RealmClass
 open class RealmComment:RealmObject(){
