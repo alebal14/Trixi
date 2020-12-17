@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 class ShowTopPostsFragment : Fragment()  {
+    //val post: Post? =
 
 
 
@@ -25,8 +27,12 @@ class ShowTopPostsFragment : Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        media_grid_top_posts.layoutManager = GridLayoutManager(context,2)
-        //media_grid_top_posts.adapter = DiscoverMediaGridAdapter(posts)
+
+        media_grid_top_posts.apply {
+                users_pet_list.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, true)
+                //adapter = DiscoverMediaGridAdapter(loggedInUser.pets)
+                users_pet_list.adapter = adapter
+            }
         addData()
     }
 
