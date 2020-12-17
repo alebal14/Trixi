@@ -111,9 +111,7 @@ class ProfileFragment : Fragment() {
         owner_name.visibility = View.INVISIBLE
         follow_button.visibility = View.INVISIBLE
 
-        //TODO: get followers & following
-//            profile_followers
-//            profile_following
+
     }
 
 }

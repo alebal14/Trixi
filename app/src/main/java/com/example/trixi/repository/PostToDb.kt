@@ -75,29 +75,7 @@ class PostToDb {
         })
     }
 
-    fun GetLatestPostFromDB(id :String){
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.getLatestPost(id)
-        call?.enqueue(object : Callback<Post> {
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                Log.d("uus", "loggedInUser : onfailure " + t.message)
-            }
-            override fun onResponse(
-                call: Call<Post>, response: Response<Post>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("latestPost", "Latest Post")
-                    latestPost = response.body()
-                    Log.d("loggedInUser", loggedInUser.toString())
-
-
-                } else {
-                    Log.d("latestPost", "Latest Post")
-                }
-            }
-        })
-    }
 
     fun PostImageToDb(image: String) {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -124,21 +102,23 @@ class PostToDb {
 
         val call = retrofitClient?.createUser(user)
      call?.enqueue(object : Callback<User> {
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("uus", "REG-user : onfailure " + t.message)
-            }
-            override fun onResponse(
-                call: Call<User>, response: Response<User>
-            ) {
-                if(response.isSuccessful){
-                    Log.d("uus", "REGuser : onResponse success" + response.body())
-                    val intent = Intent(context, LoginActivity::class.java)
-                    context.startActivity(intent)
-                }else{
-                    Log.d("uus", "REGuser : onResponse else" + response.body())
-                }
-            }
-        })
+         override fun onFailure(call: Call<User>, t: Throwable) {
+             Log.d("uus", "REG-user : onfailure " + t.message)
+         }
+
+         override fun onResponse(
+             call: Call<User>, response: Response<User>
+         ) {
+             if (response.isSuccessful) {
+                 Log.d("uus", "REGuser : onResponse success" + response.body())
+                 
+                 GetLoggedInUserFromDB(context)
+
+             } else {
+                 Log.d("uus", "REGuser : onResponse else" + response.body())
+             }
+         }
+     })
     }
 
     fun logOutUser(context: Context?) {
