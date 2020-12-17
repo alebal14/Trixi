@@ -8,9 +8,7 @@ import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.dao.RealmHandler
 import com.example.trixi.dao.asLiveData
-import com.example.trixi.entities.RealmPost
-import com.example.trixi.entities.RealmUser
-import com.example.trixi.entities.User
+import com.example.trixi.entities.*
 import io.realm.Realm
 import io.realm.RealmResults
 import retrofit2.Call
@@ -64,6 +62,23 @@ class DataViewModel : ViewModel() {
     fun getAllPostsData(): LiveData<RealmResults<RealmPost>>{
         api.getALLPostsFromDb()
         return getAllPostsResults
+    }
+
+    val getAllPetsResults:LiveData<RealmResults<RealmPet>> by lazy {
+        realm.where(RealmPet::class.java).findAllAsync().asLiveData()
+    }
+
+    fun getAllPetsData(): LiveData<RealmResults<RealmPet>>{
+        api.getAllPetsFromDB()
+        return getAllPetsResults
+    }
+
+    val getPetsByOwnerResults:LiveData<RealmResults<RealmPetByOwner>> by lazy {
+        realm.where(RealmPetByOwner::class.java).findAllAsync().asLiveData()
+    }
+    fun getPetsByOwnerData(uid: String): LiveData<RealmResults<RealmPetByOwner>>{
+        api.getPetsByOwnerFromDb(uid)
+        return getPetsByOwnerResults
     }
 
 
