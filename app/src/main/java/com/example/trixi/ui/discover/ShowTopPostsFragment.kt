@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_top_liked_post_item.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 class ShowTopPostsFragment : Fragment()  {
@@ -27,6 +30,10 @@ class ShowTopPostsFragment : Fragment()  {
         inflater.inflate(R.menu.profile_nav_menu, menu)
         (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Discover")
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun addData() {
+        Picasso.get().load(RetrofitClient.BASE_URL).fit().into(image_top_post)
     }
 
 }
