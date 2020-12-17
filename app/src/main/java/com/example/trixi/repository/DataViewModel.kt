@@ -8,6 +8,7 @@ import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.dao.RealmHandler
 import com.example.trixi.dao.asLiveData
+import com.example.trixi.entities.RealmFollowingPost
 import com.example.trixi.entities.RealmPost
 import com.example.trixi.entities.RealmUser
 import com.example.trixi.entities.User
@@ -38,10 +39,10 @@ class DataViewModel : ViewModel() {
         return getAllUsersResults
     }
 
-    val getFollowingsPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
-        realm.where(RealmPost::class.java).findAllAsync().asLiveData()
+    val getFollowingsPostsResults:LiveData<RealmResults<RealmFollowingPost>> by lazy {
+        realm.where(RealmFollowingPost::class.java).findAllAsync().asLiveData()
     }
-    fun getFollowingsPostsData(uid: String): LiveData<RealmResults<RealmPost>>{
+    fun getFollowingsPostsData(uid: String): LiveData<RealmResults<RealmFollowingPost>>{
         api.getFollowingsPostsFromDb(uid)
         return getFollowingsPostsResults
     }
