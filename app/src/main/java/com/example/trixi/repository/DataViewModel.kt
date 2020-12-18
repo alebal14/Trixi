@@ -75,6 +75,7 @@ class DataViewModel : ViewModel() {
         return realm.where(RealmUser::class.java)
             .equalTo("uid", uid)
             .findAllAsync().asLiveData()
+    }
 
         val getAllPetsResults: LiveData<RealmResults<RealmPet>> by lazy {
             realm.where(RealmPet::class.java).findAllAsync().asLiveData()
@@ -119,30 +120,8 @@ class DataViewModel : ViewModel() {
         return userListData
     }*/
 
-        //    fun GetLatestPostFromDB(id :String){
-//        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-//
-//        val call = retrofitClient?.getLatestPost(id)
-//        call?.enqueue(object : Callback<Post> {
-//            override fun onFailure(call: Call<Post>, t: Throwable) {
-//
-//            }
-//            override fun onResponse(
-//                call: Call<Post>, response: Response<Post>
-//            ) {
-//                if (response.isSuccessful) {
-//                    Log.d("latestPost SuccessFul", "Latest Post")
-//                    latestPost = response.body()
-//                    Log.d("latestPost SuccessFul", latestPost.toString())
-//
-//                } else {
-//                    Log.d("latestPost", "Latest Post")
-//                }
-//            }
-//        })
-//    }
 
-        /*fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
+        fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
         val call = retrofitClient?.getFollowingsPost(id)
@@ -163,7 +142,7 @@ class DataViewModel : ViewModel() {
         })
         return followingsPost;
 
-    }*/
+    }
 
         fun getOneUserFromDb(id: String?): MutableLiveData<User> {
             val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -192,6 +171,6 @@ class DataViewModel : ViewModel() {
 
         }
     }
-}
+
 
 

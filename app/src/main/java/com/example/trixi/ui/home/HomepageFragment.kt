@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,18 +16,19 @@ import androidx.lifecycle.observe
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
-import com.example.trixi.entities.RealmPost
-import com.example.trixi.entities.RealmUser
 import com.example.trixi.entities.User
 import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
+import com.example.trixi.ui.profile.ProfileFragment
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home_item.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 
@@ -55,7 +57,7 @@ class HomepageFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
-<<<<<<< HEAD
+
         PostToDb.loggedInUser!!.uid?.let {
             model.getUserPostsData(it)
                 .observe(viewLifecycleOwner) { postsU ->
@@ -75,29 +77,6 @@ class HomepageFragment : Fragment() {
                 Log.d("post", " all posts : ${postsA.size}")
             }
 
-
-
-
-        model.getAllUsersData().observe(viewLifecycleOwner, {
-=======
-
-
-        model.getAllPostsData()
-                .observe(viewLifecycleOwner) { postsA ->
-                    Log.d("post", " all posts : ${postsA.size}")
-                }
-
-
-
-       /* model.getAllUsersData().observe(viewLifecycleOwner, {
->>>>>>> dev
-            it.forEach { user ->
-                Log.d("realmUser", "UserName : ${user.userName}")
-                Log.d("realmUser", "email : ${user.email}")
-            }
-        })*/
-
-
         setupRecycleView()
 
     }
@@ -113,14 +92,26 @@ class HomepageFragment : Fragment() {
 
         val adapter = GroupAdapter<GroupieViewHolder>()
         val fm = fragmentManager
-        PostToDb.loggedInUser?.uid?.let {
-            model.getFollowingsPostsData(it)
-                .observe(viewLifecycleOwner) { postsF ->
-                    postsF.forEach {
-
+        adapter.clear()
+        PostToDb.loggedInUser!!.uid?.let {
+            model.getFollowingsPostFromDb(it).observe(viewLifecycleOwner) { posts ->
+                if (posts.isEmpty()) {
+                    activity?.supportFragmentManager?.beginTransaction()?.apply {
+                        replace(R.id.fragment_container, EmptyHomeFragment())
+                        commit()
                     }
-                    Log.d("home", "following all posts : ${postsF.size}")
+                } else {
+                    Log.d("post", "followers posts : ${posts.size}")
+                    posts.forEach { post ->
+                        model.getOneUserFromDb(post.ownerId)
+                            .observe(viewLifecycleOwner) { postOwner ->
+                                adapter.add(HomeItem(post, postOwner, fm!!))
+                            }
+                    }
+                    recyclerView_homepage.adapter = adapter
                 }
+
+            }
         }
 
 
@@ -130,22 +121,18 @@ class HomepageFragment : Fragment() {
 
     }
 
-    private fun getRealmUserById(uid:String){
-        
-    }
 
-    class HomeItem(val post: RealmPost?, val postOwner: RealmUser?, val fm: FragmentManager) :
+    class HomeItem(val post: Post, val postOwner: User, val fm: FragmentManager) :
         Item<GroupieViewHolder>() {
-        //val fm = fragmentManager
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-            Picasso.get().load(RetrofitClient.BASE_URL + postOwner!!.imageUrl)
+            Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl)
                 .transform(CropCircleTransformation()).fit()
                 .into(viewHolder.itemView.home_item_profileimg)
 
             viewHolder.itemView.home_item_profileName.text = postOwner.userName
-            viewHolder.itemView.home_item_title.text = post!!.title
+            viewHolder.itemView.home_item_title.text = post.title
             viewHolder.itemView.home_item_description.text = post.description
             viewHolder.itemView.home_item_edit.isVisible = false
             viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
@@ -156,13 +143,21 @@ class HomepageFragment : Fragment() {
             var commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
             commentIcon.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
-                    val popUp = PopUpCommentWindow(post.comments!!)
+                    val popUp = PopUpCommentWindow(post.comments)
 
                     if (fm != null) {
                         popUp.show(fm, PopUpCommentWindow.TAG)
                     }
                 }
 
+            })
+
+            var discoveryText :TextView = viewHolder.itemView.findViewById(R.id.home_item_discover)
+            discoveryText.setOnClickListener(object: View.OnClickListener{
+                override fun onClick(p0: View?) {
+                    fm.beginTransaction().replace(R.id.fragment_container, EmptyHomeFragment()).commit()
+
+                }
             })
 
         }

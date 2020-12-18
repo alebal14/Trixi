@@ -1,6 +1,7 @@
 package com.example.trixi.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,18 +9,20 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.trixi.R
-import com.example.trixi.entities.RealmComment
-import com.example.trixi.entities.RealmUser
+import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.Comment
 import com.example.trixi.entities.User
 import com.example.trixi.repository.DataViewModel
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
-import org.w3c.dom.Comment
+import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
-class PopUpCommentWindow(val comments: List<RealmComment>) : DialogFragment() {
+class PopUpCommentWindow(val comments: ArrayList<Comment>?) : DialogFragment() {
     val model: DataViewModel by viewModels()
 
     companion object {
@@ -55,15 +58,13 @@ class PopUpCommentWindow(val comments: List<RealmComment>) : DialogFragment() {
 
     private fun setUpCommentsView() {
         val adapterChat = GroupAdapter<GroupieViewHolder>()
-        comments.forEach { comment ->
-//
-            comment.userId?.let {
-                model.findUserFromRealmById(it).observe(viewLifecycleOwner){
-                    it.forEach { commentOwner ->
-                        adapterChat.add(CommentItem(comment,commentOwner))
-                    }
-                }
-            }
+        comments!!.forEach { comment ->
+            model.getOneUserFromDb(comment.userId).observe(this, { commnetOwner ->
+                Log.d("uus", "Comment owner ${commnetOwner.userName}")
+                Log.d("uus", "Comment  ${comment.comment}")
+
+                adapterChat.add(CommentItem(comment,commnetOwner))
+            })
 
         }
 
@@ -74,10 +75,13 @@ class PopUpCommentWindow(val comments: List<RealmComment>) : DialogFragment() {
 
 }
 
-class CommentItem(val comment: RealmComment, val commentOwner: RealmUser) : Item<GroupieViewHolder>() {
+class CommentItem(val comment: Comment, val commentOwner: User) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.comment_sender_name.text = commentOwner.userName
         viewHolder.itemView.comment_description.text = comment.comment
+        Picasso.get().load(RetrofitClient.BASE_URL + commentOwner.imageUrl)
+            .transform(CropCircleTransformation()).fit()
+            .into(viewHolder.itemView.comment_profile_img)
     }
 
     override fun getLayout(): Int {

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.EmptyHomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="230dp"
+            android:paddingTop="20dp">
+
+
+            <TextView
+                android:id="@+id/home_item_following"
+                android:layout_width="83dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Following   /"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
+                android:shadowRadius="2.6"
+                android:textColor="@color/colorPink"/>
+
+            <TextView
+                android:id="@+id/home_item_discover"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Discover"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
+                android:shadowRadius="2.6"
+                android:textColor="@color/colorPink"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="370dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="55dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingTop="20dp"
+            android:paddingRight="5dp" >
+
+            <TextView
+                android:id="@+id/home_item_profileName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="You have to follow someone to see his/her posts"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
+                android:shadowRadius="2.6"
+                android:textColor="@color/colorPink"
+                >
+
+            </TextView>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</FrameLayout>
