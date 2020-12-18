@@ -24,6 +24,10 @@ import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 
 class HomepageFragment : Fragment() {
@@ -32,7 +36,6 @@ class HomepageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
     }
 
@@ -58,24 +61,6 @@ class HomepageFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
-
-
-        model.getAllPostsData()
-                .observe(viewLifecycleOwner) { postsA ->
-                    Log.d("post", " all posts : ${postsA.size}")
-                }
-
-
-
-       /* model.getAllUsersData().observe(viewLifecycleOwner, {
-            it.forEach { user ->
-                Log.d("realmUser", "UserName : ${user.userName}")
-                Log.d("realmUser", "email : ${user.email}")
-            }
-        })*/
-
-
-
         setupRecycleView(view)
 
 
@@ -94,21 +79,21 @@ class HomepageFragment : Fragment() {
 
         if (PostToDb.loggedInUser != null) {
 
-            /*adapter.clear()
-           model.getFollowingsPostsData(PostToDb.loggedInUser!!.uid)
-                .observe(viewLifecycleOwner) { posts ->
-                    Log.d("post", "followers posts : ${posts.size}")
-                    posts.forEach { post ->
+            adapter.clear()
 
-                        /*Log.d("post", "post Title : ${post.title!!}")
-                        //Log.d("post", "post Description : ${post.description}")*/
-                        model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
-                        ) { postOwner ->
-                           // adapter.add(HomeItem(post, postOwner))
+                model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
+                        .observe(viewLifecycleOwner) { posts ->
+                            Log.d("post", "followers posts : ${posts.size}")
+                            posts.forEach { post ->
+                                model.getOneUserFromDb(post.ownerId).observe(viewLifecycleOwner
+                                ) { postOwner ->
+                                    adapter.add(HomeItem(post, postOwner))
+                                }
+                            }
                         }
-                    }
-                }
-            recyclerView_homepage.adapter = adapter*/
+
+
+            recyclerView_homepage.adapter = adapter
 
             adapter.setOnItemClickListener { item, view ->
                 val homeItem = item as HomeItem

@@ -13,6 +13,9 @@ import com.example.trixi.ui.fragments.singlePostFragment
 import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.profile.LoggedInUserProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+
 
 class MainActivity : AppCompatActivity() {
 

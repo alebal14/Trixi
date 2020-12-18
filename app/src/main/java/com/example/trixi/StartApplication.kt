@@ -19,6 +19,8 @@ class StartApplication: Application() {
                 .deleteRealmIfMigrationNeeded()
                 .build()
         Realm.setDefaultConfiguration(configuration)
+
+
     }
 
 }
