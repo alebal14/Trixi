@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_profile.profile_no_posts
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 
-class ProfileFragment : Fragment() {
+class LoggedInUserProfileFragment : Fragment() {
 
     val loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu: Boolean = false
@@ -48,7 +48,7 @@ class ProfileFragment : Fragment() {
 
             //set up post thumbnails for user or show text:"no posts"
             if (!loggedInUser?.posts?.isEmpty()!!) {
-                media_grid.layoutManager = GridLayoutManager(context, 3)
+                media_grid.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
                 media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts)
             } else profile_no_posts.visibility = TextView.VISIBLE
         }
@@ -56,7 +56,7 @@ class ProfileFragment : Fragment() {
         users_pet_list.apply {
             if (!loggedInUser?.pets?.isEmpty()!!) {
                 //set pet list for user if not empty
-                users_pet_list.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, true)
+                users_pet_list.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
                 adapter = ProfilePetListAdapter(loggedInUser.pets)
                 users_pet_list.adapter = adapter
             }
@@ -108,7 +108,6 @@ class ProfileFragment : Fragment() {
 
         owner_name.visibility = View.INVISIBLE
         follow_button.visibility = View.INVISIBLE
-
 
     }
 

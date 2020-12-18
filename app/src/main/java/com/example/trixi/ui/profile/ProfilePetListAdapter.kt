@@ -11,6 +11,7 @@ import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Pet
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.profile_user_pet.view.*
 
 class ProfilePetListAdapter(private var pets: ArrayList<Pet>)
@@ -25,6 +26,7 @@ class ProfilePetListAdapter(private var pets: ArrayList<Pet>)
             parent, false
         ))
         return ProfilePetListViewHolder(gridView)
+
     }
 
     override fun onBindViewHolder(holder: ProfilePetListViewHolder, position: Int) {
