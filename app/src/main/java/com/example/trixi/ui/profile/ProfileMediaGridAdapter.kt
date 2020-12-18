@@ -17,6 +17,9 @@ class ProfileMediaGridAdapter(
     : RecyclerView.Adapter<ProfileMediaGridAdapter.ProfileViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder {
+
+
+
         val gridView = (LayoutInflater.from(parent.context).inflate(
             R.layout.media_grid,
             parent, false

@@ -7,27 +7,34 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
-import com.example.trixi.entities.Post
+import com.example.trixi.entities.RealmPost
 import com.squareup.picasso.Picasso
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter(private var posts: ArrayList <Post>)
+class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
     : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
-        val gridView : View = (LayoutInflater.from(parent.context).inflate(R.layout.fragment_top_liked_posts, parent, false))
+        val gridView = (LayoutInflater.from(parent.context).inflate(
+            R.layout.fragment_top_liked_posts,
+            parent, false
+        ))
         return DiscoverViewHolder(gridView)
     }
 
 
     override fun getItemCount(): Int {
-        return posts.size
+        if (posts == null){
+            return 0;
+        } else
+        return  posts?.size!!
     }
 
     override fun onBindViewHolder(holder: DiscoverViewHolder, position: Int) {
-        posts[position]?.let { holder.bindView(it) }
+        posts?.get(position)?.let { holder.bindView(it) }
     }
 
 
@@ -44,8 +51,9 @@ class DiscoverMediaGridAdapter(private var posts: ArrayList <Post>)
             Log.d("click", "click")
         }
 
-        fun bindView(post: Post) {
+        fun bindView(post: RealmPost) {
             Picasso.get().load(BASE_URL + post.filePath!!).into(postItem)
+            Log.d("bindView", "in bindview")
         }
 
 

@@ -52,8 +52,4 @@ class RetrofitClient {
             return instance
         }
     }
-
-
-
-
 }
