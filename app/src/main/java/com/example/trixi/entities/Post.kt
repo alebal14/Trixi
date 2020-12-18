@@ -4,7 +4,7 @@ package com.example.trixi.entities;
 import io.realm.internal.Keep
 import java.io.File
 
-@Keep
+
 data class Post(
     val uid: String?,
     val title:String?,
@@ -12,6 +12,6 @@ data class Post(
     val filePath:String?,
     val ownerId:String?,
     val comments: ArrayList<Comment>?,
-    val likes: ArrayList<Like>?) {
-}
+    val likes: ArrayList<Like>?)
+
 

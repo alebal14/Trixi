@@ -13,23 +13,22 @@ import com.example.trixi.entities.*
 import com.example.trixi.entities.RealmPost
 import com.example.trixi.entities.RealmUser
 import com.example.trixi.entities.User
-import com.example.trixi.ui.fragments.PopUpCommentWindow.Companion.TAG
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
-import kotlin.coroutines.Continuation
 
-class DataViewModel : ViewModel() {
+class DataViewModel(id: String?) : ViewModel() {
 
     // TODO: 2020-12-16  get All Post, get all Post by ownerId, get posts by category ID
     // TODO: get all category, get all pet types
     // TODO: 2020-12-16 get all pets, get pets by pet Types, get pet by pet_id , get pet by owner_id 
+
 
     val realm: Realm by lazy {
         Realm.getDefaultInstance()
@@ -136,29 +135,55 @@ class DataViewModel : ViewModel() {
 
  }*/
     var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
-    suspend fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
 
+     fun getFollowingsPostFromDb(id: String?) : MutableLiveData<List<Post>>{
+        var result: LiveData<List<Post>>? = null
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
 
-            try {
-                val response = retrofitClient!!.getFollowingsPost(id)
-                if (response.isSuccessful) {
-                    for (post in response.body()!!) {
-                        //followingsPost.postValue(listOf(post))
-                        println("POSTS" + post.title)
+                try {
+
+                    val response = retrofitClient!!.getFollowingsPost(id)
+                    if (response.isSuccessful) {
+
+                        followingsPost.postValue(response.body()!!)
+                        println("POSTS" + response.body()!!)
+
+                    } else {
+                        Log.d("TAG", "Error: ${response.body()}")
                     }
-                } else {
-                    Log.d("TAG", "Error: ${response.body()}")
+                } catch (e: HttpException) {
+                    Log.d("TAG", "Exception ${e.message}")
+                } catch (e: Throwable) {
+                    Log.d("TAG", "Ooops: Something else went wrong")
                 }
-            } catch (e: HttpException) {
-                Log.d("TAG", "Exception ${e.message}")
-            } catch (e: Throwable) {
-                Log.d("TAG", "Ooops: Something else went wrong")
+
+
             }
         }
         return followingsPost
+
+        /* try {
+
+                 val response = retrofitClient!!.getFollowingsPost(id)
+                 if (response.isSuccessful) {
+                     for (post in response.body()!!) {
+                         //followingsPost.postValue(listOf(post))
+                         println("POSTS" + post.title)
+                     }
+                 } else {
+                     Log.d("TAG", "Error: ${response.body()}")
+                 }
+             }
+          catch (e: HttpException) {
+             Log.d("TAG", "Exception ${e.message}")
+         } catch (e: Throwable) {
+             Log.d("TAG", "Ooops: Something else went wrong")
+         }
+
+         return followingsPost*/
 
     }
 

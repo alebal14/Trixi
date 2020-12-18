@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
@@ -61,6 +61,7 @@ class HomepageFragment : Fragment()  {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
+
         setupRecycleView(view)
 
 
@@ -73,15 +74,19 @@ class HomepageFragment : Fragment()  {
     }
 
 
-    private suspend fun setupRecycleView(view: View) {
-
+    private fun setupRecycleView(view: View) {
 
 
         if (PostToDb.loggedInUser != null) {
-
             adapter.clear()
 
-                model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
+            model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
+                .observe(viewLifecycleOwner) { posts ->
+                    Log.d("post", "followers posts : ${posts.size}")
+                }
+        }
+
+               /* model.getFollowingsPostFromDb(PostToDb.loggedInUser!!.uid)
                         .observe(viewLifecycleOwner) { posts ->
                             Log.d("post", "followers posts : ${posts.size}")
                             posts.forEach { post ->
@@ -90,7 +95,7 @@ class HomepageFragment : Fragment()  {
                                     adapter.add(HomeItem(post, postOwner))
                                 }
                             }
-                        }
+                        }*/
 
 
             recyclerView_homepage.adapter = adapter
@@ -110,7 +115,7 @@ class HomepageFragment : Fragment()  {
 //        snapHelper.attachToRecyclerView(recyclerView_homepage);
 
 
-    }
+
 
 }
 
