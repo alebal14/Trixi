@@ -38,6 +38,9 @@ class LoggedInUserProfileFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
+//        val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
+//        snapHelper1.attachToRecyclerView(media_grid)
+
         media_grid.apply {
 
             //set up post thumbnails for user or show text:"no posts"
@@ -45,15 +48,15 @@ class LoggedInUserProfileFragment : Fragment() {
                 media_grid.layoutManager = GridLayoutManager(
                     context,
                     3,
-                    GridLayoutManager.VERTICAL,
+                    GridLayoutManager.HORIZONTAL,
                     false
                 )
                 media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts)
             } else profile_no_posts.visibility = TextView.VISIBLE
         }
 
-        val snapHelper: SnapHelper = GravitySnapHelper(Gravity.START)
-        snapHelper.attachToRecyclerView(users_pet_list)
+        val snapHelper2: SnapHelper = GravitySnapHelper(Gravity.START)
+        snapHelper2.attachToRecyclerView(users_pet_list)
 
         users_pet_list.apply {
             if (!loggedInUser?.pets?.isEmpty()!!) {
@@ -109,7 +112,7 @@ class LoggedInUserProfileFragment : Fragment() {
 
         profile_name.text = loggedInUser!!.userName
         profile_bio.text = loggedInUser.bio
-        Picasso.get().load(BASE_URL + loggedInUser.imageUrl).fit().into(user_profile_pet_image)
+        Picasso.get().load(BASE_URL + loggedInUser.imageUrl).centerCrop().fit().into(user_profile_pet_image)
         profile_following.text = "Following " + (loggedInUser.followingsPet?.size?.plus(loggedInUser.followingsUser!!.size)).toString()
         profile_followers.text= loggedInUser.followers?.size.toString() + " Followers"
 
