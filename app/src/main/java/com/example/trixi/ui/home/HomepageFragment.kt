@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
@@ -21,7 +23,6 @@ import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
-import com.example.trixi.ui.profile.ProfileFragment
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -30,6 +31,10 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_item.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 
 class HomepageFragment : Fragment() {
@@ -58,12 +63,8 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        PostToDb.loggedInUser!!.uid?.let {
-            model.getUserPostsData(it)
-                .observe(viewLifecycleOwner) { postsU ->
-                    Log.d("post", "user all posts : ${postsU.size}")
-                }
-        }
+
+
 
 //        PostToDb.loggedInUser?.uid?.let {
 //            model.getFollowingsPostsData(it)
@@ -90,6 +91,7 @@ class HomepageFragment : Fragment() {
 
     private fun setupRecycleView() {
 
+
         val adapter = GroupAdapter<GroupieViewHolder>()
         val fm = fragmentManager
         adapter.clear()
@@ -101,7 +103,7 @@ class HomepageFragment : Fragment() {
                         commit()
                     }
                 } else {
-                    Log.d("post", "followers posts : ${posts.size}")
+                    Log.d("post", "followings posts : ${posts.size}")
                     posts.forEach { post ->
                         model.getOneUserFromDb(post.ownerId)
                             .observe(viewLifecycleOwner) { postOwner ->
@@ -115,8 +117,8 @@ class HomepageFragment : Fragment() {
         }
 
 
-//        val snapHelper: SnapHelper = LinearSnapHelper()
-//        snapHelper.attachToRecyclerView(recyclerView_homepage);
+        val snapHelper: SnapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(recyclerView_homepage);
 
 
     }
