@@ -124,6 +124,30 @@ class PostToDb {
             }
         })
     }*/
+
+   fun logOutUser(context: Context?) {
+       val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+       val call = retrofitClient?.logOutUser()
+       call?.enqueue(object : Callback<ResponseBody> {
+           override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+               Log.d("logout", "logout user : onfailure " + t.message)
+           }
+           override fun onResponse(
+               call: Call<ResponseBody>, response: Response<ResponseBody>
+           ) {
+               if (response.isSuccessful) {
+                   Log.d("logout", "User logged out successfully" + response.message())
+                   val intent = Intent(context, LoginActivity::class.java)
+                   context!!.startActivity(intent)
+
+               } else {
+                   Log.d("logout", "User failed to logout")
+               }
+           }
+       })
+   }
+
      fun PostRegisterUserToDb(image: MultipartBody.Part, userName:String, email:String, password:String, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
@@ -150,35 +174,11 @@ class PostToDb {
      })
     }
 
-    fun logOutUser(context: Context?) {
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-
-        val call = retrofitClient?.logOutUser()
-        call?.enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("logout", "logout user : onfailure " + t.message)
-            }
-            override fun onResponse(
-                call: Call<ResponseBody>, response: Response<ResponseBody>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("logout", "User logged out successfully" + response.message())
-                    val intent = Intent(context, LoginActivity::class.java)
-                    context!!.startActivity(intent)
-
-                } else {
-                    Log.d("logout", "User failed to logout")
-                }
-            }
-        })
-    }
-
-
-    fun sendPostToDb(post: Post) {
+    fun sendPostToDb(image: MultipartBody.Part, description: String, ownerId : String, title : String) {
 
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.postPostToDb(post)
+        val call = retrofitClient?.postPostToDb(image, description, ownerId, title)
 
 
         call?.enqueue(object : Callback<Post> {

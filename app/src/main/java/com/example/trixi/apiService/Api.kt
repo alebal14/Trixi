@@ -86,8 +86,14 @@ interface Api {
     @GET("rest/posts")
     fun getAllPosts(): Call<List<Post>>
 
+
+
+    @Multipart
     @POST("rest/posts")
-    fun postPostToDb(@Body post: Post) : Call<Post>
+    fun postPostToDb(@Part file: MultipartBody.Part,
+                     @Part ("description") description: String,
+                     @Part("ownerId") ownerId :String,
+                     @Part("title") title: String ): Call<Post>
 
     @GET("rest/posts/{id}")
     fun getPostById(@Path(value="id") id : String?): Call<Post>

@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.net.*
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -21,7 +22,7 @@ class RetrofitClient {
        lateinit var context: Context
        var instance: Retrofit? = null
 
-        val BASE_URL = "http://192.168.1.71:3000/"
+        val BASE_URL = "http://192.168.0.162:3000/"
 
 
         fun okHttpClient() : OkHttpClient {
@@ -51,6 +52,7 @@ class RetrofitClient {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(okHttpClient())
                     .build()
+
             }
             return instance
         }

@@ -26,7 +26,11 @@ import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.fragments.singlePostFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_upload.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class UploadActivity : AppCompatActivity() {
@@ -72,7 +76,7 @@ class UploadActivity : AppCompatActivity() {
         }
 
         button_post.setOnClickListener(){
-            sendImage()
+            sendPost()
         }
 
 
@@ -146,7 +150,7 @@ class UploadActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendImage(){
+    /*private fun sendImage(){
 
 
         //convert the image to bitmap
@@ -166,7 +170,7 @@ class UploadActivity : AppCompatActivity() {
         //db.PostImageToDb(encodedImage)
         Thread.sleep(1_000)
         sendPost()
-    }
+    }*/
 
     private fun sendPost(){
         val title = title_field.text.toString()
@@ -180,15 +184,15 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-        val post = Post("", title, description, null, ownerId, null, null)
+        val file = File(postPath)
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        db.sendPostToDb(post)
-        Thread.sleep(2_000)
-       // db.GetLatestPostFromDB(ownerId)
-        Thread.sleep(2_000)
+       // val post = Post("", title, description, null, ownerId, null, null)
 
-        Thread.sleep(2_000)
-        toAnotherActivity()
+        db.sendPostToDb(imagenPerfil, description, ownerId, title )
+
+        //toAnotherActivity()
 
 
     }

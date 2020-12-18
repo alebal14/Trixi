@@ -190,13 +190,38 @@ public class RestApi {
 
                     break;
                 case "posts":
-                    Post post = (Post) req.getBody(Post.class);
-                    //String filePostImage = db.uploadImage(files);
-                    //System.out.println(filePostImage);
-                    //post.setFilePath(filePostImage);
-                    //Post p = db.save(post);
-                    //p.setUid(p.getUid());
-                    res.json(db.save(post));
+
+                    List<FileItem> Postfiles = null;
+                    String PostfileUrl = null;
+                    String description= null;
+                    String ownerId= null;
+                    String title = null;
+                    try {
+                        Postfiles = req.getFormData("file");
+                        description = req.getFormData("description").get(0).getString().replace("\"", "");
+                        ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        title = req.getFormData("title").get(0).getString().replace("\"", "");
+
+                        PostfileUrl = db.uploadImage(Postfiles.get(0));
+                        System.out.println(PostfileUrl + description + ownerId+ title);
+
+                        Post post = new Post();
+                        post.setDescription(description);
+                        post.setOwnerId(ownerId);
+                        post.setTitle(title);
+                        post.setFilePath(PostfileUrl);
+
+                        db.save(post);
+
+                        System.out.println(post.getUid());
+                        System.out.println(post);
+
+                        res.json(post);
+                        res.send("Created Post");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);
