@@ -11,7 +11,7 @@ import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.fragments.singlePostFragment
 import com.example.trixi.ui.home.HomepageFragment
-import com.example.trixi.ui.profile.ProfileFragment
+import com.example.trixi.ui.profile.LoggedInUserProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
          val homepageFragment = HomepageFragment()
          val postFragment = UploadFragment()
          val searchFragment = SearchFragment()
-         val profileFragment = ProfileFragment()
+         val profileFragment = LoggedInUserProfileFragment()
          val singleFragment = singlePostFragment()
 
          val post = PostToDb.latestPost
