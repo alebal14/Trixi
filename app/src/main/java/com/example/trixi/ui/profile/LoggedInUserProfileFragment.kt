@@ -38,8 +38,8 @@ class LoggedInUserProfileFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
-//        val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
-//        snapHelper1.attachToRecyclerView(media_grid)
+        val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
+        snapHelper1.attachToRecyclerView(media_grid)
 
         media_grid.apply {
 
@@ -48,7 +48,7 @@ class LoggedInUserProfileFragment : Fragment() {
                 media_grid.layoutManager = GridLayoutManager(
                     context,
                     3,
-                    GridLayoutManager.HORIZONTAL,
+                    GridLayoutManager.VERTICAL,
                     false
                 )
                 media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts)
