@@ -13,12 +13,15 @@ import com.example.trixi.entities.*
 import com.example.trixi.entities.RealmPost
 import com.example.trixi.entities.RealmUser
 import com.example.trixi.entities.User
+import com.example.trixi.ui.fragments.PopUpCommentWindow.Companion.TAG
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
 import kotlin.coroutines.Continuation
 
@@ -35,33 +38,32 @@ class DataViewModel : ViewModel() {
     val api = RealmHandler(realm)
 
 
-    val getAllUsersResults:LiveData<RealmResults<RealmUser>> by lazy {
+    val getAllUsersResults: LiveData<RealmResults<RealmUser>> by lazy {
         realm.where(RealmUser::class.java).findAllAsync().asLiveData()
     }
-    fun getAllUsersData(): LiveData<RealmResults<RealmUser>>{
+
+    fun getAllUsersData(): LiveData<RealmResults<RealmUser>> {
         api.getAllUsersFromDB()
         return getAllUsersResults
     }
 
-    val getAllPostsResults:LiveData<RealmResults<RealmPost>> by lazy {
+    val getAllPostsResults: LiveData<RealmResults<RealmPost>> by lazy {
         realm.where(RealmPost::class.java).findAllAsync().asLiveData()
     }
 
-    fun getAllPostsData(): LiveData<RealmResults<RealmPost>>{
+    fun getAllPostsData(): LiveData<RealmResults<RealmPost>> {
         api.getALLPostsFromDb()
         return getAllPostsResults
     }
 
-    val getAllPetsResults:LiveData<RealmResults<RealmPet>> by lazy {
+    val getAllPetsResults: LiveData<RealmResults<RealmPet>> by lazy {
         realm.where(RealmPet::class.java).findAllAsync().asLiveData()
     }
 
-    fun getAllPetsData(): LiveData<RealmResults<RealmPet>>{
+    fun getAllPetsData(): LiveData<RealmResults<RealmPet>> {
         api.getAllPetsFromDB()
         return getAllPetsResults
     }
-
-
 
 
     /*fun getAllUsersFromDB(): MutableLiveData<List<User>> {
@@ -109,30 +111,56 @@ class DataViewModel : ViewModel() {
 //            }
 //        })
 //    }
-    fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
+    /* fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
+
+         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+         var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
+         val call = retrofitClient?.getFollowingsPost(id)
+         call?.enqueue(object : Callback<List<Post>> {
+             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
+                 Log.d("post", "posts : onfailure " + t.message)
+                 followingsPost.postValue(null)
+             }
+
+             override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
+                 if (response.isSuccessful) {
+                     followingsPost.postValue(response.body())
+
+                 } else {
+                     followingsPost.postValue(null)
+                 }
+             }
+         })
+             return followingsPost;
+
+ }*/
+    var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
+    suspend fun getFollowingsPostFromDb(id: String?): MutableLiveData<List<Post>> {
 
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
-        val call = retrofitClient?.getFollowingsPost(id)
-        call?.enqueue(object : Callback<List<Post>> {
-            override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-                Log.d("post", "posts : onfailure " + t.message)
-                followingsPost.postValue(null)
-            }
+        GlobalScope.launch(Dispatchers.IO) {
 
-            override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
+            try {
+                val response = retrofitClient!!.getFollowingsPost(id)
                 if (response.isSuccessful) {
-                    followingsPost.postValue(response.body())
-
+                    for (post in response.body()!!) {
+                        //followingsPost.postValue(listOf(post))
+                        println("POSTS" + post.title)
+                    }
                 } else {
-                    followingsPost.postValue(null)
+                    Log.d("TAG", "Error: ${response.body()}")
                 }
+            } catch (e: HttpException) {
+                Log.d("TAG", "Exception ${e.message}")
+            } catch (e: Throwable) {
+                Log.d("TAG", "Ooops: Something else went wrong")
             }
-        })
-            return followingsPost;
+        }
+        return followingsPost
 
-}
+    }
 
     fun getOneUserFromDb(id: String?): MutableLiveData<User> {
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -160,7 +188,6 @@ class DataViewModel : ViewModel() {
         return user
 
     }
-
 
 
 }

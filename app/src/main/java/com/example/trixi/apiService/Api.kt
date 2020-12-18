@@ -6,11 +6,13 @@ import com.example.trixi.entities.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
+
 import okhttp3.ResponseBody
 
 
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 import java.util.*
 
@@ -20,8 +22,8 @@ interface Api {
     @POST("rest/login")
     fun loginUser(@Body user: User): Call<User>
 
-    @GET("rest/login")
-    fun getLoggedInUser(): Call<User>
+ /*   @GET("rest/login")
+    fun getLoggedInUser(): Call<User>*/
 
     @GET("rest/logout")
     fun logOutUser():Call<ResponseBody>
@@ -105,7 +107,7 @@ interface Api {
     fun getPostByCategoryId(@Path(value="category_id") id : String?): Call<List<Post>>
 
     @GET("api/getUserFollowingPost/{id}")
-    fun getFollowingsPost(@Path(value="id") id : String?):Call<List<Post>>
+    suspend fun getFollowingsPost(@Path(value="id") id : String?): Response<List<Post>>
 
 
     //Category

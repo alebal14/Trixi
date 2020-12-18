@@ -30,7 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 
 
-class HomepageFragment : Fragment() {
+class HomepageFragment : Fragment()  {
     val adapter = GroupAdapter<GroupieViewHolder>()
     val model: DataViewModel by viewModels()
 
@@ -73,7 +73,7 @@ class HomepageFragment : Fragment() {
     }
 
 
-    private fun setupRecycleView(view: View) {
+    private suspend fun setupRecycleView(view: View) {
 
 
 

@@ -54,7 +54,7 @@ class PostToDb {
 
     }
 
-    fun GetLoggedInUserFromDB(context: Context){
+   /* fun GetLoggedInUserFromDB(context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
         val call = retrofitClient?.getLoggedInUser()
@@ -78,7 +78,7 @@ class PostToDb {
                 }
             }
         })
-    }
+    }*/
 
 
     fun PostImageToDb(image: MultipartBody.Part) {
