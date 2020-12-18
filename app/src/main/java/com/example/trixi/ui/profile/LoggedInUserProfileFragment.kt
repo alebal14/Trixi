@@ -1,30 +1,24 @@
 package com.example.trixi.ui.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.view.*
-import android.widget.Adapter
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.SnapHelper
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
-import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.fragments.DrawerMenuFragment
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.media_grid
-import kotlinx.android.synthetic.main.fragment_profile.profile_no_posts
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 
@@ -48,15 +42,28 @@ class LoggedInUserProfileFragment : Fragment() {
 
             //set up post thumbnails for user or show text:"no posts"
             if (!loggedInUser?.posts?.isEmpty()!!) {
-                media_grid.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+                media_grid.layoutManager = GridLayoutManager(
+                    context,
+                    3,
+                    GridLayoutManager.VERTICAL,
+                    false
+                )
                 media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts)
             } else profile_no_posts.visibility = TextView.VISIBLE
         }
 
+        val snapHelper: SnapHelper = GravitySnapHelper(Gravity.START)
+        snapHelper.attachToRecyclerView(users_pet_list)
+
         users_pet_list.apply {
             if (!loggedInUser?.pets?.isEmpty()!!) {
                 //set pet list for user if not empty
-                users_pet_list.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
+                users_pet_list.layoutManager = GridLayoutManager(
+                    context,
+                    1,
+                    GridLayoutManager.HORIZONTAL,
+                    false
+                )
                 adapter = ProfilePetListAdapter(loggedInUser.pets)
                 users_pet_list.adapter = adapter
             }
