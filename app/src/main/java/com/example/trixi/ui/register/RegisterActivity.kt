@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -22,7 +23,11 @@ import com.example.trixi.ui.login.LoginActivity
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_register.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -56,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         button_register.setOnClickListener {
-            saveProfileImage()
+            registerUser()
         }
     }
 
@@ -119,18 +124,14 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveProfileImage(){
-        if (selectedImage == null){
-            Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
-            return
-        }
+   /* private fun saveProfileImage(){
 
         //convert the image to bitmap
         val convertImageBitmap = BitmapFactory.decodeFile(postPath)
 
         val baos = ByteArrayOutputStream()
         //compressing the bitmap
-        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100, baos)
+        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
         //coberting the image to bytearray
         val imageByte = baos.toByteArray()
@@ -139,28 +140,38 @@ class RegisterActivity : AppCompatActivity() {
         encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
 
         //sending the image
-        post.PostImageToDb(encodedImage)
-
-        registerUser()
-    }
+    }*/
 
     private fun registerUser(){
         val userName = register_username.text.toString()
         val email = register_email.text.toString()
         val password = register_password.text.toString()
 
+        if (selectedImage == null){
+            Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val file = File(postPath)
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
         if (userName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
             return
         }
 
-        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             Toast.makeText(this, "Wrong email-Format, try again", Toast.LENGTH_LONG).show()
             return
         }
 
-        val user = User(null, userName, email, password, null, null, "user", null, null,null,null,null)
-        post.PostRegisterUserToDb(user, this)
+        //post.PostImageToDb(imagenPerfil)
+
+        //val use= RequestBody("text/plain", userName ).toString()
+
+        //val user = User(null, userName, email, password, null, null, "user", null, null, null, null, null)
+        post.PostRegisterUserToDb(imagenPerfil,userName, email, password, this)
 
     }
 

@@ -53,20 +53,6 @@ open class RealmPost: RealmObject(){
     var likes: RealmList<RealmLike>? = null
 }
 
-@RealmClass
-open class RealmFollowingPost: RealmObject(){
-    var followingPost : RealmList<RealmPost>? = null
-}
-
-@RealmClass
-open class RealmUserPost: RealmObject(){
-    var userAllPosts : RealmList<RealmPost>? = null
-}
-
-@RealmClass
-open class RealmPetByOwner: RealmObject(){
-    var petByOwner : RealmList<RealmPet>? = null
-}
 
 @RealmClass
 open class RealmComment:RealmObject(){

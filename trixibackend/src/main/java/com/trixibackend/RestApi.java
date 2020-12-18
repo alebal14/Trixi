@@ -37,7 +37,7 @@ public class RestApi {
         });
         setUpUpdateApi();
         setLoginUser();
-        getLoggedinUser();
+        //getLoggedinUser();
         logoutUser();
         setImagePostApi();
 
@@ -123,13 +123,19 @@ public class RestApi {
     private void setUpDeleteApi(String collectionName) {
     }
 
-    List<FileItem> files = null;
+
 
     private void setImagePostApi() {
         app.post("/rest/image", (req, res) -> {
+            List<FileItem> files = null;
+            String fileUrl = null;
             try {
                 files = req.getFormData("file");
-                System.out.println(files);
+                fileUrl = db.uploadImage(files.get(0));
+                System.out.println(files.get(0).getName());
+                //res.json(files.get(0).getName());
+                res.json(Map.of("url", files.get(0).getName()));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -140,33 +146,82 @@ public class RestApi {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
+
+                    List<FileItem> files = null;
                     String fileUrl = null;
-                    fileUrl = db.uploadImage(files);
+                    String userName = null;
+                    String email = null;
+                    String password = null;
+                    try {
+                        files = req.getFormData("file");
+                        userName = req.getFormData("userName").get(0).getString().replace("\"", "");
+                        email = req.getFormData("email").get(0).getString().replace("\"", "");
+                        password = req.getFormData("password").get(0).getString().replace("\"", "");
 
-                    User user = (User) req.getBody(User.class);
+                        fileUrl = db.uploadImage(files.get(0));
+                        System.out.println(fileUrl + userName + email + password);
 
-                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                    user.setPassword(hashedPassword);
-                    user.setImageUrl(fileUrl);
+                        User user = new User();
+                        user.setUserName(userName);
+                        user.setEmail(email);
+                        user.setPassword(password);
+                        String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                        user.setPassword(hashedPassword);
 
-                    db.save(user);
+                        user.setImageUrl(fileUrl);
+                        user.setRole("user");
 
-                    var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+                        System.out.println(user.getUserName());
+                        db.save(user);
 
-                    user.setPassword(null);
-                    sessionCookie.setData(user);
+                        var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
-                    res.json(user);
-                    res.send("Created User");
+                        user.setPassword(null);
+                        sessionCookie.setData(user);
+
+                        var userLoggedIn = getLoggedinUser(sessionCookie);
+                        res.json(userLoggedIn);
+                        res.send("Created User");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                     break;
                 case "posts":
-                    Post post = (Post) req.getBody(Post.class);
-                    String filePostImage = db.uploadImage(files);
-                    System.out.println(filePostImage);
-                    post.setFilePath(filePostImage);
-                    //Post p = db.save(post);
-                    //p.setUid(p.getUid());
-                    res.json(db.save(post));
+
+                    List<FileItem> Postfiles = null;
+                    String PostfileUrl = null;
+                    String description= null;
+                    String ownerId= null;
+                    String title = null;
+                    try {
+                        Postfiles = req.getFormData("file");
+                        description = req.getFormData("description").get(0).getString().replace("\"", "");
+                        ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        title = req.getFormData("title").get(0).getString().replace("\"", "");
+
+                        PostfileUrl = db.uploadImage(Postfiles.get(0));
+                        System.out.println(PostfileUrl + description + ownerId+ title);
+
+                        Post post = new Post();
+                        post.setDescription(description);
+                        post.setOwnerId(ownerId);
+                        post.setTitle(title);
+                        post.setFilePath(PostfileUrl);
+
+                        db.save(post);
+
+                        System.out.println(post.getUid());
+                        System.out.println(post);
+
+                        res.json(post);
+                        res.send("Created Post");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);
@@ -258,19 +313,6 @@ public class RestApi {
             res.json(followingPostList);
         });
 
-        app.get("/api/getLatestPost/:id", (req, res) -> {
-            String id = req.getParam("id");
-            User user = db.getUserHandler().findUserById(id);
-            var post = db.getUserHandler().userLatestPost(user);
-
-            if (post == null) {
-                res.setStatus(Status._403);
-                //res.send("Error: you are not following this Pet");
-                return;
-            }
-            res.json(post);
-        });
-
 
     }
 
@@ -303,27 +345,33 @@ public class RestApi {
 
             sessionCookie.setData(user);
             user.setPassword(null); // sanitize password
-            res.json(user);
+
+            var userLoggedIn = getLoggedinUser(sessionCookie);
+            res.json(userLoggedIn);
         });
     }
 
-    private void getLoggedinUser() {
-        app.get("/rest/login", (req, res) -> {
-
-            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+    private User getLoggedinUser(SessionCookie sessionCookie) {
+           //var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
             if (sessionCookie.getData() == null) {
-                res.send("Not logged in");
-                return;
+               // res.send("Not logged in");
+                return null;
             }
 
             var user = (User) sessionCookie.getData();
             user.setUid(user.getId().toString());
-
+            user.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
+            user.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+            user.getPosts().forEach(post -> {
+                post.setUid(post.getId().toString());
+                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+            });
             user.setPassword(null); // sanitize password
-            res.json(user);
+            return user;
 
-        });
+
 
     }
 

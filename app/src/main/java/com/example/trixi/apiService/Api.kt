@@ -3,6 +3,8 @@ package com.example.trixi.apiService
 
 
 import com.example.trixi.entities.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 import okhttp3.ResponseBody
 
@@ -25,17 +27,32 @@ interface Api {
     fun logOutUser():Call<ResponseBody>
 
 
-    //Posting Images
+   /* //Posting Images
     @Multipart
     @POST("rest/image")
     fun postProfileImage(
             @Part("file") file: String
-    ):Call<ResponseBody>
+    ):Call<Image>*/
+
+    @Multipart
+    @POST("rest/image")
+    fun postProfileImage(
+            @Part file: MultipartBody.Part
+    ):Call<Image>
+
+    @Multipart
+    @POST("rest/users")
+    fun createUser(
+        @Part file: MultipartBody.Part,
+        @Part("userName") userName: String,
+        @Part("email") email: String,
+        @Part("password") password:String
+    ):Call<User>
 
 
     //Api User Collection
-    @POST("rest/users")
-    fun createUser(@Body user: User): Call<User>
+   /* @POST("rest/users")
+    fun createUser(@Body user: User, @Query("imageUrl") url: String): Call<User>*/
 
     @GET("rest/users")
     fun getAllUsers(): Call<List<User>>
@@ -69,8 +86,14 @@ interface Api {
     @GET("rest/posts")
     fun getAllPosts(): Call<List<Post>>
 
+
+
+    @Multipart
     @POST("rest/posts")
-    fun postPostToDb(@Body post: Post) : Call<Post>
+    fun postPostToDb(@Part file: MultipartBody.Part,
+                     @Part ("description") description: String,
+                     @Part("ownerId") ownerId :String,
+                     @Part("title") title: String ): Call<Post>
 
     @GET("rest/posts/{id}")
     fun getPostById(@Path(value="id") id : String?): Call<Post>

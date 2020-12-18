@@ -120,14 +120,6 @@ public class UserHandler {
         return listOutput;
     }
 
-    public Post userLatestPost(User user){
-        List<Post> getAllthePost = user.getPosts();
-        Post last = getAllthePost.stream().reduce((first, second) -> second)
-                .orElse(null);
-        return last;
-    }
-
-
     public User findUserByNameOrEmail(User loggedInUser) {
         String emailOrUsername;
         String fieldname;

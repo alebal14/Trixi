@@ -7,13 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.discover.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.SearchFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.fragments.singlePostFragment
 import com.example.trixi.ui.home.HomepageFragment
-import com.example.trixi.ui.profile.ProfileFragment
+import com.example.trixi.ui.profile.LoggedInUserProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,9 +33,8 @@ class MainActivity : AppCompatActivity() {
 
          val homepageFragment = HomepageFragment()
          val postFragment = UploadFragment()
-         //val searchFragment = SearchFragment()
-         val discoverFragment = ShowTopPostsFragment()
-         val profileFragment = ProfileFragment()
+         val searchFragment = SearchFragment()
+         val profileFragment = LoggedInUserProfileFragment()
          val singleFragment = singlePostFragment()
 
          val post = PostToDb.latestPost
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
                  R.id.footer_home -> makeCurrentFragment(homepageFragment)
-                 R.id.footer_search -> makeCurrentFragment(discoverFragment)
+                 R.id.footer_search -> makeCurrentFragment(searchFragment)
                  R.id.footer_post -> makeCurrentFragment(postFragment)
                  R.id.footer_profile -> makeCurrentFragment(profileFragment)
              }
