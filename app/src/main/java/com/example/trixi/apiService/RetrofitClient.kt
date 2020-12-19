@@ -52,6 +52,7 @@ class RetrofitClient {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(okHttpClient())
                     .build()
+
             }
             return instance
         }
