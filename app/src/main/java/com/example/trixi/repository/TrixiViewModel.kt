@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.FollowingsPosts
-import com.example.trixi.entities.Post
+import com.example.trixi.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -22,6 +22,8 @@ class TrixiViewModel : ViewModel() {
 
     val followingsPosts: LiveData<List<Post>?> = MutableLiveData()
     val allPosts: LiveData<List<Post>?> = MutableLiveData()
+    val userById:LiveData<User>? = MutableLiveData()
+
 
 //    init {
 //
@@ -45,19 +47,36 @@ class TrixiViewModel : ViewModel() {
 
     fun getFollowingsPosts(id: String){
 
-        viewModelScope.launch (Dispatchers.Default) {
-            Log.d(TAG, "getting followings post")
+        viewModelScope.launch (Dispatchers.IO) {
+            Log.d("home", "getting followings post")
             val fPosts = retrofitClient?.getFollowingsPost(id)?.body()
+            fPosts?.forEach {
+
+            }
             followingsPosts as MutableLiveData
             followingsPosts.postValue(fPosts)
+            Log.d("home", "got followings post")
         }
 
     }
 
-    private suspend fun getAllPosts(): List<Post>? {
-        return withContext(Dispatchers.IO) {
+    fun getAllPosts() {
+        viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All post")
-            retrofitClient?.getAllPosts()?.body()
+            val p= retrofitClient?.getAllPosts()?.body()
+            allPosts as MutableLiveData
+            allPosts.postValue(p)
+        }
+    }
+
+    fun getOneUser(id:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting one User post")
+            val aUser= retrofitClient?.getUserById(id)?.body()
+            val userById :LiveData<User> = MutableLiveData()
+            userById as MutableLiveData
+            userById.postValue(aUser)
+            //return@launch userById
         }
     }
 }

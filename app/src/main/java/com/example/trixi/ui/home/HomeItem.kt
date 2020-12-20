@@ -17,16 +17,16 @@ import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
-class HomeItem(val post: Post, /*val postOwner: User,*/ val fm: FragmentManager) :
+class HomeItem(val post: Post, val postOwner: User, val fm: FragmentManager) :
     Item<GroupieViewHolder>() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-//        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl)
-//            .transform(CropCircleTransformation()).fit()
-//            .into(viewHolder.itemView.home_item_profileimg)
+        Picasso.get().load(RetrofitClient.BASE_URL + postOwner.imageUrl)
+            .transform(CropCircleTransformation()).fit()
+            .into(viewHolder.itemView.home_item_profileimg)
 
-//        viewHolder.itemView.home_item_profileName.text = postOwner.userName
+        viewHolder.itemView.home_item_profileName.text = postOwner.userName
         viewHolder.itemView.home_item_title.text = post.title
         viewHolder.itemView.home_item_description.text = post.description
         viewHolder.itemView.home_item_edit.isVisible = false

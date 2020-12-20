@@ -33,7 +33,7 @@ import kotlinx.coroutines.async
 class HomepageFragment : Fragment() {
 
     val adapter = GroupAdapter<GroupieViewHolder>()
-     private lateinit var model: TrixiViewModel
+    private lateinit var model: TrixiViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +52,12 @@ class HomepageFragment : Fragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
-        Log.d("home","in home fragment")
-        setUpHomeView()
+        Log.d("home", "in home fragment")
+        //setUpHomeView()
+        asdf()
 
 
 //        model.allPosts.observe(viewLifecycleOwner, {
@@ -90,33 +90,44 @@ class HomepageFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-     private fun setUpHomeView(){
+    private fun asdf(){
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+        model.getAllPosts()
+        model.allPosts?.observe(viewLifecycleOwner,{
+            Log.d("home", "Followings post size: ${it?.size}")
+        })
+
+    }
+
+    private fun setUpHomeView() {
         val fm = fragmentManager
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-         model.followingsPosts?.observe(viewLifecycleOwner, {
-             Log.d("home", "Followings post size: ${it?.size}")
-             if (it!!.isEmpty()) {
-                 activity?.supportFragmentManager?.beginTransaction()?.apply {
-                     replace(R.id.fragment_container, EmptyHomeFragment())
-                     commit()
-                 }
-             } else{
-                 it.forEach { post ->
-     //                    model.getOneUserFromDb(post.ownerId)
-     //                        .observe(viewLifecycleOwner) { postOwner ->
-                     adapter.add(HomeItem(post,fm!!))
-                     //}
-                 }
-                 recyclerView_homepage.adapter = adapter
 
-             }
-             it?.forEach { post ->
-                 Log.d("home", "followings post title ${post.title}")
-             }
+        model.followingsPosts?.observe(viewLifecycleOwner, {
+            Log.d("home", "Followings post size: ${it?.size}")
+            if (it!!.isEmpty()) {
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.fragment_container, EmptyHomeFragment())
+                    commit()
+                }
+            } else {
+                it.forEach { post ->
+                    model.getOneUser(post.ownerId.toString())
 
-         })
+                    model.userById?.observe(viewLifecycleOwner) { postOwner ->
+                        adapter.add(HomeItem(post,postOwner, fm!!))
+                    }
+                }
+                recyclerView_homepage.adapter = adapter
 
-         PostToDb.loggedInUser?.uid?.let { model.getFollowingsPosts(it) }
+            }
+            it?.forEach { post ->
+                Log.d("home", "followings post title ${post.title}")
+            }
+
+        })
+
+        PostToDb.loggedInUser?.uid?.let { model.getFollowingsPosts(it) }
     }
 
 
