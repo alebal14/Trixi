@@ -56,8 +56,8 @@ class HomepageFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
         Log.d("home", "in home fragment")
-        //setUpHomeView()
-        asdf()
+        setUpHomeView()
+        //asdf()
 
 
 //        model.allPosts.observe(viewLifecycleOwner, {
@@ -103,7 +103,10 @@ class HomepageFragment : Fragment() {
         val fm = fragmentManager
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        model.followingsPosts?.observe(viewLifecycleOwner, {
+        PostToDb.loggedInUser?.uid?.let { model.getFollowingsPosts(it) }
+
+
+        model.followingsPosts?.observe(viewLifecycleOwner, Observer{
             Log.d("home", "Followings post size: ${it?.size}")
             if (it!!.isEmpty()) {
                 activity?.supportFragmentManager?.beginTransaction()?.apply {
@@ -112,11 +115,13 @@ class HomepageFragment : Fragment() {
                 }
             } else {
                 it.forEach { post ->
-                    model.getOneUser(post.ownerId.toString())
-
-                    model.userById?.observe(viewLifecycleOwner) { postOwner ->
+                    model.getOneUser(post.ownerId!!)?.observe(viewLifecycleOwner, Observer { postOwner ->
                         adapter.add(HomeItem(post,postOwner, fm!!))
-                    }
+                    })
+
+                    //model.userById?.observe(viewLifecycleOwner) { postOwner ->
+
+                    //}
                 }
                 recyclerView_homepage.adapter = adapter
 
@@ -127,8 +132,7 @@ class HomepageFragment : Fragment() {
 
         })
 
-        PostToDb.loggedInUser?.uid?.let { model.getFollowingsPosts(it) }
-    }
+            }
 
 
     /* private fun setupRecycleView() {

@@ -50,8 +50,8 @@ public class PostHandler {
             posts = new ArrayList<>();
             usersIter.forEach(posts::add);
             posts.forEach(post ->  post.setUid(post.getId().toString()));
-            posts.forEach(post -> post.setLikes(likeHandler.findLikesByPostId(post.getUid())));
-            posts.forEach(post -> post.setComments(commentHandler.findCommentsByPostId(post.getUid())) );
+//            posts.forEach(post -> post.setLikes(likeHandler.findLikesByPostId(post.getUid())));
+//            posts.forEach(post -> post.setComments(commentHandler.findCommentsByPostId(post.getUid())) );
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +66,8 @@ public class PostHandler {
             FindIterable<Post> postsIter = postColl.find(eq("ownerId", id));
             posts = new ArrayList<>();
             postsIter.forEach(posts::add);
+            posts.forEach(post ->  post.setUid(post.getId().toString()));
+
             posts.forEach(post -> post.setLikes(likeHandler.findLikesByPostId(post.getUid())));
             posts.forEach(post -> post.setComments(commentHandler.findCommentsByPostId(post.getUid())) );
         } catch (Exception e) {

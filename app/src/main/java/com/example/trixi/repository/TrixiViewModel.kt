@@ -22,7 +22,9 @@ class TrixiViewModel : ViewModel() {
 
     val followingsPosts: LiveData<List<Post>?> = MutableLiveData()
     val allPosts: LiveData<List<Post>?> = MutableLiveData()
-    val userById:LiveData<User>? = MutableLiveData()
+    val postsByOwner: LiveData<List<Post>?> = MutableLiveData()
+    val petsByOwner: LiveData<List<Pet>?> = MutableLiveData()
+
 
 
 //    init {
@@ -45,9 +47,9 @@ class TrixiViewModel : ViewModel() {
 //
 //    }
 
-    fun getFollowingsPosts(id: String){
+    fun getFollowingsPosts(id: String) {
 
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             Log.d("home", "getting followings post")
             val fPosts = retrofitClient?.getFollowingsPost(id)?.body()
             fPosts?.forEach {
@@ -63,20 +65,43 @@ class TrixiViewModel : ViewModel() {
     fun getAllPosts() {
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All post")
-            val p= retrofitClient?.getAllPosts()?.body()
+            val p = retrofitClient?.getAllPosts()?.body()
             allPosts as MutableLiveData
             allPosts.postValue(p)
         }
     }
 
-    fun getOneUser(id:String) {
+    fun getOneUser(id: String): MutableLiveData<User>? {
+        val userById: MutableLiveData<User>? = MutableLiveData()
+
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting one User post")
-            val aUser= retrofitClient?.getUserById(id)?.body()
-            val userById :LiveData<User> = MutableLiveData()
-            userById as MutableLiveData
-            userById.postValue(aUser)
-            //return@launch userById
+            val aUser = retrofitClient?.getUserById(id)?.body()
+            userById?.postValue(aUser)
+
+        }
+        return userById
+    }
+
+    fun getPostsByOwner(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting posts by owner")
+            val posts = retrofitClient?.getPostByOwnerId(id)?.body()
+            postsByOwner as MutableLiveData
+            postsByOwner.postValue(posts)
+
+
+        }
+    }
+
+    fun getPetsByOwner(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting pets by owner")
+            val pets = retrofitClient?.getPetsByOwnerId(id)?.body()
+            petsByOwner as MutableLiveData
+            petsByOwner.postValue(pets)
+
+
         }
     }
 }

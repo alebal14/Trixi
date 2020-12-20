@@ -1,6 +1,7 @@
 package com.example.trixi.ui.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +13,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
+import com.example.trixi.entities.Pet
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.DrawerMenuFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -33,6 +39,10 @@ class LoggedInUserProfileFragment : Fragment() {
     val loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu: Boolean = false
 
+
+    private lateinit var model: TrixiViewModel
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,9 +50,17 @@ class LoggedInUserProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("home", "login user uid ${loggedInUser?.uid}")
+        Log.d("home", "login username ${loggedInUser?.userName}")
+
+
+
 
         media_grid.apply {
 
