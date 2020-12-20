@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
-import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
+import com.example.trixi.apiService.RetrofitClient
+//import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.RealmPost
 import com.squareup.picasso.Picasso
 import io.realm.RealmResults
@@ -52,7 +53,7 @@ class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
         }
 
         fun bindView(post: RealmPost) {
-            Picasso.get().load(BASE_URL + post.filePath!!).into(postItem)
+            Picasso.get().load(RetrofitClient.BASE_URL + post.filePath!!).into(postItem)
             Log.d("bindView", "in bindview")
         }
 

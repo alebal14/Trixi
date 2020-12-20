@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
+//import androidx.fragment.app.viewModels
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Comment
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_comment.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class PopUpCommentWindow(val comments: ArrayList<Comment>?) : DialogFragment() {
-    val model: DataViewModel by viewModels()
+    //val model: DataViewModel by viewModels()
 
     companion object {
         const val TAG = "popUpChat"
@@ -58,15 +58,15 @@ class PopUpCommentWindow(val comments: ArrayList<Comment>?) : DialogFragment() {
 
     private fun setUpCommentsView() {
         val adapterChat = GroupAdapter<GroupieViewHolder>()
-        comments!!.forEach { comment ->
-            model.getOneUserFromDb(comment.userId).observe(this, { commnetOwner ->
-                Log.d("uus", "Comment owner ${commnetOwner.userName}")
-                Log.d("uus", "Comment  ${comment.comment}")
-
-                adapterChat.add(CommentItem(comment,commnetOwner))
-            })
-
-        }
+//        comments!!.forEach { comment ->
+//            model.getOneUserFromDb(comment.userId).observe(this, { commnetOwner ->
+//                Log.d("uus", "Comment owner ${commnetOwner.userName}")
+//                Log.d("uus", "Comment  ${comment.comment}")
+//
+//                adapterChat.add(CommentItem(comment,commnetOwner))
+//            })
+//
+//        }
 
         recyclerView_popup_comment.adapter= adapterChat
 

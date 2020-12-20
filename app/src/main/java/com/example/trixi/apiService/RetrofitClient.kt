@@ -45,6 +45,9 @@ class RetrofitClient {
             .setLenient()
             .create()
 
+
+
+
         fun getRetroInstance(): Retrofit? {
             if (instance == null){
                 instance = Retrofit.Builder()

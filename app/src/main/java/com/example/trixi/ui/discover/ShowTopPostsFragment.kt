@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+//import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -16,7 +16,7 @@ import io.realm.RealmResults
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 class ShowTopPostsFragment : Fragment() {
-    val model: DataViewModel by viewModels()
+    //val model: DataViewModel by viewModels()
     private val postList : RealmResults<RealmPost>? = null
 
 
@@ -64,10 +64,10 @@ class ShowTopPostsFragment : Fragment() {
     }
 
     private fun getData(){
-        model.getAllPostsData()
-            .observe(viewLifecycleOwner) { postsA ->
-                Log.d("post", " all posts in db : ${postsA.size}")
-            }
+//        model.getAllPostsData()
+//            .observe(viewLifecycleOwner) { postsA ->
+//                Log.d("post", " all posts in db : ${postsA.size}")
+//            }
 
 
     }
