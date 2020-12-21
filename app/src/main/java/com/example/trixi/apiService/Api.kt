@@ -79,10 +79,10 @@ interface Api {
     suspend fun getPetById(@Path(value = "id") id: String?): Response<Pet>
 
     @GET("rest/pets/by_pet_type/{pet_type_id}")
-    fun getPetsByPetType(@Path(value = "pet_type_id") id: String?): Response<List<Pet>>
+    suspend fun getPetsByPetType(@Path(value = "pet_type_id") id: String?): Response<List<Pet>>
 //
     @GET("rest/pets/by_ownerId/{ownerid}")
-    fun getPetsByOwnerId(@Path("ownerid") id: String?): Response<List<Pet>>
+    suspend fun getPetsByOwnerId(@Path("ownerid") id: String?): Response<List<Pet>>
 //
 //    @POST("rest/pets")
 //    fun postPet(@Body pet: Pet): Call<Pet>
@@ -109,13 +109,20 @@ interface Api {
     suspend fun getPostById(@Path("id") id: String?): Response<Post>
 
     @GET("rest/posts/by_owner/{owner_id}")
-    fun getPostByOwnerId(@Path("owner_id") id : String?): Response<List<Post>>
+    suspend fun getPostByOwnerId(@Path("owner_id") id : String?): Response<List<Post>>
 //
 //    @GET("rest/posts/by_category/{category_id}")
 //    fun getPostByCategoryId(@Path(value="category_id") id : String?): Call<List<Post>>
 
     @GET("api/getUserFollowingPost/{id}")
     suspend fun getFollowingsPost(@Path("id") id: String?): Response<List<Post>>
+
+    @GET("/rest/likes/by_post/{postId}")
+    suspend fun getLikesByPost(@Path("postId") id:String):Response<List<Like>>
+
+    @GET("/rest/comments/by_post/{postId}")
+    suspend fun getCommentsByPost(@Path("postId") id:String):Response<List<Comment>>
+
 
 
 //    //Category

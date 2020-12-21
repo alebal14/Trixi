@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"

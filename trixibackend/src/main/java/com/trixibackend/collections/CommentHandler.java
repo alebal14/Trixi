@@ -28,6 +28,7 @@ public class CommentHandler {
             FindIterable<Comment> commentsIter= commentColl.find(eq("postId", postId));
             comments = new ArrayList<>();
             commentsIter.forEach(comments::add);
+            comments.forEach(System.out::println);
         } catch (Exception e ){
             e.printStackTrace();
         }

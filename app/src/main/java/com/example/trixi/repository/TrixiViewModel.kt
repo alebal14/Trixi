@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.FollowingsPosts
 import com.example.trixi.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -20,11 +19,7 @@ class TrixiViewModel : ViewModel() {
     val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
 
-    val followingsPosts: LiveData<List<Post>?> = MutableLiveData()
     val allPosts: LiveData<List<Post>?> = MutableLiveData()
-    val postsByOwner: LiveData<List<Post>?> = MutableLiveData()
-    val petsByOwner: LiveData<List<Pet>?> = MutableLiveData()
-
 
 
 //    init {
@@ -47,18 +42,16 @@ class TrixiViewModel : ViewModel() {
 //
 //    }
 
-    fun getFollowingsPosts(id: String) {
+    fun getFollowingsPosts(id: String): MutableLiveData<List<Post>?> {
+        val followingsPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("home", "getting followings post")
             val fPosts = retrofitClient?.getFollowingsPost(id)?.body()
-            fPosts?.forEach {
-
-            }
-            followingsPosts as MutableLiveData
             followingsPosts.postValue(fPosts)
             Log.d("home", "got followings post")
         }
+        return followingsPosts
 
     }
 
@@ -83,25 +76,59 @@ class TrixiViewModel : ViewModel() {
         return userById
     }
 
-    fun getPostsByOwner(id: String) {
+    fun getPostsByOwner(id: String): MutableLiveData<List<Post>>? {
+        val postsByOwner: MutableLiveData<List<Post>>? = MutableLiveData()
+
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting posts by owner")
             val posts = retrofitClient?.getPostByOwnerId(id)?.body()
-            postsByOwner as MutableLiveData
-            postsByOwner.postValue(posts)
-
-
+            //postsByOwner as MutableLiveData
+            postsByOwner?.postValue(posts)
         }
+        return postsByOwner
     }
 
-    fun getPetsByOwner(id: String) {
+    fun getPetsByOwner(id: String): MutableLiveData<List<Pet>>? {
+        val petsByOwner: MutableLiveData<List<Pet>>? = MutableLiveData()
+
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting pets by owner")
             val pets = retrofitClient?.getPetsByOwnerId(id)?.body()
-            petsByOwner as MutableLiveData
-            petsByOwner.postValue(pets)
-
-
+            petsByOwner?.postValue(pets)
         }
+        return petsByOwner
+    }
+
+    fun getComments(id: String): MutableLiveData<List<Comment>>? {
+        val comments: MutableLiveData<List<Comment>>? = MutableLiveData()
+        var commentOwner : User? = null
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("cl", "getting comments by post")
+            val c = retrofitClient?.getCommentsByPost(id)?.body()
+            c?.map {
+                commentOwner = async { retrofitClient?.getUserById(it.userId) }.await()?.body()
+                it.owner = commentOwner!!
+
+            }
+            comments?.postValue(c)
+        }
+        return comments
+    }
+
+    fun getLikes(id: String): MutableLiveData<List<Like>>? {
+        val likes: MutableLiveData<List<Like>>? = MutableLiveData()
+        var likeOwner :User? = null
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("cl", "getting likes by post")
+            val l = retrofitClient?.getLikesByPost(id)?.body()
+            l?.map {
+                likeOwner = async { retrofitClient?.getUserById(it.userId) }.await()?.body()
+                it.owner = likeOwner!!
+            }
+            likes?.postValue(l)
+        }
+        return likes
     }
 }

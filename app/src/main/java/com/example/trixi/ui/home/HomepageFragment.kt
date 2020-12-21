@@ -10,24 +10,16 @@ import androidx.fragment.app.Fragment
 //import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
 import com.example.trixi.R
-import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.repository.DataViewModel
+import com.example.trixi.entities.Comment
+import com.example.trixi.entities.Like
+import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home_item.*
-import kotlinx.android.synthetic.main.fragment_home_item.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 
 
 class HomepageFragment : Fragment() {
@@ -57,30 +49,9 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("home", "in home fragment")
         setUpHomeView()
-        //asdf()
-
-
-//        model.allPosts.observe(viewLifecycleOwner, {
-//            Log.d("home", "All post size: ${it?.size}")
-//            it?.forEach { post ->
-//                Log.d("home", "All post title ${post.title}")
-//            }
-//        })
-
-
-//        PostToDb.loggedInUser?.uid?.let {
-//            model.getFollowingsPostsData(it)
-//                .observe(viewLifecycleOwner) { postsF ->
-//                    Log.d("post", "following all posts : ${postsF.size}")
-//                }
-//        }
-
-//        model.getAllPostsData()
-//            .observe(viewLifecycleOwner) { postsA ->
-//                Log.d("post", " all posts : ${postsA.size}")
-//            }
-
         // setupRecycleView()
+        //   getPostByOwner()
+
 
     }
 
@@ -90,12 +61,17 @@ class HomepageFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun asdf(){
+    private fun getPostByOwner() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-        model.getAllPosts()
-        model.allPosts?.observe(viewLifecycleOwner,{
-            Log.d("home", "Followings post size: ${it?.size}")
+        model.getPostsByOwner("5fd746d47e9d9f34e506ea81")?.observe(viewLifecycleOwner, Observer {
+            Log.d("byOwner", "size: post by owner : ${it?.size}")
+
+            it.forEach {
+                Log.d("byOwner", "title: ${it?.title}")
+
+            }
         })
+
 
     }
 
@@ -103,36 +79,36 @@ class HomepageFragment : Fragment() {
         val fm = fragmentManager
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        PostToDb.loggedInUser?.uid?.let { model.getFollowingsPosts(it) }
 
 
-        model.followingsPosts?.observe(viewLifecycleOwner, Observer{
-            Log.d("home", "Followings post size: ${it?.size}")
-            if (it!!.isEmpty()) {
-                activity?.supportFragmentManager?.beginTransaction()?.apply {
-                    replace(R.id.fragment_container, EmptyHomeFragment())
-                    commit()
+        PostToDb.loggedInUser?.uid?.let {
+            model.getFollowingsPosts(it)?.observe(viewLifecycleOwner, Observer { posts ->
+                Log.d("home", "Followings post size: ${posts?.size}")
+                if (posts!!.isEmpty()) {
+                    activity?.supportFragmentManager?.beginTransaction()?.apply {
+                        replace(R.id.fragment_container, EmptyHomeFragment())
+                        commit()
+                    }
+                } else {
+                    posts.forEach { post ->
+
+                        model.getOneUser(post.ownerId!!)
+                            ?.observe(viewLifecycleOwner, Observer { postOwner ->
+                                post.owner = postOwner
+                                adapter.add(HomeItem(post,fm!!))
+                            })
+
+
+                    }
+                    recyclerView_homepage.adapter = adapter
                 }
-            } else {
-                it.forEach { post ->
-                    model.getOneUser(post.ownerId!!)?.observe(viewLifecycleOwner, Observer { postOwner ->
-                        adapter.add(HomeItem(post,postOwner, fm!!))
-                    })
 
-                    //model.userById?.observe(viewLifecycleOwner) { postOwner ->
+            })
 
-                    //}
-                }
-                recyclerView_homepage.adapter = adapter
+        }
 
-            }
-            it?.forEach { post ->
-                Log.d("home", "followings post title ${post.title}")
-            }
 
-        })
-
-            }
+    }
 
 
     /* private fun setupRecycleView() {

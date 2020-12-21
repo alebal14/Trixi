@@ -40,6 +40,7 @@ public class RestApi {
         //getLoggedinUser();
         logoutUser();
         setImagePostApi();
+        setLikeCommentApi();
 
         try {
             app.use(Middleware.statics(Paths.get("").toString()));
@@ -311,6 +312,33 @@ public class RestApi {
             }
             System.out.println(followingPostList.size());
             res.json(followingPostList);
+        });
+
+    }
+    private void setLikeCommentApi(){
+        app.get("/rest/likes/by-post/:postId",(req,res) ->{
+            String postId = req.getParam("postId");
+            var likes = db.getLikeHandler().findLikesByPostId(postId);
+            if(likes == null){
+                res.send("no likes");
+                return;
+            }
+            res.json(likes);
+
+
+        });
+
+        app.get("/rest/comments/by_post/:postId",(req,res) ->{
+            String postId = req.getParam("postId");
+            var comments = db.getCommentHandler().findCommentsByPostId(postId);
+            System.out.println("comment size: " + comments.size());
+            if(comments == null){
+                res.send("no comments found");
+                return;
+            }
+            res.json(comments);
+
+
         });
 
 

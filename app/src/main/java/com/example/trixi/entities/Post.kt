@@ -10,8 +10,9 @@ data class Post(
     val description: String?,
     val filePath: String?,
     val ownerId: String?,
-    val comments: ArrayList<Comment>?,
-    val likes: ArrayList<Like>?
+    var comments: List<Comment>?,
+    var likes: List<Like>?,
+    var owner: User?,
 ) {
 }
 

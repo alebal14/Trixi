@@ -80,6 +80,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
+
     fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container,fragment)

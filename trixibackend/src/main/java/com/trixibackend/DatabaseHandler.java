@@ -155,14 +155,15 @@ public class DatabaseHandler {
             case "categories":
                 return categoryHandler.findCategoryById(id);
             case "pet_types":
-                return  petTypeHandler.findPetTypesById(id);
+                return petTypeHandler.findPetTypesById(id);
+
             default:
                 return null;
         }
     }
 
 
-    public Object getByOwner(String collectionName, String id){
+    public Object getByOwner(String collectionName, String id) {
         switch (collectionName) {
             case "posts":
                 return postHandler.findPostsByOwner(id);
@@ -177,9 +178,9 @@ public class DatabaseHandler {
 
         String fileUrl = null;
 
-        fileUrl = "resFolder/images/"+ file.getName();
+        fileUrl = "resFolder/images/" + file.getName();
 
-        try(var os = new FileOutputStream(Paths.get("resFolder/images/" + file.getName()).toString())) {
+        try (var os = new FileOutputStream(Paths.get("resFolder/images/" + file.getName()).toString())) {
             os.write(file.get());
 
         } catch (IOException e) {
@@ -191,8 +192,7 @@ public class DatabaseHandler {
     }
 
 
-
-    public Object getLoginByNameOrEmail(User user){
+    public Object getLoginByNameOrEmail(User user) {
         return userHandler.findUserByNameOrEmail(user);
     }
 
@@ -212,6 +212,15 @@ public class DatabaseHandler {
     public CategoryHandler getCategoryHandler() {
         return categoryHandler;
     }
+
+    public LikeHandler getLikeHandler() {
+        return likeHandler;
+    }
+
+    public CommentHandler getCommentHandler() {
+        return commentHandler;
+    }
+
 
     public MongoDatabase getDatabase() {
         return database;
