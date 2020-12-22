@@ -55,6 +55,11 @@ class HomepageFragment : Fragment() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter.clear()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
         (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Trixi")
@@ -92,6 +97,7 @@ class HomepageFragment : Fragment() {
                 } else {
                     posts.forEach { post ->
 
+                        Log.d("home", "likesize: ${post.likes?.size}")
                         model.getOneUser(post.ownerId!!)
                             ?.observe(viewLifecycleOwner, Observer { postOwner ->
                                 post.owner = postOwner

@@ -117,12 +117,6 @@ interface Api {
     @GET("api/getUserFollowingPost/{id}")
     suspend fun getFollowingsPost(@Path("id") id: String?): Response<List<Post>>
 
-    @GET("/rest/likes/by_post/{postId}")
-    suspend fun getLikesByPost(@Path("postId") id:String):Response<List<Like>>
-
-    @GET("/rest/comments/by_post/{postId}")
-    suspend fun getCommentsByPost(@Path("postId") id:String):Response<List<Comment>>
-
 
 
 //    //Category

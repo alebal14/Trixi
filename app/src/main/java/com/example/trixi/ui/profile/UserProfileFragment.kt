@@ -22,7 +22,8 @@ class UserProfileFragment : Fragment(){
 
         val b: Bundle? = this.arguments
         user = b?.getParcelable<User>("userId")
-        Log.d("profile","${user?.imageUrl}")
+        Log.d("profile","followings > ${user?.followingsUser?.size}")
+
         return v;
 
     }

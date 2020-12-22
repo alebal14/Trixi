@@ -40,7 +40,6 @@ public class RestApi {
         //getLoggedinUser();
         logoutUser();
         setImagePostApi();
-        setLikeCommentApi();
 
         try {
             app.use(Middleware.statics(Paths.get("").toString()));
@@ -118,10 +117,50 @@ public class RestApi {
             }
         });
 
+        app.post("/rest/likes",(req,res) ->{
+            Like like = (Like) req.getBody(Like.class);
+            Post p = db.getPostHandler().addLike(like);
+            if(p == null){
+                res.setStatus(Status._403);
+                res.send("Error: you already liked this post");
+                return;
+            }
+            res.json(p);
+        });
+
+        app.post("/rest/unlike",(req,res) ->{
+            Like like = (Like) req.getBody(Like.class);
+            Post p = db.getPostHandler().unlike(like);
+            if(p == null){
+                res.setStatus(Status._403);
+                res.send("Error: you already not liking this post");
+                return;
+            }
+            res.json(p);
+        });
+
+        app.post("/rest/comments",(req,res) ->{
+            Comment comment = (Comment) req.getBody(Comment.class);
+            comment.setId(UUID.randomUUID().toString());
+            res.json(db.getPostHandler().addComment(comment));
+        });
+
+        app.post("/rest/delete_comment",(req,res)->{
+            Comment comment = (Comment) req.getBody(Comment.class);
+            Post p= db.getPostHandler().deleteComment(comment);
+            if(p == null){
+                res.setStatus(Status._403);
+                res.send("Error, comment doesn't exist");
+                return;
+            }
+            res.json(p);
+        });
+
     }
 
 
     private void setUpDeleteApi(String collectionName) {
+
     }
 
 
@@ -228,14 +267,6 @@ public class RestApi {
                     Pet pet = (Pet) req.getBody(Pet.class);
                     res.json(db.save(pet));
                     break;
-                case "likes":
-                    Like like = (Like) req.getBody(Like.class);
-                    res.json(db.save(like));
-                    break;
-                case "comments":
-                    Comment comment = (Comment) req.getBody(Comment.class);
-                    res.json(db.save(comment));
-                    break;
                 case "categories":
                     Category category = (Category) req.getBody(Category.class);
                     res.json(db.save(category));
@@ -315,35 +346,6 @@ public class RestApi {
         });
 
     }
-    private void setLikeCommentApi(){
-        app.get("/rest/likes/by-post/:postId",(req,res) ->{
-            String postId = req.getParam("postId");
-            var likes = db.getLikeHandler().findLikesByPostId(postId);
-            if(likes == null){
-                res.send("no likes");
-                return;
-            }
-            res.json(likes);
-
-
-        });
-
-        app.get("/rest/comments/by_post/:postId",(req,res) ->{
-            String postId = req.getParam("postId");
-            var comments = db.getCommentHandler().findCommentsByPostId(postId);
-            System.out.println("comment size: " + comments.size());
-            if(comments == null){
-                res.send("no comments found");
-                return;
-            }
-            res.json(comments);
-
-
-        });
-
-
-    }
-
     private void setLoginUser() {
 
         app.post("/rest/login", (req, res) ->{

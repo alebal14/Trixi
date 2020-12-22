@@ -99,36 +99,4 @@ class TrixiViewModel : ViewModel() {
         return petsByOwner
     }
 
-    fun getComments(id: String): MutableLiveData<List<Comment>>? {
-        val comments: MutableLiveData<List<Comment>>? = MutableLiveData()
-        var commentOwner : User? = null
-
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.d("cl", "getting comments by post")
-            val c = retrofitClient?.getCommentsByPost(id)?.body()
-            c?.map {
-                commentOwner = async { retrofitClient?.getUserById(it.userId) }.await()?.body()
-                it.owner = commentOwner!!
-
-            }
-            comments?.postValue(c)
-        }
-        return comments
-    }
-
-    fun getLikes(id: String): MutableLiveData<List<Like>>? {
-        val likes: MutableLiveData<List<Like>>? = MutableLiveData()
-        var likeOwner :User? = null
-
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.d("cl", "getting likes by post")
-            val l = retrofitClient?.getLikesByPost(id)?.body()
-            l?.map {
-                likeOwner = async { retrofitClient?.getUserById(it.userId) }.await()?.body()
-                it.owner = likeOwner!!
-            }
-            likes?.postValue(l)
-        }
-        return likes
-    }
 }
