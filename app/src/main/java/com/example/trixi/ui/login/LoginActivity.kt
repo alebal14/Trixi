@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
 
-        //post.GetLoggedInUserFromDB(this)
+        post.GetLoggedInUserFromDB(this)
 
         var background = findViewById<ConstraintLayout>(R.id.layout)
         var animation = background.background as AnimationDrawable
