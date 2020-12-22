@@ -23,11 +23,16 @@ import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 
-class DataViewModel(id: String?) : ViewModel() {
+class DataViewModel() : ViewModel() {
 
     // TODO: 2020-12-16  get All Post, get all Post by ownerId, get posts by category ID
     // TODO: get all category, get all pet types
     // TODO: 2020-12-16 get all pets, get pets by pet Types, get pet by pet_id , get pet by owner_id 
+
+    var followingsPost: MutableLiveData<List<Post>?> = MutableLiveData()
+
+
+
 
 
     val realm: Realm by lazy {
@@ -134,15 +139,14 @@ class DataViewModel(id: String?) : ViewModel() {
              return followingsPost;
 
  }*/
-    var followingsPost: MutableLiveData<List<Post>> = MutableLiveData();
 
-     fun getFollowingsPostFromDb(id: String?) : MutableLiveData<List<Post>>{
-        var result: LiveData<List<Post>>? = null
+
+      suspend fun getFollowingsPostFromDb(id: String?) : MutableLiveData<List<Post>?> {
+
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        viewModelScope.launch {
+          viewModelScope.launch {
             withContext(Dispatchers.IO) {
-
                 try {
 
                     val response = retrofitClient!!.getFollowingsPost(id)

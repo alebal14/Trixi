@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Post
@@ -28,11 +29,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlin.coroutines.CoroutineContext
 
 
-class HomepageFragment : Fragment()  {
+class HomepageFragment : Fragment(), CoroutineScope {
     val adapter = GroupAdapter<GroupieViewHolder>()
-    val model: DataViewModel by viewModels()
+    lateinit var model: DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +63,7 @@ class HomepageFragment : Fragment()  {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
-
+        model = ViewModelProvider(this).get(DataViewModel()::class.java)
         setupRecycleView(view)
 
 
@@ -74,7 +76,7 @@ class HomepageFragment : Fragment()  {
     }
 
 
-    private fun setupRecycleView(view: View) {
+    private suspend fun setupRecycleView(view: View) {
 
 
         if (PostToDb.loggedInUser != null) {
@@ -109,6 +111,9 @@ class HomepageFragment : Fragment()  {
                 }
             }
         }
+
+    override val coroutineContext: CoroutineContext
+        get() = TODO("Not yet implemented")
 
 
 //        val snapHelper: SnapHelper = LinearSnapHelper()
