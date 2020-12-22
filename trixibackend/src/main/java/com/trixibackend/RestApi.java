@@ -37,7 +37,7 @@ public class RestApi {
         });
         setUpUpdateApi();
         setLoginUser();
-        //getLoggedinUser();
+        getLoggedinUser();
         logoutUser();
         setImagePostApi();
 
