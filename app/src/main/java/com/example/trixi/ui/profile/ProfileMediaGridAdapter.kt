@@ -1,5 +1,6 @@
 package com.example.marvelisimo.adapter
 
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +44,17 @@ class ProfileMediaGridAdapter(private var posts: ArrayList<Post>)
             Log.d("Recyclerview media grid", "click!")
         }
         fun bindThumbnail(post: Post) {
-            Picasso.get().load(BASE_URL + post.filePath!!).into(mediaItem)
+            var photo = BASE_URL + post.filePath
+            //var sample = BASE_URL + "resFolder/images/sample.jpg"
+
+
+
+
+                Picasso.get().load(photo).placeholder(R.drawable.sample).error(R.drawable.sample).resize(100, 100).centerCrop().into(mediaItem)
+
+
+
+
         }
 
     }

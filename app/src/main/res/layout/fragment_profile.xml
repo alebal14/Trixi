@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45255473" />
+        />
 
     <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_pet_image"
@@ -111,89 +111,100 @@
             tools:itemCount="3"
             tools:listitem="@layout/profile_user_pet" />
 
+
     <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.449">
+            android:id="@+id/followers_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.449">
 
         <TextView
-            android:id="@+id/profile_followers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="60dp"
-            android:text="@string/number_of_followers"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:id="@+id/profile_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="60dp"
+                android:text="@string/number_of_followers"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-            android:id="@+id/profile_following"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="60dp"
-            android:text="@string/number_of_following"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:id="@+id/profile_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="60dp"
+                android:text="@string/number_of_following"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     </LinearLayout>
 
-    <com.google.android.material.tabs.TabLayout
-            android:id="@+id/pics_videos_tab"
+    <LinearLayout
+            android:id="@+id/media_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/media_grid"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+            android:layout_height="350dp"
+            android:orientation="vertical"
 
-        <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_images"
-                android:layout_width="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/followers_container"
+            app:layout_constraintVertical_bias="0.539">
+
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/pics_videos_tab"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/images_tab" />
+                android:layout_marginBottom="5dp">
 
-        <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_videos"
-                android:layout_width="wrap_content"
+            <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_images"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/images_tab" />
+
+            <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_videos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Videos" />
+        </com.google.android.material.tabs.TabLayout>
+
+
+
+
+
+        <TextView
+                android:id="@+id/profile_no_posts"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Videos" />
-    </com.google.android.material.tabs.TabLayout>
+                android:text="No posts yet"
+                android:textAlignment="center"
+                android:visibility="invisible"
+                android:paddingTop="20dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab"
+                app:layout_constraintVertical_bias="0.112" />
 
-
-    <TextView
-            android:id="@+id/profile_no_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No posts yet"
-            android:visibility="invisible"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab"
-            app:layout_constraintVertical_bias="0.112" />
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/media_grid"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:padding="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab"
-            tools:listitem="@layout/profile_media_item"
-            android:gravity="center"
-            android:verticalSpacing="20dp"
-            android:horizontalSpacing="10dp"/>
+            android:layout_height="179dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/media_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/pics_videos_tab" />
+        </ScrollView>
+    </LinearLayout>
 
     <TextView
             android:id="@+id/owner_name"
@@ -203,7 +214,7 @@
             android:drawableStart="@drawable/ic_baseline_pets_24"
             android:text="@string/pet_owner"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+            app:layout_constraintBottom_toTopOf="@+id/followers_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/mid_screen"
@@ -222,6 +233,7 @@
       >
 
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

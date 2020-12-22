@@ -20,12 +20,13 @@
             tools:layout_editor_absoluteY="-41dp">
 
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/register_profile_image"
                 android:layout_width="148dp"
                 android:layout_height="148dp"
-                android:background="@drawable/image_btn_circle"
-                tools:srcCompat="@drawable/ic_baseline_person_outline_24" />
+                android:clickable="true"
+                android:background="@drawable/ic_baseline_person_outline_24"
+                 />
 
             <EditText
                 android:id="@+id/register_username"

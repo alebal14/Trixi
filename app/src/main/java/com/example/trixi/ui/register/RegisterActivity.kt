@@ -116,7 +116,7 @@ class RegisterActivity : AppCompatActivity() {
 
             val container = findViewById<View>(R.id.register_profile_image) as ImageView
 
-            Picasso.get().load(selectedImage).transform(CropCircleTransformation()).fit().into(container)
+            Picasso.get().load(selectedImage).transform(CropCircleTransformation()).centerCrop().fit().into(container)
 
             cursor.close()
 
