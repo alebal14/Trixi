@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-//import androidx.fragment.app.viewModels
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Comment
@@ -22,13 +22,15 @@ import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
+import kotlinx.android.synthetic.main.like_row.view.*
+import kotlinx.android.synthetic.main.popup_like.*
 
-class PopUpCommentWindow(private val comments: List<Comment>?) : DialogFragment() {
+class PopUpLikeWindow(private val likes: List<Like>?) : DialogFragment() {
     private lateinit var model: TrixiViewModel
 
 
     companion object {
-        const val TAG = "popUpChat"
+        const val TAG = "popUpLike"
 
     }
 
@@ -46,7 +48,7 @@ class PopUpCommentWindow(private val comments: List<Comment>?) : DialogFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpCommentsView()
+        setUpLikesView()
     }
 
     override fun onStart() {
@@ -57,33 +59,28 @@ class PopUpCommentWindow(private val comments: List<Comment>?) : DialogFragment(
         )
     }
 
-
-    private fun setUpCommentsView() {
+    private fun setUpLikesView() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+        val adapterLike = GroupAdapter<GroupieViewHolder>()
+        likes!!.forEach { like ->
+            model.getOneUser(like.userId)?.observe(viewLifecycleOwner, { liker ->
+                Log.d("home", "liker ${liker.userName}")
 
-        val adapterChat = GroupAdapter<GroupieViewHolder>()
-        comments!!.forEach { comment ->
-            model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commnetOwner ->
-                Log.d("home", "Comment owner ${commnetOwner.userName}")
-                Log.d("home", "Comment  ${comment.comment}")
-
-                adapterChat.add(CommentItem(comment,commnetOwner))
+                adapterLike.add(LikeItem(liker))
             })
-
         }
-
-        recyclerView_popup_comment.adapter= adapterChat
+        recyclerView_popup_comment.adapter= adapterLike
 
     }
 
 
 }
 
-class CommentItem(private val comment: Comment, val commentOwner: User) : Item<GroupieViewHolder>() {
+class LikeItem(private val liker: User) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.comment_sender_name.text = commentOwner.userName
-        viewHolder.itemView.comment_description.text = comment.comment
-        Picasso.get().load(RetrofitClient.BASE_URL + commentOwner.imageUrl)
+        viewHolder.itemView.comment_sender_name.text = liker.userName
+        viewHolder.itemView.comment_description.isVisible= false
+        Picasso.get().load(RetrofitClient.BASE_URL + liker.imageUrl)
             .transform(CropCircleTransformation()).fit()
             .into(viewHolder.itemView.comment_profile_img)
     }

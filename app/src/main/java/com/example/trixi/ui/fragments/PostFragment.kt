@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+//import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.trixi.R
 import com.google.android.material.appbar.AppBarLayout

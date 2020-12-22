@@ -2,7 +2,6 @@ package com.example.trixi
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.trixi.repository.DataViewModel
@@ -18,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
 
-    val model: DataViewModel by viewModels()
+    //val model: DataViewModel by viewModels()
 
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +34,12 @@ class MainActivity : AppCompatActivity() {
          val profileFragment = LoggedInUserProfileFragment()
          val singleFragment = singlePostFragment()
 
-         val post = PostToDb.latestPost
+         //val post = PostToDb.latestPost
 
-         Log.d("post", " $post")
+         //Log.d("post", " $post")
 
 
-         print("main login-user :${PostToDb.loggedInUser}")
+         //print("main login-user :${PostToDb.loggedInUser}")
 
 //         val bundle: Bundle = Bundle()
 //         model.GetLoggedInUserFromDB().observe(this,{
@@ -54,17 +53,19 @@ class MainActivity : AppCompatActivity() {
 //
 //         homepageFragment.arguments = bundle
 
-         if(single.isNullOrEmpty()){
-             makeCurrentFragment(homepageFragment)
-         } else {
-             val bundle = Bundle()
-             //bundle.putString("edttext", "From Activity")
-             bundle.putString("title", post?.title.toString())
-             bundle.putString("url", post?.filePath.toString())
-             bundle.putString("description", post?.description.toString())
-             singleFragment.arguments = bundle;
-             makeCurrentFragment(singleFragment);
-         }
+//         if(single.isNullOrEmpty()){
+//             makeCurrentFragment(homepageFragment)
+//         } else {
+//             val bundle = Bundle()
+//             //bundle.putString("edttext", "From Activity")
+//             bundle.putString("title", post?.title.toString())
+//             bundle.putString("url", post?.filePath.toString())
+//             bundle.putString("description", post?.description.toString())
+//             singleFragment.arguments = bundle;
+//             makeCurrentFragment(singleFragment);
+//         }
+
+         makeCurrentFragment(homepageFragment)
 
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
@@ -77,6 +78,8 @@ class MainActivity : AppCompatActivity() {
          }
 
     }
+
+
 
 
     fun makeCurrentFragment(fragment: Fragment) =

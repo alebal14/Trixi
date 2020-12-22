@@ -55,14 +55,14 @@ public class UserHandler {
             usersIter.forEach(users::add);
             users.forEach(user -> {
                 user.setUid(user.getId().toString());
-                user.setPosts(postHandler.findPostsByOwner(user.getUid()));
-                user.setPets(petHandler.findPetsByOwner(user.getUid()));
-                user.getPosts().forEach(post -> {
-                            post.setUid(post.getId().toString());
-                            post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-                            post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-                        }
-                );
+//                user.setPosts(postHandler.findPostsByOwner(user.getUid()));
+//                user.setPets(petHandler.findPetsByOwner(user.getUid()));
+//                user.getPosts().forEach(post -> {
+//                            post.setUid(post.getId().toString());
+//                            post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+//                            post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+//                        }
+//                );
             });
 
         } catch (Exception e) {
@@ -78,13 +78,13 @@ public class UserHandler {
             var user = userIter.first();
             if (user == null) return null;
             user.setUid(user.getId().toString());
-            user.setPosts(postHandler.findPostsByOwner(user.getUid()));
-            user.setPets(petHandler.findPetsByOwner(user.getUid()));
-            user.getPosts().forEach(post -> {
-                post.setUid(post.getId().toString());
-                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-            });
+//            user.setPosts(postHandler.findPostsByOwner(user.getUid()));
+//            user.setPets(petHandler.findPetsByOwner(user.getUid()));
+//            user.getPosts().forEach(post -> {
+//                post.setUid(post.getId().toString());
+//                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+//                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+//            });
             return user;
         } catch (Exception e) {
             return null;

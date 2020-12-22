@@ -3,7 +3,6 @@ package com.trixibackend.entity;
 import org.bson.types.ObjectId;
 
 public class Like {
-    private ObjectId id;
     private String userId;
     private String postId;
 
@@ -17,13 +16,6 @@ public class Like {
         this.postId = postId;
     }
 
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;

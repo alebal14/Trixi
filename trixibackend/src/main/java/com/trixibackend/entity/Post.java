@@ -45,9 +45,6 @@ public class Post {
         this.ownerId = ownerId;
     }
 
-    public Post(String filePath) {
-        this.filePath = filePath;
-    }
 
     public ObjectId getId() {
         return id;
