@@ -179,7 +179,17 @@ public class RestApi {
                         user.setPassword(null);
                         sessionCookie.setData(user);
 
-                        var userLoggedIn = getLoggedinUser(sessionCookie);
+                        var userLoggedIn = (User) sessionCookie.getData();
+                        userLoggedIn.setPassword(null); // sanitize password
+                        userLoggedIn.setUid(user.getId().toString());
+                        userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
+                        userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+                        userLoggedIn.getPosts().forEach(post -> {
+                            post.setUid(post.getId().toString());
+                            post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+                            post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+                        });
+
                         res.json(userLoggedIn);
                         res.send("Created User");
 
@@ -343,20 +353,31 @@ public class RestApi {
                 return;
             }
 
-            sessionCookie.setData(user);
             user.setPassword(null); // sanitize password
+            sessionCookie.setData(user);
 
-            var userLoggedIn = getLoggedinUser(sessionCookie);
+            var userLoggedIn = (User) sessionCookie.getData();
+            userLoggedIn.setPassword(null); // sanitize password
+            userLoggedIn.setUid(user.getId().toString());
+            userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
+            userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+            userLoggedIn.getPosts().forEach(post -> {
+                post.setUid(post.getId().toString());
+                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+            });
+
             res.json(userLoggedIn);
         });
     }
 
-    private User getLoggedinUser(SessionCookie sessionCookie) {
-           //var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+    private void getLoggedinUser() {
+        app.get("/rest/login", (req, res) -> {
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
             if (sessionCookie.getData() == null) {
-               // res.send("Not logged in");
-                return null;
+                 res.send("Not logged in");
+                return;
             }
 
             var user = (User) sessionCookie.getData();
@@ -369,9 +390,10 @@ public class RestApi {
                 post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
             });
             user.setPassword(null); // sanitize password
-            return user;
 
+            res.json(user);
 
+        });
 
     }
 
