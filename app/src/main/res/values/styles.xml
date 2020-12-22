@@ -22,5 +22,11 @@
 
     </style>
 
+    <style name="no_title" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
 
 </resources>

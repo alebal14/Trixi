@@ -32,8 +32,8 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorTeal)))
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        //supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorTeal)))
+        //supportActionBar!!.setDisplayShowTitleEnabled(false)
 
 
         post.GetLoggedInUserFromDB(this)
