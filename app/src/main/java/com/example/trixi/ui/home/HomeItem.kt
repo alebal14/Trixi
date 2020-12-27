@@ -42,15 +42,24 @@ class HomeItem(
             .transform(CropCircleTransformation()).fit()
             .into(viewHolder.itemView.home_item_profileimg)
 
-        var numberOfLike = post.likes?.size
 
         viewHolder.itemView.home_item_profileName.text = post.owner!!.userName
         viewHolder.itemView.home_item_title.text = post.title
         viewHolder.itemView.home_item_description.text = post.description
         viewHolder.itemView.home_item_edit.isVisible = false
         viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
+        var numberOfLike: Int = post.likes!!.size
         viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
 
+        handleLike(viewHolder, numberOfLike)
+        handleClickOnComment(viewHolder)
+        handleClickOnDiscovery(viewHolder)
+        handleClickOnImgAndName(viewHolder)
+
+    }
+
+    private fun handleLike(viewHolder: GroupieViewHolder, numberOfLike: Int) {
+        var numberOfLike1 = numberOfLike
         var likeHeart: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_like)
 
         var liked: Boolean = false
@@ -74,36 +83,17 @@ class HomeItem(
                 db.unlike(like)
                 liked = false
                 likeHeart.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-                //numberOfLike!!--
-                viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
+                numberOfLike1 -= 1
+                viewHolder.itemView.home_item_like_count.text = numberOfLike1.toString()
             } else {
                 db.like(like)
                 liked = true
                 likeHeart.setImageResource(R.drawable.ic_baseline_favorite_24)
-                //numberOfLike!!++
-                viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
+                numberOfLike1 += 1
+                viewHolder.itemView.home_item_like_count.text = numberOfLike1.toString()
             }
         }
-
-
-        Log.d("home", " likes ${post.likes}")
-
-        handleClickOnComment(viewHolder)
-        handleClickOnDiscovery(viewHolder)
-        handleClickOnImgAndName(viewHolder)
-
     }
-
-//    private fun handleClickOnLike(liked: Boolean) {
-//        var like = Like(post.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
-//        if (liked) {
-//            db.like(like)
-//            liked= false
-//        } else {
-//            db.unlike(like)
-//            liked = true
-//        }
-//    }
 
 
     private fun handleClickOnImgAndName(viewHolder: GroupieViewHolder) {
