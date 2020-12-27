@@ -74,13 +74,13 @@ class HomeItem(
                 db.unlike(like)
                 liked = false
                 likeHeart.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-                numberOfLike--
+                //numberOfLike!!--
                 viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
             } else {
                 db.like(like)
                 liked = true
                 likeHeart.setImageResource(R.drawable.ic_baseline_favorite_24)
-                numberOfLike++
+                //numberOfLike!!++
                 viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
             }
         }
