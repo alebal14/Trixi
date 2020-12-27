@@ -9,11 +9,13 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
-import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.apiService.RetrofitClient.Companion.context
+import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Post
 import com.example.trixi.ui.discover.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
@@ -24,6 +26,7 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
+import com.example.trixi.R as R
 
 
 class HomeItem(
@@ -54,7 +57,8 @@ class HomeItem(
         var commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
         commentIcon.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                val popUp = PopUpCommentWindow(post.comments)
+                val reversedComments : List<Comment>? = post.comments;
+                val popUp = PopUpCommentWindow(reversedComments)
 
                 if (fm != null) {
                     popUp.show(fm, PopUpCommentWindow.TAG)
@@ -63,26 +67,40 @@ class HomeItem(
         })
 
 
-//        var likeHeart:ImageButton = viewHolder.itemView.findViewById(R.id.home_item_like)
-//        likeHeart.setOnClickListener(object : View.OnClickListener {
-//            override fun onClick(p1: View?) {
+
+        var likeHeart:ImageButton = viewHolder.itemView.findViewById(R.id.home_item_like)
+        likeHeart.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p1: View?) {
+//                if(likeHeart.tag == R.drawable.ic_baseline_favorite_border_24){
+//                    Log.d("likehome"," likes ${post.likes}")
+
+//                likeHeart.background = ContextCompat.getDrawable(context,R.drawable.ic_baseline_favorite_24)
+
+//                }else if (likeHeart.tag == R.drawable.ic_baseline_favorite_24){
+//                    Log.d("likehome"," likes ${post.likes}")
+//                    likeHeart.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+//
+//                }
+
+
 //                val popUp = PopUpLikeWindow(post.likes)
 //
 //                if (fm != null) {
 //                    popUp.show(fm, PopUpLikeWindow.TAG)
 //                }
-//            }
-//        })
+            }
+        })
 
         var profileName :TextView = viewHolder.itemView.findViewById(R.id.home_item_profileName)
         var profileImg:ImageView = viewHolder.itemView.findViewById(R.id.home_item_profileimg)
 
         profileImg.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                val bundle: Bundle = Bundle()
-                bundle.putParcelable("userId", post.owner)
-                val userProfileFragment = UserProfileFragment()
-                userProfileFragment.arguments = bundle
+               // val bundle: Bundle = Bundle()
+               // bundle.putParcelable("userId", post.owner)
+                val userProfileFragment = UserProfileFragment(post.owner)
+                //userProfileFragment.arguments = bundle
+
                 fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
             }
         })

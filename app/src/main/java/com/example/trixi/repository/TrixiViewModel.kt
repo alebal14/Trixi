@@ -16,10 +16,7 @@ import kotlinx.coroutines.withContext
 class TrixiViewModel : ViewModel() {
 
     private val TAG = "TrixiViewModel"
-    val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-
-
-    val allPosts: LiveData<List<Post>?> = MutableLiveData()
+    private val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
 
 //    init {
@@ -56,10 +53,11 @@ class TrixiViewModel : ViewModel() {
     }
 
     fun getAllPosts() {
+        val allPosts: MutableLiveData<List<Post>?> = MutableLiveData()
+
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All post")
             val p = retrofitClient?.getAllPosts()?.body()
-            allPosts as MutableLiveData
             allPosts.postValue(p)
         }
     }

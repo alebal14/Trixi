@@ -66,25 +66,10 @@ class HomepageFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun getPostByOwner() {
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-        model.getPostsByOwner("5fd746d47e9d9f34e506ea81")?.observe(viewLifecycleOwner, Observer {
-            Log.d("byOwner", "size: post by owner : ${it?.size}")
-
-            it.forEach {
-                Log.d("byOwner", "title: ${it?.title}")
-
-            }
-        })
-
-
-    }
 
     private fun setUpHomeView() {
         val fm = fragmentManager
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-
-
 
         PostToDb.loggedInUser?.uid?.let {
             model.getFollowingsPosts(it)?.observe(viewLifecycleOwner, Observer { posts ->
@@ -96,60 +81,15 @@ class HomepageFragment : Fragment() {
                     }
                 } else {
                     posts.forEach { post ->
-
-                        Log.d("home", "likesize: ${post.likes?.size}")
                         model.getOneUser(post.ownerId!!)
                             ?.observe(viewLifecycleOwner, Observer { postOwner ->
                                 post.owner = postOwner
-                                adapter.add(HomeItem(post,fm!!))
+                                adapter.add(HomeItem(post, fm!!))
                             })
-
-
                     }
                     recyclerView_homepage.adapter = adapter
                 }
-
             })
-
         }
-
-
     }
-
-
-    /* private fun setupRecycleView() {
-
-
-         val adapter = GroupAdapter<GroupieViewHolder>()
-         val fm = fragmentManager
-         adapter.clear()
-         PostToDb.loggedInUser!!.uid?.let {
-             model.getFollowingsPostFromDb(it).observe(viewLifecycleOwner) { posts ->
-                 if (posts.isEmpty()) {
-                     activity?.supportFragmentManager?.beginTransaction()?.apply {
-                         replace(R.id.fragment_container, EmptyHomeFragment())
-                         commit()
-                     }
-                 } else {
-                     Log.d("post", "followings posts : ${posts.size}")
-                     posts.forEach { post ->
-                         model.getOneUserFromDb(post.ownerId)
-                             .observe(viewLifecycleOwner) { postOwner ->
-                                 adapter.add(HomeItem(post, postOwner, fm!!))
-                             }
-                     }
-                     recyclerView_homepage.adapter = adapter
-                 }
-
-             }
-         }
-
-
-         val snapHelper: SnapHelper = LinearSnapHelper()
-         snapHelper.attachToRecyclerView(recyclerView_homepage);
-
-
-     }*/
-
-
 }

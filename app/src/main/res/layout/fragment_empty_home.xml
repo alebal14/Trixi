@@ -44,7 +44,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:text="Discover"
                 android:textStyle="bold"
                 android:shadowColor="#000000"
