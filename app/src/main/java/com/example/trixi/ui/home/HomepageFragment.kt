@@ -48,10 +48,6 @@ class HomepageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("home", "in home fragment")
         setUpHomeView()
-        // setupRecycleView()
-        //   getPostByOwner()
-
-
     }
 
     override fun onDestroyView() {
@@ -87,13 +83,11 @@ class HomepageFragment : Fragment() {
                                     adapter.add(HomeItem(post, fm!!))
 
                                 } else {
-                                    Log.d("home", "user null:")
-                                    //post.owner= null
-                                    model.getOnePet(post.ownerId!!)?.observe(viewLifecycleOwner,
-                                        Observer { petIsOwner ->
+                                    Log.d("home", "user null")
+                                    model.getOnePet(post.ownerId!!)
+                                        ?.observe(viewLifecycleOwner, Observer { petIsOwner ->
                                             post.ownerIsPet = petIsOwner
                                             adapter.add(HomeItem(post, fm!!))
-
                                         })
                                 }
                             })

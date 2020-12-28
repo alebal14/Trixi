@@ -18,7 +18,6 @@ class TrixiViewModel : ViewModel() {
     private val TAG = "TrixiViewModel"
     private val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-
 //    init {
 //
 //        viewModelScope.launch{
@@ -45,16 +44,6 @@ class TrixiViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("home", "getting followings post")
             val fPosts = retrofitClient?.getFollowingsPost(id)?.body()
-//            fPosts!!.map { post ->
-//                val u = getOneUser(post.ownerId.toString())?.value
-//                if (u == null){
-//                    val pet = getOnePet(post.ownerId.toString())?.value
-//                    post.owner = null
-//                }else{
-//                    post.owner = u
-//                }
-//
-//            }
             followingsPosts.postValue(fPosts)
             Log.d("home", "got followings post")
         }
@@ -79,14 +68,11 @@ class TrixiViewModel : ViewModel() {
             try {
                 Log.d(TAG, "getting one User")
                 val aUser = retrofitClient?.getUserById(id)?.body()
-                Log.d(TAG, "getting one User $aUser")
                 userById?.postValue(aUser)
             } catch (e: Exception) {
                 userById?.postValue(null)
                 // Handle exception
             }
-
-
         }
         return userById
     }
@@ -95,10 +81,14 @@ class TrixiViewModel : ViewModel() {
         val petById: MutableLiveData<Pet>? = MutableLiveData()
 
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "getting one Pet")
-            val aPet = retrofitClient?.getPetById(id)?.body()
-            petById?.postValue(aPet)
+            try {
+                Log.d(TAG, "getting one Pet")
+                val aPet = retrofitClient?.getPetById(id)?.body()
+                petById?.postValue(aPet)
 
+            } catch (e: Exception) {
+                petById?.postValue(null)
+            }
         }
         return petById
     }

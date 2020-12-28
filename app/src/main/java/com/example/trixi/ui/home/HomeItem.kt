@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class HomeItem(
     val post: Post,
-    val fm: FragmentManager
+    private val fm: FragmentManager
 ) : Item<GroupieViewHolder>() {
 
     companion object {
@@ -41,7 +41,6 @@ class HomeItem(
         Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl))
             .transform(CropCircleTransformation()).fit()
             .placeholder(R.drawable.sample)
-            .transform(CropCircleTransformation()).fit()
             .error(R.drawable.sample)
             .centerCrop().into(profileImgHolder)
 
@@ -50,9 +49,9 @@ class HomeItem(
         viewHolder.itemView.home_item_title.text = post.title
         viewHolder.itemView.home_item_description.text = post.description
         viewHolder.itemView.home_item_edit.isVisible = false
-        var numberOfComments:Int = post.comments!!.size
+        val numberOfComments:Int = post.comments!!.size
         viewHolder.itemView.home_item_chat_count.text = numberOfComments.toString()
-        var numberOfLike: Int = post.likes!!.size
+        val numberOfLike: Int = post.likes!!.size
         viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
 
         handleLike(viewHolder, numberOfLike)
@@ -64,9 +63,9 @@ class HomeItem(
 
     private fun handleLike(viewHolder: GroupieViewHolder, numberOfLike: Int) {
         var numberOfLike1 = numberOfLike
-        var likeHeart: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_like)
+        val likeHeart: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_like)
 
-        var liked: Boolean = false
+        var liked = false
 
         post.likes?.forEach {
             if (it.userId == PostToDb.loggedInUser!!.uid) {
@@ -81,7 +80,7 @@ class HomeItem(
 
 
         likeHeart.setOnClickListener {
-            var like = Like(post.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
+            val like = Like(post.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
 
             if (liked) {
                 db.unlike(like)
@@ -101,8 +100,8 @@ class HomeItem(
 
 
     private fun handleClickOnImgAndName(viewHolder: GroupieViewHolder) {
-        var profileName: TextView = viewHolder.itemView.findViewById(R.id.home_item_profileName)
-        var profileImg: ImageView = viewHolder.itemView.findViewById(R.id.home_item_profileimg)
+        val profileName: TextView = viewHolder.itemView.findViewById(R.id.home_item_profileName)
+        val profileImg: ImageView = viewHolder.itemView.findViewById(R.id.home_item_profileimg)
 
         profileImg.setOnClickListener {
             redirectToUserOrPet()
@@ -125,7 +124,7 @@ class HomeItem(
     }
 
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {
-        var commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
+        val commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
         commentIcon.setOnClickListener {
             val reversedComments: List<Comment>? = post.comments;
             val popUp = PopUpCommentWindow(reversedComments, post.uid.toString(),viewHolder)
@@ -135,7 +134,7 @@ class HomeItem(
     }
 
     private fun handleClickOnDiscovery(viewHolder: GroupieViewHolder) {
-        var discoveryText: TextView = viewHolder.itemView.findViewById(R.id.home_item_discover)
+        val discoveryText: TextView = viewHolder.itemView.findViewById(R.id.home_item_discover)
         discoveryText.setOnClickListener {
             fm.beginTransaction().replace(R.id.fragment_container, ShowTopPostsFragment())
                 .commit()
