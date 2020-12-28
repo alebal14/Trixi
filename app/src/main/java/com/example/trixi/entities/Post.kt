@@ -12,7 +12,8 @@ data class Post(
     val ownerId: String?,
     var comments: List<Comment>?,
     var likes: List<Like>?,
-    var owner: User?,
+    var owner: User? = null,
+    var ownerIsPet :Pet? = null
 ) {
 }
 

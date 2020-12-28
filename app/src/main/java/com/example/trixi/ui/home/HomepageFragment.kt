@@ -38,8 +38,7 @@ class HomepageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater!!.inflate(R.layout.fragment_home, container, false)
-        return view
+        return inflater!!.inflate(R.layout.fragment_home, container, false)
 
     }
 
@@ -83,8 +82,20 @@ class HomepageFragment : Fragment() {
                     posts.forEach { post ->
                         model.getOneUser(post.ownerId!!)
                             ?.observe(viewLifecycleOwner, Observer { postOwner ->
-                                post.owner = postOwner
-                                adapter.add(HomeItem(post, fm!!))
+                                if (postOwner != null) {
+                                    post.owner = postOwner
+                                    adapter.add(HomeItem(post, fm!!))
+
+                                } else {
+                                    Log.d("home", "user null:")
+                                    //post.owner= null
+                                    model.getOnePet(post.ownerId!!)?.observe(viewLifecycleOwner,
+                                        Observer { petIsOwner ->
+                                            post.ownerIsPet = petIsOwner
+                                            adapter.add(HomeItem(post, fm!!))
+
+                                        })
+                                }
                             })
                     }
                     recyclerView_homepage.adapter = adapter

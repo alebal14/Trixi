@@ -205,6 +205,7 @@ class PostToDb {
         call?.enqueue(object : Callback<Comment> {
             override fun onFailure(call: Call<Comment>, t: Throwable) {
                 Log.d("comment", "comment : onFailure " + t.message)
+
             }
             override fun onResponse(
                 call: Call<Comment>, response: Response<Comment>

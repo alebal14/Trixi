@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
-import com.example.trixi.entities.Pet
-import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.TrixiViewModel
 
@@ -27,12 +25,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_profile, container, false)
 
-//        val b: Bundle? = this.arguments
-//        user = b?.getParcelable<User>("userId")
-
-        return v;
+        return inflater.inflate(R.layout.fragment_profile, container, false);
 
     }
 

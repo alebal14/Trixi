@@ -1,7 +1,5 @@
 package com.example.trixi.ui.home
 
-import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -13,6 +11,7 @@ import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.discover.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
+import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupieViewHolder
@@ -28,26 +27,31 @@ class HomeItem(
 
     companion object {
         private val db = PostToDb()
-
     }
-
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit()
             .into(viewHolder.itemView.home_item_media)
 
-
-        Picasso.get().load(RetrofitClient.BASE_URL + post.owner!!.imageUrl)
+//        Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: ))
+//            .transform(CropCircleTransformation()).fit()
+//            .into(viewHolder.itemView.home_item_profileimg)
+        val profileImgHolder =viewHolder.itemView.home_item_profileimg
+        Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl))
             .transform(CropCircleTransformation()).fit()
-            .into(viewHolder.itemView.home_item_profileimg)
+            .placeholder(R.drawable.sample)
+            .transform(CropCircleTransformation()).fit()
+            .error(R.drawable.sample)
+            .centerCrop().into(profileImgHolder)
 
 
-        viewHolder.itemView.home_item_profileName.text = post.owner!!.userName
+        viewHolder.itemView.home_item_profileName.text = post.owner?.userName ?: post.ownerIsPet?.name
         viewHolder.itemView.home_item_title.text = post.title
         viewHolder.itemView.home_item_description.text = post.description
         viewHolder.itemView.home_item_edit.isVisible = false
-        viewHolder.itemView.home_item_chat_count.text = post.comments?.size.toString()
+        var numberOfComments:Int = post.comments!!.size
+        viewHolder.itemView.home_item_chat_count.text = numberOfComments.toString()
         var numberOfLike: Int = post.likes!!.size
         viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
 
@@ -101,42 +105,41 @@ class HomeItem(
         var profileImg: ImageView = viewHolder.itemView.findViewById(R.id.home_item_profileimg)
 
         profileImg.setOnClickListener {
-            redirectToUser()
+            redirectToUserOrPet()
         }
         profileName.setOnClickListener {
-            redirectToUser()
+            redirectToUserOrPet()
         }
+    }
+
+    private fun redirectToUserOrPet() {
+        if(post.owner !=null){
+            val userProfileFragment = UserProfileFragment(post.owner)
+            fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
+        }else {
+            val petProfileFragment = PetProfileFragment(post.ownerIsPet)
+            fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
+
+        }
+
     }
 
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {
         var commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
-        commentIcon.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                val reversedComments: List<Comment>? = post.comments;
-                val popUp = PopUpCommentWindow(reversedComments)
+        commentIcon.setOnClickListener {
+            val reversedComments: List<Comment>? = post.comments;
+            val popUp = PopUpCommentWindow(reversedComments, post.uid.toString(),viewHolder)
 
-                if (fm != null) {
-                    popUp.show(fm, PopUpCommentWindow.TAG)
-                }
-            }
-        })
+            popUp.show(fm, PopUpCommentWindow.TAG)
+        }
     }
 
     private fun handleClickOnDiscovery(viewHolder: GroupieViewHolder) {
         var discoveryText: TextView = viewHolder.itemView.findViewById(R.id.home_item_discover)
-        discoveryText.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                fm.beginTransaction().replace(R.id.fragment_container, ShowTopPostsFragment())
-                    .commit()
-
-            }
-        })
-
-    }
-
-    private fun redirectToUser() {
-        val userProfileFragment = UserProfileFragment(post.owner)
-        fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
+        discoveryText.setOnClickListener {
+            fm.beginTransaction().replace(R.id.fragment_container, ShowTopPostsFragment())
+                .commit()
+        }
 
     }
 
