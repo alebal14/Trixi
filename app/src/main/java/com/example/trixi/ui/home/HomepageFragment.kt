@@ -66,7 +66,7 @@ class HomepageFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun getPostByOwner() {
+    /*private fun getPostByOwner() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
         model.getPostsByOwner("5fd746d47e9d9f34e506ea81")?.observe(viewLifecycleOwner, Observer {
             Log.d("byOwner", "size: post by owner : ${it?.size}")
@@ -78,7 +78,7 @@ class HomepageFragment : Fragment() {
         })
 
 
-    }
+    }*/
 
     private fun setUpHomeView() {
         val fm = fragmentManager

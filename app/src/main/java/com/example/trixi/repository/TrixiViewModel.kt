@@ -8,10 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.*
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 
 class TrixiViewModel : ViewModel() {
 
@@ -20,7 +20,7 @@ class TrixiViewModel : ViewModel() {
 
 
     val allPosts: LiveData<List<Post>?> = MutableLiveData()
-    val allCatgory: LiveData<List<Category>?> = MutableLiveData()
+
 
 
 //    init {
@@ -100,13 +100,15 @@ class TrixiViewModel : ViewModel() {
         return petsByOwner
     }
 
-    fun getAllCategories(){
+    fun getAllCategories(): MutableLiveData<List<Category>> {
+        val allCategory =  MutableLiveData<List<Category>>()
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All category")
             val p = retrofitClient?.getAllCategories()?.body()
-            allCatgory as MutableLiveData
-            allCatgory.postValue(p)
+            allCategory as MutableLiveData
+            allCategory.postValue(p)
         }
+        return allCategory
     }
 
 }

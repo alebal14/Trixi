@@ -1,8 +1,5 @@
 package com.example.trixi.entities;
 
-import io.realm.internal.Keep
-import java.io.File
-
 
 data class Post(
     val uid: String?,

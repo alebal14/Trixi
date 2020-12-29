@@ -1,33 +1,28 @@
 package com.example.trixi.ui
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.View
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.MainActivity
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Post
+import com.example.trixi.entities.Category
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_upload.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 
@@ -40,6 +35,8 @@ class UploadActivity : AppCompatActivity() {
     private var mediaPath: String? = null
     private var postPath: String? = null
 
+    private var spinner: Spinner? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +46,15 @@ class UploadActivity : AppCompatActivity() {
         uploadImage.setOnClickListener {
             requestPermissions()
             val intent = Intent(
-                    Intent.ACTION_PICK,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
 
             startActivityForResult(intent, 0)
         }
 
         button_cancel.setOnClickListener(){
-            val intent = Intent (this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             this.startActivity(intent)
         }
 
@@ -65,6 +62,53 @@ class UploadActivity : AppCompatActivity() {
             sendPost()
         }
 
+        val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+
+        // access the spinner
+        spinner = findViewById<Spinner>(R.id.upload_spinner_add_category)
+        if (spinner != null) {
+            model.getAllCategories().observe(this, { allCategory ->
+                val spinnerAdapter = ArrayAdapter<Category>(
+                    this,
+                    android.R.layout.simple_spinner_item,
+                    allCategory
+                )
+                spinner!!.adapter = spinnerAdapter
+            })
+
+
+            spinner!!.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    val category: Category = parent.selectedItem as Category
+                    displayCategoryData(category)
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
+        }
+
+
+
+
+    }
+
+    fun getSelectedCategory(v: View?) {
+        val category: Category = spinner?.selectedItem as Category
+        displayCategoryData(category)
+    }
+
+    private fun displayCategoryData(category: Category) {
+        val name: String? = category.name
+
+        val categoryData = "$name"
 
     }
 
@@ -75,7 +119,10 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun hasWriteExternalStoragePermission() =
-            ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestPermissions() {
         var permissionsToRequest = mutableListOf<String>()
@@ -89,9 +136,9 @@ class UploadActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 0 && grantResults.isNotEmpty()) {
@@ -152,7 +199,7 @@ class UploadActivity : AppCompatActivity() {
 
 
 
-        db.sendPostToDb(imagenPerfil, description, ownerId, title )
+        db.sendPostToDb(imagenPerfil, description, ownerId, title)
 
         //toAnotherActivity()
 
@@ -160,10 +207,12 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun toAnotherActivity(){
-        val intent = Intent (this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("EXTRA", "openSingle");
 
         this.startActivity(intent)
     }
 
 }
+
+
