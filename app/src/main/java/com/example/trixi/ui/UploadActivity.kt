@@ -132,10 +132,6 @@ class UploadActivity : AppCompatActivity() {
             mediaPath = cursor.getString(columnIndex)
             // Set the Image in ImageView for Previewing the Media
 
-            //Setting the image on frontend
-            //bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
-            //uploadImage.setImageBitmap(bitmap)
-
             val totheView = findViewById<View>(R.id.uploadImage) as ImageView
 
             Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)
@@ -148,27 +144,7 @@ class UploadActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun sendImage(){
 
-
-        //convert the image to bitmap
-        val convertImageBitmap = BitmapFactory.decodeFile(postPath)
-
-        val baos = ByteArrayOutputStream()
-        //compressing the bitmap
-        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,   baos)
-
-        //converting the image to bytearray
-        val imageByte = baos.toByteArray()
-
-        //encoding the image
-        encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
-
-        //sending the image
-        //db.PostImageToDb(encodedImage)
-        Thread.sleep(1_000)
-        sendPost()
-    }*/
 
     private fun sendPost(){
         val title = title_field.text.toString()
@@ -186,7 +162,7 @@ class UploadActivity : AppCompatActivity() {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-       // val post = Post("", title, description, null, ownerId, null, null)
+
 
         db.sendPostToDb(imagenPerfil, description, ownerId, title )
 
