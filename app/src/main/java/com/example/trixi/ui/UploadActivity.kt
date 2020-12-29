@@ -34,22 +34,10 @@ import java.io.File
 class UploadActivity : AppCompatActivity() {
 
     val db = PostToDb()
-    var selectedImage: Uri? = null
-    var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
-    var encodedImage: String = ""
     var filePath = ""
 
     private val mainActivity: MainActivity? = null
-
-
-    private val mMediaUri: Uri? = null
-
-    private var fileUri: Uri? = null
-
     private var mediaPath: String? = null
-
-    private var mImageFileLocation = ""
-    private lateinit var pDialog: ProgressDialog
     private var postPath: String? = null
 
 

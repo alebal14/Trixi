@@ -119,9 +119,9 @@ interface Api {
 
 
 
-//    //Category
-//   @GET("rest/categories")
-//   fun getAllCategories(): Call<List<Category>>
+   //Category
+   @GET("rest/categories")
+    suspend fun getAllCategories(): Response<List<Category>>
 
 
     // @GET("api/getLatestPost/{id}")

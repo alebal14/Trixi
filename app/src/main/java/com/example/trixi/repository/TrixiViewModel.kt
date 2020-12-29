@@ -20,6 +20,7 @@ class TrixiViewModel : ViewModel() {
 
 
     val allPosts: LiveData<List<Post>?> = MutableLiveData()
+    val allCatgory: LiveData<List<Category>?> = MutableLiveData()
 
 
 //    init {
@@ -97,6 +98,15 @@ class TrixiViewModel : ViewModel() {
             petsByOwner?.postValue(pets)
         }
         return petsByOwner
+    }
+
+    fun getAllCategories(){
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All category")
+            val p = retrofitClient?.getAllCategories()?.body()
+            allCatgory as MutableLiveData
+            allCatgory.postValue(p)
+        }
     }
 
 }
