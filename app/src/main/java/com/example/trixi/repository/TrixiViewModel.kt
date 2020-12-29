@@ -16,11 +16,7 @@ import kotlinx.coroutines.launch
 class TrixiViewModel : ViewModel() {
 
     private val TAG = "TrixiViewModel"
-    val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-
-
-    val allPosts: LiveData<List<Post>?> = MutableLiveData()
-
+    private val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
 
 //    init {
@@ -57,10 +53,11 @@ class TrixiViewModel : ViewModel() {
     }
 
     fun getAllPosts() {
+        val allPosts: MutableLiveData<List<Post>?> = MutableLiveData()
+
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All post")
             val p = retrofitClient?.getAllPosts()?.body()
-            allPosts as MutableLiveData
             allPosts.postValue(p)
         }
     }
@@ -69,12 +66,32 @@ class TrixiViewModel : ViewModel() {
         val userById: MutableLiveData<User>? = MutableLiveData()
 
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "getting one User post")
-            val aUser = retrofitClient?.getUserById(id)?.body()
-            userById?.postValue(aUser)
-
+            try {
+                Log.d(TAG, "getting one User")
+                val aUser = retrofitClient?.getUserById(id)?.body()
+                userById?.postValue(aUser)
+            } catch (e: Exception) {
+                userById?.postValue(null)
+                // Handle exception
+            }
         }
         return userById
+    }
+
+    fun getOnePet(id: String): MutableLiveData<Pet>? {
+        val petById: MutableLiveData<Pet>? = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                Log.d(TAG, "getting one Pet")
+                val aPet = retrofitClient?.getPetById(id)?.body()
+                petById?.postValue(aPet)
+
+            } catch (e: Exception) {
+                petById?.postValue(null)
+            }
+        }
+        return petById
     }
 
     fun getPostsByOwner(id: String): MutableLiveData<List<Post>>? {

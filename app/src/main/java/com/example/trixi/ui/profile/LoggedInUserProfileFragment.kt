@@ -70,7 +70,7 @@ class LoggedInUserProfileFragment : Fragment() {
                     GridLayoutManager.VERTICAL,
                     false
                 )
-                media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts)
+                media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts!!)
             } else profile_no_posts.visibility = TextView.VISIBLE
         }
 
@@ -86,7 +86,7 @@ class LoggedInUserProfileFragment : Fragment() {
                     GridLayoutManager.HORIZONTAL,
                     false
                 )
-                adapter = ProfilePetListAdapter(loggedInUser.pets)
+                adapter = ProfilePetListAdapter(loggedInUser.pets!!)
                 users_pet_list.adapter = adapter
             }
         }

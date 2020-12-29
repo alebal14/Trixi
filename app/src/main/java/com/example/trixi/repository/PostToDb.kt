@@ -7,9 +7,7 @@ import android.widget.Toast
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Image
-import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
+import com.example.trixi.entities.*
 import com.example.trixi.ui.login.LoginActivity
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -199,6 +197,74 @@ class PostToDb {
 
         })
 
+    }
+
+    fun comment(comment: Comment){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.commentAPost(comment)
+        call?.enqueue(object : Callback<Comment> {
+            override fun onFailure(call: Call<Comment>, t: Throwable) {
+                Log.d("comment", "comment : onFailure " + t.message)
+
+            }
+            override fun onResponse(
+                call: Call<Comment>, response: Response<Comment>
+            ) {
+                if (response.isSuccessful) {
+                    val c: Comment? = response.body()
+                    Log.d("comment",c.toString())
+
+                } else {
+                    Log.d("comment", "fail to comment")
+                }
+            }
+        })
+
+
+    }
+
+
+    fun like(like: Like){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.likeAPost(like)
+        call?.enqueue(object : Callback<Like> {
+            override fun onFailure(call: Call<Like>, t: Throwable) {
+                Log.d("like", "like : onFailure " + t.message)
+            }
+            override fun onResponse(
+                call: Call<Like>, response: Response<Like>
+            ) {
+                if (response.isSuccessful) {
+                    val l: Like? = response.body()
+                    Log.d("like",l.toString())
+
+                } else {
+                    Log.d("like", "fail to like")
+                }
+            }
+        })
+    }
+
+
+    fun unlike(like: Like){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.unlikeAPost(like)
+        call?.enqueue(object : Callback<Like> {
+            override fun onFailure(call: Call<Like>, t: Throwable) {
+                Log.d("like", "unlike : onFailure " + t.message)
+            }
+            override fun onResponse(
+                call: Call<Like>, response: Response<Like>
+            ) {
+                if (response.isSuccessful) {
+                    val l: Like? = response.body()
+                    Log.d("like",l.toString())
+
+                } else {
+                    Log.d("like", "fail to unlike")
+                }
+            }
+        })
     }
 
 
