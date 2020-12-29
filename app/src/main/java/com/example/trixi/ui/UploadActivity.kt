@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -35,7 +36,7 @@ class UploadActivity : AppCompatActivity() {
     private var mediaPath: String? = null
     private var postPath: String? = null
 
-    private var spinner: Spinner? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,21 +65,42 @@ class UploadActivity : AppCompatActivity() {
 
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-
+       // val categoryList= model.getAllCategories()
         // access the spinner
-        spinner = findViewById<Spinner>(R.id.upload_spinner_add_category)
-        if (spinner != null) {
+        var  categorySpinner = findViewById<Spinner>(R.id.upload_spinner_add_category)
+
+       /* val adapter: ArrayAdapter<Category> = ArrayAdapter<Category>(
+            this,
+            android.R.layout.simple_spinner_item, categoryList
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.setAdapter(adapter)
+        spinner.setOnItemSelectedListener(object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val category: Category = parent.selectedItem as Category
+                displayCategoryData(category)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        })*/
+
+        if (categorySpinner != null) {
             model.getAllCategories().observe(this, { allCategory ->
                 val spinnerAdapter = ArrayAdapter<Category>(
                     this,
                     android.R.layout.simple_spinner_item,
                     allCategory
                 )
-                spinner!!.adapter = spinnerAdapter
+                categorySpinner!!.adapter = spinnerAdapter
             })
 
 
-            spinner!!.onItemSelectedListener = object :
+            categorySpinner!!.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
@@ -101,7 +123,7 @@ class UploadActivity : AppCompatActivity() {
     }
 
     fun getSelectedCategory(v: View?) {
-        val category: Category = spinner?.selectedItem as Category
+        val category: Category = upload_spinner_add_category?.selectedItem as Category
         displayCategoryData(category)
     }
 
@@ -109,6 +131,10 @@ class UploadActivity : AppCompatActivity() {
         val name: String? = category.name
 
         val categoryData = "$name"
+
+        Log.d("cat", categoryData)
+
+
 
     }
 
