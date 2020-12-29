@@ -2,9 +2,8 @@ package com.example.trixi.ui.profile
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -31,16 +30,21 @@ class UserProfileFragment(val user: User?) : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "username > ${user?.userName}")
-        Log.d(TAG, "email: ${user?.email}")
-        Log.d(TAG, "followings > ${user?.followingsUser?.size}")
-
-
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
         getPosts()
         getPets()
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.empty_menu, menu)
+        if (user != null) {
+            (activity as AppCompatActivity?)!!.supportActionBar!!.title = user.userName
+        }
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun getPosts() {
