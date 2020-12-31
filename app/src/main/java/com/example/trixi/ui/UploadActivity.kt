@@ -9,7 +9,10 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +47,8 @@ class UploadActivity : AppCompatActivity() {
     private var mediaPath: String? = null
     private var postPath: String? = null
 
+    val REQUEST_IMAGE_CAPTURE = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload)
@@ -61,14 +66,11 @@ class UploadActivity : AppCompatActivity() {
         }
 
         btn_open_camera.setOnClickListener {
-            requestPermissions()
-            val intent = Intent(
-                    Intent.ACTION_PICK,
-                    MediaStore.Images.Media.INTERNAL_CONTENT_URI
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePictureIntent.resolveActivity(packageManager) != null) {
+                startActivityForResult(takePictureIntent, 0)
+            }
 
-            )
-            intent.setType("image/* video/*");
-            startActivityForResult(intent, 0)
         }
 
         button_cancel.setOnClickListener(){
