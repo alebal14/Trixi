@@ -3,6 +3,8 @@ package com.example.trixi.ui
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -24,22 +26,25 @@ import kotlinx.android.synthetic.main.activity_upload.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 
 class UploadActivity : AppCompatActivity() {
 
     val db = PostToDb()
-    var filePath = ""
 
-    private val mainActivity: MainActivity? = null
-    private var mediaPath: String? = null
-    private var postPath: String? = null
+
+
 
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
     var ownerId: String = ""
-    var categoryName: String = ""
+    var categoryName:String = ""
 
+    var selectedImage: Uri? = null
+    var filePath = ""
+    private var mediaPath: String? = null
+    private var postPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +57,6 @@ class UploadActivity : AppCompatActivity() {
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
-
             startActivityForResult(intent, 0)
         }
 
@@ -67,10 +71,8 @@ class UploadActivity : AppCompatActivity() {
 
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-
         var categorySpinner = findViewById<Spinner>(R.id.upload_spinner_add_category)
         var petSpinner =  findViewById<Spinner>(R.id.upload_spinner_add_pet)
-
 
         if (categorySpinner != null) {
             model.getAllCategories().observe(this, { allCategory ->
@@ -82,7 +84,6 @@ class UploadActivity : AppCompatActivity() {
                 categorySpinner.adapter = spinnerAdapter
             })
 
-
             categorySpinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -91,12 +92,9 @@ class UploadActivity : AppCompatActivity() {
                 ) {
                     val category: Category = parent.selectedItem as Category
                     selectCategoryData(category)
-
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
-
-
                 }
             }
         }
@@ -122,14 +120,9 @@ class UploadActivity : AppCompatActivity() {
                             allPets
                         )
 
-
                         spinnerAdapter.sort(compareBy { it.name })
                         spinnerAdapter.insert(petdefault,0)
                         petSpinner.adapter = spinnerAdapter
-
-
-
-
 
                     }
                 })
@@ -150,19 +143,16 @@ class UploadActivity : AppCompatActivity() {
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
+                }
 
                 }
-            }
 
             }
-
     }
 
 
     private fun selectCategoryData(category: Category) {
-
         categoryName = category.name
-        Toast.makeText(this, "category : $categoryName", Toast.LENGTH_LONG).show()
     }
 
     private fun selectPetData(pet: Pet) {
@@ -212,7 +202,6 @@ class UploadActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
 
-
             var selectedImage = data.getData()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
@@ -232,7 +221,6 @@ class UploadActivity : AppCompatActivity() {
 
             postPath = mediaPath
 
-
         }
     }
 
@@ -242,8 +230,15 @@ class UploadActivity : AppCompatActivity() {
         val title = title_field.text.toString()
         val description = description_field.text.toString()
 
+
+
         if (title.isEmpty()) {
-            Toast.makeText(this, "Please enter a title", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if( selectedImage == null){
+            Toast.makeText(this, "Please select a image", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -251,7 +246,10 @@ class UploadActivity : AppCompatActivity() {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        db.sendPostToDb(imagenPerfil, description, ownerId, title, categoryName)
+
+
+
+       db.sendPostToDb(imagenPerfil, description, ownerId, title, categoryName)
 
         //toAnotherActivity()
 
