@@ -105,7 +105,8 @@ interface Api {
         @Part file: MultipartBody.Part,
         @Part("description") description: String,
         @Part("ownerId") ownerId: String,
-        @Part("title") title: String
+        @Part("title") title: String,
+        @Part("categoryName") categoryName: String
     ): Call<Post>
 
     @GET("rest/posts/{id}")

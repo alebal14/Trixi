@@ -38,6 +38,7 @@ class UploadActivity : AppCompatActivity() {
 
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
     var ownerId: String = ""
+    var categoryName: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +90,7 @@ class UploadActivity : AppCompatActivity() {
                     view: View, position: Int, id: Long
                 ) {
                     val category: Category = parent.selectedItem as Category
-                    displayCategoryData(category)
+                    selectCategoryData(category)
 
                 }
 
@@ -144,16 +145,12 @@ class UploadActivity : AppCompatActivity() {
                     if (position == 0) {
                         ownerId = loggedInUserId;
                     } else {
-                        displayPetData(pet)
+                        selectPetData(pet)
                     }
-
-
-
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
 
-
                 }
             }
 
@@ -161,17 +158,14 @@ class UploadActivity : AppCompatActivity() {
 
     }
 
-    /*fun getSelectedCategory(v: View?) {
-        val category: Category = upload_spinner_add_category?.selectedItem as Category
-        displayCategoryData(category)
-    }*/
 
-    private fun displayCategoryData(category: Category) {
-        val name: String? = category.name
-        //val categoryData = "$name"
+    private fun selectCategoryData(category: Category) {
+
+        categoryName = category.name
+        Toast.makeText(this, "category : $categoryName", Toast.LENGTH_LONG).show()
     }
 
-    private fun displayPetData(pet: Pet) {
+    private fun selectPetData(pet: Pet) {
         ownerId = pet.uid
     }
 
@@ -257,7 +251,7 @@ class UploadActivity : AppCompatActivity() {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        db.sendPostToDb(imagenPerfil, description, ownerId, title)
+        db.sendPostToDb(imagenPerfil, description, ownerId, title, categoryName)
 
         //toAnotherActivity()
 

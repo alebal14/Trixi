@@ -13,7 +13,7 @@ public class Post {
     private String filePath;
 
     private String ownerId;
-    private String categoryId;
+    private String categoryName;
 
     private List<Comment> comments = new ArrayList<>();
     private List<Like> likes = new ArrayList<>();
@@ -30,12 +30,12 @@ public class Post {
 
     }
 
-    public Post(String title, String filePath, String description, String ownerId, String categoryId) {
+    public Post(String title, String filePath, String description, String ownerId, String categoryName) {
         this.title = title;
         this.filePath = filePath;
         this.description = description;
         this.ownerId = ownerId;
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     public Post(String title, String filePath, String description, String ownerId) {
@@ -86,12 +86,12 @@ public class Post {
         this.ownerId = ownerId;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public List<Comment> getComments() {
@@ -117,12 +117,11 @@ public class Post {
                 "id=" + id +
                 ", uid='" + uid + '\'' +
                 ", title='" + title + '\'' +
-                ", filePath='" + filePath + '\'' +
                 ", description='" + description + '\'' +
+                ", filePath='" + filePath + '\'' +
                 ", ownerId='" + ownerId + '\'' +
-                ", categoryId='" + categoryId + '\'' +
+                ", categoryName='" + categoryName + '\'' +
                 ", comments=" + comments +
-
                 ", likes=" + likes +
                 '}';
     }

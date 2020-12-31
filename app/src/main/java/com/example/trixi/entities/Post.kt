@@ -7,6 +7,7 @@ data class Post(
     val description: String?,
     val filePath: String?,
     val ownerId: String?,
+    val categoryName: String?,
     var comments: List<Comment>?,
     var likes: List<Like>?,
     var owner: User? = null,
