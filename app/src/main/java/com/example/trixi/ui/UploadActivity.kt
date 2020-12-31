@@ -49,12 +49,25 @@ class UploadActivity : AppCompatActivity() {
         setContentView(R.layout.activity_upload)
         RetrofitClient.context = this
 
-        uploadImage.setOnClickListener {
+        btn_open_gallery.setOnClickListener {
             requestPermissions()
             val intent = Intent(
                     Intent.ACTION_PICK,
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
             )
+            intent.setType("image/* video/*");
+            startActivityForResult(intent, 0)
+        }
+
+        btn_open_camera.setOnClickListener {
+            requestPermissions()
+            val intent = Intent(
+                    Intent.ACTION_PICK,
+                    MediaStore.Images.Media.INTERNAL_CONTENT_URI
+
+            )
+            intent.setType("image/* video/*");
             startActivityForResult(intent, 0)
         }
 
@@ -69,20 +82,18 @@ class UploadActivity : AppCompatActivity() {
 
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        var categorySpinner = findViewById<Spinner>(R.id.upload_spinner_add_category)
-        var petSpinner =  findViewById<Spinner>(R.id.upload_spinner_add_pet)
 
-        if (categorySpinner != null) {
+        if (upload_spinner_add_category != null) {
             model.getAllCategories().observe(this, { allCategory ->
                 val spinnerAdapter = ArrayAdapter<Category>(
                         this,
                         android.R.layout.simple_spinner_item,
                         allCategory
                 )
-                categorySpinner.adapter = spinnerAdapter
+                upload_spinner_add_category.adapter = spinnerAdapter
             })
 
-            categorySpinner.onItemSelectedListener = object :
+            upload_spinner_add_category.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                         parent: AdapterView<*>,
@@ -97,7 +108,7 @@ class UploadActivity : AppCompatActivity() {
             }
         }
 
-        if (petSpinner != null) {
+        if (upload_spinner_add_pet != null) {
 
 
             var petList = model.getPetsByOwner(loggedInUserId)
@@ -109,7 +120,7 @@ class UploadActivity : AppCompatActivity() {
 
                 petList?.observe(this, { allPets ->
                     if (allPets!!.isEmpty()) {
-                        petSpinner.visibility = View.GONE;
+                        upload_spinner_add_pet.visibility = View.GONE;
                     } else {
 
                         val spinnerAdapter = ArrayAdapter<Pet>(
@@ -120,13 +131,13 @@ class UploadActivity : AppCompatActivity() {
 
                         spinnerAdapter.sort(compareBy { it.name })
                         spinnerAdapter.insert(petdefault, 0)
-                        petSpinner.adapter = spinnerAdapter
+                        upload_spinner_add_pet.adapter = spinnerAdapter
 
                     }
                 })
 
 
-            petSpinner.onItemSelectedListener = object :
+            upload_spinner_add_pet.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                         parent: AdapterView<*>,
