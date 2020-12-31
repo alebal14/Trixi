@@ -86,8 +86,13 @@ class HomepageFragment : Fragment() {
                                     Log.d("home", "user null")
                                     model.getOnePet(post.ownerId!!)
                                         ?.observe(viewLifecycleOwner, Observer { petIsOwner ->
-                                            post.ownerIsPet = petIsOwner
-                                            adapter.add(HomeItem(post, fm!!))
+                                            if(petIsOwner != null){
+                                                post.ownerIsPet = petIsOwner
+                                                adapter.add(HomeItem(post, fm!!))
+                                            }else{
+                                                Log.d("home", "pet null")
+                                            }
+
                                         })
                                 }
                             })

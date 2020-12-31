@@ -391,11 +391,11 @@ public class RestApi {
             userLoggedIn.setUid(user.getId().toString());
             userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
             userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
-            userLoggedIn.getPosts().forEach(post -> {
-                post.setUid(post.getId().toString());
-                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
-                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
-            });
+//            userLoggedIn.getPosts().forEach(post -> {
+//                post.setUid(post.getId().toString());
+//                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+//                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+//            });
 
             res.json(userLoggedIn);
         });
