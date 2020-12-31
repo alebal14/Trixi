@@ -16,6 +16,7 @@ import com.example.trixi.MainActivity
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Category
+import com.example.trixi.entities.Pet
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
@@ -34,6 +35,8 @@ class UploadActivity : AppCompatActivity() {
     private val mainActivity: MainActivity? = null
     private var mediaPath: String? = null
     private var postPath: String? = null
+
+    val ownerId = PostToDb.loggedInUser?.uid.toString()
 
 
 
@@ -65,7 +68,8 @@ class UploadActivity : AppCompatActivity() {
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
 
-        var  categorySpinner = findViewById<Spinner>(R.id.upload_spinner_add_category)
+        var categorySpinner = findViewById<Spinner>(R.id.upload_spinner_add_category)
+        var petSpinner =  findViewById<Spinner>(R.id.upload_spinner_add_pet)
 
 
         if (categorySpinner != null) {
@@ -96,19 +100,55 @@ class UploadActivity : AppCompatActivity() {
             }
         }
 
+        if (petSpinner != null) {
+
+                model.getPetsByOwner(ownerId)?.observe(this, { allPets ->
+                    if( allPets!!.isEmpty()) {
+                        petSpinner.visibility = View.GONE;
+                    } else {
+                        val spinnerAdapter = ArrayAdapter<Pet>(
+                            this,
+                            android.R.layout.simple_spinner_item,
+                            allPets
+                        )
+                        petSpinner.adapter = spinnerAdapter
+                    }
+                })
 
 
+            petSpinner.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    val pet: Pet = parent.selectedItem as Pet
+                    displayPetData(pet)
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
+
+            }
 
     }
 
-    fun getSelectedCategory(v: View?) {
+    /*fun getSelectedCategory(v: View?) {
         val category: Category = upload_spinner_add_category?.selectedItem as Category
-        displayCategoryData(category)
-    }
+        displayCategoryData(category) 
+    }*/
 
     private fun displayCategoryData(category: Category) {
         val name: String? = category.name
         val categoryData = "$name"
+    }
+
+    private fun displayPetData(pet: Pet) {
+        val name: String? = pet.name
+        val petData = "$name"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -183,7 +223,7 @@ class UploadActivity : AppCompatActivity() {
     private fun sendPost(){
         val title = title_field.text.toString()
         val description = description_field.text.toString()
-        val ownerId = PostToDb.loggedInUser?.uid.toString()
+
 
 
 

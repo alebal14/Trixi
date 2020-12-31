@@ -14,3 +14,11 @@ data class Pet (
     val followers: ArrayList<User>?,
     val gender: String?
 ) : Serializable
+
+{
+
+    override fun toString(): String {
+        return name
+    }
+
+}
