@@ -1,26 +1,6 @@
 package com.example.trixi.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-//import androidx.lifecycle.viewModelScope
-import com.example.trixi.apiService.Api
-import com.example.trixi.apiService.RetrofitClient
-//import com.example.trixi.dao.RealmHandler
-import com.example.trixi.dao.asLiveData
-import com.example.trixi.entities.*
-import com.example.trixi.entities.RealmPost
-import com.example.trixi.entities.RealmUser
-import com.example.trixi.entities.User
-import io.realm.Realm
-import io.realm.RealmResults
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import kotlin.coroutines.Continuation
 
 class DataViewModel : ViewModel() {
 
