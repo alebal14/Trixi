@@ -36,9 +36,8 @@ class UploadActivity : AppCompatActivity() {
     private var mediaPath: String? = null
     private var postPath: String? = null
 
-    val ownerId = PostToDb.loggedInUser?.uid.toString()
-
-
+    val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
+    var ownerId: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +60,7 @@ class UploadActivity : AppCompatActivity() {
             this.startActivity(intent)
         }
 
-        button_post.setOnClickListener(){
+        button_post.setOnClickListener() {
             sendPost()
         }
 
@@ -95,23 +94,42 @@ class UploadActivity : AppCompatActivity() {
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
-                    // write code to perform some action
+
+
                 }
             }
         }
 
         if (petSpinner != null) {
 
-                model.getPetsByOwner(ownerId)?.observe(this, { allPets ->
-                    if( allPets!!.isEmpty()) {
+
+            var petList = model.getPetsByOwner(loggedInUserId)
+
+            var petdefault = (Pet("0", null, "", "Select Pet", "", 0, "", "", null, "" ))
+
+
+            Log.d("petList", "${petList.toString()}")
+
+                petList?.observe(this, { allPets ->
+                    if (allPets!!.isEmpty()) {
                         petSpinner.visibility = View.GONE;
                     } else {
+
                         val spinnerAdapter = ArrayAdapter<Pet>(
                             this,
                             android.R.layout.simple_spinner_item,
                             allPets
                         )
+
+
+                        spinnerAdapter.sort(compareBy { it.name })
+                        spinnerAdapter.insert(petdefault,0)
                         petSpinner.adapter = spinnerAdapter
+
+
+
+
+
                     }
                 })
 
@@ -123,12 +141,19 @@ class UploadActivity : AppCompatActivity() {
                     view: View, position: Int, id: Long
                 ) {
                     val pet: Pet = parent.selectedItem as Pet
-                    displayPetData(pet)
+                    if (position == 0) {
+                        ownerId = loggedInUserId;
+                    } else {
+                        displayPetData(pet)
+                    }
+
+
 
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
-                    // write code to perform some action
+
+
                 }
             }
 
@@ -138,17 +163,16 @@ class UploadActivity : AppCompatActivity() {
 
     /*fun getSelectedCategory(v: View?) {
         val category: Category = upload_spinner_add_category?.selectedItem as Category
-        displayCategoryData(category) 
+        displayCategoryData(category)
     }*/
 
     private fun displayCategoryData(category: Category) {
         val name: String? = category.name
-        val categoryData = "$name"
+        //val categoryData = "$name"
     }
 
     private fun displayPetData(pet: Pet) {
-        val name: String? = pet.name
-        val petData = "$name"
+        ownerId = pet.uid
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -224,9 +248,6 @@ class UploadActivity : AppCompatActivity() {
         val title = title_field.text.toString()
         val description = description_field.text.toString()
 
-
-
-
         if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_LONG).show()
             return
@@ -235,8 +256,6 @@ class UploadActivity : AppCompatActivity() {
         val file = File(postPath)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-
-
 
         db.sendPostToDb(imagenPerfil, description, ownerId, title)
 
@@ -253,5 +272,7 @@ class UploadActivity : AppCompatActivity() {
     }
 
 }
+
+
 
 
