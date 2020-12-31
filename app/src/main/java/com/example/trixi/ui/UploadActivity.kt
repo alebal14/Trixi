@@ -3,7 +3,6 @@ package com.example.trixi.ui
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -26,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_upload.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 
@@ -54,8 +52,8 @@ class UploadActivity : AppCompatActivity() {
         uploadImage.setOnClickListener {
             requestPermissions()
             val intent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
             startActivityForResult(intent, 0)
         }
@@ -77,9 +75,9 @@ class UploadActivity : AppCompatActivity() {
         if (categorySpinner != null) {
             model.getAllCategories().observe(this, { allCategory ->
                 val spinnerAdapter = ArrayAdapter<Category>(
-                    this,
-                    android.R.layout.simple_spinner_item,
-                    allCategory
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        allCategory
                 )
                 categorySpinner.adapter = spinnerAdapter
             })
@@ -87,8 +85,8 @@ class UploadActivity : AppCompatActivity() {
             categorySpinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View, position: Int, id: Long
+                        parent: AdapterView<*>,
+                        view: View, position: Int, id: Long
                 ) {
                     val category: Category = parent.selectedItem as Category
                     selectCategoryData(category)
@@ -104,7 +102,7 @@ class UploadActivity : AppCompatActivity() {
 
             var petList = model.getPetsByOwner(loggedInUserId)
 
-            var petdefault = (Pet("0", null, "", "Select Pet", "", 0, "", "", null, "" ))
+            var petdefault = (Pet("0", null, "", "Select Pet", "", 0, "", "", null, ""))
 
 
             Log.d("petList", "${petList.toString()}")
@@ -115,13 +113,13 @@ class UploadActivity : AppCompatActivity() {
                     } else {
 
                         val spinnerAdapter = ArrayAdapter<Pet>(
-                            this,
-                            android.R.layout.simple_spinner_item,
-                            allPets
+                                this,
+                                android.R.layout.simple_spinner_item,
+                                allPets
                         )
 
                         spinnerAdapter.sort(compareBy { it.name })
-                        spinnerAdapter.insert(petdefault,0)
+                        spinnerAdapter.insert(petdefault, 0)
                         petSpinner.adapter = spinnerAdapter
 
                     }
@@ -131,8 +129,8 @@ class UploadActivity : AppCompatActivity() {
             petSpinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View, position: Int, id: Long
+                        parent: AdapterView<*>,
+                        view: View, position: Int, id: Long
                 ) {
                     val pet: Pet = parent.selectedItem as Pet
                     if (position == 0) {
@@ -167,8 +165,8 @@ class UploadActivity : AppCompatActivity() {
 
     private fun hasWriteExternalStoragePermission() =
             ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestPermissions() {
@@ -183,9 +181,9 @@ class UploadActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 0 && grantResults.isNotEmpty()) {
@@ -202,7 +200,7 @@ class UploadActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
 
-            var selectedImage = data.getData()
+            selectedImage = data.getData()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
             val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
@@ -230,8 +228,6 @@ class UploadActivity : AppCompatActivity() {
         val title = title_field.text.toString()
         val description = description_field.text.toString()
 
-
-
         if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show()
             return
@@ -243,8 +239,18 @@ class UploadActivity : AppCompatActivity() {
         }
 
         val file = File(postPath)
+
+       //get the file size
+        val file_size = ( file.length().toString().toDouble() / 1024 / 1024 )
+
+        // checks if picture size is more than 5 mb
+       if (file_size > 5.0){
+            Toast.makeText(this, "Picture is to big, max sixe: 5 Mb", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+       val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
 
 
