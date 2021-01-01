@@ -67,6 +67,8 @@ class UploadActivity : AppCompatActivity() {
         setContentView(R.layout.activity_upload)
         RetrofitClient.context = this
 
+        uploadVideo.visibility = View.GONE;
+
         btn_open_gallery_picture.setOnClickListener {
             requestPermissions()
             val intent = Intent(
@@ -303,8 +305,10 @@ class UploadActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
 
+            uploadImage.visibility = View.VISIBLE;
+            uploadVideo.visibility = View.GONE;
             selectedImage = data.getData()
 
             Toast.makeText(this, " selectimage: $selectedImage", Toast.LENGTH_SHORT).show()
@@ -327,8 +331,44 @@ class UploadActivity : AppCompatActivity() {
             postPath = mediaPath
 
         }
+        if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK && data != null) {
+
+            uploadImage.visibility = View.GONE;
+            uploadVideo.visibility = View.VISIBLE;
+
+            selectedImage = data.getData()
+
+
+            Toast.makeText(this, " selectimage: $selectedImage", Toast.LENGTH_SHORT).show()
+            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+            val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
+            assert(cursor != null)
+            cursor!!.moveToFirst()
+
+            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+            mediaPath = cursor.getString(columnIndex)
+
+            cursor.close()
+
+            postPath = mediaPath
+
+            // Set the Image in ImageView for Previewing the Media
+
+            //val totheView = findViewById<View>(R.id.uploadImage) as ImageView
+
+            /*Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)*/
+
+            uploadVideo.setVideoURI(selectedImage)
+
+
+
+        }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 
+            uploadImage.visibility = View.VISIBLE;
+            uploadVideo.visibility = View.GONE;
+            
             var uris = Uri.parse(currentPhotoPath)
             selectedImage = uris
 
@@ -406,6 +446,8 @@ class UploadActivity : AppCompatActivity() {
     }
 
 }
+
+
 
 
 
