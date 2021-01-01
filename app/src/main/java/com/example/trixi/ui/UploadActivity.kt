@@ -149,6 +149,7 @@ class UploadActivity : AppCompatActivity() {
             petList?.observe(this, { allPets ->
                     if (allPets!!.isEmpty()) {
                         upload_spinner_add_pet.visibility = View.GONE;
+                        ownerId = loggedInUserId
                     } else {
 
                         val spinnerAdapter = ArrayAdapter<Pet>(
