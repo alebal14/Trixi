@@ -359,7 +359,7 @@ class UploadActivity : AppCompatActivity() {
 
             /*Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)*/
 
-            uploadVideo.setVideoURI(selectedImage)
+            uploadVideo.setSource(postPath)
 
 
 
@@ -368,7 +368,7 @@ class UploadActivity : AppCompatActivity() {
 
             uploadImage.visibility = View.VISIBLE;
             uploadVideo.visibility = View.GONE;
-            
+
             var uris = Uri.parse(currentPhotoPath)
             selectedImage = uris
 
