@@ -4,8 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -45,13 +43,10 @@ class UploadActivity : AppCompatActivity() {
 
     val db = PostToDb()
 
-
-
     lateinit var currentPhotoPath: String
 
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_PERMISSION = 100
-
 
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
     var ownerId: String = ""
@@ -62,8 +57,6 @@ class UploadActivity : AppCompatActivity() {
     private var mediaPath: String? = null
     private var postPath: String? = null
 
-    var file: File? = null
-    var imageURI: Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,25 +76,7 @@ class UploadActivity : AppCompatActivity() {
         }
 
         btn_open_camera.setOnClickListener {
-
             openCamera()
-
-
-
-            /*Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
-                intent.resolveActivity(packageManager)?.also {
-                    startActivityForResult(intent, 1)
-                }
-            }*/
-
-           /* val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            /*file = File(Environment.getExternalStorageDirectory(), "image.jpg")
-            imageURI = FileProvider.getUriForFile(applicationContext, "$packageName.provider", file!!)
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI)*/
-            if (takePictureIntent.resolveActivity(packageManager) != null) {
-                startActivityForResult(takePictureIntent, 1)
-            }*/
-
         }
 
 
@@ -232,7 +207,8 @@ class UploadActivity : AppCompatActivity() {
     private fun createCapturedPhoto(): File {
         val timestamp: String = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("PHOTO_${timestamp}",".jpg", storageDir).apply {
+
+        return File.createTempFile("PHOTO_${timestamp}", ".jpg", storageDir).apply {
             currentPhotoPath = absolutePath
         }
     }
@@ -289,6 +265,8 @@ class UploadActivity : AppCompatActivity() {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
 
             selectedImage = data.getData()
+
+            Toast.makeText(this, " selectimage: $selectedImage", Toast.LENGTH_SHORT).show()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
             val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
@@ -308,12 +286,21 @@ class UploadActivity : AppCompatActivity() {
             postPath = mediaPath
 
         }
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 
-            val bitmap = data?.extras?.get("data") as Bitmap
-            uploadImage.setImageBitmap(bitmap)
-           // val totheView = findViewById<View>(R.id.uploadImage) as ImageView
-            //Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)
+            var uris = Uri.parse(currentPhotoPath)
+            selectedImage = uris
+
+            val totheView = findViewById<View>(R.id.uploadImage) as ImageView
+
+            var fileCap = File(selectedImage.toString())
+
+            Picasso.get()
+                    .load(Uri.fromFile(fileCap))
+                    .centerCrop()
+                    .fit()
+                    .into(totheView);
+
         }
     }
 
