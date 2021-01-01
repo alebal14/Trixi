@@ -1,10 +1,14 @@
 package com.example.trixi.ui
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
@@ -15,7 +19,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.example.trixi.BuildConfig
 import com.example.trixi.MainActivity
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
@@ -29,6 +36,9 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class UploadActivity : AppCompatActivity() {
@@ -36,6 +46,11 @@ class UploadActivity : AppCompatActivity() {
     val db = PostToDb()
 
 
+
+    lateinit var currentPhotoPath: String
+
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_PERMISSION = 100
 
 
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
@@ -47,7 +62,9 @@ class UploadActivity : AppCompatActivity() {
     private var mediaPath: String? = null
     private var postPath: String? = null
 
-    val REQUEST_IMAGE_CAPTURE = 1
+    var file: File? = null
+    var imageURI: Uri? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +83,27 @@ class UploadActivity : AppCompatActivity() {
         }
 
         btn_open_camera.setOnClickListener {
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            openCamera()
+
+
+
+            /*Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+                intent.resolveActivity(packageManager)?.also {
+                    startActivityForResult(intent, 1)
+                }
+            }*/
+
+           /* val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            /*file = File(Environment.getExternalStorageDirectory(), "image.jpg")
+            imageURI = FileProvider.getUriForFile(applicationContext, "$packageName.provider", file!!)
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI)*/
             if (takePictureIntent.resolveActivity(packageManager) != null) {
-                startActivityForResult(takePictureIntent, 0)
-            }
+                startActivityForResult(takePictureIntent, 1)
+            }*/
 
         }
+
 
         button_cancel.setOnClickListener(){
             val intent = Intent(this, MainActivity::class.java)
@@ -161,6 +193,49 @@ class UploadActivity : AppCompatActivity() {
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkCameraPermission()
+    }
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    REQUEST_PERMISSION)
+        }
+    }
+
+    private fun openCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
+            intent.resolveActivity(packageManager)?.also {
+                val photoFile: File? = try {
+                    createCapturedPhoto()
+                } catch (ex: IOException) {
+                    // If there is error while creating the File, it will be null
+                    null
+                }
+                photoFile?.also {
+                    val photoURI = FileProvider.getUriForFile(
+                            this,
+                            "${BuildConfig.APPLICATION_ID}.fileprovider",
+                            it
+                    )
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createCapturedPhoto(): File {
+        val timestamp: String = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("PHOTO_${timestamp}",".jpg", storageDir).apply {
+            currentPhotoPath = absolutePath
+        }
+    }
 
     private fun selectCategoryData(category: Category) {
         categoryName = category.name
@@ -232,6 +307,13 @@ class UploadActivity : AppCompatActivity() {
 
             postPath = mediaPath
 
+        }
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+
+            val bitmap = data?.extras?.get("data") as Bitmap
+            uploadImage.setImageBitmap(bitmap)
+           // val totheView = findViewById<View>(R.id.uploadImage) as ImageView
+            //Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)
         }
     }
 
