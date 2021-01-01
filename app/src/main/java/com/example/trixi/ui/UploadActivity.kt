@@ -212,15 +212,44 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun openCameraVideo() {
+        Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { intent ->
+            intent.resolveActivity(packageManager)?.also {
+                val photoFile: File? = try {
+                    createCapturedVideo()
+                } catch (ex: IOException) {
+                    // If there is error while creating the File, it will be null
+                    null
+                }
+                photoFile?.also {
+                    val videoURI = FileProvider.getUriForFile(
+                            this,
+                            "${BuildConfig.APPLICATION_ID}.fileprovider",
+                            it
+                    )
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, videoURI)
+                    startActivityForResult(intent, REQUEST_VIDEO_CAPTURE)
+                }
+            }
+        }
 
     }
 
     @Throws(IOException::class)
     private fun createCapturedPhoto(): File {
-        val timestamp: String = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())
+        val timestamp: String = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.GERMAN).format(Date())
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
         return File.createTempFile("PHOTO_${timestamp}", ".jpg", storageDir).apply {
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createCapturedVideo(): File {
+        val timestamp: String = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.GERMAN).format(Date())
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+        return File.createTempFile("VIDEO_${timestamp}", ".mp4", storageDir).apply {
             currentPhotoPath = absolutePath
         }
     }
@@ -314,6 +343,19 @@ class UploadActivity : AppCompatActivity() {
                     .into(totheView);
 
         }
+
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK) {
+
+            Toast.makeText(this, "Video Capture", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun sendVideo(){
+
+    }
+
+    private fun sendPhoto(){
+
     }
 
 
