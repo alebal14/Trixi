@@ -46,6 +46,9 @@ class UploadActivity : AppCompatActivity() {
     lateinit var currentPhotoPath: String
 
     private val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_VIDEO_CAPTURE = 2
+    private val REQUEST_IMAGE = 3
+    private val REQUEST_VIDEO = 4
     private val REQUEST_PERMISSION = 100
 
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
@@ -64,19 +67,32 @@ class UploadActivity : AppCompatActivity() {
         setContentView(R.layout.activity_upload)
         RetrofitClient.context = this
 
-        btn_open_gallery.setOnClickListener {
+        btn_open_gallery_picture.setOnClickListener {
             requestPermissions()
             val intent = Intent(
                     Intent.ACTION_PICK,
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 
             )
-            intent.setType("image/* video/*");
-            startActivityForResult(intent, 0)
+            startActivityForResult(intent, REQUEST_IMAGE)
         }
 
-        btn_open_camera.setOnClickListener {
-            openCamera()
+        btn_open_gallery_video.setOnClickListener {
+            requestPermissions()
+            val intent = Intent(
+                    Intent.ACTION_PICK,
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+            )
+
+            startActivityForResult(intent, REQUEST_VIDEO)
+        }
+
+        btn_open_camera_picture.setOnClickListener {
+            openCameraPicture()
+        }
+
+        btn_open_camera_video.setOnClickListener{
+            openCameraVideo()
         }
 
 
@@ -89,8 +105,8 @@ class UploadActivity : AppCompatActivity() {
             sendPost()
         }
 
+        //SELECT
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-
 
         if (upload_spinner_add_category != null) {
             model.getAllCategories().observe(this, { allCategory ->
@@ -118,16 +134,10 @@ class UploadActivity : AppCompatActivity() {
         }
 
         if (upload_spinner_add_pet != null) {
-
-
             var petList = model.getPetsByOwner(loggedInUserId)
-
             var petdefault = (Pet("0", null, "", "Select Pet", "", 0, "", "", null, ""))
 
-
-            Log.d("petList", "${petList.toString()}")
-
-                petList?.observe(this, { allPets ->
+            petList?.observe(this, { allPets ->
                     if (allPets!!.isEmpty()) {
                         upload_spinner_add_pet.visibility = View.GONE;
                     } else {
@@ -143,8 +153,7 @@ class UploadActivity : AppCompatActivity() {
                         upload_spinner_add_pet.adapter = spinnerAdapter
 
                     }
-                })
-
+            })
 
             upload_spinner_add_pet.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
@@ -164,7 +173,6 @@ class UploadActivity : AppCompatActivity() {
                 }
 
                 }
-
             }
     }
 
@@ -181,7 +189,7 @@ class UploadActivity : AppCompatActivity() {
         }
     }
 
-    private fun openCamera() {
+    private fun openCameraPicture() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
             intent.resolveActivity(packageManager)?.also {
                 val photoFile: File? = try {
@@ -201,6 +209,10 @@ class UploadActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun openCameraVideo() {
+
     }
 
     @Throws(IOException::class)
