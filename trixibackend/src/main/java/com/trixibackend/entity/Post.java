@@ -11,9 +11,12 @@ public class Post {
     private String title;
     private String description;
     private String filePath;
+    private String fileType;
 
     private String ownerId;
     private String categoryName;
+
+
 
     private List<Comment> comments = new ArrayList<>();
     private List<Like> likes = new ArrayList<>();
@@ -30,9 +33,10 @@ public class Post {
 
     }
 
-    public Post(String title, String filePath, String description, String ownerId, String categoryName) {
+    public Post(String title, String filePath, String fileType, String description, String ownerId, String categoryName) {
         this.title = title;
         this.filePath = filePath;
+        this.fileType = fileType;
         this.description = description;
         this.ownerId = ownerId;
         this.categoryName = categoryName;
@@ -70,6 +74,14 @@ public class Post {
         this.filePath = filePath;
     }
 
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -102,7 +114,6 @@ public class Post {
         this.comments = comments;
     }
 
-
     public List<Like> getLikes() {
         return likes;
     }
@@ -119,6 +130,7 @@ public class Post {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", filePath='" + filePath + '\'' +
+                ", fileType='" + fileType + '\'' +
                 ", ownerId='" + ownerId + '\'' +
                 ", categoryName='" + categoryName + '\'' +
                 ", comments=" + comments +

@@ -173,11 +173,11 @@ class PostToDb {
      })
     }
 
-    fun sendPostToDb(image: MultipartBody.Part, description: String, ownerId : String, title : String, categoryName: String) {
+    fun sendPostToDb(image: MultipartBody.Part, fileType: String, description: String, ownerId : String, title : String, categoryName: String) {
 
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.postPostToDb(image, description, ownerId, title, categoryName)
+        val call = retrofitClient?.postPostToDb(image, fileType, description, ownerId, title, categoryName)
 
 
         call?.enqueue(object : Callback<Post> {

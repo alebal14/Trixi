@@ -103,6 +103,7 @@ interface Api {
     @POST("rest/posts")
     fun postPostToDb(
         @Part file: MultipartBody.Part,
+        @Part("fileType") fileType: String,
         @Part("description") description: String,
         @Part("ownerId") ownerId: String,
         @Part("title") title: String,

@@ -60,6 +60,8 @@ class UploadActivity : AppCompatActivity() {
     var mediaPath: String? = null
     var postPath: String? = null
 
+    var fileType: String = ""
+
 
     var file: File? = null
     var file_validation = false
@@ -349,7 +351,7 @@ class UploadActivity : AppCompatActivity() {
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK) {
 
             postPath = currentFilePath
-            
+
             sendVideo()
         }
     }
@@ -389,11 +391,13 @@ class UploadActivity : AppCompatActivity() {
 
         // checks if picture size is more than 5 mb
         if (file_size > 5.0){
-            Toast.makeText(this, "Picture is to big, max sixe: 5 Mb", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Picture is to big, max sixe: 5 Mb", Toast.LENGTH_LONG).show()
             file_validation = false
         } else {
             file_validation = true
         }
+
+        fileType = "image"
     }
 
     private fun sendVideo(){
@@ -409,11 +413,13 @@ class UploadActivity : AppCompatActivity() {
 
         // checks if picture size is more than 100 mb
         if (file_size > 100.0){
-            Toast.makeText(this, "Video is to big, max sixe: 100 Mb", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Video is to big, max sixe: 100 Mb", Toast.LENGTH_LONG).show()
             file_validation = false
         } else {
             file_validation = true
         }
+
+        fileType = "video"
 
     }
 
@@ -421,6 +427,7 @@ class UploadActivity : AppCompatActivity() {
     private fun sendPost(){
         val title = title_field.text.toString()
         val description = description_field.text.toString()
+
 
         if (title.isEmpty()) {
             Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show()
@@ -436,8 +443,9 @@ class UploadActivity : AppCompatActivity() {
         if( file_validation == true){
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val imagenPerfil = MultipartBody.Part.createFormData("file", file?.name, requestFile);
-            db.sendPostToDb(imagenPerfil, description, ownerId, title, categoryName)
+            db.sendPostToDb(imagenPerfil, fileType, description, ownerId, title, categoryName)
         } else {
+            Toast.makeText(this, "Invalid File", Toast.LENGTH_LONG).show()
             return
         }
 

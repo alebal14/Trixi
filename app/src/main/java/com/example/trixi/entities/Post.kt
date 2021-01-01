@@ -6,6 +6,7 @@ data class Post(
     val title: String?,
     val description: String?,
     val filePath: String?,
+    val fileType: String?,
     val ownerId: String?,
     val categoryName: String?,
     var comments: List<Comment>?,
