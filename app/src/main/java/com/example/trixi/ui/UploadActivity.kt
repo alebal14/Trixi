@@ -43,7 +43,7 @@ class UploadActivity : AppCompatActivity() {
 
     val db = PostToDb()
 
-    lateinit var currentPhotoPath: String
+    lateinit var currentFilePath: String
 
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_VIDEO_CAPTURE = 2
@@ -55,10 +55,15 @@ class UploadActivity : AppCompatActivity() {
     var ownerId: String = ""
     var categoryName:String = ""
 
-    var selectedImage: Uri? = null
+    var selectedFile: Uri? = null
     var filePath = ""
-    private var mediaPath: String? = null
-    private var postPath: String? = null
+    var mediaPath: String? = null
+    var postPath: String? = null
+
+
+    var file: File? = null
+    var file_validation = false
+
 
 
 
@@ -242,7 +247,7 @@ class UploadActivity : AppCompatActivity() {
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
         return File.createTempFile("PHOTO_${timestamp}", ".jpg", storageDir).apply {
-            currentPhotoPath = absolutePath
+            currentFilePath = absolutePath
         }
     }
 
@@ -252,7 +257,7 @@ class UploadActivity : AppCompatActivity() {
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
 
         return File.createTempFile("VIDEO_${timestamp}", ".mp4", storageDir).apply {
-            currentPhotoPath = absolutePath
+            currentFilePath = absolutePath
         }
     }
 
@@ -307,97 +312,110 @@ class UploadActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
 
-            uploadImage.visibility = View.VISIBLE;
-            uploadVideo.visibility = View.GONE;
-            selectedImage = data.getData()
+            selectedFile = data.getData()
 
-            Toast.makeText(this, " selectimage: $selectedImage", Toast.LENGTH_SHORT).show()
-            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+            getCursor()
 
-            val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
-            assert(cursor != null)
-            cursor!!.moveToFirst()
-
-            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-            mediaPath = cursor.getString(columnIndex)
-            // Set the Image in ImageView for Previewing the Media
-
-            val totheView = findViewById<View>(R.id.uploadImage) as ImageView
-
-            Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)
-
-            cursor.close()
-
-            postPath = mediaPath
+            sendPhoto()
 
         }
+
         if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK && data != null) {
 
-            uploadImage.visibility = View.GONE;
-            uploadVideo.visibility = View.VISIBLE;
+            selectedFile = data.getData()
 
-            selectedImage = data.getData()
+            getCursor()
 
-
-            Toast.makeText(this, " selectimage: $selectedImage", Toast.LENGTH_SHORT).show()
-            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-
-            val cursor = contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
-            assert(cursor != null)
-            cursor!!.moveToFirst()
-
-            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-            mediaPath = cursor.getString(columnIndex)
-
-            cursor.close()
-
-            postPath = mediaPath
-
-            // Set the Image in ImageView for Previewing the Media
-
-            //val totheView = findViewById<View>(R.id.uploadImage) as ImageView
-
-            /*Picasso.get().load(selectedImage).centerCrop().fit().into(totheView)*/
-
-            uploadVideo.setSource(postPath)
-
-
+            sendVideo()
 
         }
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 
-            uploadImage.visibility = View.VISIBLE;
-            uploadVideo.visibility = View.GONE;
 
-            var uris = Uri.parse(currentPhotoPath)
-            selectedImage = uris
+            var uris = Uri.parse(currentFilePath)
 
-            val totheView = findViewById<View>(R.id.uploadImage) as ImageView
+            var fileCap = File(uris.toString())
 
-            var fileCap = File(selectedImage.toString())
+            selectedFile = Uri.fromFile(fileCap)
 
-            Picasso.get()
-                    .load(Uri.fromFile(fileCap))
-                    .centerCrop()
-                    .fit()
-                    .into(totheView);
+            postPath = currentFilePath
+
+            sendPhoto()
+
 
         }
 
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK) {
 
-            Toast.makeText(this, "Video Capture", Toast.LENGTH_SHORT).show()
+            postPath = currentFilePath
+            
+            sendVideo()
         }
     }
 
-    private fun sendVideo(){
+    private fun getCursor() {
+        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
+        val cursor = contentResolver.query(selectedFile!!, filePathColumn, null, null, null)
+        assert(cursor != null)
+        cursor!!.moveToFirst()
+
+        val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+        mediaPath = cursor.getString(columnIndex)
+
+        cursor.close()
+
+        postPath = mediaPath
     }
 
     private fun sendPhoto(){
 
+        val totheView = findViewById<View>(R.id.uploadImage) as ImageView
+
+        Picasso.get()
+                .load(selectedFile)
+                .centerCrop()
+                .fit()
+                .into(totheView);
+
+        uploadImage.visibility = View.VISIBLE;
+        uploadVideo.visibility = View.GONE;
+
+        file = File(postPath)
+
+        //get the file size
+        val file_size = ( file!!.length().toString().toDouble() / 1024 / 1024 )
+
+        // checks if picture size is more than 5 mb
+        if (file_size > 5.0){
+            Toast.makeText(this, "Picture is to big, max sixe: 5 Mb", Toast.LENGTH_SHORT).show()
+            file_validation = false
+        } else {
+            file_validation = true
+        }
     }
 
+    private fun sendVideo(){
+        uploadImage.visibility = View.GONE;
+        uploadVideo.visibility = View.VISIBLE;
+
+        uploadVideo.setSource(postPath)
+
+        file = File(postPath)
+
+        //get the file size
+        val file_size = ( file?.length().toString().toDouble() / 1024 / 1024 )
+
+        // checks if picture size is more than 100 mb
+        if (file_size > 100.0){
+            Toast.makeText(this, "Video is to big, max sixe: 100 Mb", Toast.LENGTH_SHORT).show()
+            file_validation = false
+        } else {
+            file_validation = true
+        }
+
+    }
 
 
     private fun sendPost(){
@@ -409,29 +427,20 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-        if( selectedImage == null){
+        if( selectedFile == null){
             Toast.makeText(this, "Please select a image", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val file = File(postPath)
 
-       //get the file size
-        val file_size = ( file.length().toString().toDouble() / 1024 / 1024 )
-
-        // checks if picture size is more than 5 mb
-       if (file_size > 5.0){
-            Toast.makeText(this, "Picture is to big, max sixe: 5 Mb", Toast.LENGTH_SHORT).show()
+        if( file_validation == true){
+            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+            val imagenPerfil = MultipartBody.Part.createFormData("file", file?.name, requestFile);
+            db.sendPostToDb(imagenPerfil, description, ownerId, title, categoryName)
+        } else {
             return
         }
 
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-       val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-
-
-
-
-       db.sendPostToDb(imagenPerfil, description, ownerId, title, categoryName)
 
         //toAnotherActivity()
 
