@@ -8,8 +8,22 @@
     app:cardCornerRadius="4dp"
     >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.potyvideo.library.AndExoPlayerView
+            android:id="@+id/single_item_video"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            app:andexo_full_screen="true"
+            app:andexo_play_when_ready="true"
+            app:andexo_show_controller="true"
+            app:andexo_resize_mode="Fill"/>
+
+
     <ImageView
-        android:id="@+id/single_item_media"
+        android:id="@+id/single_item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
@@ -18,6 +32,10 @@
         android:layout_marginBottom="0dp"
         android:background="@color/colorLightGreen"
         android:foregroundGravity="center"></ImageView>
+
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
@@ -20,8 +22,9 @@ class PostToDb {
 
     companion object {
         var loggedInUser: User? = null
-        var latestPost: Post? = null
+        var postedPost : Post? = null
     }
+
 
 
     fun PostLoginUserToDb(user: User, context: Context){
@@ -189,7 +192,10 @@ class PostToDb {
                 call: Call<Post>, response: Response<Post>
             ) {
                 if(response.isSuccessful){
+
+                    postedPost = response.body()
                     Log.d("post", "Post : onResponse success" + (response.body()!!.uid  ))
+
                 }else{
                     Log.d("post", "Post : onResponse else" + response.body()!!.uid)
                 }

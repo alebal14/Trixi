@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.BuildConfig
 import com.example.trixi.MainActivity
@@ -26,6 +27,7 @@ import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Category
 import com.example.trixi.entities.Pet
+import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
@@ -65,6 +67,8 @@ class UploadActivity : AppCompatActivity() {
 
     var file: File? = null
     var file_validation = false
+
+
 
 
 
@@ -451,7 +455,13 @@ class UploadActivity : AppCompatActivity() {
         }
 
 
-        //toAnotherActivity()
+
+
+        if ( PostToDb.postedPost == null){
+            Thread.sleep(5000);
+        }
+
+        toAnotherActivity()
 
 
     }

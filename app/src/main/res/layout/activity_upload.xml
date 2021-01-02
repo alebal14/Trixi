@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorTeal"
     android:layout_width="match_parent"
@@ -75,11 +76,18 @@
                 android:layout_height="270dp"
                 android:layout_marginBottom="20dp"
                 android:src="@drawable/ic_baseline_cloud_upload_24"/>
+
         <com.potyvideo.library.AndExoPlayerView
                 android:id="@+id/uploadVideo"
-                android:layout_width="match_parent"
-                android:layout_height="270dp"
-                android:layout_marginBottom="20dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:layout_marginBottom="20dp"
+            app:andexo_full_screen="true"
+            app:andexo_play_when_ready="true"
+            app:andexo_show_controller="true"
+            app:andexo_resize_mode="Zoom"
+
+            />
 
 
         <LinearLayout

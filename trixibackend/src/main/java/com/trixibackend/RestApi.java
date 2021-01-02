@@ -270,6 +270,8 @@ public class RestApi {
 
                         db.save(post);
 
+                        post.setUid(post.getId().toString());
+
                         System.out.println(post.getUid());
                         System.out.println(post);
 
