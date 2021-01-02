@@ -31,13 +31,15 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <ImageButton
                     android:id="@+id/btn_open_camera_picture"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/border"
                     android:src="@drawable/ic_baseline_camera_alt_24">
 
                 </ImageButton>
@@ -46,7 +48,8 @@
                     android:id="@+id/btn_open_camera_video"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/border"
                     android:src="@drawable/ic_video_solid">
 
                 </ImageButton>
@@ -55,13 +58,15 @@
                     android:id="@+id/btn_open_gallery_picture"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/border"
                     android:src="@drawable/ic_image_solid"></ImageButton>
 
                 <ImageButton
                     android:id="@+id/btn_open_gallery_video"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@drawable/border"
                     android:src="@drawable/ic_film_solid"></ImageButton>
 
             </LinearLayout>

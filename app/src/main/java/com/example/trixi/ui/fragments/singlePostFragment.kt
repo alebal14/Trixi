@@ -51,12 +51,6 @@ class singlePostFragment : Fragment() {
         setupPost()
 
 
-
-
-       // val post = PostToDb.latestPost
-
-
-
     }
 
     override fun onDestroyView() {
@@ -65,17 +59,13 @@ class singlePostFragment : Fragment() {
     }
 
     private fun setupPost() {
-        val fm = fragmentManager
 
-        val adapter = GroupAdapter<GroupieViewHolder>()
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        //Toast.makeText(activity,"Text!",Toast.LENGTH_SHORT).show();
 
             model.getLatestPost()?.observe(viewLifecycleOwner, Observer { post ->
 
-                Toast.makeText(activity,"Text!",Toast.LENGTH_SHORT).show();
-                //HomeItem(post, fm!!)
+
                 single_item_title.text = post.title.toString()
                 single_item_description.text = post.description.toString()
                 single_item_tags.text = post.categoryName.toString()
