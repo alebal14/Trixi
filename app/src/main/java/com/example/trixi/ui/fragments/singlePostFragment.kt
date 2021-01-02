@@ -48,8 +48,11 @@ class singlePostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupPost()
+        val newPost = requireArguments().getString("EXTRA")
 
+        if(!newPost.isNullOrEmpty()){
+            setupPost()
+        }
 
     }
 
@@ -65,6 +68,11 @@ class singlePostFragment : Fragment() {
 
             model.getLatestPost()?.observe(viewLifecycleOwner, Observer { post ->
 
+
+                single_item_profileName.visibility = View.GONE
+                single_item_profileimg.visibility = View.GONE
+                single_item_profile.visibility = View.GONE
+                single_item_report.visibility = View.GONE
 
                 single_item_title.text = post.title.toString()
                 single_item_description.text = post.description.toString()

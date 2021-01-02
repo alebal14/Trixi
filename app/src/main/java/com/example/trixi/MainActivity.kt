@@ -60,22 +60,10 @@ class MainActivity : AppCompatActivity() {
          if(single.isNullOrEmpty()){
              makeCurrentFragment(homepageFragment)
          } else {
-            /* val bundle = Bundle()
-             //bundle.putString("edttext", "From Activity")
-             db.postedPost.observe(
-                     this,
-                     { post ->
-                         /*val postSend : Post = post as Post
-                         bundle.putString("title", postSend.title)
-                         bundle.putString("url", postSend.filePath)
-                         bundle.putString("description", postSend.description)
-                         singleFragment.arguments = bundle;*/
-                         makeCurrentFragment(singleFragment);
-                     }
-             )*/
+            val bundle = Bundle()
+             bundle.putString("EXTRA", "NewPost")
+             singleFragment.arguments = bundle;
              makeCurrentFragment(singleFragment);
-
-
          }
 
          //makeCurrentFragment(homepageFragment)

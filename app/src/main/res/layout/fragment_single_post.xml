@@ -10,16 +10,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="30dp">
 
         <com.potyvideo.library.AndExoPlayerView
             android:id="@+id/single_item_video"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
-            app:andexo_full_screen="true"
+            app:andexo_full_screen="false"
             app:andexo_play_when_ready="true"
             app:andexo_show_controller="true"
-            app:andexo_resize_mode="Fill"/>
+            app:andexo_resize_mode="Zoom"/>
 
 
     <ImageView
@@ -48,6 +49,40 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp">
+
+                <ImageView
+                    android:id="@+id/single_item_profileimg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/image_btn_circle"
+                    tools:srcCompat="@drawable/ic_baseline_person_outline_24" />
+
+                <TextView
+                    android:id="@+id/single_item_profileName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="John Doe"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2.5"
+                    android:shadowDy="2.3"
+                    android:shadowRadius="2.6"
+                    android:textColor="@color/colorPink"
+                    >
+
+                </TextView>
+
+
+            </LinearLayout>
 
 
             <LinearLayout
@@ -81,6 +116,15 @@
                     android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ic_baseline_edit_24"
+                    android:backgroundTint="@color/colorPink"
+                    />
+
+                <ImageButton
+                    android:id="@+id/single_item_report"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/ic_baseline_report_24"
                     android:backgroundTint="@color/colorPink"
                     />
 
@@ -165,7 +209,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="400dp">
+        android:layout_marginTop="400dp"
+        android:layout_marginBottom="30dp">
 
         <LinearLayout
             android:id="@+id/single_item_post_info"
@@ -209,9 +254,11 @@
             <TextView
                 android:id="@+id/single_item_tags"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Tags"
                 android:textSize="15sp"
+                android:gravity="bottom"
+                android:layout_marginBottom="40dp"
                 android:shadowColor="#000000"
                 android:shadowDx="2.5"
                 android:shadowDy="2.3"
