@@ -13,11 +13,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter(private val context: Unit)
+class DiscoverMediaGridAdapter(private val posts: MutableList<Post>?)
     : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
-
-    private var posts = mutableListOf<Post>()
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
@@ -30,7 +27,7 @@ class DiscoverMediaGridAdapter(private val context: Unit)
 
 
     override fun getItemCount(): Int {
-        return posts.size
+        return posts!!.size
     }
 
     override fun onBindViewHolder(holder: DiscoverViewHolder, position: Int) {
