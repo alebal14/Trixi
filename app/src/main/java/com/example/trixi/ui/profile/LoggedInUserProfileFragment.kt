@@ -86,7 +86,9 @@ class LoggedInUserProfileFragment : Fragment() {
                     GridLayoutManager.HORIZONTAL,
                     false
                 )
-                adapter = ProfilePetListAdapter(loggedInUser.pets!!)
+                adapter = ProfilePetListAdapter(loggedInUser.pets!!, {pet ->
+                    redirectToPetProfile(pet)
+                })
                 users_pet_list.adapter = adapter
             }
         }
@@ -138,6 +140,15 @@ class LoggedInUserProfileFragment : Fragment() {
         owner_name.visibility = View.INVISIBLE
         follow_button.visibility = View.INVISIBLE
 
+    }
+
+    private fun redirectToPetProfile(pet: Pet) {
+        val fm = activity?.supportFragmentManager
+
+        val petProfile = PetProfileFragment(pet)
+        if (fm != null) {
+            fm.beginTransaction().replace(R.id.fragment_container, petProfile).commit()
+        }
     }
 
 }

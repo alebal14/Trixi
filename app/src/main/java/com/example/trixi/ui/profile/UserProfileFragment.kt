@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,9 +23,12 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.users_pet_list
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlinx.android.synthetic.main.profile_user_pet.*
 
 
 class UserProfileFragment(val user: User?) : Fragment() {
+    private val fm = activity?.supportFragmentManager
+
     companion object {
         private val TAG = "profile"
 
@@ -105,7 +109,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
         snapHelper2.attachToRecyclerView(users_pet_list)
 
         user?.uid?.let {
-            model.getPetsByOwner(it)?.observe(viewLifecycleOwner, Observer { pets ->
+            model.getPetsByOwner(it)?.observe(viewLifecycleOwner, { pets ->
                 Log.d(TAG, "size: pets  : ${pets?.size}")
 
                 users_pet_list.apply {
@@ -117,11 +121,23 @@ class UserProfileFragment(val user: User?) : Fragment() {
                             GridLayoutManager.HORIZONTAL,
                             false
                         )
-                        adapter = ProfilePetListAdapter(pets as ArrayList<Pet>)
+
+                        adapter = ProfilePetListAdapter(pets as ArrayList<Pet>) {pet ->
+                            redirectToPetProfile(pet)
+                        }
                         users_pet_list.adapter = adapter
                     }
                 }
             })
+        }
+    }
+
+    private fun redirectToPetProfile(pet: Pet) {
+        val fm = activity?.supportFragmentManager
+
+        val petProfile = PetProfileFragment(pet)
+        if (fm != null) {
+            fm.beginTransaction().replace(R.id.fragment_container, petProfile).commit()
         }
     }
 

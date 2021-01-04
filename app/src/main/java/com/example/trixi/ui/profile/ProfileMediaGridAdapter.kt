@@ -46,15 +46,7 @@ class ProfileMediaGridAdapter(private var posts: ArrayList<Post>)
         fun bindThumbnail(post: Post) {
             var photo = BASE_URL + post.filePath
             //var sample = BASE_URL + "resFolder/images/sample.jpg"
-
-
-
-
                 Picasso.get().load(photo).placeholder(R.drawable.sample).error(R.drawable.sample).resize(100, 100).centerCrop().into(mediaItem)
-
-
-
-
         }
 
     }
