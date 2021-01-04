@@ -455,24 +455,9 @@ class UploadActivity : AppCompatActivity() {
             return
         }
 
-
-
-
-
-        if ( PostToDb.postedPost == null){
-            Thread.sleep(5000);
-        }
-
-        toAnotherActivity()
-           
     }
 
-    private fun toAnotherActivity(){
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("EXTRA", "openSingle");
 
-        this.startActivity(intent)
-    }
 
 }
 

@@ -17,7 +17,6 @@ class TrixiViewModel : ViewModel() {
 
     private val TAG = "TrixiViewModel"
     private val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-    //private val db = PostToDb()
 
 
 //    init {
@@ -127,24 +126,6 @@ class TrixiViewModel : ViewModel() {
             allCategory.postValue(p)
         }
         return allCategory
-    }
-
-    fun getLatestPost() : MutableLiveData<Post>? {
-        val lastPost: MutableLiveData<Post>? = MutableLiveData()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                Log.d(TAG, "getting one Post")
-                val post = PostToDb.postedPost
-                Log.d(TAG, "getting $post")
-                lastPost?.postValue(post)
-                Log.d(TAG, "getting $lastPost")
-
-            } catch (e: Exception) {
-                lastPost?.postValue(null)
-            }
-        }
-        return lastPost
     }
 
 }
