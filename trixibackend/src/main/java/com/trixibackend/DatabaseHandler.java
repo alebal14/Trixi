@@ -7,12 +7,20 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.trixibackend.collections.*;
 import com.trixibackend.entity.*;
+import org.apache.commons.fileupload.FileItem;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -147,14 +155,15 @@ public class DatabaseHandler {
             case "categories":
                 return categoryHandler.findCategoryById(id);
             case "pet_types":
-                return  petTypeHandler.findPetTypesById(id);
+                return petTypeHandler.findPetTypesById(id);
+
             default:
                 return null;
         }
     }
 
 
-    public Object getByOwner(String collectionName, String id){
+    public Object getByOwner(String collectionName, String id) {
         switch (collectionName) {
             case "posts":
                 return postHandler.findPostsByOwner(id);
@@ -165,7 +174,25 @@ public class DatabaseHandler {
         }
     }
 
-    public Object getLoginByNameOrEmail(User user){
+    public String uploadImage(FileItem file) {
+
+        String fileUrl = null;
+
+        fileUrl = "resFolder/media/" + file.getName();
+
+        try (var os = new FileOutputStream(Paths.get("resFolder/media/" + file.getName()).toString())) {
+            os.write(file.get());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fileUrl;
+
+    }
+
+
+    public Object getLoginByNameOrEmail(User user) {
         return userHandler.findUserByNameOrEmail(user);
     }
 
@@ -185,6 +212,15 @@ public class DatabaseHandler {
     public CategoryHandler getCategoryHandler() {
         return categoryHandler;
     }
+
+    public LikeHandler getLikeHandler() {
+        return likeHandler;
+    }
+
+    public CommentHandler getCommentHandler() {
+        return commentHandler;
+    }
+
 
     public MongoDatabase getDatabase() {
         return database;

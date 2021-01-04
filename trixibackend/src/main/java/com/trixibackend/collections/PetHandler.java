@@ -38,12 +38,12 @@ public class PetHandler {
             petIter.forEach(pets::add);
             pets.forEach(pet -> {
                 pet.setUid(pet.getId().toString());
-                pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
-                pet.getPosts().forEach(post -> {
-                    post.setUid(post.getId().toString());
-                    post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-                    post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-                });
+//                pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
+//                pet.getPosts().forEach(post -> {
+//                    post.setUid(post.getId().toString());
+//                    post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+//                    post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+//                });
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,11 +58,11 @@ public class PetHandler {
             if (pet == null) return null;
             pet.setUid(pet.getId().toString());
             pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
-            pet.getPosts().forEach(post -> {
-                post.setUid(post.getId().toString());
-                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-            });
+//            pet.getPosts().forEach(post -> {
+//                post.setUid(post.getId().toString());
+//                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+//                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+//            });
             return pet;
         } catch (Exception e) {
             return null;
@@ -75,7 +75,18 @@ public class PetHandler {
             FindIterable<Pet> petsIter = petColl.find(eq("ownerId", id));
             pets = new ArrayList<>();
             petsIter.forEach(pets::add);
-            pets.forEach(pet -> pet.setUid(pet.getId().toString()));
+            pets.forEach(pet -> {
+                pet.setUid(pet.getId().toString());
+//                pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
+//                pet.getPosts().forEach(post -> {
+//                    post.setUid(post.getId().toString());
+//                    post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+//                    post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+//                });
+            });
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

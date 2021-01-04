@@ -1,17 +1,16 @@
 package com.trixibackend;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.trixibackend.entity.*;
 import express.Express;
-import express.http.Cookie;
 import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
-import express.utils.Status;
+import org.apache.commons.fileupload.FileItem;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.*;
 
-import java.util.Locale;
-import java.util.Map;
 
 public class RestApi {
 
@@ -40,8 +39,13 @@ public class RestApi {
         setLoginUser();
         getLoggedinUser();
         logoutUser();
+        setImagePostApi();
 
-
+        try {
+            app.use(Middleware.statics(Paths.get("").toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpUpdateApi() {
@@ -80,7 +84,6 @@ public class RestApi {
         });
 
 
-
         app.post("/api/users/un_follow/:userid/:followingId", (req, res) -> {
 
             String userid = req.getParam("userid");
@@ -114,38 +117,174 @@ public class RestApi {
             }
         });
 
+        app.post("/rest/likes",(req,res) ->{
+            Like like = (Like) req.getBody(Like.class);
+            Post p = db.getPostHandler().addLike(like);
+            if(p == null){
+                res.setStatus(Status._403);
+                res.send("Error: you already liked this post");
+                return;
+            }
+            res.json(p);
+        });
+
+        app.post("/rest/unlike",(req,res) ->{
+            Like like = (Like) req.getBody(Like.class);
+            Post p = db.getPostHandler().unlike(like);
+            if(p == null){
+                res.setStatus(Status._403);
+                res.send("Error: you already not liking this post");
+                return;
+            }
+            res.json(p);
+        });
+
+        app.post("/rest/comments",(req,res) ->{
+            Comment comment = (Comment) req.getBody(Comment.class);
+            comment.setId(UUID.randomUUID().toString());
+            res.json(db.getPostHandler().addComment(comment));
+        });
+
+        app.post("/rest/delete_comment",(req,res)->{
+            Comment comment = (Comment) req.getBody(Comment.class);
+            Post p= db.getPostHandler().deleteComment(comment);
+            if(p == null){
+                res.setStatus(Status._403);
+                res.send("Error, comment doesn't exist");
+                return;
+            }
+            res.json(p);
+        });
+
     }
 
 
     private void setUpDeleteApi(String collectionName) {
+
+    }
+
+
+
+    private void setImagePostApi() {
+        app.post("/rest/image", (req, res) -> {
+            List<FileItem> files = null;
+            String fileUrl = null;
+            try {
+                files = req.getFormData("file");
+                fileUrl = db.uploadImage(files.get(0));
+                System.out.println(files.get(0).getName());
+                //res.json(files.get(0).getName());
+                res.json(Map.of("url", files.get(0).getName()));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void setUpPostApi(String collectionName) {
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
-                    User user = (User) req.getBody(User.class);
 
-                    String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                    user.setPassword(hashedPassword);
+                    List<FileItem> files = null;
+                    String fileUrl = null;
+                    String userName = null;
+                    String email = null;
+                    String password = null;
+                    try {
+                        files = req.getFormData("file");
+                        userName = req.getFormData("userName").get(0).getString().replace("\"", "");
+                        email = req.getFormData("email").get(0).getString().replace("\"", "");
+                        password = req.getFormData("password").get(0).getString().replace("\"", "");
 
-                    res.json(db.save(user));
+                        fileUrl = db.uploadImage(files.get(0));
+                        System.out.println(fileUrl + userName + email + password);
+
+                        User user = new User();
+                        user.setUserName(userName);
+                        user.setEmail(email);
+                        user.setPassword(password);
+                        String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                        user.setPassword(hashedPassword);
+
+                        user.setImageUrl(fileUrl);
+                        user.setRole("user");
+
+                        System.out.println(user.getUserName());
+                        db.save(user);
+
+                        var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+
+                        user.setPassword(null);
+                        sessionCookie.setData(user);
+
+                        var userLoggedIn = (User) sessionCookie.getData();
+                        userLoggedIn.setPassword(null); // sanitize password
+                        userLoggedIn.setUid(user.getId().toString());
+                        userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
+                        userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+                        userLoggedIn.getPosts().forEach(post -> {
+                            post.setUid(post.getId().toString());
+                            post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+                            post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+                        });
+
+                        res.json(userLoggedIn);
+                        res.send("Created User");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                     break;
                 case "posts":
-                    Post post = (Post) req.getBody(Post.class);
-                    res.json(db.save(post));
+
+                    List<FileItem> Postfiles = null;
+                    String PostfileUrl = null;
+                    String description= null;
+                    String ownerId= null;
+                    String title = null;
+                    String categoryName = null;
+                    String fileType = null;
+
+                    try {
+                        Postfiles = req.getFormData("file");
+                        description = req.getFormData("description").get(0).getString().replace("\"", "");
+                        ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        title = req.getFormData("title").get(0).getString().replace("\"", "");
+                        categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
+                        fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
+
+                        PostfileUrl = db.uploadImage(Postfiles.get(0));
+                        System.out.println(PostfileUrl + description + ownerId+ title);
+
+                        Post post = new Post();
+                        post.setDescription(description);
+                        post.setOwnerId(ownerId);
+                        post.setTitle(title);
+                        post.setFilePath(PostfileUrl);
+                        post.setFileType(fileType);
+                        post.setCategoryName(categoryName);
+
+                        db.save(post);
+
+                        post.setUid(post.getId().toString());
+
+                        System.out.println(post.getUid());
+                        System.out.println(post);
+
+                        res.json(post);
+                        res.send("Created Post");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "pets":
                     Pet pet = (Pet) req.getBody(Pet.class);
                     res.json(db.save(pet));
-                    break;
-                case "likes":
-                    Like like = (Like) req.getBody(Like.class);
-                    res.json(db.save(like));
-                    break;
-                case "comments":
-                    Comment comment = (Comment) req.getBody(Comment.class);
-                    res.json(db.save(comment));
                     break;
                 case "categories":
                     Category category = (Category) req.getBody(Category.class);
@@ -215,18 +354,17 @@ public class RestApi {
 
             User user = db.getUserHandler().findUserById(id);
 
-            var updatedUser = db.getUserHandler().findUserFollowingPostList(user);
-            if (updatedUser == null) {
+            var followingPostList = db.getUserHandler().findUserFollowingPostList(user);
+            if (followingPostList == null) {
                 res.setStatus(Status._403);
-                res.send("Error: you are not following this Pet");
+                //res.send("Error: you are not following this Pet");
                 return;
             }
-            res.json(updatedUser);
+            System.out.println(followingPostList.size());
+            res.json(followingPostList);
         });
 
-
     }
-
     private void setLoginUser() {
 
         app.post("/rest/login", (req, res) ->{
@@ -241,44 +379,65 @@ public class RestApi {
             User loggedInUser = (User) req.getBody(User.class);
             User user = (User) db.getLoginByNameOrEmail(loggedInUser);
 
-           if (user == null) {
-                res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null? "Email: " + loggedInUser.getEmail(): "Username: " + loggedInUser.getUserName()) + " does not exist");
+            if (user == null) {
+                res.send((loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null ? "Email: " + loggedInUser.getEmail() : "Username: " + loggedInUser.getUserName()) + " does not exist");
                 return;
             }
 
             var result = BCrypt.verifyer().verify(loggedInUser.getPassword().toCharArray(), user.getPassword().toCharArray());
-            if(!result.verified) {
+            if (!result.verified) {
                 res.setStatus(Status._401);
                 res.send("password and username/email dont match");
                 res.json(user);
                 return;
             }
 
-            sessionCookie.setData(user);
             user.setPassword(null); // sanitize password
-            res.json(user);
+            sessionCookie.setData(user);
+
+            var userLoggedIn = (User) sessionCookie.getData();
+            userLoggedIn.setPassword(null); // sanitize password
+            userLoggedIn.setUid(user.getId().toString());
+            userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
+            userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+            userLoggedIn.getPosts().forEach(post -> {
+                post.setUid(post.getId().toString());
+                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+            });
+
+            res.json(userLoggedIn);
         });
     }
 
-    private void getLoggedinUser(){
-        app.get("/rest/login", (req, res) ->{
-
+    private void getLoggedinUser() {
+        app.get("/rest/login", (req, res) -> {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
-            if(sessionCookie.getData() == null) {
-                res.send("Not logged in");
+            if (sessionCookie.getData() == null) {
+                 res.send("Not logged in");
                 return;
             }
 
             var user = (User) sessionCookie.getData();
+            user.setUid(user.getId().toString());
+            user.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
+            user.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+//            user.getPosts().forEach(post -> {
+//                post.setUid(post.getId().toString());
+//                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
+//                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+//            });
             user.setPassword(null); // sanitize password
+
             res.json(user);
 
         });
 
     }
 
-    private void logoutUser(){
+
+    private void logoutUser() {
         app.get("/rest/logout", (req, res) -> {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
             sessionCookie.setData(null);

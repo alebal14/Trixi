@@ -8,8 +8,22 @@ import com.mongodb.client.model.Updates;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
+import jdk.jfr.Timestamp;
+import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -41,14 +55,14 @@ public class UserHandler {
             usersIter.forEach(users::add);
             users.forEach(user -> {
                 user.setUid(user.getId().toString());
-                user.setPosts(postHandler.findPostsByOwner(user.getUid()));
-                user.setPets(petHandler.findPetsByOwner(user.getUid()));
-                user.getPosts().forEach(post -> {
-                            post.setUid(post.getId().toString());
-                            post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-                            post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-                        }
-                );
+//                user.setPosts(postHandler.findPostsByOwner(user.getUid()));
+//                user.setPets(petHandler.findPetsByOwner(user.getUid()));
+//                user.getPosts().forEach(post -> {
+//                            post.setUid(post.getId().toString());
+//                            post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+//                            post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+//                        }
+//                );
             });
 
         } catch (Exception e) {
@@ -64,13 +78,13 @@ public class UserHandler {
             var user = userIter.first();
             if (user == null) return null;
             user.setUid(user.getId().toString());
-            user.setPosts(postHandler.findPostsByOwner(user.getUid()));
-            user.setPets(petHandler.findPetsByOwner(user.getUid()));
-            user.getPosts().forEach(post -> {
-                post.setUid(post.getId().toString());
-                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-            });
+//            user.setPosts(postHandler.findPostsByOwner(user.getUid()));
+//            user.setPets(petHandler.findPetsByOwner(user.getUid()));
+//            user.getPosts().forEach(post -> {
+//                post.setUid(post.getId().toString());
+//                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
+//                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
+//            });
             return user;
         } catch (Exception e) {
             return null;
@@ -105,7 +119,6 @@ public class UserHandler {
 
         return listOutput;
     }
-
 
     public User findUserByNameOrEmail(User loggedInUser) {
         String emailOrUsername;
@@ -252,5 +265,8 @@ public class UserHandler {
         p.setFollowers(null);
         p.setPosts(null);
     }
+
+
+
 
 }
