@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background"
-    app:cardCornerRadius="4dp"
-    >
+    app:cardCornerRadius="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,25 +14,24 @@
 
         <com.potyvideo.library.AndExoPlayerView
             android:id="@+id/single_item_video"
-            android:layout_height="fill_parent"
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             app:andexo_full_screen="false"
             app:andexo_play_when_ready="true"
-            app:andexo_show_controller="true"
-            app:andexo_resize_mode="Zoom"/>
+            app:andexo_resize_mode="Zoom"
+            app:andexo_show_controller="true" />
 
 
-    <ImageView
-        android:id="@+id/single_item_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:background="@color/colorLightGreen"
-        android:foregroundGravity="center"></ImageView>
-
+        <ImageView
+            android:id="@+id/single_item_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="@color/colorLightGreen"
+            android:foregroundGravity="center"></ImageView>
 
 
     </RelativeLayout>
@@ -69,15 +67,14 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="John Doe"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     android:shadowColor="#000000"
                     android:shadowDx="2.5"
                     android:shadowDy="2.3"
                     android:shadowRadius="2.6"
+                    android:text="John Doe"
                     android:textColor="@color/colorPink"
-                    >
+                    android:textSize="20sp"
+                    android:textStyle="bold">
 
                 </TextView>
 
@@ -95,7 +92,7 @@
                 android:gravity="center"
                 android:paddingStart="5dp"
                 android:paddingTop="20dp"
-                android:paddingRight="5dp"/>
+                android:paddingRight="5dp" />
 
             <LinearLayout
                 android:layout_width="70dp"
@@ -116,8 +113,7 @@
                     android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ic_baseline_edit_24"
-                    android:backgroundTint="@color/colorPink"
-                    />
+                    android:backgroundTint="@color/colorPink" />
 
                 <ImageButton
                     android:id="@+id/single_item_report"
@@ -125,8 +121,7 @@
                     android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ic_baseline_report_24"
-                    android:backgroundTint="@color/colorPink"
-                    />
+                    android:backgroundTint="@color/colorPink" />
 
                 <ImageButton
                     android:id="@+id/single_item_profile"
@@ -134,7 +129,7 @@
                     android:layout_height="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/ic_baseline_pets_24"
-                    android:backgroundTint="@color/colorPink"/>
+                    android:backgroundTint="@color/colorPink" />
 
 
                 <RelativeLayout
@@ -149,7 +144,7 @@
                         android:layout_height="40dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/ic_baseline_chat_bubble_outline_24"
-                        android:backgroundTint="@color/colorPink"/>
+                        android:backgroundTint="@color/colorPink" />
 
                     <TextView
                         android:id="@+id/single_item_chat_count"
@@ -182,7 +177,7 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/ic_baseline_favorite_border_24"
                         android:backgroundTint="@color/colorPink"
-                        android:backgroundTintMode="src_in"/>
+                        android:backgroundTintMode="src_in" />
 
                     <TextView
                         android:id="@+id/single_item_like_count"
@@ -227,48 +222,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
-                android:text="Title"
-                android:textSize="25sp"
-                android:textStyle="bold"
                 android:shadowColor="#000000"
                 android:shadowDx="2.5"
                 android:shadowDy="2.3"
                 android:shadowRadius="2.6"
+                android:text="Title"
                 android:textColor="@color/colorPink"
-                />
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/single_item_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="15dp"
-                android:text="Description"
-                android:textSize="15sp"
                 android:shadowColor="#000000"
                 android:shadowDx="2.5"
                 android:shadowDy="2.3"
                 android:shadowRadius="2.6"
+                android:text="Description"
                 android:textColor="@color/colorPink"
-                />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/single_item_tags"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Tags"
-                android:textSize="15sp"
-                android:gravity="bottom"
                 android:layout_marginBottom="40dp"
+                android:gravity="bottom"
                 android:shadowColor="#000000"
                 android:shadowDx="2.5"
                 android:shadowDy="2.3"
                 android:shadowRadius="2.6"
-                android:textColor="@color/colorPink"/>
+                android:text="Tags"
+                android:textColor="@color/colorPink"
+                android:textSize="15sp" />
 
 
         </LinearLayout>
-
-
 
 
     </RelativeLayout>
