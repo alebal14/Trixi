@@ -40,6 +40,17 @@ class TrixiViewModel : ViewModel() {
 //
 //    }
 
+    fun getAllUsers(): MutableLiveData<List<User>?> {
+        val allUsers: MutableLiveData<List<User>?> = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All users")
+            val p = retrofitClient?.getAllUsers()?.body()
+            allUsers.postValue(p)
+        }
+        return allUsers
+    }
+
     fun getFollowingsPosts(id: String): MutableLiveData<List<Post>?> {
         val followingsPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 

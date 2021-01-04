@@ -8,18 +8,25 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.login.LoginActivity
+import com.example.trixi.ui.profile.UserProfileFragment
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_register.*
@@ -30,7 +37,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(){
 
     val post = PostToDb()
     var selectedImage: Uri? = null
@@ -40,6 +47,8 @@ class RegisterActivity : AppCompatActivity() {
     var filePath = ""
     private var mediaPath: String? = null
     private var postPath: String? = null
+    var userExist: Boolean = false
+    val model: TrixiViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,18 +60,17 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        checkInput()
+
         register_profile_image.setOnClickListener {
             requestPermissions()
             val intent = Intent(
                     Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI
+                    MediaStore.Images.Media.INTERNAL_CONTENT_URI
             )
             startActivityForResult(intent, 0)
         }
 
-        button_register.setOnClickListener {
-            registerUser()
-        }
     }
 
     private fun hasWriteExternalStoragePermission() =
@@ -142,6 +150,47 @@ class RegisterActivity : AppCompatActivity() {
         //sending the image
     }*/
 
+    private fun checkInput(){
+
+        register_username.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                println("KOMIGEN")
+                if(s?.length != 0) {
+                    checkIfUserExist(s.toString())
+                    println("ISTRUE" + userExist)
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
+        register_email.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                println("KOMIGEN")
+                if (s?.length != 0) {
+                    checkIfUserExist(s.toString())
+
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
+
+        if(userExist == false){
+            button_register.setOnClickListener {
+                registerUser()
+            }
+        }
+    }
+
     private fun registerUser(){
         val userName = register_username.text.toString()
         val email = register_email.text.toString()
@@ -156,6 +205,7 @@ class RegisterActivity : AppCompatActivity() {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
+
         if (userName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
             return
@@ -166,12 +216,32 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        //post.PostImageToDb(imagenPerfil)
-
-        //val use= RequestBody("text/plain", userName ).toString()
-
-        //val user = User(null, userName, email, password, null, null, "user", null, null, null, null, null)
         post.PostRegisterUserToDb(imagenPerfil,userName, email, password, this)
+    }
+
+
+    private fun checkIfUserExist(userName: String){
+        model.getAllUsers()?.observe(this, Observer { user ->
+            Log.d("reg", "size: users : ${user?.size}")
+            user?.forEach {
+                if (userName.contains("@")) {
+                    if (userName == it.email) {
+                        Toast.makeText(this, "Email already exist", Toast.LENGTH_LONG).show()
+                         userExist = true
+                    }
+                    else{
+                        userExist = false
+                    }
+                }
+                if (userName == it.userName) {
+                    Toast.makeText(this, "Username already exist", Toast.LENGTH_LONG).show()
+                    userExist = true
+                    println("ISTRUEUSERNAME" + userExist)
+                } else{
+                    userExist = false
+                }
+            }
+        })
 
     }
 
