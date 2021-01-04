@@ -26,6 +26,7 @@ import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Category
 import com.example.trixi.entities.Pet
+import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
@@ -457,13 +458,13 @@ class UploadActivity : AppCompatActivity() {
 
 
 
+
         if ( PostToDb.postedPost == null){
             Thread.sleep(5000);
         }
 
         toAnotherActivity()
-
-
+           
     }
 
     private fun toAnotherActivity(){
