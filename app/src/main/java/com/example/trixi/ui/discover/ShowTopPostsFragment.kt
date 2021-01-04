@@ -2,12 +2,12 @@ package com.example.trixi.ui.discover
 
 //import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.trixi.R
 import com.example.trixi.entities.Post
@@ -46,16 +46,16 @@ class ShowTopPostsFragment : Fragment() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
-            if (!post.isNullOrEmpty()){
+            Log.d("post_size_f", post?.size.toString())
+
             media_grid_top_posts.apply {
                 media_grid_top_posts.layoutManager =
-                    StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
+                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                     StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
                 media_grid_top_posts.adapter = DiscoverMediaGridAdapter(post as ArrayList<Post>)
-                //media_grid_top_posts.adapter = adapter
             }
 
-        }})
+        })
 
 
     }
