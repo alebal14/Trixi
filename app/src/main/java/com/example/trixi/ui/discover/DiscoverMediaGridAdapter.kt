@@ -1,5 +1,6 @@
 package com.example.trixi.ui.discover
 
+//import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +8,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-//import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
-import com.example.trixi.entities.RealmPost
+import com.example.trixi.entities.Post
 import com.squareup.picasso.Picasso
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
+class DiscoverMediaGridAdapter(private val context: Unit)
     : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
+
+    private var posts = mutableListOf<Post>()
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
@@ -28,10 +30,7 @@ class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
 
 
     override fun getItemCount(): Int {
-        if (posts == null){
-            return 0;
-        } else
-        return  posts?.size!!
+        return posts.size
     }
 
     override fun onBindViewHolder(holder: DiscoverViewHolder, position: Int) {
@@ -52,7 +51,7 @@ class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
             Log.d("click", "click")
         }
 
-        fun bindView(post: RealmPost) {
+        fun bindView(post: Post) {
             Picasso.get().load(RetrofitClient.BASE_URL + post.filePath!!).into(postItem)
             Log.d("bindView", "in bindview")
         }

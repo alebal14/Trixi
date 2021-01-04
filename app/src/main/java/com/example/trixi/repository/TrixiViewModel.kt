@@ -1,17 +1,16 @@
 package com.example.trixi.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.*
+import com.example.trixi.entities.Pet
+import com.example.trixi.entities.Post
+import com.example.trixi.entities.User
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class TrixiViewModel : ViewModel() {
 
@@ -51,7 +50,7 @@ class TrixiViewModel : ViewModel() {
 
     }
 
-    fun getAllPosts() {
+    fun getAllPosts()  {
         val allPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -59,6 +58,7 @@ class TrixiViewModel : ViewModel() {
             val p = retrofitClient?.getAllPosts()?.body()
             allPosts.postValue(p)
         }
+
     }
 
     fun getOneUser(id: String): MutableLiveData<User>? {
