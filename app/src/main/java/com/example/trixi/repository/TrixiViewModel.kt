@@ -1,14 +1,15 @@
 package com.example.trixi.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.*
-import com.google.gson.Gson
+import com.example.trixi.entities.Category
+import com.example.trixi.entities.Pet
+import com.example.trixi.entities.Post
+import com.example.trixi.entities.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,6 @@ class TrixiViewModel : ViewModel() {
 
     private val TAG = "TrixiViewModel"
     private val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-    //private val db = PostToDb()
 
 
 //    init {
@@ -40,6 +40,17 @@ class TrixiViewModel : ViewModel() {
 //
 //    }
 
+    fun getAllUsers(): MutableLiveData<List<User>?> {
+        val allUsers: MutableLiveData<List<User>?> = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All users")
+            val p = retrofitClient?.getAllUsers()?.body()
+            allUsers.postValue(p)
+        }
+        return allUsers
+    }
+
     fun getFollowingsPosts(id: String): MutableLiveData<List<Post>?> {
         val followingsPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 
@@ -53,7 +64,7 @@ class TrixiViewModel : ViewModel() {
 
     }
 
-    fun getAllPosts() {
+    fun getAllPosts() : MutableLiveData<List<Post>?> {
         val allPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,6 +72,7 @@ class TrixiViewModel : ViewModel() {
             val p = retrofitClient?.getAllPosts()?.body()
             allPosts.postValue(p)
         }
+        return allPosts
     }
 
     fun getOneUser(id: String): MutableLiveData<User>? {
@@ -127,24 +139,6 @@ class TrixiViewModel : ViewModel() {
             allCategory.postValue(p)
         }
         return allCategory
-    }
-
-    fun getLatestPost() : MutableLiveData<Post>? {
-        val lastPost: MutableLiveData<Post>? = MutableLiveData()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                Log.d(TAG, "getting one Post")
-                val post = PostToDb.postedPost
-                Log.d(TAG, "getting $post")
-                lastPost?.postValue(post)
-                Log.d(TAG, "getting $lastPost")
-
-            } catch (e: Exception) {
-                lastPost?.postValue(null)
-            }
-        }
-        return lastPost
     }
 
 }

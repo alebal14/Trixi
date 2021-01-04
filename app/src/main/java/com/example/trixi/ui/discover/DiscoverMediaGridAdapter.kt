@@ -1,26 +1,26 @@
 package com.example.trixi.ui.discover
 
+//import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
-import com.example.trixi.apiService.RetrofitClient
-//import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
-import com.example.trixi.entities.RealmPost
+import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
+import com.example.trixi.entities.Post
 import com.squareup.picasso.Picasso
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
+class DiscoverMediaGridAdapter(private val posts: ArrayList<Post>)
     : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
         val gridView = (LayoutInflater.from(parent.context).inflate(
-            R.layout.fragment_top_liked_posts,
+            R.layout.fragment_top_liked_post_item,
             parent, false
         ))
         return DiscoverViewHolder(gridView)
@@ -28,10 +28,8 @@ class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
 
 
     override fun getItemCount(): Int {
-        if (posts == null){
-            return 0;
-        } else
-        return  posts?.size!!
+        Log.d("posts_size", posts.size.toString())
+        return posts.size
     }
 
     override fun onBindViewHolder(holder: DiscoverViewHolder, position: Int) {
@@ -39,22 +37,20 @@ class DiscoverMediaGridAdapter(private var posts: RealmResults<RealmPost>?)
     }
 
 
-
-
     class DiscoverViewHolder (view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
-        val postItem = itemView.image_top_post
+        private val postItem: ImageView? = itemView.image_top_post
 
         init {
             view.setOnClickListener(this)
         }
 
         override fun onClick(p0: View?) {
-            Log.d("click", "click")
+            Log.d("click", "clicking on image")
         }
 
-        fun bindView(post: RealmPost) {
-            Picasso.get().load(RetrofitClient.BASE_URL + post.filePath!!).into(postItem)
-            Log.d("bindView", "in bindview")
+        fun bindView(post: Post) {
+            var photo: String = BASE_URL + post.filePath
+            Picasso.get().load(photo).into(postItem)
         }
 
 

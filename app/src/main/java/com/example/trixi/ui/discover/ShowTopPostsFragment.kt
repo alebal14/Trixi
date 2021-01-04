@@ -1,24 +1,22 @@
 package com.example.trixi.ui.discover
 
+//import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-//import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.trixi.R
-import com.example.trixi.entities.RealmPost
-import com.example.trixi.repository.DataViewModel
-import io.realm.RealmResults
+import com.example.trixi.entities.Post
+import com.example.trixi.repository.TrixiViewModel
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 class ShowTopPostsFragment : Fragment() {
-    //val model: DataViewModel by viewModels()
-    private val postList : RealmResults<RealmPost>? = null
-
+    private lateinit var model: TrixiViewModel
+    //private lateinit var linearLayoutManager: LinearLayoutManager
 
 
     override fun onCreateView(
@@ -31,45 +29,34 @@ class ShowTopPostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
+
         super.onViewCreated(view, savedInstanceState)
-        getData()
-        Log.d("discover", postList.toString())
-
-
-        media_grid_top_posts.apply {
-            media_grid_top_posts.layoutManager =
-                StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
-            adapter = DiscoverMediaGridAdapter(postList)
-            media_grid_top_posts.adapter = adapter
-        }
-
-        addData()
+        setupDiscoverFragment()
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.profile_nav_menu, menu)
-//        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Discover")
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
-    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Discover"
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Discover"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
 
-    private fun addData() {
-        //Picasso.get().load(RetrofitClient.BASE_URL).fit().into(image_top_post)
+    private fun setupDiscoverFragment() {
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+        model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
+            Log.d("post_size_f", post?.size.toString())
+
+            media_grid_top_posts.apply {
+                media_grid_top_posts.layoutManager =
+                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                    StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                media_grid_top_posts.adapter = DiscoverMediaGridAdapter(post as ArrayList<Post>)
+            }
+
+        })
+
+
     }
-
-    private fun getData(){
-//        model.getAllPostsData()
-//            .observe(viewLifecycleOwner) { postsA ->
-//                Log.d("post", " all posts in db : ${postsA.size}")
-//            }
-
-
-    }
-
 }
