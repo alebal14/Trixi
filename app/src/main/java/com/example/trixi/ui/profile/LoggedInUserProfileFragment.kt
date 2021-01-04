@@ -96,7 +96,7 @@ class LoggedInUserProfileFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.profile_nav_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Profile")
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Profile"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
