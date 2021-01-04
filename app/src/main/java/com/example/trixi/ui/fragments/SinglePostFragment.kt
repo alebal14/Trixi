@@ -18,23 +18,20 @@ import com.example.trixi.ui.home.HomeItem
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
+import com.example.trixi.entities.Post
 import kotlinx.android.synthetic.main.activity_upload.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 import kotlinx.android.synthetic.main.fragment_single_post.*
 
 
-class singlePostFragment : Fragment() {
+class SinglePostFragment(val post: Post?) : Fragment() {
 
-    private lateinit var model: TrixiViewModel
 
-    val db = PostToDb()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,54 +41,31 @@ class singlePostFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_single_post, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val newPost = requireArguments().getString("EXTRA")
+        single_item_profileName.visibility = View.GONE
+        single_item_profileimg.visibility = View.GONE
+        single_item_profile.visibility = View.GONE
+        single_item_report.visibility = View.GONE
 
-        if(!newPost.isNullOrEmpty()){
-            setupPost()
+        single_item_title.text = post?.title.toString()
+        single_item_description.text = post?.description.toString()
+        single_item_tags.text = post?.categoryName.toString()
+        if(post?.fileType.toString() == "image") {
+            single_item_video.visibility = View.GONE;
+            single_item_image.visibility = View.VISIBLE;
+            Picasso.get().load(RetrofitClient.BASE_URL + post?.filePath.toString()).centerCrop().fit().into(single_item_image)
+        } else {
+            single_item_image.visibility = View.GONE;
+            single_item_video.visibility = View.VISIBLE;
+            single_item_video.setSource(RetrofitClient.BASE_URL + post?.filePath.toString())
         }
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         PostToDb.postedPost = null
     }
-
-    private fun setupPost() {
-
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-
-
-            model.getLatestPost()?.observe(viewLifecycleOwner, Observer { post ->
-
-
-                single_item_profileName.visibility = View.GONE
-                single_item_profileimg.visibility = View.GONE
-                single_item_profile.visibility = View.GONE
-                single_item_report.visibility = View.GONE
-
-                single_item_title.text = post.title.toString()
-                single_item_description.text = post.description.toString()
-                single_item_tags.text = post.categoryName.toString()
-                if(post.fileType.toString() == "image") {
-                    single_item_video.visibility = View.GONE;
-                    single_item_image.visibility = View.VISIBLE;
-                    Picasso.get().load(RetrofitClient.BASE_URL + post.filePath.toString()).centerCrop().fit().into(single_item_image)
-                } else {
-                    single_item_image.visibility = View.GONE;
-                    single_item_video.visibility = View.VISIBLE;
-                    single_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
-                }
-
-
-
-            })
-
-    }
-
 
 }
