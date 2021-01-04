@@ -9,6 +9,7 @@ import android.view.*
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -71,7 +72,7 @@ class LoggedInUserProfileFragment : Fragment() {
                     false
                 )
                 media_grid.adapter = ProfileMediaGridAdapter(loggedInUser.posts!!)
-            } else profile_no_posts.visibility = TextView.VISIBLE
+            } //else profile_no_posts.isVisible = true
         }
 
         val snapHelper2: SnapHelper = GravitySnapHelper(Gravity.START)

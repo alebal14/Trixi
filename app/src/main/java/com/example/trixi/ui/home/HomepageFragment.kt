@@ -57,7 +57,7 @@ class HomepageFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Trixi")
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Trixi"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
