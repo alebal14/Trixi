@@ -1,6 +1,7 @@
 package com.example.trixi.repository
 
 import android.util.Log
+import android.widget.MultiAutoCompleteTextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -140,5 +141,16 @@ class TrixiViewModel : ViewModel() {
         }
         return allCategory
     }
+
+    fun aPostById(id: String):MutableLiveData<Post>{
+        val post = MutableLiveData<Post>()
+        viewModelScope.launch(Dispatchers.IO){
+            val aPost = retrofitClient?.getPostById(id)?.body()
+            post.postValue(aPost)
+        }
+        return post
+    }
+
+
 
 }
