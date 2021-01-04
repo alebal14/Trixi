@@ -1,16 +1,14 @@
 package com.example.trixi
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.Post
-import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.discover.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.UploadFragment
-import com.example.trixi.ui.fragments.singlePostFragment
+import com.example.trixi.ui.fragments.SinglePostFragment
 import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.profile.LoggedInUserProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,25 +16,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val db = PostToDb()
-
-
-    //val model: DataViewModel by viewModels()
+     var post : Post? = null
 
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-         //RetrofitClient.context = this
-
-        //setContentView(R.layout.fragment_share)
-        val single = intent.getStringExtra("EXTRA")
 
          val homepageFragment = HomepageFragment()
          val postFragment = UploadFragment()
          val discoverFragment = ShowTopPostsFragment()
          val profileFragment = LoggedInUserProfileFragment()
-         val singleFragment = singlePostFragment()
+
 
          //val post = PostToDb.latestPost
 
@@ -57,16 +48,14 @@ class MainActivity : AppCompatActivity() {
 //
 //         homepageFragment.arguments = bundle
 
-         if(single.isNullOrEmpty()){
-             makeCurrentFragment(homepageFragment)
-         } else {
-            val bundle = Bundle()
-             bundle.putString("EXTRA", "NewPost")
-             singleFragment.arguments = bundle;
-             makeCurrentFragment(singleFragment);
-         }
 
-         //makeCurrentFragment(homepageFragment)
+         if(PostToDb.postedPost != null){
+             post = PostToDb.postedPost
+             var singleFragment = SinglePostFragment(post)
+             makeCurrentFragment(singleFragment);
+         } else {
+             makeCurrentFragment(homepageFragment)
+         }
 
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
@@ -79,9 +68,6 @@ class MainActivity : AppCompatActivity() {
          }
 
     }
-
-
-
 
     fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {

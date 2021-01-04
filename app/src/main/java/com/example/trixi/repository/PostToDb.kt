@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.*
 import com.example.trixi.ui.login.LoginActivity
 import okhttp3.MultipartBody
@@ -192,9 +193,13 @@ class PostToDb {
                 call: Call<Post>, response: Response<Post>
             ) {
                 if(response.isSuccessful){
-
                     postedPost = response.body()
                     Log.d("post", "Post : onResponse success" + (response.body()!!.uid  ))
+
+                    if (postedPost != null) {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }
 
                 }else{
                     Log.d("post", "Post : onResponse else" + response.body()!!.uid)
