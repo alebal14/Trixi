@@ -2,8 +2,10 @@ package com.example.trixi
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.trixi.entities.Post
 import com.example.trixi.repository.DataViewModel
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.discover.ShowTopPostsFragment
@@ -15,6 +17,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
+
+    val db = PostToDb()
 
 
     //val model: DataViewModel by viewModels()
@@ -53,19 +57,16 @@ class MainActivity : AppCompatActivity() {
 //
 //         homepageFragment.arguments = bundle
 
-//         if(single.isNullOrEmpty()){
-//             makeCurrentFragment(homepageFragment)
-//         } else {
-//             val bundle = Bundle()
-//             //bundle.putString("edttext", "From Activity")
-//             bundle.putString("title", post?.title.toString())
-//             bundle.putString("url", post?.filePath.toString())
-//             bundle.putString("description", post?.description.toString())
-//             singleFragment.arguments = bundle;
-//             makeCurrentFragment(singleFragment);
-//         }
+         if(single.isNullOrEmpty()){
+             makeCurrentFragment(homepageFragment)
+         } else {
+            val bundle = Bundle()
+             bundle.putString("EXTRA", "NewPost")
+             singleFragment.arguments = bundle;
+             makeCurrentFragment(singleFragment);
+         }
 
-         makeCurrentFragment(homepageFragment)
+         //makeCurrentFragment(homepageFragment)
 
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){

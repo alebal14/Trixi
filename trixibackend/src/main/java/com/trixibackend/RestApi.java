@@ -246,11 +246,16 @@ public class RestApi {
                     String description= null;
                     String ownerId= null;
                     String title = null;
+                    String categoryName = null;
+                    String fileType = null;
+
                     try {
                         Postfiles = req.getFormData("file");
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
                         ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         title = req.getFormData("title").get(0).getString().replace("\"", "");
+                        categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
+                        fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
                         PostfileUrl = db.uploadImage(Postfiles.get(0));
                         System.out.println(PostfileUrl + description + ownerId+ title);
@@ -260,8 +265,12 @@ public class RestApi {
                         post.setOwnerId(ownerId);
                         post.setTitle(title);
                         post.setFilePath(PostfileUrl);
+                        post.setFileType(fileType);
+                        post.setCategoryName(categoryName);
 
                         db.save(post);
+
+                        post.setUid(post.getId().toString());
 
                         System.out.println(post.getUid());
                         System.out.println(post);

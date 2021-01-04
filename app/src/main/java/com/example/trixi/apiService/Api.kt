@@ -103,9 +103,11 @@ interface Api {
     @POST("rest/posts")
     fun postPostToDb(
         @Part file: MultipartBody.Part,
+        @Part("fileType") fileType: String,
         @Part("description") description: String,
         @Part("ownerId") ownerId: String,
-        @Part("title") title: String
+        @Part("title") title: String,
+        @Part("categoryName") categoryName: String
     ): Call<Post>
 
     @GET("rest/posts/{id}")
@@ -129,8 +131,10 @@ interface Api {
     @POST("rest/comments")
     fun commentAPost(@Body comment: Comment): Call<Comment>
 
+
     @POST("rest/delete_comment")
     fun deleteComment(@Body comment: Comment): Call<Comment>
+
 
     @POST("rest/likes")
     fun likeAPost(@Body like: Like): Call<Like>

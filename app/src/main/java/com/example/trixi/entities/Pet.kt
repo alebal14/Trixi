@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class Pet (
     val uid: String,
-    val posts: ArrayList<Post>,
+    val posts: ArrayList<Post>?,
     val ownerId: String,
     val name: String,
     val imageUrl: String?,
@@ -14,3 +14,11 @@ data class Pet (
     val followers: ArrayList<User>?,
     val gender: String?
 ) : Serializable
+{
+
+
+    override fun toString(): String {
+        return name
+    }
+
+}

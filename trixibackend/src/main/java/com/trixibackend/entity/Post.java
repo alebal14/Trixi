@@ -11,9 +11,12 @@ public class Post {
     private String title;
     private String description;
     private String filePath;
+    private String fileType;
 
     private String ownerId;
-    private String categoryId;
+    private String categoryName;
+
+
 
     private List<Comment> comments = new ArrayList<>();
     private List<Like> likes = new ArrayList<>();
@@ -30,12 +33,13 @@ public class Post {
 
     }
 
-    public Post(String title, String filePath, String description, String ownerId, String categoryId) {
+    public Post(String title, String filePath, String fileType, String description, String ownerId, String categoryName) {
         this.title = title;
         this.filePath = filePath;
+        this.fileType = fileType;
         this.description = description;
         this.ownerId = ownerId;
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     public Post(String title, String filePath, String description, String ownerId) {
@@ -70,6 +74,14 @@ public class Post {
         this.filePath = filePath;
     }
 
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -86,12 +98,12 @@ public class Post {
         this.ownerId = ownerId;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public List<Comment> getComments() {
@@ -101,7 +113,6 @@ public class Post {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
-
 
     public List<Like> getLikes() {
         return likes;
@@ -117,12 +128,12 @@ public class Post {
                 "id=" + id +
                 ", uid='" + uid + '\'' +
                 ", title='" + title + '\'' +
-                ", filePath='" + filePath + '\'' +
                 ", description='" + description + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", fileType='" + fileType + '\'' +
                 ", ownerId='" + ownerId + '\'' +
-                ", categoryId='" + categoryId + '\'' +
+                ", categoryName='" + categoryName + '\'' +
                 ", comments=" + comments +
-
                 ", likes=" + likes +
                 '}';
     }

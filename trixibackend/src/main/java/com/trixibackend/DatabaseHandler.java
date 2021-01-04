@@ -178,9 +178,9 @@ public class DatabaseHandler {
 
         String fileUrl = null;
 
-        fileUrl = "resFolder/images/" + file.getName();
+        fileUrl = "resFolder/media/" + file.getName();
 
-        try (var os = new FileOutputStream(Paths.get("resFolder/images/" + file.getName()).toString())) {
+        try (var os = new FileOutputStream(Paths.get("resFolder/media/" + file.getName()).toString())) {
             os.write(file.get());
 
         } catch (IOException e) {

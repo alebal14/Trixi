@@ -1,4 +1,13 @@
 package com.example.trixi.entities
 
-class Category {
+
+data class Category(
+    val uid: String,
+    val name: String
+){
+
+    override fun toString(): String {
+        return name
+    }
+
 }

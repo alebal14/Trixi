@@ -22,5 +22,9 @@
 
     </style>
 
+    <style name="no_actionbar" parent="Theme.AppCompat.DayNight.NoActionBar">
+    </style>
+
+
 
 </resources>
