@@ -410,6 +410,7 @@ public class RestApi {
         });
     }
 
+
     private void getLoggedinUser() {
         app.get("/rest/login", (req, res) -> {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
