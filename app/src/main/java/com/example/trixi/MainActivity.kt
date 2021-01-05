@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
          val postFragment = UploadFragment()
          val discoverFragment = ShowTopPostsFragment()
          val profileFragment = LoggedInUserProfileFragment()
-         val createPet = PetRegister()
+
 
 
          //val post = PostToDb.latestPost
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
                  R.id.footer_home -> makeCurrentFragment(homepageFragment)
-                 R.id.footer_search -> makeCurrentFragment(createPet)
+                 R.id.footer_search -> makeCurrentFragment(discoverFragment)
                  R.id.footer_post -> makeCurrentFragment(postFragment)
                  R.id.footer_profile -> makeCurrentFragment(profileFragment)
              }
