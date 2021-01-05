@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
          val homepageFragment = HomepageFragment()
          val postFragment = UploadFragment()
-         val discoverFragment = ShowTopPostsFragment()
+         val explorerFragment = ShowTopPostsFragment()
          val profileFragment = LoggedInUserProfileFragment()
 
 
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
                  R.id.footer_home -> makeCurrentFragment(homepageFragment)
-                 R.id.footer_search -> makeCurrentFragment(discoverFragment)
+                 R.id.footer_search -> makeCurrentFragment(explorerFragment)
                  R.id.footer_post -> makeCurrentFragment(postFragment)
                  R.id.footer_profile -> makeCurrentFragment(profileFragment)
              }

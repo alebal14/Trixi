@@ -160,14 +160,4 @@ class TrixiViewModel : ViewModel() {
         return allPetType
     }
 
-    fun getDiscoverPosts() : MutableLiveData<List<Post>?> {
-        val discoverPosts: MutableLiveData<List<Post>?> = MutableLiveData()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "getting All post")
-            val discoverPostlist = retrofitClient?.getAllPosts()?.body()
-            discoverPosts.postValue(discoverPostlist)
-        }
-        return discoverPosts
-    }
 }

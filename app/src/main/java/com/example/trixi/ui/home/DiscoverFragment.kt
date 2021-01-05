@@ -65,7 +65,7 @@ class DiscoverFragment : Fragment() {
 
     private fun setUpDiscoverView() {
 
-            model.getDiscoverPosts()?.observe(viewLifecycleOwner, Observer { posts ->
+            model.getAllPosts()?.observe(viewLifecycleOwner, Observer { posts ->
                 populatePosts(posts)
             })
 
