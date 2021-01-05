@@ -58,7 +58,7 @@ class DiscoverFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Trixi"
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Discover"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
