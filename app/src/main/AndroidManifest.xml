@@ -76,7 +76,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".ui.UploadActivity" />
 
-        <activity android:name=".ui.login.LoginActivity">
+        <activity  android:theme="@style/no_actionbar" android:name=".ui.login.LoginActivity">
 
 
 
