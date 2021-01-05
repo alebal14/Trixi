@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Like
+import com.example.trixi.entities.Pet
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.home.HomeItem
@@ -22,6 +23,9 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.example.trixi.entities.Post
+import com.example.trixi.entities.User
+import com.example.trixi.ui.profile.PetProfileFragment
+import com.example.trixi.ui.profile.UserProfileFragment
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
@@ -60,12 +64,44 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
                 populatePost(it)
                 handleClickOnComment(it)
                 handleClickOnLike(it)
+                //handleClickOnProfile(it)
             })
         }
 
     }
 
-     private fun populatePost(post: Post) {
+    private fun handleClickOnUser(user: User) {
+        single_item_profileimg.setOnClickListener {
+            redirectToUserProfile(user)
+        }
+        single_item_profileName.setOnClickListener {
+            redirectToUserProfile(user)
+        }
+    }
+
+    private fun redirectToUserProfile(user: User) {
+        val userProfile = UserProfileFragment(user)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, userProfile)?.commit()
+    }
+
+    private fun handleCLickOnPet(pet: Pet) {
+        single_item_profileimg.setOnClickListener {
+            redirectToPetProfile(pet)
+        }
+        single_item_profileName.setOnClickListener {
+            redirectToPetProfile(pet)
+        }
+
+    }
+
+    private fun redirectToPetProfile(pet: Pet) {
+        val petProfile = PetProfileFragment(pet)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, petProfile)?.commit()
+    }
+
+    private fun populatePost(post: Post) {
 
         if (post.ownerId == PostToDb.loggedInUser?.uid) { // logged-in user's post
             single_item_profileName.visibility = View.GONE
@@ -79,25 +115,24 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
             post.ownerId?.let {
                 model.getOneUser(it)?.observe(viewLifecycleOwner, { user ->
-                    if(user !=null){
+                    if (user != null) {
                         single_item_profileName.text = user.userName
                         Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl)
                             .transform(CropCircleTransformation()).fit()
                             .placeholder(R.drawable.sample)
                             .error(R.drawable.sample)
                             .centerCrop().into(single_item_profileimg)
-//                        Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl).centerCrop()
-//                            .fit()
-//                            .into(single_item_profileimg)
-                    }else{
-                        model.getOnePet(it)?.observe(viewLifecycleOwner,{pet->
-                            if(pet !=null){
+                        handleClickOnUser(user)
+                    } else {
+                        model.getOnePet(it)?.observe(viewLifecycleOwner, { pet ->
+                            if (pet != null) {
                                 single_item_profileName.text = pet.name
                                 Picasso.get().load(RetrofitClient.BASE_URL + pet.imageUrl)
                                     .transform(CropCircleTransformation()).fit()
                                     .placeholder(R.drawable.sample)
                                     .error(R.drawable.sample)
                                     .centerCrop().into(single_item_profileimg)
+                                handleCLickOnPet(pet)
 
                             }
 
@@ -128,9 +163,9 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     }
 
 
-    private fun handleClickOnComment(post:Post) {
+    private fun handleClickOnComment(post: Post) {
         single_item_chat.setOnClickListener {
-            model.aPostById(post.uid.toString()).observe(viewLifecycleOwner,{
+            model.aPostById(post.uid.toString()).observe(viewLifecycleOwner, {
                 val popUp = PopUpCommentWindow(it?.comments, it?.uid.toString(), null)
                 popUp.show(activity?.supportFragmentManager!!, PopUpCommentWindow.TAG)
                 single_item_chat_count.text = it?.comments?.size.toString()
@@ -141,7 +176,7 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
     }
 
-    private fun handleClickOnLike(post:Post) {
+    private fun handleClickOnLike(post: Post) {
         var liked = false
 
         if (post != null) {
@@ -166,13 +201,13 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
                 db.unlike(like)
                 liked = false
                 single_item_like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-                numberOfLike -=1
+                numberOfLike -= 1
                 single_item_like_count.text = numberOfLike.toString()
             } else {
                 db.like(like)
                 liked = true
                 single_item_like.setImageResource(R.drawable.ic_baseline_favorite_24)
-                numberOfLike +=1
+                numberOfLike += 1
                 single_item_like_count.text = numberOfLike.toString()
             }
         }
