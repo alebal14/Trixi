@@ -64,7 +64,7 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
     }
 
-    private fun populatePost(post: Post) {
+     private fun populatePost(post: Post) {
 
         if (post.ownerId == PostToDb.loggedInUser?.uid) { // logged-in user's post
             single_item_profileName.visibility = View.GONE
@@ -78,10 +78,23 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
             post.ownerId?.let {
                 model.getOneUser(it)?.observe(viewLifecycleOwner, { user ->
-                    single_item_profileName.text = user.userName
-                    Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl).centerCrop()
-                        .fit()
-                        .into(single_item_profileimg)
+                    if(user !=null){
+                        single_item_profileName.text = user.userName
+                        Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl).centerCrop()
+                            .fit()
+                            .into(single_item_profileimg)
+                    }else{
+                        model.getOnePet(it)?.observe(viewLifecycleOwner,{pet->
+                            if(pet !=null){
+                                single_item_profileName.text = pet.name
+                                Picasso.get().load(RetrofitClient.BASE_URL + pet.imageUrl).centerCrop()
+                                    .fit()
+                                    .into(single_item_profileimg)
+                            }
+
+                        })
+                    }
+
                 })
             }
         }
@@ -108,12 +121,15 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
     private fun handleClickOnComment(post:Post) {
         single_item_chat.setOnClickListener {
-            model.aPostById(post?.uid.toString()).observe(viewLifecycleOwner, {
+            model.aPostById(post.uid.toString()).observe(viewLifecycleOwner,{
                 val popUp = PopUpCommentWindow(it?.comments, it?.uid.toString(), null)
                 popUp.show(activity?.supportFragmentManager!!, PopUpCommentWindow.TAG)
+                single_item_chat_count.text = it?.comments?.size.toString()
+
             })
 
         }
+
     }
 
     private fun handleClickOnLike(post:Post) {
