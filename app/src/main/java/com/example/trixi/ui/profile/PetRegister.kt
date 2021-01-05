@@ -147,7 +147,6 @@ class PetRegister : Fragment() {
 
     }
 
-
     private fun selectPetTypeData(petType: PetType) {
         petTypeName = petType.name
     }
@@ -169,20 +168,6 @@ class PetRegister : Fragment() {
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 0 && grantResults.isNotEmpty()) {
-            for (i in grantResults.indices){
-                if (grantResults[i] == PackageManager.PERMISSION_GRANTED){
-                    Log.d("permissionRequest", "${permissions[i]} granted.")
-                }
-            }
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
