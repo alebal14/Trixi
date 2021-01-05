@@ -24,7 +24,6 @@ import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_pet_register.*
