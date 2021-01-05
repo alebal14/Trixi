@@ -83,13 +83,13 @@ class LoggedInUserProfileFragment : Fragment() {
         val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
         snapHelper1.attachToRecyclerView(media_grid)
 
-        if (loggedInUser?.posts.isNullOrEmpty()) {
-            profile_no_posts.visibility = TextView.VISIBLE
-        } else {
-            media_grid.apply {
+        media_grid.apply {
 
-                model.getPostsByOwner(loggedInUser?.uid.toString())
-                    ?.observe(viewLifecycleOwner, { posts ->
+            model.getPostsByOwner(loggedInUser?.uid.toString())
+                ?.observe(viewLifecycleOwner, { posts ->
+                    if (posts.isNullOrEmpty()) {
+                        profile_no_posts.visibility = TextView.VISIBLE
+                    } else {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
                             3,
@@ -100,10 +100,10 @@ class LoggedInUserProfileFragment : Fragment() {
                             redirectToSinglePost(it)
 
                         }
-
-                    })
-            }
+                    }
+                })
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

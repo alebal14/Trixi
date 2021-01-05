@@ -108,7 +108,7 @@ public class UserHandler {
         //delete user's pet's posts
         var pets = petHandler.findPetsByOwner(id);
         for(Pet p :pets){
-            Bson petsPost = gte("ownerId",p.getUid());
+            Bson petsPost = gte("ownerId",p.getId());
             DeleteResult deletedPetsPosts = postHandler.getPostColl().deleteMany(petsPost);
             System.out.println(p.getName() + "'s post deleted : " + deletedPetsPosts);
         }
