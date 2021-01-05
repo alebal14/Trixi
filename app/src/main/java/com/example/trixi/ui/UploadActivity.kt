@@ -143,7 +143,7 @@ class UploadActivity : AppCompatActivity() {
 
         if (upload_spinner_add_pet != null) {
             var petList = model.getPetsByOwner(loggedInUserId)
-            var petdefault = (Pet("0", null, "", "Select Pet", "", 0, "", "", null, ""))
+            var petdefault = (Pet("0", null, "", "Select Pet", "", "", "", "", "", null, ""))
 
             petList?.observe(this, { allPets ->
                 if (allPets!!.isEmpty()) {

@@ -24,6 +24,7 @@ class PostToDb {
     companion object {
         var loggedInUser: User? = null
         var postedPost : Post? = null
+        var createdPet : Pet? = null
     }
 
 
@@ -203,6 +204,39 @@ class PostToDb {
 
                 }else{
                     Log.d("post", "Post : onResponse else" + response.body()!!.uid)
+                }
+            }
+
+        })
+
+    }
+
+    fun sendPetToDb(image: MultipartBody.Part, ownerId: String, name: String, age: String, bio: String, breed: String, petType:String, gender: String) {
+
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+        val call = retrofitClient?.postPet(image, ownerId, name, age, bio, breed, petType, gender)
+
+
+        call?.enqueue(object : Callback<Pet> {
+            override fun onFailure(call: Call<Pet>, t: Throwable) {
+                Log.d("pet", "Pet : onfailure " + t.message)
+
+            }
+            override fun onResponse(
+                call: Call<Pet>, response: Response<Pet>
+            ) {
+                if(response.isSuccessful){
+                    //createdPet = response.body()
+                    Log.d("pet", "Pet : onResponse success" + (response.body()!!.uid  ))
+
+                    /*if (createdPet != null) {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }*/
+
+                }else{
+                    Log.d("pet", "Pet : onResponse else" + response.body()!!.uid)
                 }
             }
 

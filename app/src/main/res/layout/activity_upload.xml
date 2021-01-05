@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
-                android:background="@android:color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
                 android:hint="Title"
                 android:inputType="textPersonName"
@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginBottom="20dp"
-                android:background="@android:color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
                 android:hint="Description"
                 android:inputType="textMultiLine"
@@ -130,14 +130,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
-                android:background="@android:color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 ></Spinner>
 
             <Spinner
                 android:id="@+id/upload_spinner_add_category"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@android:color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 ></Spinner>
         </LinearLayout>
 

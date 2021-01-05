@@ -11,6 +11,7 @@ import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.fragments.SinglePostFragment
 import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.profile.LoggedInUserProfileFragment
+import com.example.trixi.ui.profile.PetRegister
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
          val postFragment = UploadFragment()
          val discoverFragment = ShowTopPostsFragment()
          val profileFragment = LoggedInUserProfileFragment()
+         val createPet = PetRegister()
 
 
          //val post = PostToDb.latestPost
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity() {
          bottom_nav.setOnNavigationItemSelectedListener {
              when(it.itemId){
                  R.id.footer_home -> makeCurrentFragment(homepageFragment)
-                 R.id.footer_search -> makeCurrentFragment(discoverFragment)
+                 R.id.footer_search -> makeCurrentFragment(createPet)
                  R.id.footer_post -> makeCurrentFragment(postFragment)
                  R.id.footer_profile -> makeCurrentFragment(profileFragment)
              }
