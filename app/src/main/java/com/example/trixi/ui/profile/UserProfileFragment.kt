@@ -40,9 +40,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_profile, container, false);
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -122,7 +120,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
                             false
                         )
 
-                        adapter = ProfilePetListAdapter(pets as ArrayList<Pet>) {pet ->
+                        adapter = ProfilePetListAdapter(pets as ArrayList<Pet>) { pet ->
                             redirectToPetProfile(pet)
                         }
                         users_pet_list.adapter = adapter
