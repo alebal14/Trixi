@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.*
 import com.example.trixi.ui.login.LoginActivity
 import okhttp3.MultipartBody
@@ -16,13 +16,14 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Multipart
+
 
 class PostToDb {
 
     companion object {
         var loggedInUser: User? = null
         var postedPost : Post? = null
+        var createdPet : Pet? = null
     }
 
 
@@ -37,19 +38,27 @@ class PostToDb {
                 Log.d("user", "login-user : onfailure: Username/email does not exist")
                 Toast.makeText(context, "Username/email does not exist", Toast.LENGTH_LONG).show()
             }
+
             override fun onResponse(
                 call: Call<User>, response: Response<User>
             ) {
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     Log.d("loggedInUser", "User logged in successfully")
                     loggedInUser = response.body()
                     Log.d("loggedInUser", loggedInUser.toString())
 
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
-                }else{
-                    Log.d("user", "login-user : onResponse else: password and username/email dont match")
-                    Toast.makeText(context, "Password and username/email dont match", Toast.LENGTH_LONG).show()
+                } else {
+                    Log.d(
+                        "user",
+                        "login-user : onResponse else: password and username/email dont match"
+                    )
+                    Toast.makeText(
+                        context,
+                        "Password and username/email dont match",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })
@@ -64,6 +73,7 @@ class PostToDb {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.d("uus", "loggedInUser : onfailure " + t.message)
             }
+
             override fun onResponse(
                 call: Call<User>, response: Response<User>
             ) {
@@ -92,13 +102,14 @@ class PostToDb {
             override fun onFailure(call: Call<Image>, t: Throwable) {
                 //Log.d("user", "User: onfailure " + t.message)
             }
+
             override fun onResponse(
-                    call: Call<Image>, response: Response<Image>
+                call: Call<Image>, response: Response<Image>
             ) {
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     Log.d("imageurl", "Url:" + response.body()!!.url)
                     //PostRegisterUserToDb( response.body()!!.url)
-                }else{
+                } else {
                     //Log.d("user", "User : onResponse else, failed" + response.message())
                 }
             }
@@ -135,6 +146,7 @@ class PostToDb {
            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                Log.d("logout", "logout user : onfailure " + t.message)
            }
+
            override fun onResponse(
                call: Call<ResponseBody>, response: Response<ResponseBody>
            ) {
@@ -150,14 +162,21 @@ class PostToDb {
        })
    }
 
-     fun PostRegisterUserToDb(image: MultipartBody.Part, userName:String, email:String, password:String, context: Context){
+     fun PostRegisterUserToDb(
+         image: MultipartBody.Part,
+         userName: String,
+         email: String,
+         password: String,
+         context: Context
+     ){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.createUser(image, userName, email,password)
+        val call = retrofitClient?.createUser(image, userName, email, password)
      call?.enqueue(object : Callback<User> {
          override fun onFailure(call: Call<User>, t: Throwable) {
              Log.d("uus", "REG-user : onfailure " + t.message)
          }
+
          override fun onResponse(
              call: Call<User>, response: Response<User>
          ) {
@@ -176,11 +195,25 @@ class PostToDb {
      })
     }
 
-    fun sendPostToDb(image: MultipartBody.Part, fileType: String, description: String, ownerId : String, title : String, categoryName: String) {
+    fun sendPostToDb(
+        image: MultipartBody.Part,
+        fileType: String,
+        description: String,
+        ownerId: String,
+        title: String,
+        categoryName: String
+    ) {
 
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.postPostToDb(image, fileType, description, ownerId, title, categoryName)
+        val call = retrofitClient?.postPostToDb(
+            image,
+            fileType,
+            description,
+            ownerId,
+            title,
+            categoryName
+        )
 
 
         call?.enqueue(object : Callback<Post> {
@@ -188,16 +221,64 @@ class PostToDb {
                 Log.d("post", "Post : onfailure " + t.message)
 
             }
+
             override fun onResponse(
                 call: Call<Post>, response: Response<Post>
             ) {
-                if(response.isSuccessful){
-
+                if (response.isSuccessful) {
                     postedPost = response.body()
-                    Log.d("post", "Post : onResponse success" + (response.body()!!.uid  ))
+                    Log.d("post", "Post : onResponse success" + (response.body()!!.uid))
 
-                }else{
+                    if (postedPost != null) {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }
+
+                } else {
                     Log.d("post", "Post : onResponse else" + response.body()!!.uid)
+                }
+            }
+
+        })
+
+    }
+
+    fun sendPetToDb(
+        image: MultipartBody.Part,
+        ownerId: String,
+        name: String,
+        age: String,
+        bio: String,
+        breed: String,
+        petType: String,
+        gender: String
+    ) {
+
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+
+        val call = retrofitClient?.postPet(image, ownerId, name, age, bio, breed, petType, gender)
+
+
+        call?.enqueue(object : Callback<Pet> {
+            override fun onFailure(call: Call<Pet>, t: Throwable) {
+                Log.d("pet", "Pet : onfailure " + t.message)
+
+            }
+
+            override fun onResponse(
+                call: Call<Pet>, response: Response<Pet>
+            ) {
+                if (response.isSuccessful) {
+                    createdPet = response.body()
+                    Log.d("pet", "Pet : onResponse success" + (response.body()!!.uid))
+
+                    if (createdPet != null) {
+                        val intent = Intent(context, LoginActivity::class.java)
+                        context!!.startActivity(intent)
+                    }
+
+                } else {
+                    Log.d("pet", "Pet : onResponse else" + response.body()!!.uid)
                 }
             }
 
@@ -213,12 +294,13 @@ class PostToDb {
                 Log.d("comment", "comment : onFailure " + t.message)
 
             }
+
             override fun onResponse(
                 call: Call<Comment>, response: Response<Comment>
             ) {
                 if (response.isSuccessful) {
                     val c: Comment? = response.body()
-                    Log.d("comment",c.toString())
+                    Log.d("comment", c.toString())
 
                 } else {
                     Log.d("comment", "fail to comment")
@@ -237,12 +319,13 @@ class PostToDb {
             override fun onFailure(call: Call<Like>, t: Throwable) {
                 Log.d("like", "like : onFailure " + t.message)
             }
+
             override fun onResponse(
                 call: Call<Like>, response: Response<Like>
             ) {
                 if (response.isSuccessful) {
                     val l: Like? = response.body()
-                    Log.d("like",l.toString())
+                    Log.d("like", l.toString())
 
                 } else {
                     Log.d("like", "fail to like")
@@ -259,12 +342,13 @@ class PostToDb {
             override fun onFailure(call: Call<Like>, t: Throwable) {
                 Log.d("like", "unlike : onFailure " + t.message)
             }
+
             override fun onResponse(
                 call: Call<Like>, response: Response<Like>
             ) {
                 if (response.isSuccessful) {
                     val l: Like? = response.body()
-                    Log.d("like",l.toString())
+                    Log.d("like", l.toString())
 
                 } else {
                     Log.d("like", "fail to unlike")
