@@ -159,4 +159,5 @@ class TrixiViewModel : ViewModel() {
         }
         return allPetType
     }
+
 }

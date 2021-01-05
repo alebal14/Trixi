@@ -68,6 +68,7 @@ class HomeItem(
         handleLike(viewHolder, numberOfLike)
         handleClickOnComment(viewHolder)
         handleClickOnDiscovery(viewHolder)
+        handleClickOnFollowing(viewHolder)
         handleClickOnImgAndName(viewHolder)
 
     }
@@ -145,11 +146,21 @@ class HomeItem(
     private fun handleClickOnDiscovery(viewHolder: GroupieViewHolder) {
         val discoveryText: TextView = viewHolder.itemView.findViewById(R.id.home_item_discover)
         discoveryText.setOnClickListener {
-            fm.beginTransaction().replace(R.id.fragment_container, ShowTopPostsFragment())
+            fm.beginTransaction().replace(R.id.fragment_container, DiscoverFragment())
                 .commit()
         }
 
     }
+
+    private fun handleClickOnFollowing(viewHolder: GroupieViewHolder) {
+        val discoveryText: TextView = viewHolder.itemView.findViewById(R.id.home_item_following)
+        discoveryText.setOnClickListener {
+            fm.beginTransaction().replace(R.id.fragment_container, HomepageFragment())
+                .commit()
+        }
+
+    }
+
 
 
     override fun getLayout(): Int {

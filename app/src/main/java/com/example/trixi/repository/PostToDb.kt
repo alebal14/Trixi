@@ -273,7 +273,7 @@ class PostToDb {
                     Log.d("pet", "Pet : onResponse success" + (response.body()!!.uid))
 
                     if (createdPet != null) {
-                        val intent = Intent(context, LoginActivity::class.java)
+                        val intent = Intent(context, MainActivity::class.java)
                         context!!.startActivity(intent)
                     }
 
