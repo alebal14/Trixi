@@ -170,4 +170,6 @@ class TrixiViewModel : ViewModel() {
         }
         return discoverPosts
     }
+
+
 }

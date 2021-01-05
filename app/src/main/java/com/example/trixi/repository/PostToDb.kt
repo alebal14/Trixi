@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
@@ -355,6 +354,16 @@ class PostToDb {
                 }
             }
         })
+    }
+
+    fun followUser(userId: String?, followingUserId: String){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.postFollowUser(userId, followingUserId)
+    }
+
+
+    fun unfollowUser(){
+
     }
 
 
