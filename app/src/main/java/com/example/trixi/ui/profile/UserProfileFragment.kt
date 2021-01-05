@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.profile_user_pet.*
 
 
 class UserProfileFragment(val user: User?) : Fragment() {
-    private val fm = activity?.supportFragmentManager
 
     companion object {
         private val TAG = "profile"
@@ -68,7 +67,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
         profile_following.text =
             "Following " + (user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString()
         profile_followers.text = user.followers?.size.toString() + " Followers"
-
+        follow_button.visibility = View.VISIBLE
         owner_name.visibility = View.INVISIBLE
         follow_button.visibility = View.INVISIBLE
 
@@ -76,33 +75,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
         getPosts()
     }
 
-    private fun getPosts() {
-
-        val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
-        snapHelper1.attachToRecyclerView(media_grid)
-
-        user?.uid?.let {
-            model.getPostsByOwner(it)?.observe(viewLifecycleOwner, Observer { posts ->
-                Log.d(TAG, "size: posts : ${posts?.size}")
-
-                media_grid.apply {
-
-                    //set up post thumbnails for user or show text:"no posts"
-                    if (!posts?.isEmpty()!!) {
-                        media_grid.layoutManager = GridLayoutManager(
-                            context,
-                            3,
-                            GridLayoutManager.VERTICAL,
-                            false
-                        )
-                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>)
-                    } else profile_no_posts.visibility = TextView.VISIBLE
-                }
-            })
-        }
-    }
-
     private fun getPets() {
+
         val snapHelper2: SnapHelper = GravitySnapHelper(Gravity.START)
         snapHelper2.attachToRecyclerView(users_pet_list)
 
@@ -127,6 +101,33 @@ class UserProfileFragment(val user: User?) : Fragment() {
                     }
                 }
             })
+        }
+    }
+
+
+    private fun getPosts() {
+
+        val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
+        snapHelper1.attachToRecyclerView(media_grid)
+
+        if (user?.posts.isNullOrEmpty()) {
+            profile_no_posts.visibility = TextView.VISIBLE
+        } else {
+            user?.uid?.let {
+                model.getPostsByOwner(it)?.observe(viewLifecycleOwner, Observer { posts ->
+                    Log.d(TAG, "size: posts : ${posts?.size}")
+
+                    media_grid.apply {
+                        media_grid.layoutManager = GridLayoutManager(
+                            context,
+                            3,
+                            GridLayoutManager.VERTICAL,
+                            false
+                        )
+                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
+                    }
+                })
+            }
         }
     }
 
