@@ -7,12 +7,14 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 //import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
 import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Like
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
@@ -26,7 +28,10 @@ class HomepageFragment : Fragment() {
 
     val adapter = GroupAdapter<GroupieViewHolder>()
     private lateinit var model: TrixiViewModel
-
+    private val fm: FragmentManager?
+        get() {
+            return fragmentManager
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,8 @@ class HomepageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
         Log.d("home", "in home fragment")
         setUpHomeView()
     }
@@ -57,44 +64,45 @@ class HomepageFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.setTitle("Trixi")
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Trixi"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
 
     private fun setUpHomeView() {
-        val fm = fragmentManager
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-
         PostToDb.loggedInUser?.uid?.let {
             model.getFollowingsPosts(it)?.observe(viewLifecycleOwner, Observer { posts ->
                 Log.d("home", "Followings post size: ${posts?.size}")
-                if (posts!!.isEmpty()) {
-                    activity?.supportFragmentManager?.beginTransaction()?.apply {
-                        replace(R.id.fragment_container, EmptyHomeFragment())
-                        commit()
-                    }
-                } else {
-                    posts.forEach { post ->
-                        model.getOneUser(post.ownerId!!)
-                            ?.observe(viewLifecycleOwner, Observer { postOwner ->
-                                if (postOwner != null) {
-                                    post.owner = postOwner
-                                    adapter.add(HomeItem(post, fm!!))
-
-                                } else {
-                                    Log.d("home", "user null")
-                                    model.getOnePet(post.ownerId!!)
-                                        ?.observe(viewLifecycleOwner, Observer { petIsOwner ->
-                                            post.ownerIsPet = petIsOwner
-                                            adapter.add(HomeItem(post, fm!!))
-                                        })
-                                }
-                            })
-                    }
-                    recyclerView_homepage.adapter = adapter
-                }
+                populatePosts(posts)
             })
+        }
+    }
+
+    private fun populatePosts(posts: List<Post>?) {
+        if (posts!!.isEmpty()) {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.fragment_container, EmptyHomeFragment())
+                commit()
+            }
+        } else {
+            posts.forEach { post ->
+                model.getOneUser(post.ownerId!!)
+                    ?.observe(viewLifecycleOwner, Observer { postOwner ->
+                        if (postOwner != null) {
+                            post.owner = postOwner
+                            adapter.add(HomeItem(post, fm!!))
+
+                        } else {
+                            Log.d("home", "user null")
+                            model.getOnePet(post.ownerId!!)
+                                ?.observe(viewLifecycleOwner, Observer { petIsOwner ->
+                                    post.ownerIsPet = petIsOwner
+                                    adapter.add(HomeItem(post, fm!!))
+                                })
+                        }
+                    })
+            }
+            recyclerView_homepage.adapter = adapter
         }
     }
 }

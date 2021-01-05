@@ -1,5 +1,6 @@
 package com.example.trixi.ui.home
 
+import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -31,8 +32,18 @@ class HomeItem(
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit()
-            .into(viewHolder.itemView.home_item_media)
+        if(post.fileType.toString() == "image"){
+            viewHolder.itemView.home_item_media.visibility= View.VISIBLE
+            viewHolder.itemView.home_item_video.visibility= View.GONE
+            Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit()
+                .into(viewHolder.itemView.home_item_media)
+        }else{
+            viewHolder.itemView.home_item_media.visibility= View.GONE
+            viewHolder.itemView.home_item_video.visibility= View.VISIBLE
+            viewHolder.itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
+
+        }
+
 
 //        Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: ))
 //            .transform(CropCircleTransformation()).fit()
@@ -126,9 +137,7 @@ class HomeItem(
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {
         val commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
         commentIcon.setOnClickListener {
-            val reversedComments: List<Comment>? = post.comments;
-            val popUp = PopUpCommentWindow(reversedComments, post.uid.toString(),viewHolder)
-
+            val popUp = PopUpCommentWindow(post.comments, post.uid.toString(),viewHolder)
             popUp.show(fm, PopUpCommentWindow.TAG)
         }
     }

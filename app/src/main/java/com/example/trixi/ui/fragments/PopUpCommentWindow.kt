@@ -24,6 +24,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
+import kotlinx.android.synthetic.main.fragment_single_post.*
 
 class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String, var viewHolder: GroupieViewHolder?) :
     DialogFragment() {
@@ -100,7 +101,9 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
         val commentObj = Comment(commentText, postId, userId, null)
         db.comment(commentObj)
-        viewHolder?.itemView?.home_item_chat_count!!.text = ((comments!!.size  + 1).toString())
+        if(viewHolder!=null){
+            viewHolder?.itemView?.home_item_chat_count!!.text = ((comments!!.size  + 1).toString())
+        }
         enter_comment.text.clear()
         adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
         recyclerView_popup_comment.adapter = adapterChat

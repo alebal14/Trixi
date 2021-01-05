@@ -74,7 +74,7 @@
             android:name=".ui.register.RegisterActivity"
             android:theme="@style/no_actionbar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.UploadActivity" />
+        
 
         <activity  android:theme="@style/no_actionbar" android:name=".ui.login.LoginActivity">
 

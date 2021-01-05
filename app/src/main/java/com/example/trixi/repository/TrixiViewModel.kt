@@ -1,15 +1,13 @@
 package com.example.trixi.repository
 
 import android.util.Log
+import android.widget.MultiAutoCompleteTextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Category
-import com.example.trixi.entities.Pet
-import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
+import com.example.trixi.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -39,6 +37,17 @@ class TrixiViewModel : ViewModel() {
 //        }
 //
 //    }
+
+    fun getAllUsers(): MutableLiveData<List<User>?> {
+        val allUsers: MutableLiveData<List<User>?> = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All users")
+            val p = retrofitClient?.getAllUsers()?.body()
+            allUsers.postValue(p)
+        }
+        return allUsers
+    }
 
     fun getFollowingsPosts(id: String): MutableLiveData<List<Post>?> {
         val followingsPosts: MutableLiveData<List<Post>?> = MutableLiveData()
@@ -123,11 +132,31 @@ class TrixiViewModel : ViewModel() {
         val allCategory =  MutableLiveData<List<Category>>()
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All category")
-            val p = retrofitClient?.getAllCategories()?.body()
+            val categories = retrofitClient?.getAllCategories()?.body()
             allCategory as MutableLiveData
-            allCategory.postValue(p)
+            allCategory.postValue(categories)
         }
         return allCategory
     }
 
+    fun aPostById(id: String):MutableLiveData<Post>{
+        val post = MutableLiveData<Post>()
+        viewModelScope.launch(Dispatchers.IO){
+            val aPost = retrofitClient?.getPostById(id)?.body()
+            post.postValue(aPost)
+        }
+        return post
+    }
+
+
+    fun getPetType(): MutableLiveData<List<PetType>> {
+        val allPetType =  MutableLiveData<List<PetType>>()
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All Pet Type")
+            val pettypes = retrofitClient?.getAllPetTypes()?.body()
+            allPetType as MutableLiveData
+            allPetType.postValue(pettypes)
+        }
+        return allPetType
+    }
 }

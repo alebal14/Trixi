@@ -8,9 +8,10 @@ data class Pet (
     val ownerId: String,
     val name: String,
     val imageUrl: String?,
-    val age: Int?,
+    val age: String?,
     val bio: String?,
     val breed: String?,
+    val petType: String?,
     val followers: ArrayList<User>?,
     val gender: String?
 ) : Serializable
