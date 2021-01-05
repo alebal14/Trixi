@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp">
+        >
 
         <com.potyvideo.library.AndExoPlayerView
             android:id="@+id/home_item_video"
@@ -19,7 +19,8 @@
             app:andexo_full_screen="false"
             app:andexo_play_when_ready="true"
             app:andexo_resize_mode="Zoom"
-            app:andexo_show_controller="true" />
+            app:andexo_show_controller="true"
+            />
 
         <ImageView
             android:id="@+id/home_item_media"
@@ -80,6 +81,45 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:paddingTop="23dp">
+
+
+                <TextView
+                    android:id="@+id/home_item_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:inputType="textPersonName"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2.5"
+                    android:shadowDy="2.3"
+                    android:shadowRadius="2.6"
+                    android:text="Following  /"
+                    android:textColor="@color/colorPink"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/home_item_discover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:inputType="textPersonName"
+                    android:paddingEnd="10dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2.5"
+                    android:shadowDy="2.3"
+                    android:shadowRadius="2.6"
+                    android:text="Discover"
+                    android:textColor="@color/colorPink"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
 
 
             <LinearLayout

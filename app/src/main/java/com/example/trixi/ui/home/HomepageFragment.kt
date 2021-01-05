@@ -18,7 +18,6 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.discover.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -57,16 +56,6 @@ class HomepageFragment : Fragment() {
         Log.d("home", "in home fragment")
         setUpHomeView()
 
-        home_item_following.setOnClickListener {
-            setUpHomeView()
-        }
-
-        home_item_discover.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragment_container, DiscoverFragment())
-                commit()
-            }
-        }
 
     }
 

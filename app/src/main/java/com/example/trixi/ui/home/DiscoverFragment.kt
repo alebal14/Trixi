@@ -48,12 +48,6 @@ class DiscoverFragment : Fragment() {
         Log.d("home", "in home fragment")
         setUpDiscoverView()
 
-        home_item_following.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragment_container, HomepageFragment())
-                commit()
-            }
-        }
 
     }
 
