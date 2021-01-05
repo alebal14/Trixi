@@ -7,10 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Category
-import com.example.trixi.entities.Pet
-import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
+import com.example.trixi.entities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -135,9 +132,9 @@ class TrixiViewModel : ViewModel() {
         val allCategory =  MutableLiveData<List<Category>>()
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All category")
-            val p = retrofitClient?.getAllCategories()?.body()
+            val categories = retrofitClient?.getAllCategories()?.body()
             allCategory as MutableLiveData
-            allCategory.postValue(p)
+            allCategory.postValue(categories)
         }
         return allCategory
     }
@@ -152,5 +149,14 @@ class TrixiViewModel : ViewModel() {
     }
 
 
-
+    fun getPetType(): MutableLiveData<List<PetType>> {
+        val allPetType =  MutableLiveData<List<PetType>>()
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All Pet Type")
+            val pettypes = retrofitClient?.getAllPetTypes()?.body()
+            allPetType as MutableLiveData
+            allPetType.postValue(pettypes)
+        }
+        return allPetType
+    }
 }

@@ -283,8 +283,54 @@ public class RestApi {
                     }
                     break;
                 case "pets":
-                    Pet pet = (Pet) req.getBody(Pet.class);
-                    res.json(db.save(pet));
+
+                    List<FileItem> Petfiles = null;
+                    String PetFileUrl = null;
+                    String PetOwnerId= null;
+                    String name = null;
+                    String age = null;
+                    String bio = null;
+                    String breed = null;
+                    String Type = null;
+                    String gender = null;
+
+                    try {
+                        Petfiles = req.getFormData("file");
+                        name = req.getFormData("name").get(0).getString().replace("\"", "");
+                        PetOwnerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        age = req.getFormData("age").get(0).getString().replace("\"", "");
+                        bio = req.getFormData("bio").get(0).getString().replace("\"", "");
+                        breed = req.getFormData("breed").get(0).getString().replace("\"", "");
+                        Type = req.getFormData("petType").get(0).getString().replace("\"", "");
+                        gender = req.getFormData("gender").get(0).getString().replace("\"", "");
+
+                        PetFileUrl = db.uploadImage(Petfiles.get(0));
+                        System.out.println(PetFileUrl + name + PetOwnerId);
+
+                        Pet pet = new Pet();
+                        pet.setImageUrl(PetFileUrl);
+                        pet.setName(name);
+                        pet.setOwnerId(PetOwnerId);
+                        pet.setAge(age);
+                        pet.setBio(bio);
+                        pet.setBreed(breed);
+                        pet.setPetType(Type);
+                        pet.setGender(gender);
+
+                        db.save(pet);
+
+                        pet.setUid(pet.getId().toString());
+
+                        System.out.println(pet.getUid());
+                        System.out.println(pet);
+
+                        res.json(pet);
+                        res.send("Created Pet");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     break;
                 case "categories":
                     Category category = (Category) req.getBody(Category.class);
@@ -424,6 +470,7 @@ public class RestApi {
             user.setUid(user.getId().toString());
             user.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
             user.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
+
 //            user.getPosts().forEach(post -> {
 //                post.setUid(post.getId().toString());
 //                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
