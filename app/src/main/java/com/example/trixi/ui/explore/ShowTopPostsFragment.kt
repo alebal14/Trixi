@@ -1,4 +1,4 @@
-package com.example.trixi.ui.discover
+package com.example.trixi.ui.explore
 
 //import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -52,7 +52,7 @@ class ShowTopPostsFragment : Fragment() {
                 media_grid_top_posts.layoutManager =
                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                     StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                media_grid_top_posts.adapter = DiscoverMediaGridAdapter(post as ArrayList<Post>)
+                media_grid_top_posts.adapter = ExploreMediaGridAdapter(post as ArrayList<Post>)
             }
 
         })

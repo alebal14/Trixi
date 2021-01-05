@@ -1,5 +1,6 @@
 package com.example.trixi.ui.home
 
+import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -9,7 +10,7 @@ import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Like
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.discover.ShowTopPostsFragment
+import com.example.trixi.ui.explore.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
@@ -31,8 +32,18 @@ class HomeItem(
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-        Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit()
-            .into(viewHolder.itemView.home_item_media)
+        if(post.fileType.toString() == "image"){
+            viewHolder.itemView.home_item_media.visibility= View.VISIBLE
+            viewHolder.itemView.home_item_video.visibility= View.GONE
+            Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit()
+                .into(viewHolder.itemView.home_item_media)
+        }else{
+            viewHolder.itemView.home_item_media.visibility= View.GONE
+            viewHolder.itemView.home_item_video.visibility= View.VISIBLE
+            viewHolder.itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
+
+        }
+
 
 //        Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: ))
 //            .transform(CropCircleTransformation()).fit()
@@ -57,6 +68,7 @@ class HomeItem(
         handleLike(viewHolder, numberOfLike)
         handleClickOnComment(viewHolder)
         handleClickOnDiscovery(viewHolder)
+        handleClickOnFollowing(viewHolder)
         handleClickOnImgAndName(viewHolder)
 
     }
@@ -126,9 +138,7 @@ class HomeItem(
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {
         val commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
         commentIcon.setOnClickListener {
-            val reversedComments: List<Comment>? = post.comments;
-            val popUp = PopUpCommentWindow(reversedComments, post.uid.toString(),viewHolder)
-
+            val popUp = PopUpCommentWindow(post.comments, post.uid.toString(),viewHolder)
             popUp.show(fm, PopUpCommentWindow.TAG)
         }
     }
@@ -136,11 +146,21 @@ class HomeItem(
     private fun handleClickOnDiscovery(viewHolder: GroupieViewHolder) {
         val discoveryText: TextView = viewHolder.itemView.findViewById(R.id.home_item_discover)
         discoveryText.setOnClickListener {
-            fm.beginTransaction().replace(R.id.fragment_container, ShowTopPostsFragment())
+            fm.beginTransaction().replace(R.id.fragment_container, DiscoverFragment())
                 .commit()
         }
 
     }
+
+    private fun handleClickOnFollowing(viewHolder: GroupieViewHolder) {
+        val discoveryText: TextView = viewHolder.itemView.findViewById(R.id.home_item_following)
+        discoveryText.setOnClickListener {
+            fm.beginTransaction().replace(R.id.fragment_container, HomepageFragment())
+                .commit()
+        }
+
+    }
+
 
 
     override fun getLayout(): Int {

@@ -1,16 +1,13 @@
 package com.example.trixi.apiService
 
 import android.content.Context
-import android.text.format.Formatter.formatIpAddress
-import android.util.Log
-import com.example.trixi.ui.fragments.PopUpCommentWindow.Companion.TAG
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.*
-import java.util.*
+import java.net.CookieManager
+import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
 
 
@@ -22,14 +19,12 @@ class RetrofitClient {
        var instance: Retrofit? = null
 
 
-
        //val BASE_URL = "http://192.168.1.71:3000/"
 
         //Alexandra
-        val BASE_URL = "http://192.168.0.162:3000/"
+        //val BASE_URL = "http://192.168.0.162:3000/"
         
-        //val BASE_URL = "http://10.0.2.2:3000/"
-
+        val BASE_URL = "http://10.0.2.2:3000/"
 
 
         fun okHttpClient() : OkHttpClient {

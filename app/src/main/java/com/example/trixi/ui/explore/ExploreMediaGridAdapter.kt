@@ -1,4 +1,4 @@
-package com.example.trixi.ui.discover
+package com.example.trixi.ui.explore
 
 //import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import android.util.Log
@@ -14,8 +14,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class DiscoverMediaGridAdapter(private val posts: ArrayList<Post>)
-    : RecyclerView.Adapter<DiscoverMediaGridAdapter.DiscoverViewHolder>(){
+class ExploreMediaGridAdapter(private val posts: ArrayList<Post>)
+    : RecyclerView.Adapter<ExploreMediaGridAdapter.DiscoverViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
