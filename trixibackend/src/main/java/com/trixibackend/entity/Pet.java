@@ -11,14 +11,14 @@ public class Pet{
     private ObjectId id;
     private String uid;
     private String name;
-    private int age;
+    private String age;
     private String gender;
     private String breed;
     private String bio;
     private String imageUrl;
 
     private String ownerId;
-    private String petTypeId;
+    private String petType;
 
     private List<Post> posts = new ArrayList<>();
     private List<User> followers = new ArrayList<>();
@@ -28,12 +28,13 @@ public class Pet{
 
     }
 
-    public Pet(String name, int age, String gender, String breed, String bio, String imageUrl, String ownerId) {
+    public Pet(String name, String age, String gender, String breed, String bio, String petType, String imageUrl, String ownerId) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.breed = breed;
         this.bio = bio;
+        this.petType = petType;
         this.imageUrl = imageUrl;
         this.ownerId = ownerId;
     }
@@ -62,11 +63,11 @@ public class Pet{
         this.name = name;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -110,12 +111,12 @@ public class Pet{
         this.ownerId = ownerId;
     }
 
-    public String getPetTypeId() {
-        return petTypeId;
+    public String getPetType() {
+        return petType;
     }
 
-    public void setPetTypeId(String petTypeId) {
-        this.petTypeId = petTypeId;
+    public void setPetType(String petType) {
+        this.petType = petType;
     }
 
     public List<Post> getPosts() {
@@ -146,7 +147,7 @@ public class Pet{
                 ", bio='" + bio + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", ownerId='" + ownerId + '\'' +
-                ", petTypeId='" + petTypeId + '\'' +
+                ", petTypeId='" + petType + '\'' +
                 ", posts=" + posts +
                 ", followers=" + followers +
                 '}';

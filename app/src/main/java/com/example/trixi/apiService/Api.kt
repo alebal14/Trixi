@@ -81,17 +81,25 @@ interface Api {
     @GET("rest/pets/by_pet_type/{pet_type_id}")
     suspend fun getPetsByPetType(@Path(value = "pet_type_id") id: String?): Response<List<Pet>>
 
-    //
+    //Pet
     @GET("rest/pets/by_owner/{ownerid}")
     suspend fun getPetsByOwnerId(@Path("ownerid") id: String?): Response<List<Pet>>
-//
-//    @POST("rest/pets")
-//    fun postPet(@Body pet: Pet): Call<Pet>
-//
-//
-//    //Pet type
-//    @GET("rest/pet_types")
-//    fun getAllPetTypes(): Call<List<PetType>>
+
+    @Multipart
+    @POST("rest/pets")
+    fun postPet(  @Part file: MultipartBody.Part,
+                  @Part("ownerId") ownerId: String,
+                  @Part("name") name: String,
+                  @Part("age") age: String,
+                  @Part("bio") bio: String,
+                  @Part("breed") breed: String,
+                  @Part("petType") petType: String,
+                  @Part("gender") gender: String): Call<Pet>
+
+
+    //Pet type
+    @GET("rest/pet_types")
+    suspend fun getAllPetTypes(): Response<List<PetType>>
 
 
     //Posts

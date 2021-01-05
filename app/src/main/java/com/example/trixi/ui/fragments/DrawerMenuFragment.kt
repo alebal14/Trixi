@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.profile.PetRegister
 import kotlinx.android.synthetic.main.fragment_drawer_menu.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,12 +35,20 @@ class DrawerMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logout.setOnClickListener {
-            println("LOGOUT")
-            val post = PostToDb()
-            post.logOutUser(context)
+
+        create_pet.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.fragment_container, PetRegister())
+                commit()
+            }
         }
-    }
+
+            logout.setOnClickListener {
+                println("LOGOUT")
+                val post = PostToDb()
+                post.logOutUser(context)
+            }
+        }
 
 
 
