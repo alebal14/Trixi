@@ -13,13 +13,14 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        //RetrofitClient.context = this
+
 
 
         Handler().postDelayed(
             {
                 val i = Intent(this, LoginActivity::class.java)
                 startActivity(i)
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish()
             }, SPLASH_TIME_OUT)
 

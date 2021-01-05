@@ -3,10 +3,9 @@ package com.example.trixi
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.discover.ShowTopPostsFragment
+import com.example.trixi.ui.explore.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.fragments.SinglePostFragment
 import com.example.trixi.ui.home.HomepageFragment

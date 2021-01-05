@@ -5,9 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.trixi.R
-import com.example.trixi.ui.discover.ShowTopPostsFragment
+import com.example.trixi.ui.explore.ShowTopPostsFragment
 import kotlinx.android.synthetic.main.fragment_empty_home.*
 
 class EmptyHomeFragment : Fragment() {
