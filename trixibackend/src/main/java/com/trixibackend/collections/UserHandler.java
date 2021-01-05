@@ -5,11 +5,13 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
 import jdk.jfr.Timestamp;
 import org.apache.commons.fileupload.FileItem;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import javax.imageio.ImageIO;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gte;
 
 public class UserHandler {
     private MongoCollection<User> userColl;
@@ -90,6 +93,34 @@ public class UserHandler {
             return null;
         }
     }
+
+    public DeleteResult deleteUser(String id){
+        //delete user
+        Bson user = eq("_id",new ObjectId(id));
+        DeleteResult result = userColl.deleteOne(user);
+        System.out.println("user deleted: "+result);
+
+        //delete user's post
+        Bson posts = gte("ownerId",id);
+        DeleteResult deletedPost = postHandler.getPostColl().deleteMany(posts);
+        System.out.println("post deleted: " + deletedPost);
+
+        //delete user's pet's posts
+        var pets = petHandler.findPetsByOwner(id);
+        for(Pet p :pets){
+            Bson petsPost = gte("ownerId",p.getUid());
+            DeleteResult deletedPetsPosts = postHandler.getPostColl().deleteMany(petsPost);
+            System.out.println(p.getName() + "'s post deleted : " + deletedPetsPosts);
+        }
+
+        //delete user's pets
+        Bson usersPet = gte("ownerId",id);
+        DeleteResult deletedPet = petHandler.getPetColl().deleteMany(usersPet);
+        System.out.println("User's pets deleted: " + deletedPet);
+        return result;
+
+    }
+
 
     public List<Post> findUserFollowingPostList(User user){
 
@@ -265,6 +296,7 @@ public class UserHandler {
         p.setFollowers(null);
         p.setPosts(null);
     }
+
 
 
 

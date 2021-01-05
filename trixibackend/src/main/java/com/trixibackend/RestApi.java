@@ -161,6 +161,13 @@ public class RestApi {
 
     private void setUpDeleteApi(String collectionName) {
 
+        app.delete("/rest/" + collectionName + "/:id",(req,res)->{
+            String id = req.getParam("id");
+            var obj = db.deleteById(collectionName,id);
+            res.json(obj);
+
+        });
+
     }
 
 

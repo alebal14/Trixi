@@ -5,9 +5,11 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.trixibackend.entity.Comment;
 import com.trixibackend.entity.Like;
 import com.trixibackend.entity.Post;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 
@@ -171,4 +173,10 @@ public class PostHandler {
         return commentHandler;
     }
 
+    public DeleteResult deletePost(String id) {
+        Bson post = eq("_id",new ObjectId(id));
+        DeleteResult result = postColl.deleteOne(post);
+        System.out.println(result);
+        return result;
+    }
 }

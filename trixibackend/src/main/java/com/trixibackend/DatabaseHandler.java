@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
+import com.mongodb.client.result.DeleteResult;
 import com.trixibackend.collections.*;
 import com.trixibackend.entity.*;
 import org.apache.commons.fileupload.FileItem;
@@ -142,6 +143,19 @@ public class DatabaseHandler {
                 return null;
         }
 
+    }
+
+    public DeleteResult deleteById(String collectionName, String id){
+        switch (collectionName){
+            case "users":
+                return userHandler.deleteUser(id);
+            case "posts":
+                return postHandler.deletePost(id);
+            case "pets":
+                return petHandler.deletePet(id);
+            default:
+                return null;
+        }
     }
 
     public Object getById(String collectionName, String id) {
