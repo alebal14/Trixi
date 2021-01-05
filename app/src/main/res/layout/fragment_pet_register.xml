@@ -19,10 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="-41dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,6 +30,7 @@
 
                 <ImageButton
                     android:id="@+id/register_pet_image"
+                    android:layout_marginTop="30dp"
                     android:layout_width="148dp"
                     android:layout_height="148dp"
                     android:clickable="true"
@@ -107,32 +105,14 @@
                     android:paddingLeft="16dp" />
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:layout_marginBottom="50dp"
-                    >
-                    <Button
-                        android:id="@+id/register_cancel"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/btn_rounded_corners"
-                        android:text="Cancel" />
                     <Button
                         android:id="@+id/register_add"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="40dp"
                         android:background="@drawable/btn_rounded_corners"
                         android:text="Add" />
-                </LinearLayout>
-
-
             </LinearLayout>
 
         </LinearLayout>

@@ -310,6 +310,7 @@ public class RestApi {
                         Pet pet = new Pet();
                         pet.setImageUrl(PetFileUrl);
                         pet.setName(name);
+                        pet.setOwnerId(PetOwnerId);
                         pet.setAge(age);
                         pet.setBio(bio);
                         pet.setBreed(breed);

@@ -24,6 +24,7 @@ import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_pet_register.*
@@ -143,11 +144,15 @@ class PetRegister : Fragment() {
             createPet()
         }
 
+
     }
+
 
     private fun selectPetTypeData(petType: PetType) {
         petTypeName = petType.name
     }
+
+
 
     private fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(
@@ -236,6 +241,7 @@ class PetRegister : Fragment() {
         petAge = register_pet_age.text.toString()
         petBreed = register_breed.text.toString()
         petBio = register_pet_bio.text.toString()
+
 
 
         if (petName.isEmpty()) {
