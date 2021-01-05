@@ -10,7 +10,7 @@ import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Like
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.discover.ShowTopPostsFragment
+import com.example.trixi.ui.explore.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
