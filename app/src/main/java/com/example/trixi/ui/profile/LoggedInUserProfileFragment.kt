@@ -142,6 +142,7 @@ class LoggedInUserProfileFragment : Fragment(), ProfileMediaGridAdapter.OnItemCl
 
     private fun populateProfile() {
 
+        follow_button.visibility = View.INVISIBLE
         profile_name.text = loggedInUser!!.userName
         profile_bio.text = loggedInUser!!.bio
         Picasso.get().load(BASE_URL + loggedInUser!!.imageUrl).centerCrop().fit()

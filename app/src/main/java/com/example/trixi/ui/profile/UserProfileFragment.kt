@@ -13,27 +13,32 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SnapHelper
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
+import com.example.trixi.R.drawable.*
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
+import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.users_pet_list
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlinx.android.synthetic.main.fragment_single_post.*
 import kotlinx.android.synthetic.main.profile_user_pet.*
 
 
 class UserProfileFragment(val user: User?) : Fragment() {
 
+    private var loggedInUser: User? = PostToDb.loggedInUser
+    private lateinit var model: TrixiViewModel
+    private var followed: Boolean = false
+
     companion object {
         private val TAG = "profile"
-
     }
 
-    private lateinit var model: TrixiViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,10 +72,11 @@ class UserProfileFragment(val user: User?) : Fragment() {
         profile_following.text =
             "Following " + (user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString()
         profile_followers.text = user.followers?.size.toString() + " Followers"
-        follow_button.visibility = View.VISIBLE
         owner_name.visibility = View.INVISIBLE
-        follow_button.visibility = View.INVISIBLE
 
+        follow_button.setOnClickListener { handleFollow() }
+
+        checkIfFollowing()
         getPets()
         getPosts()
     }
@@ -140,5 +146,34 @@ class UserProfileFragment(val user: User?) : Fragment() {
         }
     }
 
+    private fun toggleFollowIcon(followed: Boolean) {
+
+        if (followed)
+            follow_button.setBackgroundResource(ic_heart_filled)
+        else follow_button.setBackgroundResource(ic_follow)
+        Log.d("Profile", "not filled")
+    }
+
+    private fun handleFollow() {
+
+        //toggleFollowIcon(true)
+
+        //if not followed and button click add to db
+
+        //if followed and clicked, remove from db
+        
+        //follow, post to db if we don't
+
+        //remove from db if unfollow
+    }
+
+    private fun checkIfFollowing() {
+        loggedInUser?.followingsUser?.forEach {
+            if (it.uid == user?.uid) {
+                followed = true
+            }
+        }
+        toggleFollowIcon(followed)
+    }
 
 }

@@ -34,30 +34,30 @@
             android:id="@+id/follow_button"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginTop="59dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="28dp"
             android:background="@drawable/ic_follow"
             android:paddingLeft="20dp"
             app:layout_constraintBottom_toTopOf="@+id/profile_bio"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/profile_name"
-            app:layout_constraintTop_toBottomOf="@+id/menuFragmentHolder"
+            app:layout_constraintStart_toEndOf="@+id/profile_name"
+            app:layout_constraintTop_toTopOf="@+id/menuFragmentHolder"
             app:layout_constraintVertical_bias="1.0" />
 
     <TextView
             android:id="@+id/profile_bio"
             android:layout_width="225dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
             android:paddingTop="5dp"
             android:text="This is my bio hahah hello i have a dog and hes really nice and sweet and cool"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toTopOf="@id/users_pet_list"
-            app:layout_constraintStart_toEndOf="@+id/guideline9"
-            app:layout_constraintStart_toStartOf="@+id/profile_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.026"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
             app:layout_constraintTop_toBottomOf="@+id/profile_name"
-          />
+            app:layout_constraintVertical_bias="0.211" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline9"
@@ -199,14 +199,13 @@
             app:layout_constraintVertical_bias="0.109" />
 
     <LinearLayout
-        android:id="@+id/menuFragmentHolder"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-      >
+            android:id="@+id/menuFragmentHolder"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
     </LinearLayout>
 
@@ -214,19 +213,19 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
             android:drawablePadding="20dp"
             android:paddingTop="20dp"
             android:text="@string/profile_user_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorTeal"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/profile_bio"
+            app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.548"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.064" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
