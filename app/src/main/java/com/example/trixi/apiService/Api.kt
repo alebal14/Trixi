@@ -106,7 +106,6 @@ interface Api {
     @GET("rest/posts")
     suspend fun getAllPosts(): Response<List<Post>>
 
-
     @Multipart
     @POST("rest/posts")
     fun postPostToDb(
@@ -123,7 +122,8 @@ interface Api {
 
     @GET("rest/posts/by_owner/{owner_id}")
     suspend fun getPostByOwnerId(@Path("owner_id") id: String?): Response<List<Post>>
-//
+
+
 //    @GET("rest/posts/by_category/{category_id}")
 //    fun getPostByCategoryId(@Path(value="category_id") id : String?): Call<List<Post>>
 
@@ -151,7 +151,5 @@ interface Api {
     fun unlikeAPost(@Body like: Like): Call<Like>
 
 
-//    @GET("api/getLatestPost/{id}")
-//    suspend fun getLatestPost(@Path(value = "id") id: String?): Response<Post>
 
 }

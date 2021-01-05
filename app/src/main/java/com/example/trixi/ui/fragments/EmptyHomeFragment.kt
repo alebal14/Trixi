@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.trixi.R
 import com.example.trixi.ui.discover.ShowTopPostsFragment
+import com.example.trixi.ui.home.DiscoverFragment
 import kotlinx.android.synthetic.main.fragment_empty_home.*
 
 class EmptyHomeFragment : Fragment() {
@@ -27,9 +28,10 @@ class EmptyHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         home_item_discover.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragment_container, ShowTopPostsFragment())
+                replace(R.id.fragment_container, DiscoverFragment())
                 commit()
             }
         }

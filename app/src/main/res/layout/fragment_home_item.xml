@@ -81,46 +81,6 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:paddingTop="23dp">
-
-
-                <TextView
-                    android:id="@+id/home_item_following"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:inputType="textPersonName"
-                    android:shadowColor="#000000"
-                    android:shadowDx="2.5"
-                    android:shadowDy="2.3"
-                    android:shadowRadius="2.6"
-                    android:text="Following  /"
-                    android:textColor="@color/colorPink"
-                    android:textStyle="bold"
-                    tools:ignore="RtlHardcoded" />
-
-                <TextView
-                    android:id="@+id/home_item_discover"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:inputType="textPersonName"
-                    android:paddingEnd="10dp"
-                    android:shadowColor="#000000"
-                    android:shadowDx="2.5"
-                    android:shadowDy="2.3"
-                    android:shadowRadius="2.6"
-                    android:text="Discover"
-                    android:textColor="@color/colorPink"
-                    android:textStyle="bold"
-                    tools:ignore="RtlHardcoded" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="300dp"
