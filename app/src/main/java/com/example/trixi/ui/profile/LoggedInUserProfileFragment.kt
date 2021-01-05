@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.SnapHelper
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
+import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
@@ -84,7 +85,7 @@ class LoggedInUserProfileFragment : Fragment(), ProfileMediaGridAdapter.OnItemCl
                     GridLayoutManager.HORIZONTAL,
                     false
                 )
-                adapter = ProfilePetListAdapter(loggedInUser.pets!!, {pet ->
+                adapter = ProfilePetListAdapter(loggedInUser!!.pets!!, { pet ->
                     redirectToPetProfile(pet)
                 })
                 users_pet_list.adapter = adapter

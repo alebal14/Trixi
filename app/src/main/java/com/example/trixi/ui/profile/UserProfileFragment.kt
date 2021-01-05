@@ -95,7 +95,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
                             GridLayoutManager.VERTICAL,
                             false
                         )
-                        media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>)
+                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>)
                     } else profile_no_posts.visibility = TextView.VISIBLE
                 }
             })
