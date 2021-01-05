@@ -30,11 +30,16 @@ import com.example.trixi.ui.profile.UserProfileFragment
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 class RegisterActivity : AppCompatActivity(){
@@ -47,8 +52,12 @@ class RegisterActivity : AppCompatActivity(){
     var filePath = ""
     private var mediaPath: String? = null
     private var postPath: String? = null
-    var userExist: Boolean = false
+
     val model: TrixiViewModel by viewModels()
+
+
+     var userExist: AtomicBoolean = AtomicBoolean(false)
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -175,17 +184,14 @@ class RegisterActivity : AppCompatActivity(){
                 println("KOMIGEN")
                 if (s?.length != 0) {
                     checkIfUserExist(s.toString())
-
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
             }
         })
 
-
-        if(userExist == false){
             button_register.setOnClickListener {
+                if(!userExist.get()){
                 registerUser()
             }
         }
@@ -221,28 +227,33 @@ class RegisterActivity : AppCompatActivity(){
 
 
     private fun checkIfUserExist(userName: String){
-        model.getAllUsers()?.observe(this, Observer { user ->
-            Log.d("reg", "size: users : ${user?.size}")
-            user?.forEach {
-                if (userName.contains("@")) {
-                    if (userName == it.email) {
-                        Toast.makeText(this, "Email already exist", Toast.LENGTH_LONG).show()
-                         userExist = true
-                    }
-                    else{
-                        userExist = false
-                    }
-                }
-                if (userName == it.userName) {
-                    Toast.makeText(this, "Username already exist", Toast.LENGTH_LONG).show()
-                    userExist = true
-                    println("ISTRUEUSERNAME" + userExist)
-                } else{
-                    userExist = false
-                }
-            }
-        })
 
-    }
+            model.getAllUsers()?.observe(this, Observer { user ->
+                Log.d("reg", "size: users : ${user?.size}")
+                    for (u in user!!){
+                        if (userName.contains("@")) {
+                            if (userName == u.email) {
+                                // Toast.makeText(this, "Email already exist", Toast.LENGTH_LONG) .show()
+                                userExist.set(true)
+                                break
+                            } else {
+                                userExist.set(false)
+                            }
+                        }
+                        if (userName == u.userName) {
+                            // Toast.makeText(this, "Username already exist", Toast.LENGTH_LONG).show()
+                            userExist.set(true)
+                            println("ISTRUEUSERNAME" + userExist)
+                            break
+                        } else {
+                            userExist.set(false)
+                        }
+
+                    }
+
+            })
+
+        }
+
 
 }
