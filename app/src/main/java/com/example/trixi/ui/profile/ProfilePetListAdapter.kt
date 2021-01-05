@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.MainActivity
 import com.example.trixi.R
@@ -16,8 +18,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.profile_user_pet.view.*
 
-class ProfilePetListAdapter(private var pets: ArrayList<Pet>)
-//private val listener:(Pet) -> Unit)
+class ProfilePetListAdapter(private var pets: ArrayList<Pet>, private val listener:(Pet) -> Unit)
     : RecyclerView.Adapter<ProfilePetListAdapter.ProfilePetListViewHolder>() {
 
     var displayMetrics = DisplayMetrics()
@@ -37,31 +38,26 @@ class ProfilePetListAdapter(private var pets: ArrayList<Pet>)
 
     override fun onBindViewHolder(holder: ProfilePetListViewHolder, position: Int) {
         holder.bindView(
-            pets[position]
-            //,listener
+            pets[position],
+            listener
         )
     }
 
-    class ProfilePetListViewHolder(view: View) : RecyclerView.ViewHolder(view),
-        View.OnClickListener {
+    class ProfilePetListViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+
         val petProfileThumbnail = itemView.pet_list_profile_image
         val petName = itemView.pet_name
 
-        init {
-            view.setOnClickListener(this)
-        }
 
         override fun onClick(view: View) {
-            Log.d("Recyclerview pet list", "click!")
+
         }
 
-        fun bindView(
-            pet: Pet
-            //listener: (Post) -> Unit) {
-        ) {
+        fun bindView(pet: Pet, listener: (Pet) -> Unit) {
+
             Picasso.get().load(BASE_URL + pet.imageUrl!!).into(petProfileThumbnail)
             petName.text = pet.name
-            //itemView.setOnClickListener { listener(post) }
+            itemView.setOnClickListener { listener(pet) }
         }
     }
 
