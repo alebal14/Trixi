@@ -29,34 +29,16 @@
 
     </de.hdodenhof.circleimageview.CircleImageView>
 
-    <TextView
-            android:id="@+id/profile_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="20dp"
-            android:paddingTop="20dp"
-            android:text="@string/profile_user_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/colorTeal"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/mid_screen"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.061" />
-
 
     <ImageButton
             android:id="@+id/follow_button"
             android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="20dp"
             android:background="?android:attr/windowBackground"
-            android:paddingLeft="10dp"
-            android:paddingTop="15dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
             android:src="@drawable/ic_heart_empty"
             app:layout_constraintBottom_toBottomOf="@id/profile_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,13 +54,11 @@
             android:paddingTop="5dp"
             android:text="This is my bio hahah hello i have a dog and hes really nice and sweet and cool"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintBottom_toTopOf="@id/users_pet_list"
             app:layout_constraintStart_toEndOf="@+id/guideline9"
-            app:layout_constraintStart_toStartOf="@+id/mid_screen"
+            app:layout_constraintStart_toStartOf="@+id/profile_name"
             app:layout_constraintTop_toBottomOf="@+id/profile_name"
-            app:layout_constraintVertical_bias="0.026" />
+          />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline9"
@@ -173,19 +153,15 @@
                     android:text="Videos" />
         </com.google.android.material.tabs.TabLayout>
 
-
-
-
-
         <TextView
                 android:id="@+id/profile_no_posts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="20dp"
                 android:text="No posts yet"
                 android:textAlignment="center"
-                android:visibility="invisible"
-                android:paddingTop="20dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -206,6 +182,7 @@
         </ScrollView>
     </LinearLayout>
 
+
     <TextView
             android:id="@+id/owner_name"
             android:layout_width="wrap_content"
@@ -214,13 +191,13 @@
             android:drawableStart="@drawable/ic_baseline_pets_24"
             android:text="@string/pet_owner"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/followers_container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.622"
             app:layout_constraintStart_toStartOf="@+id/mid_screen"
             app:layout_constraintTop_toBottomOf="@+id/profile_bio"
-            app:layout_constraintVertical_bias="0.083" />
-
+            app:layout_constraintVertical_bias="0.109" />
 
     <LinearLayout
         android:id="@+id/menuFragmentHolder"
@@ -234,6 +211,23 @@
 
     </LinearLayout>
 
+    <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="5dp"
+            android:drawablePadding="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/profile_user_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorTeal"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/profile_bio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.548"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
