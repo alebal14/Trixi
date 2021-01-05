@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.example.trixi.entities.Post
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -80,16 +81,24 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
                 model.getOneUser(it)?.observe(viewLifecycleOwner, { user ->
                     if(user !=null){
                         single_item_profileName.text = user.userName
-                        Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl).centerCrop()
-                            .fit()
-                            .into(single_item_profileimg)
+                        Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl)
+                            .transform(CropCircleTransformation()).fit()
+                            .placeholder(R.drawable.sample)
+                            .error(R.drawable.sample)
+                            .centerCrop().into(single_item_profileimg)
+//                        Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl).centerCrop()
+//                            .fit()
+//                            .into(single_item_profileimg)
                     }else{
                         model.getOnePet(it)?.observe(viewLifecycleOwner,{pet->
                             if(pet !=null){
                                 single_item_profileName.text = pet.name
-                                Picasso.get().load(RetrofitClient.BASE_URL + pet.imageUrl).centerCrop()
-                                    .fit()
-                                    .into(single_item_profileimg)
+                                Picasso.get().load(RetrofitClient.BASE_URL + pet.imageUrl)
+                                    .transform(CropCircleTransformation()).fit()
+                                    .placeholder(R.drawable.sample)
+                                    .error(R.drawable.sample)
+                                    .centerCrop().into(single_item_profileimg)
+
                             }
 
                         })
