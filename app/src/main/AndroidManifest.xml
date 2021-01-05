@@ -75,7 +75,7 @@
             android:name=".ui.register.RegisterActivity"
             android:theme="@style/no_actionbar"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.UploadActivity" />
+        
 
         <meta-data
             android:name="preloaded_fonts"
