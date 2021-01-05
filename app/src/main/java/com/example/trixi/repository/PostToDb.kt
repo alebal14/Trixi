@@ -359,6 +359,24 @@ class PostToDb {
     fun followUser(userId: String?, followingUserId: String){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         val call = retrofitClient?.postFollowUser(userId, followingUserId)
+
+        call?.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("Follow", "unlike : onFailure " + t.message)
+            }
+
+            override fun onResponse(
+                call: Call<User>, response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    val l: User? = response.body()
+                    Log.d("Follow", l.toString())
+
+                } else {
+                    Log.d("Follow", "fail to unlike")
+                }
+            }
+        })
     }
 
 
