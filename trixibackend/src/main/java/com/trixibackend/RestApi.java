@@ -410,6 +410,24 @@ public class RestApi {
             res.json(followingPostList);
         });
 
+        app.get("/api/search/:searchterm", (req, res) -> {
+
+            String searchterm = req.getParam("searchterm");
+            System.out.println(searchterm);
+
+            var alluser  = db.getUserHandler().getAllUsers();
+            var allpet = db.getPetHandler().getAllPets();
+
+            var searchPost = db.getPostHandler().searchPost(searchterm , alluser, allpet);
+            if (searchPost == null) {
+                res.setStatus(Status._403);
+                //res.send("Error: you are not following this Pet");
+                return;
+            }
+            System.out.println(searchPost.size());
+            res.json(searchPost);
+        });
+
     }
     private void setLoginUser() {
 

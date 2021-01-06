@@ -65,8 +65,8 @@ class DiscoverFragment : Fragment() {
 
     private fun setUpDiscoverView() {
 
-            model.getAllPosts()?.observe(viewLifecycleOwner, Observer { posts ->
-                populatePosts(posts)
+            model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
+
             })
 
     }
@@ -93,5 +93,7 @@ class DiscoverFragment : Fragment() {
             recyclerView_homepage.adapter = adapter
         }
     }
+
+
 
 
