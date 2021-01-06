@@ -53,50 +53,10 @@ class ShowTopPostsFragment : Fragment() {
     }
 
 
-
-
     private fun setupDiscoverFragment() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-      
-        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String?): Boolean {
 
-                if (newText != null) {
-                    model.getPostBySearching(newText!!).observe(viewLifecycleOwner, Observer { post ->
-
-                        media_grid_top_posts.apply {
-                            media_grid_top_posts.layoutManager =
-                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                            media_grid_top_posts.adapter =
-                                ExploreMediaGridAdapter(post as ArrayList<Post>)
-                        }
-                    })
-
-                }else{
-                    model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
-                        media_grid_top_posts.apply {
-                            media_grid_top_posts.layoutManager =
-                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                            media_grid_top_posts.adapter =
-                                ExploreMediaGridAdapter(post as ArrayList<Post>)
-                        }
-                    })
-
-                }
-                return true
-            }
-
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return false
-            }
-
-        })
-
-
-     /*   model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
+        model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
             Log.d("post_size_f", post?.size.toString())
 
             media_grid_top_posts.apply {
@@ -106,8 +66,35 @@ class ShowTopPostsFragment : Fragment() {
                 media_grid_top_posts.adapter = ExploreMediaGridAdapter(post as ArrayList<Post>)
             }
 
-        })*/
+        })
+        
+        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
 
+                if (newText != null) {
+                    model.getPostBySearching(newText!!)
+                        .observe(viewLifecycleOwner, Observer { post ->
 
+                            media_grid_top_posts.apply {
+                                media_grid_top_posts.layoutManager =
+                                    StaggeredGridLayoutManager(
+                                        2,
+                                        StaggeredGridLayoutManager.VERTICAL
+                                    )
+                                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                                media_grid_top_posts.adapter =
+                                    ExploreMediaGridAdapter(post as ArrayList<Post>)
+                            }
+                        })
+                }
+                return true
+            }
+
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+        })
     }
 }
