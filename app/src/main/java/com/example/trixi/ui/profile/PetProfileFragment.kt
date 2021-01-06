@@ -28,6 +28,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
 
     private lateinit var model: TrixiViewModel
     private var followed = false
+    private lateinit var owner: String
 
     companion object {
         private val TAG = "petProfile"
@@ -60,24 +61,22 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
             .into(user_profile_pet_image)
         profile_followers.text = pet.followers?.size.toString() + " Followers"
         profile_followers.gravity = TEXT_ALIGNMENT_CENTER
-        owner_name.visibility = VISIBLE
-        owner_name.text = "Owner: " + getOwnerName()
         profile_following.visibility = INVISIBLE
 
+        getOwnerName()
         getPosts()
     }
 
-    private fun getOwnerName(): String? {
+    private fun getOwnerName() {
+        owner_name.visibility = VISIBLE
 
         //TODO: funkar ej??
-        var ownerName = ""
-
         pet?.ownerId?.let {
-            model.getOneUser(it)?.observe(viewLifecycleOwner, { user ->
-                ownerName = user.userName.toString()
-            })
+            model.getOneUser(it)?.observe(viewLifecycleOwner, { owner ->
+                owner_name.text = "Owner: " + owner.userName
+            }
+            )
         }
-        return ownerName
     }
 
     private fun getPosts() {
