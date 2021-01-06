@@ -4,13 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -19,36 +18,44 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
-import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.login.LoginActivity
-import com.example.trixi.ui.profile.UserProfileFragment
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.security.AccessController.getContext
+import java.util.concurrent.atomic.AtomicBoolean
 
 
-class RegisterActivity : AppCompatActivity(){
+class RegisterActivity : AppCompatActivity() {
 
     val post = PostToDb()
     var selectedImage: Uri? = null
-    lateinit var bitmap : Bitmap
+    lateinit var bitmap: Bitmap
     var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
     var encodedImage: String = ""
     var filePath = ""
     private var mediaPath: String? = null
     private var postPath: String? = null
-    var userExist: Boolean = false
+
     val model: TrixiViewModel by viewModels()
+
+
+    var userExist: AtomicBoolean = AtomicBoolean(false)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,13 +67,18 @@ class RegisterActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
+        button_register.setTextColor(ContextCompat.getColor(applicationContext, R.color.gray))
+        username_check.setColorFilter(getResources().getColor(R.color.gray))
+        email_check.setColorFilter(getResources().getColor(R.color.gray))
+        password_check.setColorFilter(getResources().getColor(R.color.gray))
+
         checkInput()
 
         register_profile_image.setOnClickListener {
             requestPermissions()
             val intent = Intent(
-                    Intent.ACTION_PICK,
-                    MediaStore.Images.Media.INTERNAL_CONTENT_URI
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI
             )
             startActivityForResult(intent, 0)
         }
@@ -74,28 +86,31 @@ class RegisterActivity : AppCompatActivity(){
     }
 
     private fun hasWriteExternalStoragePermission() =
-            ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestPermissions() {
         var permissionsToRequest = mutableListOf<String>()
-        if(!hasWriteExternalStoragePermission()){
+        if (!hasWriteExternalStoragePermission()) {
             permissionsToRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
 
-        if(permissionsToRequest.isNotEmpty()){
+        if (permissionsToRequest.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 0)
         }
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 0 && grantResults.isNotEmpty()) {
-            for (i in grantResults.indices){
-                if (grantResults[i] == PackageManager.PERMISSION_GRANTED){
+            for (i in grantResults.indices) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("permissionRequest", "${permissions[i]} granted.")
                 }
             }
@@ -124,7 +139,10 @@ class RegisterActivity : AppCompatActivity(){
 
             val container = findViewById<View>(R.id.register_profile_image) as ImageView
 
-            Picasso.get().load(selectedImage).transform(CropCircleTransformation()).centerCrop().fit().into(container)
+            Picasso.get().load(selectedImage).transform(CropCircleTransformation()).centerCrop()
+                .fit().into(
+                    container
+                )
 
             cursor.close()
 
@@ -132,50 +150,48 @@ class RegisterActivity : AppCompatActivity(){
         }
     }
 
-   /* private fun saveProfileImage(){
-
-        //convert the image to bitmap
-        val convertImageBitmap = BitmapFactory.decodeFile(postPath)
-
-        val baos = ByteArrayOutputStream()
-        //compressing the bitmap
-        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-
-        //coberting the image to bytearray
-        val imageByte = baos.toByteArray()
-
-        //encoding the image
-        encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
-
-        //sending the image
-    }*/
-
-    private fun checkInput(){
+    private fun checkInput() {
 
         register_username.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                println("KOMIGEN")
-                if(s?.length != 0) {
-                    checkIfUserExist(s.toString())
-                    println("ISTRUE" + userExist)
+                CoroutineScope(Main).launch {
+                    if (s?.length != 0) {
+                        checkIfUserExist(s.toString())
+
+                        delay(500)
+                        if (userExist.get() == true) {
+                            username_check.setColorFilter(getResources().getColor(R.color.red))
+                        } else {
+                            username_check.setColorFilter(getResources().getColor(R.color.green))
+                        }
+                    }
                 }
             }
             override fun afterTextChanged(s: Editable?) {
             }
         })
+
 
         register_email.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                println("KOMIGEN")
-                if (s?.length != 0) {
-                    checkIfUserExist(s.toString())
+                CoroutineScope(Main).launch {
+                    if (s?.length != 0) {
+                        checkIfUserExist(s.toString())
 
+                        delay(500)
+                        if (userExist.get() == true || !Patterns.EMAIL_ADDRESS.matcher(register_email.text.toString()).matches()) {
+                            email_check.setColorFilter(getResources().getColor(R.color.red))
+                        } else {
+                            email_check.setColorFilter(getResources().getColor(R.color.green))
+                        }
+                    }
                 }
             }
 
@@ -183,66 +199,88 @@ class RegisterActivity : AppCompatActivity(){
             }
         })
 
+        register_password.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-        if(userExist == false){
-            button_register.setOnClickListener {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                CoroutineScope(Main).launch {
+                    if (s?.length != 0) {
+                        password_check.setColorFilter(getResources().getColor(R.color.green))
+                        if (register_password.text.toString().isEmpty()){
+                            password_check.setColorFilter(getResources().getColor(R.color.gray))
+                        }
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
+        button_register.setOnClickListener {
+            if (userExist.get() != true && register_username.text.toString().isNotEmpty() && register_email.text.toString().isNotEmpty() && register_password.text.toString().isNotEmpty() && selectedImage != null) {
+                button_register.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
                 registerUser()
+            }
+            if (selectedImage == null) {
+                Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
+            }
+            if (register_username.text.toString().isEmpty() || register_email.text.toString().isEmpty() || register_password.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
+
             }
         }
     }
 
-    private fun registerUser(){
+    private fun registerUser() {
         val userName = register_username.text.toString()
         val email = register_email.text.toString()
         val password = register_password.text.toString()
 
-        if (selectedImage == null){
+        /*if (selectedImage == null) {
             Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
             return
-        }
+        }*/
 
         val file = File(postPath)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
 
-        if (userName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
-            return
-        }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(this, "Wrong email-Format, try again", Toast.LENGTH_LONG).show()
-            return
-        }
 
-        post.PostRegisterUserToDb(imagenPerfil,userName, email, password, this)
+
+        post.PostRegisterUserToDb(imagenPerfil, userName, email, password, this)
     }
 
 
-    private fun checkIfUserExist(userName: String){
-        model.getAllUsers()?.observe(this, Observer { user ->
-            Log.d("reg", "size: users : ${user?.size}")
-            user?.forEach {
-                if (userName.contains("@")) {
-                    if (userName == it.email) {
-                        Toast.makeText(this, "Email already exist", Toast.LENGTH_LONG).show()
-                         userExist = true
+    private fun checkIfUserExist(userName: String) {
+            model.getAllUsers()?.observe(this, Observer { user ->
+                Log.d("reg", "size: users : ${user?.size}")
+                for (u in user!!) {
+                    if (userName.contains("@")) {
+                        if (userName == u.email) {
+                            Toast.makeText(this, "Email already exist", Toast.LENGTH_SHORT) .show()
+                            userExist.set(true)
+                            break
+                        } else {
+                            userExist.set(false)
+                        }
                     }
-                    else{
-                        userExist = false
+                    if (userName == u.userName) {
+                        Toast.makeText(this, "Username already exist", Toast.LENGTH_SHORT).show()
+                        userExist.set(true)
+                        println("ISTRUEUSERNAME" + userExist)
+                        break
+                    } else {
+                        userExist.set(false)
                     }
+
                 }
-                if (userName == it.userName) {
-                    Toast.makeText(this, "Username already exist", Toast.LENGTH_LONG).show()
-                    userExist = true
-                    println("ISTRUEUSERNAME" + userExist)
-                } else{
-                    userExist = false
-                }
-            }
-        })
+
+            })
+
+
 
     }
-
 }

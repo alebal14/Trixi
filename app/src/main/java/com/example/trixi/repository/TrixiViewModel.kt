@@ -1,10 +1,7 @@
 package com.example.trixi.repository
 
 import android.util.Log
-import android.widget.MultiAutoCompleteTextView
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.*
@@ -62,6 +59,7 @@ class TrixiViewModel : ViewModel() {
 
     }
 
+
     fun getAllPosts() : MutableLiveData<List<Post>?> {
         val allPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 
@@ -72,6 +70,20 @@ class TrixiViewModel : ViewModel() {
         }
         return allPosts
     }
+
+    fun getPostBySearching(newText: String): MutableLiveData<List<Post>?> {
+        val searchPosts: MutableLiveData<List<Post>?> = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("explorer", "getting post by search")
+            val fPosts = retrofitClient?.getPostBySearch(newText)?.body()
+            searchPosts.postValue(fPosts)
+            Log.d("explorer", "got post by search")
+        }
+        return searchPosts
+
+    }
+
 
     fun getOneUser(id: String): MutableLiveData<User>? {
         val userById: MutableLiveData<User>? = MutableLiveData()

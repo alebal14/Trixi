@@ -172,15 +172,18 @@ public class PostHandler {
         List<User> getAllUser = userList ;
         List<Pet>  getAllPet = petList;
 
+
+
+
         List<Post> allPostFromDB = getAllPosts();
         System.out.println(allPostFromDB);
 
         List<User> getUserName = getAllUser.stream()
-                .filter(e -> e.getUserName().startsWith(searchTerm))
+                .filter(e -> e.getUserName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
 
         List<Pet> getPetName = getAllPet.stream()
-                .filter(e -> e.getName().startsWith(searchTerm))
+                .filter(e -> e.getName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
 
         Set<String> userid =
@@ -203,17 +206,17 @@ public class PostHandler {
 
         List<Post> listDescription=
                 allPostFromDB.stream()
-                        .filter(e -> e.getDescription().startsWith(searchTerm))
+                        .filter(e -> e.getDescription().toLowerCase().startsWith(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
         List<Post> listCategory =
                 allPostFromDB.stream()
-                        .filter(e -> e.getCategoryName().startsWith(searchTerm))
+                        .filter(e -> e.getCategoryName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
         List<Post> listTitle =
                 allPostFromDB.stream()
-                        .filter(map -> map.getTitle().startsWith(searchTerm))
+                        .filter(map -> map.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
         List<Post> resultList = new ArrayList<>();
