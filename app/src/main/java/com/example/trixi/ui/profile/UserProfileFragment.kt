@@ -11,10 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SnapHelper
+import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
 import com.example.trixi.R.drawable.*
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Pet
+import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
