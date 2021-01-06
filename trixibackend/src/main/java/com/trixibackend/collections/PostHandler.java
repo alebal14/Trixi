@@ -19,9 +19,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class PostHandler {
     private MongoCollection<Post> postColl = null;
     private LikeHandler likeHandler;
-    private PetHandler petHandler;
-    private UserHandler userHandler;
-
+   
 
     private CommentHandler commentHandler;
 
@@ -30,8 +28,7 @@ public class PostHandler {
         postColl = database.getCollection("posts", Post.class);
         likeHandler = new LikeHandler(database);
         commentHandler = new CommentHandler(database);
-        //userHandler = new UserHandler(database);
-        //petHandler = new PetHandler(database);
+
     }
 
     public MongoCollection<Post> getPostColl() {
