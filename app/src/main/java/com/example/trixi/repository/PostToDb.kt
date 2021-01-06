@@ -362,7 +362,7 @@ class PostToDb {
 
         call?.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("Follow", "follow : onFailure " + t.message)
+                Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId + "follow : onFailure " + t.message)
             }
 
             override fun onResponse(
@@ -370,10 +370,10 @@ class PostToDb {
             ) {
                 if (response.isSuccessful) {
                     val l: User? = response.body()
-                    Log.d("Follow", l.toString())
+                    Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId + l.toString())
 
                 } else {
-                    Log.d("Follow", "fail to follow")
+                    Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId +  "fail to follow")
                 }
             }
         })
@@ -387,7 +387,7 @@ class PostToDb {
 
         call?.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("Follow", "unfollow : onFailure " + t.message)
+                Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId +  "unfollow : onFailure " + t.message)
             }
 
             override fun onResponse(
@@ -395,10 +395,10 @@ class PostToDb {
             ) {
                 if (response.isSuccessful) {
                     val l: User? = response.body()
-                    Log.d("Unfollow", l.toString())
+                    Log.d("Unfollow", "loggedIn: " + userId + "other user: " + followingUserId + l.toString())
 
                 } else {
-                    Log.d("Unfollow", "fail to unfollow")
+                    Log.d("Unfollow", "loggedIn: " + userId + "other user: " + followingUserId + "fail to unfollow")
                 }
             }
         })

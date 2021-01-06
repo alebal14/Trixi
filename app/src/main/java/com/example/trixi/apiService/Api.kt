@@ -153,7 +153,7 @@ interface Api {
     @POST("api/users/follow/{userid}/{followingId}")
     fun postFollow(@Path(value = "userid") userId: String?, @Path(value ="followingId") followingId : String?) : Call<User>
 
-    @POST("rest/users/un_follow/{userid}/{followingId}")
+    @POST("api/users/un_follow/{userid}/{followingId}")
     fun postUnfollow(@Path(value = "userid") userId: String?, @Path(value ="followingId") followingId : String?) : Call<User>
 
 }
