@@ -58,15 +58,15 @@ class DiscoverFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Trixi"
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Discover"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
 
     private fun setUpDiscoverView() {
 
-            model.getAllPosts()?.observe(viewLifecycleOwner, Observer { posts ->
-                populatePosts(posts)
+            model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
+
             })
 
     }
@@ -93,5 +93,7 @@ class DiscoverFragment : Fragment() {
             recyclerView_homepage.adapter = adapter
         }
     }
+
+
 
 

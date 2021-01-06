@@ -40,13 +40,6 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
 
         post.GetLoggedInUserFromDB(this)
 
-        var background = findViewById<ConstraintLayout>(R.id.layout)
-        var animation = background.background as AnimationDrawable
-
-        animation.setEnterFadeDuration(5000);
-        animation.setExitFadeDuration(5000)
-
-        animation.start()
 
 
         registerReceiver(
