@@ -123,6 +123,9 @@ interface Api {
     @GET("rest/posts/by_owner/{owner_id}")
     suspend fun getPostByOwnerId(@Path("owner_id") id: String?): Response<List<Post>>
 
+    @GET("api/serach/{searchterm}")
+    suspend fun getPostBySearch(@Path("searchterm") searchterm: String?): Response<List<Post>>
+
 
 //    @GET("rest/posts/by_category/{category_id}")
 //    fun getPostByCategoryId(@Path(value="category_id") id : String?): Call<List<Post>>

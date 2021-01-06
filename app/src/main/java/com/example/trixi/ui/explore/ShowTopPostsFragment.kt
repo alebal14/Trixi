@@ -62,39 +62,30 @@ class ShowTopPostsFragment : Fragment() {
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
 
+                if (newText != null) {
+                    model.getPostBySearching(newText!!).observe(viewLifecycleOwner, Observer { post ->
 
-                model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
-
-                    if (newText != null) {
-                        val finalList =
-                            post!!.filter {
-                                it.title!!.startsWith(newText!!) || it.description!!.startsWith(
-                                    newText!!
-                                ) || it.categoryName!!.startsWith(newText!!)
-                            }.map { it!! }
-                        println("FINALS " + finalList.size)
-                        for (p in finalList) {
-                            println("FINALP " + p)
+                        media_grid_top_posts.apply {
+                            media_grid_top_posts.layoutManager =
+                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                            media_grid_top_posts.adapter =
+                                ExploreMediaGridAdapter(post as ArrayList<Post>)
                         }
-                         media_grid_top_posts.apply {
-                   media_grid_top_posts.layoutManager =
-                       StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                   StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                   media_grid_top_posts.adapter = ExploreMediaGridAdapter(finalList as ArrayList<Post>)
-               }
-                    }
-                    else{
-                         media_grid_top_posts.apply {
-                   media_grid_top_posts.layoutManager =
-                       StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                   StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                   media_grid_top_posts.adapter = ExploreMediaGridAdapter(post as ArrayList<Post>)
-               }
-                    }
-                })
+                    })
 
+                }else{
+                    model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
+                        media_grid_top_posts.apply {
+                            media_grid_top_posts.layoutManager =
+                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                            media_grid_top_posts.adapter =
+                                ExploreMediaGridAdapter(post as ArrayList<Post>)
+                        }
+                    })
 
-
+                }
                 return true
             }
 

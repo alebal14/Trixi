@@ -1,7 +1,6 @@
 package com.example.trixi.repository
 
 import android.util.Log
-import android.widget.MultiAutoCompleteTextView
 import androidx.lifecycle.*
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
@@ -70,6 +69,19 @@ class TrixiViewModel : ViewModel() {
             allPosts.postValue(p)
         }
         return allPosts
+    }
+
+    fun getPostBySearching(newText: String): MutableLiveData<List<Post>?> {
+        val searchPosts: MutableLiveData<List<Post>?> = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("explorer", "getting post by search")
+            val fPosts = retrofitClient?.getPostBySearch(newText)?.body()
+            searchPosts.postValue(fPosts)
+            Log.d("explorer", "got post by search")
+        }
+        return searchPosts
+
     }
 
 
