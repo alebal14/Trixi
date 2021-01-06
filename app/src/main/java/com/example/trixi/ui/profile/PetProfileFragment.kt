@@ -29,6 +29,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
     private lateinit var model: TrixiViewModel
     private var followed = false
     private lateinit var owner: String
+    private var numberOfFollowers = 0
 
     companion object {
         private val TAG = "petProfile"
@@ -47,6 +48,8 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+        numberOfFollowers = pet?.followers?.size!!
 
         checkIfFollowing()
         follow_button.setOnClickListener { handleFollow() }
@@ -113,15 +116,17 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
     private fun handleFollow() {
 
         if (!followed) {
-            Log.d("FOLLOW PET", "not followed; now following")
             loggedInUser?.let { db.follow(it.uid, pet?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
+            numberOfFollowers +=1
+            profile_followers.text = numberOfFollowers.toString() + " Followers"
         } else {
-            Log.d("FOLLOW PET", "already followed; now unfollowing")
             loggedInUser?.let { db.unfollow(it.uid, pet?.uid!!) }
             followed = false
             toggleFollowIcon(followed)
+                numberOfFollowers -=1
+                profile_followers.text = numberOfFollowers.toString() + " Followers"
         }
     }
 

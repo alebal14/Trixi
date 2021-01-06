@@ -30,6 +30,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
     private lateinit var model: TrixiViewModel
     private var followed: Boolean = false
+    private var numberOfFollowers = 0
 
     companion object {
         private val TAG = "profile"
@@ -49,6 +50,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "username > ${user?.userName}")
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+        numberOfFollowers = user?.followers?.size!!
 
         checkIfFollowing()
         populateProfile()
@@ -70,7 +72,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
             .into(user_profile_pet_image)
         profile_following.text =
             "Following " + (user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString()
-        profile_followers.text = user.followers?.size.toString() + " Followers"
+        profile_followers.text = numberOfFollowers.toString() + " Followers"
         owner_name.visibility = View.INVISIBLE
 
         getPets()
@@ -156,11 +158,15 @@ class UserProfileFragment(val user: User?) : Fragment() {
             loggedInUser?.let { db.follow(it.uid, user?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
+            numberOfFollowers +=1
+            profile_followers.text = numberOfFollowers.toString() + " Followers"
         } else {
             Log.d("FOLLOW", "already followed; now unfollowing")
             loggedInUser?.let { db.unfollow(it.uid, user?.uid!!) }
             followed = false
             toggleFollowIcon(followed)
+            numberOfFollowers -=1
+            profile_followers.text = numberOfFollowers.toString() + " Followers"
         }
 
     }
