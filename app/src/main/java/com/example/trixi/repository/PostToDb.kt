@@ -356,7 +356,7 @@ class PostToDb {
         })
     }
 
-    fun follow(userId: String, followingUserId: String){
+    fun follow(userId: String?, followingUserId: String){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         val call = retrofitClient?.postFollow(userId, followingUserId)
 

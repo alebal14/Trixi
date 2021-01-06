@@ -49,7 +49,9 @@ class UserProfileFragment(val user: User?) : Fragment() {
         Log.d(TAG, "username > ${user?.userName}")
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
+        checkIfFollowing()
         populateProfile()
+        follow_button.setOnClickListener { handleFollow() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -70,9 +72,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
         profile_followers.text = user.followers?.size.toString() + " Followers"
         owner_name.visibility = View.INVISIBLE
 
-        follow_button.setOnClickListener { handleFollow() }
-
-        checkIfFollowing()
         getPets()
         getPosts()
     }
@@ -144,8 +143,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
     private fun toggleFollowIcon(followed: Boolean) {
 
-        if (followed)
-            follow_button.setBackgroundResource(ic_heart_filled)
+        if (followed) follow_button.setBackgroundResource(ic_heart_filled)
         else follow_button.setBackgroundResource(ic_follow)
         Log.d("Profile", "not filled")
     }
@@ -157,7 +155,9 @@ class UserProfileFragment(val user: User?) : Fragment() {
             loggedInUser?.let { db.follow(it.uid, user?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
-        } else if (followed) {
+        }
+
+        else {
             Log.d("FOLLOW", "already followed; now unfollowing")
             loggedInUser?.let { db.unfollow(it.uid, user?.uid!!) }
             followed = false
