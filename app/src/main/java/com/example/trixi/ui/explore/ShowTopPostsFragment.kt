@@ -57,10 +57,12 @@ class ShowTopPostsFragment : Fragment() {
 
     private fun setupDiscoverFragment() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-        var filtPost: List<String>? = null
+      
         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+
+
                 model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
 
                     if (newText != null) {
