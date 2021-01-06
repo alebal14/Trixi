@@ -356,13 +356,13 @@ class PostToDb {
         })
     }
 
-    fun followUser(userId: String?, followingUserId: String){
+    fun follow(userId: String, followingUserId: String){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-        val call = retrofitClient?.postFollowUser(userId, followingUserId)
+        val call = retrofitClient?.postFollow(userId, followingUserId)
 
         call?.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("Follow", "unlike : onFailure " + t.message)
+                Log.d("Follow", "follow : onFailure " + t.message)
             }
 
             override fun onResponse(
@@ -373,14 +373,35 @@ class PostToDb {
                     Log.d("Follow", l.toString())
 
                 } else {
-                    Log.d("Follow", "fail to unlike")
+                    Log.d("Follow", "fail to follow")
                 }
             }
         })
     }
 
 
-    fun unfollowUser(){
+    fun unfollow(userId: String?, followingUserId: String){
+
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.postUnfollow(userId, followingUserId)
+
+        call?.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("Follow", "unfollow : onFailure " + t.message)
+            }
+
+            override fun onResponse(
+                call: Call<User>, response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    val l: User? = response.body()
+                    Log.d("Unfollow", l.toString())
+
+                } else {
+                    Log.d("Unfollow", "fail to unfollow")
+                }
+            }
+        })
 
     }
 

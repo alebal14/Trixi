@@ -151,18 +151,18 @@ class UserProfileFragment(val user: User?) : Fragment() {
     }
 
     private fun handleFollow() {
-        if (!followed){
-            loggedInUser?.let { db.followUser(it.uid, user?.uid!!) }
+
+        if (!followed) {
+            Log.d("FOLLOW", "not followed; now following")
+            loggedInUser?.let { db.follow(it.uid, user?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
+        } else if (followed) {
+            Log.d("FOLLOW", "already followed; now unfollowing")
+            loggedInUser?.let { db.unfollow(it.uid, user?.uid!!) }
+            followed = false
+            toggleFollowIcon(followed)
         }
-        //if not followed and button click add to db
-
-        //if followed and clicked, remove from db
-
-        //follow, post to db if we don't
-
-        //remove from db if unfollow
     }
 
     private fun checkIfFollowing() {
