@@ -123,7 +123,7 @@ interface Api {
     @GET("rest/posts/by_owner/{owner_id}")
     suspend fun getPostByOwnerId(@Path("owner_id") id: String?): Response<List<Post>>
 
-    @GET("api/serach/{searchterm}")
+    @GET("api/search/{searchterm}")
     suspend fun getPostBySearch(@Path("searchterm") searchterm: String?): Response<List<Post>>
 
 
