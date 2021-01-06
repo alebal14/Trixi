@@ -4,20 +4,18 @@ package com.example.trixi.ui.explore
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ArrayAdapter
-import android.widget.ListAdapter
-import android.widget.SearchView
+import android.widget.EditText
+
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
+
 
 class ShowTopPostsFragment : Fragment() {
     private lateinit var model: TrixiViewModel
@@ -36,7 +34,8 @@ class ShowTopPostsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         super.onViewCreated(view, savedInstanceState)
-        setupDiscoverFragment()
+        allPostsToAdapter()
+        searchToAdapter()
 
         search_bar.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -52,8 +51,7 @@ class ShowTopPostsFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
-    private fun setupDiscoverFragment() {
+    private fun allPostsToAdapter(){
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
@@ -67,9 +65,12 @@ class ShowTopPostsFragment : Fragment() {
             }
 
         })
-        
-        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+    }
+
+    private fun searchToAdapter() {
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?): Boolean {
 
                 if (newText != null) {
@@ -87,6 +88,7 @@ class ShowTopPostsFragment : Fragment() {
                                     ExploreMediaGridAdapter(post as ArrayList<Post>)
                             }
                         })
+                    clickx()
                 }
                 return true
             }
@@ -96,5 +98,27 @@ class ShowTopPostsFragment : Fragment() {
             }
 
         })
+
+
     }
+
+    private fun clickx(){
+    val closeButton: View? = search_bar.findViewById(androidx.appcompat.R.id.search_close_btn)
+    val clearText: EditText? = search_bar.findViewById(androidx.appcompat.R.id.search_src_text)
+
+    val mSearch: SearchView? = search_bar.findViewById(androidx.appcompat.R.id.search_bar)
+
+        closeButton?.setOnClickListener {
+            println("ONCLICK!!")
+            mSearch!!.setQuery("", false)
+            mSearch!!.onActionViewCollapsed()
+
+            //clearText!!.setText("")
+            allPostsToAdapter()
+        }
+
+    }
+
+
+
 }

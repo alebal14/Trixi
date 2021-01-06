@@ -1,5 +1,7 @@
 package com.example.trixi.entities;
 
+import java.io.Serializable
+
 
 data class Post(
     val uid: String?,
@@ -13,7 +15,7 @@ data class Post(
     var likes: List<Like>?,
     var owner: User? = null,
     var ownerIsPet :Pet? = null
-) {
+): Serializable {
 }
 
 data class FollowingsPosts(
