@@ -1,5 +1,6 @@
 package com.example.trixi.ui.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -34,7 +35,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
         private val db = PostToDb()
         private var loggedInUser: User? = PostToDb.loggedInUser
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -163,15 +163,33 @@ class UserProfileFragment(val user: User?) : Fragment() {
             followed = false
             toggleFollowIcon(followed)
         }
+
+        //refreshFragment()
+
+        //TODO: REFRESH FRAGMENT? ATTACH/DETACH?
+    }
+
+    private fun refreshFragment() {
+        val fm = activity?.supportFragmentManager!!
+        fm.beginTransaction()
+            .detach(this)
+            .attach(this)
+            .commit()
     }
 
     private fun checkIfFollowing() {
-        loggedInUser?.followingsUser?.forEach {
-            if (it.uid == user?.uid) {
-                followed = true
-            }
+        //TODO: get one user by id (loggedIn) -> updated followings list
+
+        loggedInUser?.uid?.let { it ->
+            model.getOneUser(it)?.observe(viewLifecycleOwner, Observer { loggedInU ->
+                loggedInU?.followingsUser?.forEach{
+                    if (it.uid == user?.uid) {
+                        followed = true
+                    }
+                    toggleFollowIcon(followed)
+                }
+            })
         }
-        toggleFollowIcon(followed)
     }
 
 }

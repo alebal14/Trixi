@@ -73,8 +73,7 @@ class HomepageFragment : Fragment() {
 
     private fun setUpHomeView() {
         PostToDb.loggedInUser?.uid?.let {
-            //OBS!! CHANGED HERE FOR TEST
-            model.getAllPosts()?.observe(viewLifecycleOwner, Observer { posts ->
+            model.getFollowingsPosts(it)?.observe(viewLifecycleOwner, Observer { posts ->
                 Log.d("home", "Followings post size: ${posts?.size}")
                 populatePosts(posts)
             })
