@@ -70,6 +70,7 @@ class RegisterActivity : AppCompatActivity() {
         button_register.setTextColor(ContextCompat.getColor(applicationContext, R.color.gray))
         username_check.setColorFilter(getResources().getColor(R.color.gray))
         email_check.setColorFilter(getResources().getColor(R.color.gray))
+        password_check.setColorFilter(getResources().getColor(R.color.gray))
         //  button_register.isEnabled = false
         // button_register.isClickable = false
 
@@ -200,11 +201,25 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
 
+        if (register_password.text.toString().isEmpty()){
+             email_check.setColorFilter(getResources().getColor(R.color.red))
+        } else {
+              email_check.setColorFilter(getResources().getColor(R.color.green))
+        }
+
 
 
         button_register.setOnClickListener {
-            if (!userExist.get()) {
+            if (userExist.get() != true && register_username.text.toString().isEmpty() && register_email.text.toString().isEmpty() && register_password.text.toString().isEmpty() && selectedImage != null) {
+                button_register.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
                 registerUser()
+            }
+            if (selectedImage == null) {
+                Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
+            }
+            if (register_username.text.toString().isEmpty() || register_email.text.toString().isEmpty() || register_password.text.toString().isEmpty()) {
+                Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
+
             }
         }
     }
@@ -214,39 +229,30 @@ class RegisterActivity : AppCompatActivity() {
         val email = register_email.text.toString()
         val password = register_password.text.toString()
 
-        if (selectedImage == null) {
+        /*if (selectedImage == null) {
             Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
             return
-        }
+        }*/
 
         val file = File(postPath)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
 
-        if (userName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
-            return
-        }
 
-       /* if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Wrong email-Format, try again", Toast.LENGTH_LONG).show()
-            return
-        }*/
+
 
         post.PostRegisterUserToDb(imagenPerfil, userName, email, password, this)
     }
 
 
     private fun checkIfUserExist(userName: String) {
-        val that = this
-
-            model.getAllUsers()?.observe(that, Observer { user ->
+            model.getAllUsers()?.observe(this, Observer { user ->
                 Log.d("reg", "size: users : ${user?.size}")
                 for (u in user!!) {
                     if (userName.contains("@")) {
                         if (userName == u.email) {
-                            // Toast.makeText(this, "Email already exist", Toast.LENGTH_LONG) .show()
+                            Toast.makeText(this, "Email already exist", Toast.LENGTH_SHORT) .show()
                             userExist.set(true)
                             break
                         } else {
@@ -254,7 +260,7 @@ class RegisterActivity : AppCompatActivity() {
                         }
                     }
                     if (userName == u.userName) {
-                        // Toast.makeText(this, "Username already exist", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Username already exist", Toast.LENGTH_SHORT).show()
                         userExist.set(true)
                         println("ISTRUEUSERNAME" + userExist)
                         break
