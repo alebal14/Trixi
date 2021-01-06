@@ -71,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
         username_check.setColorFilter(getResources().getColor(R.color.gray))
         email_check.setColorFilter(getResources().getColor(R.color.gray))
         password_check.setColorFilter(getResources().getColor(R.color.gray))
-      
+
         checkInput()
 
         register_profile_image.setOnClickListener {
