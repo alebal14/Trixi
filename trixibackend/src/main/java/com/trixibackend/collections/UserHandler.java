@@ -5,11 +5,13 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
 import jdk.jfr.Timestamp;
 import org.apache.commons.fileupload.FileItem;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import javax.imageio.ImageIO;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gte;
 
 public class UserHandler {
     private MongoCollection<User> userColl;
@@ -55,14 +58,6 @@ public class UserHandler {
             usersIter.forEach(users::add);
             users.forEach(user -> {
                 user.setUid(user.getId().toString());
-//                user.setPosts(postHandler.findPostsByOwner(user.getUid()));
-//                user.setPets(petHandler.findPetsByOwner(user.getUid()));
-//                user.getPosts().forEach(post -> {
-//                            post.setUid(post.getId().toString());
-//                            post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-//                            post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-//                        }
-//                );
             });
 
         } catch (Exception e) {
@@ -78,23 +73,79 @@ public class UserHandler {
             var user = userIter.first();
             if (user == null) return null;
             user.setUid(user.getId().toString());
-//            user.setPosts(postHandler.findPostsByOwner(user.getUid()));
-//            user.setPets(petHandler.findPetsByOwner(user.getUid()));
-//            user.getPosts().forEach(post -> {
-//                post.setUid(post.getId().toString());
-//                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-//                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-//            });
             return user;
         } catch (Exception e) {
             return null;
         }
     }
 
-    public List<Post> findUserFollowingPostList(User user){
+    public DeleteResult deleteUser(String id) {
+        var u = findUserById(id);
+
+        // delete this user from other user's followings list
+        var followers = u.getFollowers();
+        for(User aFollower :followers){
+            userColl.updateOne(eq("_id",aFollower.getId()),Updates.pull("followingsUser",new BasicDBObject("_id", u.getId())));
+            System.out.println(u.getUserName() + " is deleted from  " + aFollower.getUserName() + "'s followings list");
+
+        }
+        // delete this user from other user's followers list
+        var followings = u.getFollowingsUser();
+        for(User aFollowing :followings){
+            userColl.updateOne(eq("_id",aFollowing.getId()),Updates.pull("followers",new BasicDBObject("_id", u.getId())));
+            System.out.println(u.getUserName() + " is deleted from  " + aFollowing.getUserName() + "'s followers list");
+
+        }
+        // delete this user from pet's followers list
+        var petFollowings = u.getFollowingsPet();
+        for(Pet p:petFollowings){
+            petHandler.getPetColl().updateOne(eq("_id",p.getId()),Updates.pull("followers",new BasicDBObject("_id", u.getId())));
+            System.out.println(u.getUserName() + " is deleted from  " + p.getName() + "'s followers list");
+
+        }
+        //delete user
+        Bson userTobeDeleted = eq("_id", new ObjectId(id));
+        DeleteResult deletedUser = userColl.deleteOne(userTobeDeleted);
+        System.out.println("user deleted: " + deletedUser);
+
+        //delete user's post
+        Bson posts = eq("ownerId", id);
+        DeleteResult deletedPost = postHandler.getPostColl().deleteMany(posts);
+        System.out.println("user's post deleted: " + deletedPost);
+
+        //delete user's pet and pet's post
+        var pets = petHandler.findPetsByOwner(id);
+        for (Pet p : pets) {
+            System.out.println("------------ " + p.getName() + "----------------------");
+            petHandler.deletePet(p.getUid());
+        }
+
+
+    // remove this users comments and likes for other user's/pet's posts
+        var allPosts = postHandler.getAllPosts();
+        for (Post p : allPosts) {
+            var comments = p.getComments()
+                    .stream()
+                    .filter(comment -> comment.getUserId().equals(id))
+                    .collect(Collectors.toList());
+            postHandler.getPostColl().updateOne(eq("_id", p.getId()), Updates.pullAll("comments", comments));
+            var likes = p.getLikes()
+                    .stream()
+                    .filter(like -> like.getUserId().equals(id))
+                    .collect(Collectors.toList());
+            postHandler.getPostColl().updateOne(eq("_id",p.getId()),Updates.pullAll("likes",likes));
+        }
+
+
+        return deletedUser;
+
+    }
+
+
+    public List<Post> findUserFollowingPostList(User user) {
 
         List<User> getFollowingUser = user.getFollowingsUser();
-        List<Pet>  getFollowingPet = user.getFollowingsPet();
+        List<Pet> getFollowingPet = user.getFollowingsPet();
 
         List<Post> allPostFromDB = postHandler.getAllPosts();
         System.out.println(allPostFromDB);
@@ -108,7 +159,7 @@ public class UserHandler {
                 .map(Pet::getUid)
                 .collect(Collectors.toSet());
 
-        List<String> concatlist = Stream.concat(userid.stream(),petid.stream())
+        List<String> concatlist = Stream.concat(userid.stream(), petid.stream())
                 .collect(Collectors.toList());
 
         List<Post> listOutput =
@@ -123,26 +174,26 @@ public class UserHandler {
     public User findUserByNameOrEmail(User loggedInUser) {
         String emailOrUsername;
         String fieldname;
-        if(loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null){
+        if (loggedInUser.getUserName() == "" || loggedInUser.getUserName() == null) {
             emailOrUsername = loggedInUser.getEmail();
             fieldname = "email";
-        }else{
+        } else {
             emailOrUsername = loggedInUser.getUserName();
             fieldname = "userName";
         }
         try {
             var user = userColl.find(eq(fieldname, emailOrUsername)).first();
 
-           if (user == null) return null;
+            if (user == null) return null;
 
-           return user;
+            return user;
 
         } catch (Exception e) {
             return null;
         }
     }
 
-    public User updateFollowPetList(User user, Pet following){
+    public User updateFollowPetList(User user, Pet following) {
         AtomicBoolean found = new AtomicBoolean(false);
 
         user.getFollowingsPet().forEach(u -> {
@@ -163,7 +214,7 @@ public class UserHandler {
         userColl.updateOne(eq("_id", user.getId()), Updates.addToSet("followingsPet", p));
 
         //Shadow copy
-        User j  = user;
+        User j = user;
         //Empty the list of the copy
         makeUsersListEmpty(j);
         //update the pet's list
@@ -176,7 +227,7 @@ public class UserHandler {
         return updatedUser;
     }
 
-    public User updateFollowUserList(User user, User following){
+    public User updateFollowUserList(User user, User following) {
         AtomicBoolean found = new AtomicBoolean(false);
 
         user.getFollowingsUser().forEach(u -> {
@@ -197,7 +248,7 @@ public class UserHandler {
         userColl.updateOne(eq("_id", user.getId()), Updates.addToSet("followingsUser", u));
 
         //Shadow copy
-        User e  = user;
+        User e = user;
         //Empty the list of the copy
         makeUsersListEmpty(e);
         //update the user's list
@@ -209,7 +260,7 @@ public class UserHandler {
         return updatedUser;
     }
 
-    public User removeFromFollowPetList(User user, Pet following){
+    public User removeFromFollowPetList(User user, Pet following) {
         AtomicBoolean found = new AtomicBoolean(false);
 
         user.getFollowingsPet().forEach(u -> {
@@ -231,7 +282,7 @@ public class UserHandler {
         return updatedUser;
     }
 
-    public User removeFromFollowUserList(User user, User following){
+    public User removeFromFollowUserList(User user, User following) {
         AtomicBoolean found = new AtomicBoolean(false);
 
         user.getFollowingsUser().forEach(u -> {
@@ -253,7 +304,7 @@ public class UserHandler {
         return updatedUser;
     }
 
-    private void makeUsersListEmpty(User u){
+    private void makeUsersListEmpty(User u) {
         u.setFollowingsUser(null);
         u.setFollowingsPet(null);
         u.setFollowers(null);
@@ -261,12 +312,10 @@ public class UserHandler {
         u.setPosts(null);
     }
 
-    private void makePetsListEmpty(Pet p){
+    private void makePetsListEmpty(Pet p) {
         p.setFollowers(null);
         p.setPosts(null);
     }
-
-
 
 
 }

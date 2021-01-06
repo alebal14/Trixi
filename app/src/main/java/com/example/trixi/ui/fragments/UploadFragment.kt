@@ -9,13 +9,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -84,6 +83,11 @@ class UploadFragment() : Fragment() {
     return inflater.inflate(R.layout.fragment_upload, container, false)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.empty_menu, menu)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Upload"
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)

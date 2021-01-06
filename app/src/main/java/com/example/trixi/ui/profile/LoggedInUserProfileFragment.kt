@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 
-class LoggedInUserProfileFragment : Fragment(), ProfileMediaGridAdapter.OnItemClickListener {
+class LoggedInUserProfileFragment : Fragment() {
     private var loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu: Boolean = false
     private lateinit var model: TrixiViewModel
@@ -57,24 +57,29 @@ class LoggedInUserProfileFragment : Fragment(), ProfileMediaGridAdapter.OnItemCl
         getPets()
     }
 
-    private fun getPets(){
+    private fun getPets() {
         val snapHelper2: SnapHelper = GravitySnapHelper(Gravity.START)
         snapHelper2.attachToRecyclerView(users_pet_list)
+        loggedInUser?.uid?.let {
+            model.getPetsByOwner(it)?.observe(viewLifecycleOwner,{ pets->
 
-        users_pet_list.apply {
-            if (!loggedInUser?.pets?.isEmpty()!!) {
-                //set pet list for user if not empty
-                users_pet_list.layoutManager = GridLayoutManager(
-                    context,
-                    1,
-                    GridLayoutManager.HORIZONTAL,
-                    false
-                )
-                adapter = ProfilePetListAdapter(loggedInUser!!.pets!!, { pet ->
-                    redirectToPetProfile(pet)
-                })
-                users_pet_list.adapter = adapter
-            }
+                users_pet_list.apply {
+                    if (pets.isNotEmpty()) {
+                        //set pet list for user if not empty
+                        users_pet_list.layoutManager = GridLayoutManager(
+                            context,
+                            1,
+                            GridLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = ProfilePetListAdapter(pets as ArrayList<Pet>) { pet ->
+                            redirectToPetProfile(pet)
+                        }
+                        users_pet_list.adapter = adapter
+                    }
+                }
+            })
+
         }
     }
 
@@ -83,27 +88,30 @@ class LoggedInUserProfileFragment : Fragment(), ProfileMediaGridAdapter.OnItemCl
         val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
         snapHelper1.attachToRecyclerView(media_grid)
 
-        if (loggedInUser?.posts.isNullOrEmpty()) {
-            profile_no_posts.visibility = TextView.VISIBLE
-        } else {
-            media_grid.apply {
-
-                model.getPostsByOwner(loggedInUser?.uid.toString())
-                    ?.observe(viewLifecycleOwner, { posts ->
+        loggedInUser?.uid?.let {
+            model.getPostsByOwner(it)?.observe(viewLifecycleOwner,{ posts ->
+                if (posts.isNullOrEmpty()) {
+                    profile_no_posts.visibility = TextView.VISIBLE
+                } else {
+                    media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
                             3,
                             GridLayoutManager.VERTICAL,
                             false
                         )
-                        media_grid.adapter =
-                            ProfileMediaGridAdapter(
-                                posts as ArrayList<Post>,
-                                this@LoggedInUserProfileFragment
-                            )
-                    })
-            }
+                        adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>) {
+                            redirectToSinglePost(it)
+
+                        }
+                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
+                    }
+
+                }
+
+            })
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -119,7 +127,7 @@ class LoggedInUserProfileFragment : Fragment(), ProfileMediaGridAdapter.OnItemCl
                 var manager: FragmentManager = requireActivity().supportFragmentManager
                 var drawmenu = DrawerMenuFragment()
 
-                if (toggleHamMenu == false) {
+                if (!toggleHamMenu) {
                     toggleHamMenu = true
                     manager.beginTransaction()
                         .setCustomAnimations(
@@ -156,29 +164,18 @@ class LoggedInUserProfileFragment : Fragment(), ProfileMediaGridAdapter.OnItemCl
 
     }
 
-    override fun onItemClick(position: Int) {
-        // Toast.makeText(this, "position $position", Toast.LENGTH_SHORT).show()
-        model.getPostsByOwner(loggedInUser?.uid.toString())?.observe(viewLifecycleOwner, {
-            val post = it?.get(position)
-            if (post != null) {
-                val singlePostFragment = SinglePostFragment(post)
-                activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.fragment_container, singlePostFragment)
-                    ?.commit()
-                Log.d("loggedInUserprofile", "${post.title}")
-            }
-        })
-
-
+    private fun redirectToSinglePost(post: Post) {
+        val singlePost = SinglePostFragment(post)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, singlePost)?.commit()
     }
+
 
     private fun redirectToPetProfile(pet: Pet) {
         val fm = activity?.supportFragmentManager
 
         val petProfile = PetProfileFragment(pet)
-        if (fm != null) {
-            fm.beginTransaction().replace(R.id.fragment_container, petProfile).commit()
-        }
+        fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)?.commit()
     }
 
 }

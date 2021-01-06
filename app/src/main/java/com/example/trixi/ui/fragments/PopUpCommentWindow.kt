@@ -75,11 +75,14 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
 
         comments!!.forEach { comment ->
-            model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commnetOwner ->
-                Log.d("home", "Comment owner ${commnetOwner.userName}")
-                Log.d("home", "Comment  ${comment.comment}")
+            model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commentOwner ->
+                if(commentOwner != null){
+                    Log.d("home1", "Comment owner ${commentOwner.userName}")
+                    Log.d("home", "Comment  ${comment.comment}")
 
-                adapterChat.add(CommentItem(comment, commnetOwner))
+                    adapterChat.add(CommentItem(comment, commentOwner))
+                }
+
             })
 
         }

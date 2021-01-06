@@ -18,6 +18,7 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -87,11 +88,12 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
         snapHelper1.attachToRecyclerView(media_grid)
 
-        if (pet?.posts.isNullOrEmpty()) {
-            profile_no_posts.visibility = TextView.VISIBLE
-        } else {
-            pet?.uid?.let {
-                model.getPostsByOwner(it)?.observe(viewLifecycleOwner, { posts ->
+
+        pet?.uid?.let {
+            model.getPostsByOwner(it)?.observe(viewLifecycleOwner, { posts ->
+                if (posts.isNullOrEmpty()) {
+                    profile_no_posts.visibility = TextView.VISIBLE
+                } else {
                     media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
@@ -99,11 +101,25 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                             GridLayoutManager.VERTICAL,
                             false
                         )
+                        adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>) {
+                            redirectToSinglePost(it)
+
+                        }
                         //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>)
                     }
-                })
-            }
+
+                }
+
+            })
         }
+
+    }
+
+    private fun redirectToSinglePost(post: Post) {
+        val singlePost = SinglePostFragment(post)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, singlePost)?.commit()
+
     }
 
     private fun toggleFollowIcon(followed: Boolean) {

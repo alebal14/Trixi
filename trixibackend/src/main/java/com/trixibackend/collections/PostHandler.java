@@ -5,22 +5,26 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
-import com.trixibackend.entity.Comment;
-import com.trixibackend.entity.Like;
-import com.trixibackend.entity.Post;
+
+import com.mongodb.client.result.DeleteResult;
+import org.bson.conversions.Bson;
+
+import com.trixibackend.entity.*;
+
 import org.bson.types.ObjectId;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.mongodb.client.model.Filters.eq;
 
 public class PostHandler {
     private MongoCollection<Post> postColl = null;
     private LikeHandler likeHandler;
-
+   
 
     private CommentHandler commentHandler;
 
@@ -29,6 +33,7 @@ public class PostHandler {
         postColl = database.getCollection("posts", Post.class);
         likeHandler = new LikeHandler(database);
         commentHandler = new CommentHandler(database);
+
     }
 
     public MongoCollection<Post> getPostColl() {
@@ -162,6 +167,72 @@ public class PostHandler {
 
     }
 
+    public List<Post> searchPost(String searchTerm , List<User> userList, List<Pet> petList ){
+
+        List<User> getAllUser = userList ;
+        List<Pet>  getAllPet = petList;
+
+        List<Post> allPostFromDB = getAllPosts();
+        System.out.println(allPostFromDB);
+
+        List<User> getUserName = getAllUser.stream()
+                .filter(e -> e.getUserName().startsWith(searchTerm))
+                .collect(Collectors.toList());
+
+        List<Pet> getPetName = getAllPet.stream()
+                .filter(e -> e.getName().startsWith(searchTerm))
+                .collect(Collectors.toList());
+
+        Set<String> userid =
+                getUserName.stream()
+                        .map(User::getUid)
+                        .collect(Collectors.toSet());
+
+        Set<String> petid = getPetName.stream()
+                .map(Pet::getUid)
+                .collect(Collectors.toSet());
+
+        List<String> concatlist = Stream.concat(userid.stream(),petid.stream())
+                .collect(Collectors.toList());
+
+
+        List<Post> listUserPetPost =
+                allPostFromDB.stream()
+                        .filter(e -> concatlist.contains(e.getOwnerId()))
+                        .collect(Collectors.toList());
+
+        List<Post> listDescription=
+                allPostFromDB.stream()
+                        .filter(e -> e.getDescription().startsWith(searchTerm))
+                        .collect(Collectors.toList());
+
+        List<Post> listCategory =
+                allPostFromDB.stream()
+                        .filter(e -> e.getCategoryName().startsWith(searchTerm))
+                        .collect(Collectors.toList());
+
+        List<Post> listTitle =
+                allPostFromDB.stream()
+                        .filter(map -> map.getTitle().startsWith(searchTerm))
+                        .collect(Collectors.toList());
+
+        List<Post> resultList = new ArrayList<>();
+
+        if (listDescription != null){
+            resultList.addAll(listDescription);
+        }
+        if (listUserPetPost != null){
+            resultList.addAll(listUserPetPost);
+        }
+        if (listTitle != null){
+            resultList.addAll(listTitle);
+        }
+        if (listCategory != null){
+            resultList.addAll(listCategory);
+        }
+
+        return resultList;
+    }
 
     public LikeHandler getLikeHandler() {
         return likeHandler;
@@ -171,4 +242,10 @@ public class PostHandler {
         return commentHandler;
     }
 
+    public DeleteResult deletePost(String id) {
+        Bson post = eq("_id",new ObjectId(id));
+        DeleteResult result = postColl.deleteOne(post);
+        System.out.println(result);
+        return result;
+    }
 }

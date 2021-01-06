@@ -43,8 +43,6 @@ class HomeItem(
             viewHolder.itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
 
         }
-
-
 //        Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: ))
 //            .transform(CropCircleTransformation()).fit()
 //            .into(viewHolder.itemView.home_item_profileimg)

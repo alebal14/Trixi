@@ -5,8 +5,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.User;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gte;
 
 
 public class PetHandler {
@@ -107,5 +110,16 @@ public class PetHandler {
         }
 
         return pets;
+    }
+
+    public DeleteResult deletePet(String id) {
+        Bson pet = eq("_id",new ObjectId(id));
+        DeleteResult deletedPet = petColl.deleteOne(pet);
+
+        Bson posts = eq("ownerId",id);
+        DeleteResult deletedPost = postHandler.getPostColl().deleteMany(posts);
+        System.out.println("pet deleted: " + deletedPet);
+        System.out.println("pet's post deleted: " + deletedPost);
+        return deletedPet;
     }
 }

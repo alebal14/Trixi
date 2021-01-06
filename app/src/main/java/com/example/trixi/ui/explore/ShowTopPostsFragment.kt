@@ -33,11 +33,17 @@ class ShowTopPostsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupDiscoverFragment()
 
+        search_bar.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                search_bar.setIconified(false)
+            }
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Discover"
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Explorer"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -51,7 +57,7 @@ class ShowTopPostsFragment : Fragment() {
             media_grid_top_posts.apply {
                 media_grid_top_posts.layoutManager =
                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                    StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
                 media_grid_top_posts.adapter = ExploreMediaGridAdapter(post as ArrayList<Post>)
             }
 
