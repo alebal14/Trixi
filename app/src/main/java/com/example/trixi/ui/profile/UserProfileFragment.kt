@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.users_pet_list
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlin.math.log
 
 
 class UserProfileFragment(val user: User?) : Fragment() {
@@ -155,41 +156,28 @@ class UserProfileFragment(val user: User?) : Fragment() {
             loggedInUser?.let { db.follow(it.uid, user?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
-        }
-
-        else {
+        } else {
             Log.d("FOLLOW", "already followed; now unfollowing")
             loggedInUser?.let { db.unfollow(it.uid, user?.uid!!) }
             followed = false
             toggleFollowIcon(followed)
         }
 
-        //refreshFragment()
-
-        //TODO: REFRESH FRAGMENT? ATTACH/DETACH?
-    }
-
-    private fun refreshFragment() {
-        val fm = activity?.supportFragmentManager!!
-        fm.beginTransaction()
-            .detach(this)
-            .attach(this)
-            .commit()
     }
 
     private fun checkIfFollowing() {
-        //TODO: get one user by id (loggedIn) -> updated followings list
 
-        loggedInUser?.uid?.let { it ->
-            model.getOneUser(it)?.observe(viewLifecycleOwner, Observer { loggedInU ->
-                loggedInU?.followingsUser?.forEach{
-                    if (it.uid == user?.uid) {
-                        followed = true
-                    }
-                    toggleFollowIcon(followed)
+        model.getOneUser(loggedInUser?.uid!!)?.observe(viewLifecycleOwner, Observer {
+            it?.followingsUser?.forEach {
+                if (it.uid == user?.uid) {
+                    followed = true
                 }
-            })
-        }
+                toggleFollowIcon(followed)
+            }
+        })
     }
 
+
 }
+
+
