@@ -34,9 +34,14 @@
                 android:background="@drawable/ic_baseline_person_outline_24"
                  />
 
+        <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/register_username"
-                android:layout_width="283dp"
+                android:layout_width="262dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
@@ -46,27 +51,77 @@
                 android:inputType="textPersonName"
                 android:paddingLeft="16dp" />
 
-            <EditText
-                android:id="@+id/register_email"
-                android:layout_width="283dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
-                android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="16dp" />
+            <ImageView
+                android:id="@+id/username_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/checkbox_on_background"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2dp"
+                android:layout_marginBottom="2dp"
+                />
+        </LinearLayout>
 
-            <EditText
-                android:id="@+id/register_password"
-                android:layout_width="283dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:paddingLeft="16dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/register_email"
+                        android:layout_width="262dp"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/text_input_rounded_corners"
+                        android:ems="10"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="16dp" />
+
+                    <ImageView
+                        android:id="@+id/email_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@android:drawable/checkbox_on_background"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginBottom="10dp"
+                        />
+                </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/register_password"
+                    android:layout_width="262dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/text_input_rounded_corners"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:paddingLeft="16dp" />
+
+                <ImageView
+                    android:id="@+id/password_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/checkbox_on_background"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button_register"
@@ -85,6 +140,9 @@
                 android:inputType="textPersonName"
                 android:text="Already have an account?"
                 android:textStyle="bold" />
+
+
+
             </LinearLayout>
 
         </LinearLayout>

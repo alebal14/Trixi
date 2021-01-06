@@ -141,24 +141,6 @@ class RegisterActivity : AppCompatActivity(){
         }
     }
 
-   /* private fun saveProfileImage(){
-
-        //convert the image to bitmap
-        val convertImageBitmap = BitmapFactory.decodeFile(postPath)
-
-        val baos = ByteArrayOutputStream()
-        //compressing the bitmap
-        convertImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-
-        //coberting the image to bytearray
-        val imageByte = baos.toByteArray()
-
-        //encoding the image
-        encodedImage = Base64.encodeToString(imageByte, Base64.DEFAULT)
-
-        //sending the image
-    }*/
-
     private fun checkInput(){
 
         register_username.addTextChangedListener(object : TextWatcher {
@@ -169,7 +151,6 @@ class RegisterActivity : AppCompatActivity(){
                 println("KOMIGEN")
                 if(s?.length != 0) {
                     checkIfUserExist(s.toString())
-                    println("ISTRUE" + userExist)
                 }
             }
             override fun afterTextChanged(s: Editable?) {
