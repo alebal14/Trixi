@@ -190,8 +190,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
     private fun checkIfFollowing() {
 
         model.getOneUser(loggedInUser?.uid!!)?.observe(viewLifecycleOwner, Observer {
-            it?.followingsUser?.forEach {
-                if (it.uid == user?.uid) {
+            it?.followingsUser?.forEach { followingUser ->
+                if (followingUser.uid == user?.uid) {
                     followed = true
                 }
                 toggleFollowIcon(followed)

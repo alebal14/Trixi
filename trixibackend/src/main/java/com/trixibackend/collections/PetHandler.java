@@ -112,9 +112,16 @@ public class PetHandler {
         return pets;
     }
 
-    public DeleteResult deletePet(String id) {
-        Bson pet = eq("_id",new ObjectId(id));
-        DeleteResult deletedPet = petColl.deleteOne(pet);
+    public DeleteResult deletePet(String id, MongoCollection<User> userColl) {
+        var pet = findPetById(id);
+        var petFollowers = pet.getFollowers();
+        for(User u:petFollowers){
+            userColl.updateOne(eq("_id",u.getId()),Updates.pull("followingsPet",new BasicDBObject("_id", pet.getId())));
+            System.out.println(pet.getName() + " is deleted from  " + u.getUserName() + "'s followingsPet list");
+
+        }
+        Bson petTobeDeleted = eq("_id",new ObjectId(id));
+        DeleteResult deletedPet = petColl.deleteOne(petTobeDeleted);
 
         Bson posts = eq("ownerId",id);
         DeleteResult deletedPost = postHandler.getPostColl().deleteMany(posts);

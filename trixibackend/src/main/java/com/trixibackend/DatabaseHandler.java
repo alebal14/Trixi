@@ -152,7 +152,7 @@ public class DatabaseHandler {
             case "posts":
                 return postHandler.deletePost(id);
             case "pets":
-                return petHandler.deletePet(id);
+                return petHandler.deletePet(id,userColl);
             default:
                 return null;
         }
