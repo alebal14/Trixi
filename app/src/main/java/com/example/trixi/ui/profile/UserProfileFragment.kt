@@ -1,22 +1,24 @@
 package com.example.trixi.ui.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SnapHelper
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
+import com.example.trixi.R.drawable.*
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
+import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
@@ -24,17 +26,20 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.users_pet_list
 import kotlinx.android.synthetic.main.fragment_profile.view.*
-import kotlinx.android.synthetic.main.profile_user_pet.*
+import kotlin.math.log
 
 
 class UserProfileFragment(val user: User?) : Fragment() {
 
+    private lateinit var model: TrixiViewModel
+    private var followed: Boolean = false
+    private var numberOfFollowers = 0
+
     companion object {
         private val TAG = "profile"
-
+        private val db = PostToDb()
+        private var loggedInUser: User? = PostToDb.loggedInUser
     }
-
-    private lateinit var model: TrixiViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +53,11 @@ class UserProfileFragment(val user: User?) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "username > ${user?.userName}")
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+        numberOfFollowers = user?.followers?.size!!
 
+        checkIfFollowing()
         populateProfile()
+        follow_button.setOnClickListener { handleFollow() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -67,10 +75,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
             .into(user_profile_pet_image)
         profile_following.text =
             "Following " + (user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString()
-        profile_followers.text = user.followers?.size.toString() + " Followers"
-        follow_button.visibility = View.VISIBLE
+        profile_followers.text = numberOfFollowers.toString() + " Followers"
         owner_name.visibility = View.INVISIBLE
-        follow_button.visibility = View.INVISIBLE
 
         getPets()
         getPosts()
@@ -154,5 +160,46 @@ class UserProfileFragment(val user: User?) : Fragment() {
         fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)?.commit()
     }
 
+    private fun toggleFollowIcon(followed: Boolean) {
+
+        if (followed) follow_button.setBackgroundResource(ic_heart_filled)
+        else follow_button.setBackgroundResource(ic_follow)
+        Log.d("Profile", "not filled")
+    }
+
+    private fun handleFollow() {
+
+        if (!followed) {
+            Log.d("FOLLOW", "not followed; now following")
+            loggedInUser?.let { db.follow(it.uid, user?.uid!!) }
+            followed = true
+            toggleFollowIcon(followed)
+            numberOfFollowers +=1
+            profile_followers.text = numberOfFollowers.toString() + " Followers"
+        } else {
+            Log.d("FOLLOW", "already followed; now unfollowing")
+            loggedInUser?.let { db.unfollow(it.uid, user?.uid!!) }
+            followed = false
+            toggleFollowIcon(followed)
+            numberOfFollowers -=1
+            profile_followers.text = numberOfFollowers.toString() + " Followers"
+        }
+
+    }
+
+    private fun checkIfFollowing() {
+
+        model.getOneUser(loggedInUser?.uid!!)?.observe(viewLifecycleOwner, Observer {
+            it?.followingsUser?.forEach {
+                if (it.uid == user?.uid) {
+                    followed = true
+                }
+                toggleFollowIcon(followed)
+            }
+        })
+    }
+
 
 }
+
+

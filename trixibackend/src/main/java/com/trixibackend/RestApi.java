@@ -58,7 +58,7 @@ public class RestApi {
             User user = db.getUserHandler().findUserById(userid);
             User followingUser = db.getUserHandler().findUserById(followingId);
 
-            System.out.println("User:  " + user);
+            System.out.println("Logged in user:  " + user);
 
             if (followingUser == null) {
                 Pet followingPet = db.getPetHandler().findPetById(followingId);

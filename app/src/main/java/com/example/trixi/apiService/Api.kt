@@ -150,6 +150,10 @@ interface Api {
     @POST("rest/unlike")
     fun unlikeAPost(@Body like: Like): Call<Like>
 
+    @POST("api/users/follow/{userid}/{followingId}")
+    fun postFollow(@Path(value = "userid") userId: String?, @Path(value ="followingId") followingId : String?) : Call<User>
 
+    @POST("api/users/un_follow/{userid}/{followingId}")
+    fun postUnfollow(@Path(value = "userid") userId: String?, @Path(value ="followingId") followingId : String?) : Call<User>
 
 }

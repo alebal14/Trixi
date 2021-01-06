@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
@@ -355,6 +354,55 @@ class PostToDb {
                 }
             }
         })
+    }
+
+    fun follow(userId: String?, followingUserId: String){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.postFollow(userId, followingUserId)
+
+        call?.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId + "follow : onFailure " + t.message)
+            }
+
+            override fun onResponse(
+                call: Call<User>, response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    val l: User? = response.body()
+                    Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId + l.toString())
+
+                } else {
+                    Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId +  "fail to follow")
+                }
+            }
+        })
+    }
+
+
+    fun unfollow(userId: String?, followingUserId: String){
+
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.postUnfollow(userId, followingUserId)
+
+        call?.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId +  "unfollow : onFailure " + t.message)
+            }
+
+            override fun onResponse(
+                call: Call<User>, response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    val l: User? = response.body()
+                    Log.d("Unfollow", "loggedIn: " + userId + "other user: " + followingUserId + l.toString())
+
+                } else {
+                    Log.d("Unfollow", "loggedIn: " + userId + "other user: " + followingUserId + "fail to unfollow")
+                }
+            }
+        })
+
     }
 
 
