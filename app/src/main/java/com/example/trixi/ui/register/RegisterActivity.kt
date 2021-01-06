@@ -71,9 +71,7 @@ class RegisterActivity : AppCompatActivity() {
         username_check.setColorFilter(getResources().getColor(R.color.gray))
         email_check.setColorFilter(getResources().getColor(R.color.gray))
         password_check.setColorFilter(getResources().getColor(R.color.gray))
-        //  button_register.isEnabled = false
-        // button_register.isClickable = false
-
+      
         checkInput()
 
         register_profile_image.setOnClickListener {
@@ -201,16 +199,26 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
 
-        if (register_password.text.toString().isEmpty()){
-             email_check.setColorFilter(getResources().getColor(R.color.red))
-        } else {
-              email_check.setColorFilter(getResources().getColor(R.color.green))
-        }
+        register_password.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                CoroutineScope(Main).launch {
+                    if (s?.length != 0) {
+                        password_check.setColorFilter(getResources().getColor(R.color.green))
+                        if (register_password.text.toString().isEmpty()){
+                            password_check.setColorFilter(getResources().getColor(R.color.gray))
+                        }
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
 
         button_register.setOnClickListener {
-            if (userExist.get() != true && register_username.text.toString().isEmpty() && register_email.text.toString().isEmpty() && register_password.text.toString().isEmpty() && selectedImage != null) {
+            if (userExist.get() != true && register_username.text.toString().isNotEmpty() && register_email.text.toString().isNotEmpty() && register_password.text.toString().isNotEmpty() && selectedImage != null) {
                 button_register.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
                 registerUser()
             }
