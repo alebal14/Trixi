@@ -4,14 +4,19 @@ package com.example.trixi.ui.explore
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ArrayAdapter
+import android.widget.ListAdapter
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 class ShowTopPostsFragment : Fragment() {
@@ -48,8 +53,38 @@ class ShowTopPostsFragment : Fragment() {
     }
 
 
+
+
     private fun setupDiscoverFragment() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+        var filtPost: List<String>? = null
+        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
+                    val finalList =
+                        post!!.filter { it.title!!.startsWith(newText!!) }.map{ it.title!! }
+                    for (p in finalList) {
+                        println("FINALP " + p)
+                    }
+                })
+
+
+                /* media_grid_top_posts.apply {
+                    media_grid_top_posts.layoutManager =
+                        StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                    StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                    media_grid_top_posts.adapter = ExploreMediaGridAdapter(post as ArrayList<Post>)
+                }*/
+                return true
+            }
+
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+        })
+
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
             Log.d("post_size_f", post?.size.toString())
