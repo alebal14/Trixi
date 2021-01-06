@@ -63,7 +63,8 @@ class ShowTopPostsFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 model.getAllPosts().observe(viewLifecycleOwner, Observer { post ->
                     val finalList =
-                        post!!.filter { it.title!!.startsWith(newText!!) }.map{ it.title!! }
+                        post!!.filter { it.title!!.startsWith(newText!!) || it.description!!.startsWith(newText!!) || it.categoryName!!.startsWith(newText!!) }.map { it!! }
+                    println("FINALS " + finalList.size)
                     for (p in finalList) {
                         println("FINALP " + p)
                     }
