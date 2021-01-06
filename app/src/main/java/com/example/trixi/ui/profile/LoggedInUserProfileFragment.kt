@@ -60,21 +60,26 @@ class LoggedInUserProfileFragment : Fragment() {
     private fun getPets() {
         val snapHelper2: SnapHelper = GravitySnapHelper(Gravity.START)
         snapHelper2.attachToRecyclerView(users_pet_list)
+        loggedInUser?.uid?.let {
+            model.getPetsByOwner(it)?.observe(viewLifecycleOwner,{ pets->
 
-        users_pet_list.apply {
-            if (!loggedInUser?.pets?.isEmpty()!!) {
-                //set pet list for user if not empty
-                users_pet_list.layoutManager = GridLayoutManager(
-                    context,
-                    1,
-                    GridLayoutManager.HORIZONTAL,
-                    false
-                )
-                adapter = ProfilePetListAdapter(loggedInUser!!.pets!!) { pet ->
-                    redirectToPetProfile(pet)
+                users_pet_list.apply {
+                    if (pets.isNotEmpty()) {
+                        //set pet list for user if not empty
+                        users_pet_list.layoutManager = GridLayoutManager(
+                            context,
+                            1,
+                            GridLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = ProfilePetListAdapter(pets as ArrayList<Pet>) { pet ->
+                            redirectToPetProfile(pet)
+                        }
+                        users_pet_list.adapter = adapter
+                    }
                 }
-                users_pet_list.adapter = adapter
-            }
+            })
+
         }
     }
 
@@ -83,13 +88,12 @@ class LoggedInUserProfileFragment : Fragment() {
         val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
         snapHelper1.attachToRecyclerView(media_grid)
 
-        media_grid.apply {
-
-            model.getPostsByOwner(loggedInUser?.uid.toString())
-                ?.observe(viewLifecycleOwner, { posts ->
-                    if (posts.isNullOrEmpty()) {
-                        profile_no_posts.visibility = TextView.VISIBLE
-                    } else {
+        loggedInUser?.uid?.let {
+            model.getPostsByOwner(it)?.observe(viewLifecycleOwner,{ posts ->
+                if (posts.isNullOrEmpty()) {
+                    profile_no_posts.visibility = TextView.VISIBLE
+                } else {
+                    media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
                             3,
@@ -100,8 +104,12 @@ class LoggedInUserProfileFragment : Fragment() {
                             redirectToSinglePost(it)
 
                         }
+                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                     }
-                })
+
+                }
+
+            })
         }
 
     }

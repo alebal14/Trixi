@@ -116,10 +116,10 @@ public class PetHandler {
         Bson pet = eq("_id",new ObjectId(id));
         DeleteResult deletedPet = petColl.deleteOne(pet);
 
-        Bson posts = gte("ownerId",id);
+        Bson posts = eq("ownerId",id);
         DeleteResult deletedPost = postHandler.getPostColl().deleteMany(posts);
-        System.out.println("post deleted: " + deletedPost);
         System.out.println("pet deleted: " + deletedPet);
+        System.out.println("pet's post deleted: " + deletedPost);
         return deletedPet;
     }
 }
