@@ -256,6 +256,7 @@ public class RestApi {
                     String categoryName = null;
                     String fileType = null;
 
+
                     try {
                         Postfiles = req.getFormData("file");
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
@@ -275,7 +276,12 @@ public class RestApi {
                         post.setFileType(fileType);
                         post.setCategoryName(categoryName);
 
+
+
+
                         db.save(post);
+
+
 
                         post.setUid(post.getId().toString());
 
@@ -433,6 +439,22 @@ public class RestApi {
             }
             System.out.println(searchPost.size());
             res.json(searchPost);
+        });
+
+        app.get("/api/discover/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+
+            User user = db.getUserHandler().findUserById(id);
+
+            var followingPostList = db.getUserHandler().discoverList(user);
+            if (followingPostList == null) {
+                res.setStatus(Status._403);
+                //res.send("Error: you are not following this Pet");
+                return;
+            }
+            System.out.println(followingPostList.size());
+            res.json(followingPostList);
         });
 
     }
