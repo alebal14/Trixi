@@ -25,9 +25,11 @@
 
     <TextView
             android:id="@+id/pet_name"
+            style="@style/FancyFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:textSize="20sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/colorTeal"
             android:textStyle="bold"
