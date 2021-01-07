@@ -63,6 +63,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         profile_bio.text = pet.bio
         Picasso.get().load(RetrofitClient.BASE_URL + pet.imageUrl).centerCrop().fit()
             .into(user_profile_pet_image)
+        users_pet_list.visibility = GONE
         profile_followers.text = pet.followers?.size.toString() + " Followers"
         profile_followers.gravity = TEXT_ALIGNMENT_CENTER
         profile_following.visibility = INVISIBLE

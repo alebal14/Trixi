@@ -34,7 +34,7 @@
             android:id="@+id/profile_bio"
             android:layout_width="225dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="15dp"
             android:ems="10"
             android:paddingTop="5dp"
             android:text="This is my bio hahah hello i have a dog and hes really nice and sweet and cool"
@@ -198,8 +198,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="35dp"
-                android:paddingLeft="70dp"
+                android:paddingTop="55dp"
+                android:paddingLeft="80dp"
                 >
 
 
@@ -223,11 +223,11 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
             android:ems="20"
             android:text="@string/profile_user_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="27sp"
             android:textColor="@color/colorTeal"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/users_pet_list"

@@ -81,6 +81,8 @@ class LoggedInUserProfileFragment : Fragment() {
                         }
                         users_pet_list.adapter = adapter
                     }
+                    else
+                        users_pet_list.visibility = View.GONE
                 }
             })
 
