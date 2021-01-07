@@ -86,7 +86,7 @@ public class UserHandler {
         var followers = u.getFollowers();
         for(User aFollower :followers){
             userColl.updateOne(eq("_id",aFollower.getId()),Updates.pull("followingsUser",new BasicDBObject("_id", u.getId())));
-            System.out.println(u.getUserName() + " is deleted from  " + aFollower.getUserName() + "'s followings list");
+            System.out.println(u.getUserName() + " is deleted from  " + aFollower.getUserName() + "'s followingsUsers list");
 
         }
         // delete this user from other user's followers list
@@ -117,7 +117,7 @@ public class UserHandler {
         var pets = petHandler.findPetsByOwner(id);
         for (Pet p : pets) {
             System.out.println("------------ " + p.getName() + "----------------------");
-            petHandler.deletePet(p.getUid());
+            petHandler.deletePet(p.getUid(),userColl);
         }
 
 
