@@ -1,68 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/left_border"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/left_border"
+            android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/playfair_display"
-            android:drawableLeft="@drawable/ic_settings"
-            android:textColor="@color/colorTeal"
-            android:textSize="30sp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_settings"
+                android:fontFamily="@font/playfair_display"
+                android:textColor="@color/colorTeal"
+                android:textSize="30sp" />
 
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/borderbottom"
-            android:fontFamily="@font/playfair_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/borderbottom"
+                android:fontFamily="@font/playfair_display"
 
-            />
+                />
 
         <TextView
                 android:id="@+id/edit_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/ic_edit_profile"
+                android:drawablePadding="10dp"
                 android:fontFamily="@font/playfair_display"
-                android:tint="@color/colorTeal"
+                android:gravity="center_vertical"
                 android:text="Edit profile"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:tint="@color/colorTeal" />
 
         <TextView
-            android:id="@+id/create_pet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/playfair_display"
-            android:tint="@color/colorTeal"
-            android:text="Add Pet"
-            android:textSize="15sp" />
+                android:id="@+id/create_pet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/playfair_display"
+                android:gravity="center_vertical"
+                android:text="Add Pet"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:tint="@color/colorTeal"
+                app:drawableLeftCompat="@drawable/ic_add_pet_icon" />
 
         <TextView
-            android:id="@+id/logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/playfair_display"
-            android:drawableLeft="@drawable/ic_logout"
-            android:tint="@color/colorTeal"
-            android:text="Log out"
-            android:textSize="15sp" />
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/playfair_display"
+                android:gravity="center_vertical"
+                android:text="Log out"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:tint="@color/colorTeal"
+                app:drawableLeftCompat="@drawable/ic_logout_right" />
 
     </LinearLayout>
 

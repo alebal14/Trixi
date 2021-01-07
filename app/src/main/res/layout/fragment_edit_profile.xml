@@ -1,75 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorTeal"
-        android:gravity="center"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorTeal"
+            android:gravity="center"
+            android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/edit_profile_image"
-            android:layout_width="148dp"
-            android:layout_height="148dp"
-            android:background="@drawable/image_btn_circle"
-            android:paddingBottom="30dp" />
+                android:id="@+id/edit_profile_image"
+                android:layout_width="148dp"
+                android:layout_height="148dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/image_btn_circle"
+                android:paddingBottom="40dp" />
+
 
         <EditText
-            android:id="@+id/edit_username"
-            android:layout_width="283dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/white"
-            android:ems="10"
-            android:hint="Edit username"
-            android:inputType="textPersonName"
-            android:paddingLeft="16dp" />
+                android:id="@+id/edit_bio"
+                android:layout_width="283dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/text_input_rounded_corners"
+                android:ems="10"
+                android:hint="Edit bio"
+                android:inputType="textMultiLine"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp" />
+
+
 
         <EditText
-            android:id="@+id/edit_description"
-            android:layout_width="283dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="20dp"
-            android:background="@android:color/white"
-            android:ems="10"
-            android:hint="Edit bio"
-            android:inputType="textMultiLine"
-            android:paddingLeft="16dp"
-            android:paddingTop="10dp" />
-
-        <EditText
-            android:id="@+id/edit_email"
-            android:layout_width="283dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/white"
-            android:ems="10"
-            android:hint="Edit email"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="16dp" />
-
-        <EditText
-            android:id="@+id/edit_password"
-            android:layout_width="283dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/white"
-            android:ems="10"
-            android:hint="Edit password"
-            android:inputType="textPassword"
-            android:paddingLeft="16dp" />
+                android:id="@+id/edit_password"
+                android:layout_width="283dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/text_input_rounded_corners"
+                android:ems="10"
+                android:hint="Edit password"
+                android:inputType="textPassword"
+                android:maxLength="150"
+                android:paddingLeft="16dp" />
 
         <Button
-            android:id="@+id/button_update_profile"
-            android:layout_width="282dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/btn_rounded_corners"
-            android:text="Update profile" />
+                android:id="@+id/button_update_profile"
+                android:layout_width="282dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_rounded_corners"
+                android:text="Update profile" />
 
     </LinearLayout>
 

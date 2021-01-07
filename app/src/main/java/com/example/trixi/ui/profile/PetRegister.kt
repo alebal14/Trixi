@@ -216,7 +216,7 @@ class PetRegister : Fragment() {
 
         // checks if picture size is more than 5 mb
         if (file_size > 5.0){
-            Toast.makeText(activity, "Picture is to big, max sixe: 5 Mb", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Picture is too big, max sixe: 5 Mb", Toast.LENGTH_LONG).show()
             file_validation = false
         } else {
             file_validation = true

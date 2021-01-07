@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.profile.EditProfileFragment
 import com.example.trixi.ui.profile.PetRegister
 import kotlinx.android.synthetic.main.fragment_drawer_menu.*
 
@@ -17,7 +18,7 @@ private const val ARG_PARAM2 = "param2"
 
 class DrawerMenuFragment : Fragment() {
 
-    var toggleHamMenu:Boolean = true
+    var toggleHamMenu: Boolean = true
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -27,8 +28,7 @@ class DrawerMenuFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?
-    {
+    ): View? {
         return inflater.inflate(R.layout.fragment_drawer_menu, container, false)
     }
 
@@ -36,6 +36,7 @@ class DrawerMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        //to add pet
         create_pet.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.apply {
                 replace(R.id.fragment_container, PetRegister())
@@ -43,13 +44,22 @@ class DrawerMenuFragment : Fragment() {
             }
         }
 
-            logout.setOnClickListener {
-                println("LOGOUT")
-                val post = PostToDb()
-                post.logOutUser(context)
+        //to edit profile
+        edit_profile.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.fragment_container, EditProfileFragment())
+                commit()
             }
         }
 
+
+        //to log out
+        logout.setOnClickListener {
+            println("LOGOUT")
+            val post = PostToDb()
+            post.logOutUser(context)
+        }
+    }
 
 
 }

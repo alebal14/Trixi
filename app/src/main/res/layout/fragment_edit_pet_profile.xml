@@ -23,9 +23,9 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="64dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
-                android:hint="Edit username"
+                android:hint="Edit pet name"
                 android:inputType="textPersonName"
                 android:paddingLeft="16dp" />
 
@@ -34,33 +34,46 @@
                 android:layout_width="283dp"
                 android:layout_height="80dp"
                 android:layout_marginBottom="20dp"
-                android:background="@android:color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
                 android:hint="Edit bio"
                 android:inputType="textMultiLine"
                 android:paddingLeft="16dp"
                 android:paddingTop="10dp" />
 
-        <EditText
-                android:id="@+id/edit_email"
+
+
+
+
+        <Spinner
+                android:id="@+id/edit_pet_gender"
                 android:layout_width="283dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
-                android:hint="Edit email"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="16dp" />
+                android:paddingLeft="16dp"
+                ></Spinner>
+
+        <Spinner
+                android:id="@+id/edit_pet_type"
+                android:layout_width="283dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/text_input_rounded_corners"
+                android:ems="10"
+                android:paddingLeft="16dp"
+                ></Spinner>
 
         <EditText
-                android:id="@+id/edit_password"
+                android:id="@+id/edit_breed"
                 android:layout_width="283dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/white"
+                android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
-                android:hint="Edit password"
-                android:inputType="textPassword"
+                android:hint="Edit breed"
+                android:inputType="textPersonName"
                 android:paddingLeft="16dp" />
 
         <Button
