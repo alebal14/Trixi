@@ -77,10 +77,19 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         //TODO: funkar ej??
         pet?.ownerId?.let {
             model.getOneUser(it)?.observe(viewLifecycleOwner, { owner ->
+                owner_name.setOnClickListener { redirectToOwner(owner) }
                 owner_name.text = "Owner: " + owner.userName
             }
             )
         }
+    }
+
+    private fun redirectToOwner(owner: User?) {
+        model.getOneUser(owner?.uid!!)?.observe(viewLifecycleOwner, { owner ->
+            val ownersProfile = UserProfileFragment(owner)
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fragment_container, ownersProfile)?.commit()
+        })
     }
 
     private fun getPosts() {
@@ -135,14 +144,14 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
             loggedInUser?.let { db.follow(it.uid, pet?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
-            numberOfFollowers +=1
+            numberOfFollowers += 1
             profile_followers.text = numberOfFollowers.toString() + " Followers"
         } else {
             loggedInUser?.let { db.unfollow(it.uid, pet?.uid!!) }
             followed = false
             toggleFollowIcon(followed)
-                numberOfFollowers -=1
-                profile_followers.text = numberOfFollowers.toString() + " Followers"
+            numberOfFollowers -= 1
+            profile_followers.text = numberOfFollowers.toString() + " Followers"
         }
     }
 
