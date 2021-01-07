@@ -104,6 +104,8 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                 if (posts.isNullOrEmpty()) {
                     profile_no_posts.visibility = TextView.VISIBLE
                 } else {
+                    profile_no_posts.visibility = GONE
+
                     media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
