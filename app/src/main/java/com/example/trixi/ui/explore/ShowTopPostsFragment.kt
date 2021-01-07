@@ -4,15 +4,18 @@ package com.example.trixi.ui.explore
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.EditText
+
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.trixi.R
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
+
 
 class ShowTopPostsFragment : Fragment() {
     private lateinit var model: TrixiViewModel
@@ -31,7 +34,8 @@ class ShowTopPostsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         super.onViewCreated(view, savedInstanceState)
-        setupDiscoverFragment()
+        allPostsToAdapter()
+        searchToAdapter()
 
         search_bar.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -47,8 +51,7 @@ class ShowTopPostsFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
-    private fun setupDiscoverFragment() {
+    private fun allPostsToAdapter(){
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
@@ -62,7 +65,60 @@ class ShowTopPostsFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun searchToAdapter() {
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                if (newText != null) {
+                    model.getPostBySearching(newText!!)
+                        .observe(viewLifecycleOwner, Observer { post ->
+
+                            media_grid_top_posts.apply {
+                                media_grid_top_posts.layoutManager =
+                                    StaggeredGridLayoutManager(
+                                        2,
+                                        StaggeredGridLayoutManager.VERTICAL
+                                    )
+                                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                                media_grid_top_posts.adapter =
+                                    ExploreMediaGridAdapter(post as ArrayList<Post>)
+                            }
+                        })
+                    clickx()
+                }
+                return true
+            }
+
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+        })
 
 
     }
+
+    private fun clickx(){
+    val closeButton: View? = search_bar.findViewById(androidx.appcompat.R.id.search_close_btn)
+    val clearText: EditText? = search_bar.findViewById(androidx.appcompat.R.id.search_src_text)
+
+    val mSearch: SearchView? = search_bar.findViewById(androidx.appcompat.R.id.search_bar)
+
+        closeButton?.setOnClickListener {
+            println("ONCLICK!!")
+            mSearch!!.setQuery("", false)
+            mSearch!!.onActionViewCollapsed()
+
+            //clearText!!.setText("")
+            allPostsToAdapter()
+        }
+
+    }
+
+
+
 }

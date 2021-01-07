@@ -304,7 +304,39 @@ public class UserHandler {
         return updatedUser;
     }
 
-    private void makeUsersListEmpty(User u) {
+
+    public List<Post> discoverList(User user){
+
+        /*List<User> getFollowingUser = user.getFollowingsUser();
+        List<Pet>  getFollowingPet = user.getFollowingsPet();
+
+        List<Post> allPostFromDB = postHandler.getAllPosts();
+        System.out.println(allPostFromDB);
+
+        Set<String> userid =
+                getFollowingUser.stream()
+                        .map(User::getUid)
+                        .collect(Collectors.toSet());
+
+        Set<String> petid = getFollowingPet.stream()
+                .map(Pet::getUid)
+                .collect(Collectors.toSet());
+
+        List<String> concatlist = Stream.concat(userid.stream(),petid.stream())
+                .collect(Collectors.toList());
+
+        List<Post> listOutput =
+                allPostFromDB.stream()
+                        .filter(e -> concatlist.contains(e.getOwnerId()))
+                        .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
+                        .collect(Collectors.toList());
+
+        return listOutput;*/
+        return null;
+    }
+
+    private void makeUsersListEmpty(User u){
+
         u.setFollowingsUser(null);
         u.setFollowingsPet(null);
         u.setFollowers(null);

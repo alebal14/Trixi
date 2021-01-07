@@ -18,6 +18,7 @@
         android:layout_marginRight="7dp"
         android:layout_marginBottom="3dp"
         iconifiedByDefault="false"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:background="@drawable/custom_searchbar"
        >
 
