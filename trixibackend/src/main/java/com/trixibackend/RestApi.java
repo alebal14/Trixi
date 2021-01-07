@@ -256,6 +256,7 @@ public class RestApi {
                     String categoryName = null;
                     String fileType = null;
 
+
                     try {
                         Postfiles = req.getFormData("file");
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
@@ -275,7 +276,12 @@ public class RestApi {
                         post.setFileType(fileType);
                         post.setCategoryName(categoryName);
 
+
+
+
                         db.save(post);
+
+
 
                         post.setUid(post.getId().toString());
 

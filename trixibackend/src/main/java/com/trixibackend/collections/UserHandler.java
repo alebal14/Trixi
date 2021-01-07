@@ -165,7 +165,7 @@ public class UserHandler {
         List<Post> listOutput =
                 allPostFromDB.stream()
                         .filter(e -> concatlist.contains(e.getOwnerId()))
-                        .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
+                        .sorted(Collections.reverseOrder(Comparator.comparing(Post::getUid)))
                         .collect(Collectors.toList());
 
         return listOutput;
@@ -308,15 +308,17 @@ public class UserHandler {
     public List<Post> discoverList(User user){
 
         List<Post> allPostFromDB = postHandler.getAllPosts();
-        System.out.println(allPostFromDB);
 
          List<Post> getLikedPost = allPostFromDB.stream()
-                 .filter(e -> e.getLikes().contains(user.getId()))
+                 .filter(e -> e.getLikes().stream().anyMatch(f -> f.getUserId().contains(user.getUid())))
                  .collect(Collectors.toList());
 
-         List<Post> getyourPost = allPostFromDB.stream()
-                 .filter(e -> e.getOwnerId().contains(user.getUid()))
-                 .collect(Collectors.toList());
+        System.out.println("liked post: " + getLikedPost);
+
+        //get user's post
+         List<Post> getUserPost = postHandler.findPostsByOwner(user.getUid());
+
+        System.out.println("My post: " + getUserPost);
 
         List<User> getFollowingUser = user.getFollowingsUser();
         List<Pet>  getFollowingPet = user.getFollowingsPet();
@@ -338,34 +340,62 @@ public class UserHandler {
                         .filter(e -> concatlist.contains(e.getOwnerId()))
                         .collect(Collectors.toList());
 
+        System.out.println("Following post: " + getFollowingList);
+
+
         List<Post> allList = new ArrayList<>();
 
         allList.addAll(getFollowingList);
-        allList.addAll(getyourPost);
+        allList.addAll(getUserPost);
         allList.addAll(getLikedPost);
 
         Set<String> Categories = allList.stream()
                 .map(Post::getCategoryName)
                 .collect(Collectors.toSet());
 
-        Categories.stream().filter(i -> Collections.frequency(Categories, i) > 1)
+        System.out.println("kategories 1 : " + Categories);
+
+        List<Post> allListOwnerId = new ArrayList<>();
+        allListOwnerId.addAll(getFollowingList);
+        allListOwnerId.addAll(getUserPost);
+
+        Set<String> getIds = allListOwnerId.stream()
+                .map(Post::getOwnerId)
                 .collect(Collectors.toSet());
 
-        Set<String> getIds = allList.stream()
+        System.out.println("get ownerids " + getIds);
+
+        Set<String> postIds = getLikedPost.stream()
                 .map(Post::getUid)
                 .collect(Collectors.toSet());
 
+        System.out.println("get liked post: " + postIds);
+
+        System.out.println("all post: " + allPostFromDB.size());
+
          List<Post> removePost =  allPostFromDB.stream()
-                 .filter(e -> !getIds.contains(e.getOwnerId()) || !e.getOwnerId().equals(user.getUid()))
+                 .filter(e -> !getIds.contains(e.getOwnerId()))
+                 .filter(f -> !postIds.contains(f.getUid()))
                  .collect(Collectors.toList());
 
-         List<Post> resultList = removePost.stream().limit(50)
+        System.out.println("list without: " +removePost.size());
+
+
+         List<Post> resultList = removePost.stream()
                  .filter(e -> Categories.contains(e.getCategoryName()))
+                 .sorted(Collections.reverseOrder(Comparator.comparing(Post::getId)))
+                 .limit(50)
                  .sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size())))
                  .collect(Collectors.toList());
 
+        System.out.println("endList: " + resultList.size());
+
          if(resultList.isEmpty()){
-             return allPostFromDB.stream().limit(50).sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size()))).collect(Collectors.toList());
+             return allPostFromDB.stream().limit(50)
+                     .sorted(Collections.reverseOrder(Comparator.comparing(Post::getId)))
+                     .limit(50)
+                     .sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size())))
+                     .collect(Collectors.toList());
          }
 
 
