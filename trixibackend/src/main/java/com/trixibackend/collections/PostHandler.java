@@ -217,9 +217,6 @@ public class PostHandler {
     }
 
     public List<Post> findPostByPetType(List<Pet> petsByType){
-        //1. getAllPetsByType -> filter on petype -> get Id's,
-        //2. getAllPost by id's
-
         List<Post> allPostFromDB = getAllPosts();
 
         Set<String> petId = petsByType.stream()
