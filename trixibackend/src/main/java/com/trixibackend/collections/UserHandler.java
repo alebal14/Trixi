@@ -356,21 +356,20 @@ public class UserHandler {
                 .collect(Collectors.toSet());
 
          List<Post> removePost =  allPostFromDB.stream()
-                 .filter(e -> !concatlist.contains(e.getOwnerId()))
+                 .filter(e -> !getIds.contains(e.getOwnerId())|| e.getOwnerId().equals(user.getUid()))
                  .collect(Collectors.toList());
 
-         /*List<Post> resultList = removePost.stream()
-                 .filter(e -> !Categories.contains(e.getCategoryName()))
-                 .sorted(Collections.sort(Comparator.comparing(Post::getLikes().length)))
-                 .collect(Collectors.toList());*/
+         List<Post> resultList = removePost.stream().limit(50)
+                 .filter(e -> Categories.contains(e.getCategoryName()))
+                 .sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size())))
+                 .collect(Collectors.toList());
+
+         if(resultList.isEmpty()){
+             return allPostFromDB.stream().limit(50).sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size()))).collect(Collectors.toList());
+         }
 
 
-
-
-
-
-
-        return null;
+        return resultList;
     }
 
     private void makeUsersListEmpty(User u){

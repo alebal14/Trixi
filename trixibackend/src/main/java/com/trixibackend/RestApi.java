@@ -435,6 +435,22 @@ public class RestApi {
             res.json(searchPost);
         });
 
+        app.get("/api/discover/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+
+            User user = db.getUserHandler().findUserById(id);
+
+            var followingPostList = db.getUserHandler().discoverList(user);
+            if (followingPostList == null) {
+                res.setStatus(Status._403);
+                //res.send("Error: you are not following this Pet");
+                return;
+            }
+            System.out.println(followingPostList.size());
+            res.json(followingPostList);
+        });
+
     }
     private void setLoginUser() {
 
