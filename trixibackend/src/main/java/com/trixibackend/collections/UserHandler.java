@@ -307,11 +307,19 @@ public class UserHandler {
 
     public List<Post> discoverList(User user){
 
-        /*List<User> getFollowingUser = user.getFollowingsUser();
-        List<Pet>  getFollowingPet = user.getFollowingsPet();
-
         List<Post> allPostFromDB = postHandler.getAllPosts();
         System.out.println(allPostFromDB);
+
+         List<Post> getLikedPost = allPostFromDB.stream()
+                 .filter(e -> e.getLikes().contains(user.getId()))
+                 .collect(Collectors.toList());
+
+         List<Post> getyourPost = allPostFromDB.stream()
+                 .filter(e -> e.getOwnerId().contains(user.getUid()))
+                 .collect(Collectors.toList());
+
+        List<User> getFollowingUser = user.getFollowingsUser();
+        List<Pet>  getFollowingPet = user.getFollowingsPet();
 
         Set<String> userid =
                 getFollowingUser.stream()
@@ -325,13 +333,43 @@ public class UserHandler {
         List<String> concatlist = Stream.concat(userid.stream(),petid.stream())
                 .collect(Collectors.toList());
 
-        List<Post> listOutput =
+        List<Post> getFollowingList =
                 allPostFromDB.stream()
                         .filter(e -> concatlist.contains(e.getOwnerId()))
-                        .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
                         .collect(Collectors.toList());
 
-        return listOutput;*/
+        List<Post> allList = new ArrayList<>();
+
+        allList.addAll(getFollowingList);
+        allList.addAll(getyourPost);
+        allList.addAll(getLikedPost);
+
+        Set<String> Categories = allList.stream()
+                .map(Post::getCategoryName)
+                .collect(Collectors.toSet());
+
+        Categories.stream().filter(i -> Collections.frequency(Categories, i) > 1)
+                .collect(Collectors.toSet());
+
+        Set<String> getIds = allList.stream()
+                .map(Post::getUid)
+                .collect(Collectors.toSet());
+
+         List<Post> removePost =  allPostFromDB.stream()
+                 .filter(e -> !concatlist.contains(e.getOwnerId()))
+                 .collect(Collectors.toList());
+
+         /*List<Post> resultList = removePost.stream()
+                 .filter(e -> !Categories.contains(e.getCategoryName()))
+                 .sorted(Collections.sort(Comparator.comparing(Post::getLikes().length)))
+                 .collect(Collectors.toList());*/
+
+
+
+
+
+
+
         return null;
     }
 
