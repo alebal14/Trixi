@@ -439,7 +439,7 @@ public class RestApi {
             String petType = req.getParam("pettype");
             System.out.println(petType);
 
-            var petsByType = db.getPetHandler().findPetsByPetType(petType);
+            var petsByType = db.getPetHandler().findPetsByPetTypeName(petType);
             var postByPetType = db.getPostHandler().findPostByPetType(petsByType);
 
             res.json(postByPetType);
