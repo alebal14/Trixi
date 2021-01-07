@@ -7,6 +7,8 @@ import express.http.SessionCookie;
 import express.middleware.Middleware;
 import express.utils.Status;
 import org.apache.commons.fileupload.FileItem;
+import org.bson.types.ObjectId;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
@@ -49,6 +51,22 @@ public class RestApi {
     }
 
     private void setUpUpdateApi() {
+
+        app.post("/rest/update_post", (req, res) -> {
+            Post updatedPost = (Post) req.getBody(Post.class);
+            if (updatedPost != null) {
+                Post oldPost = db.getPostHandler().findPostById(updatedPost.getUid());
+                updatedPost.setId(oldPost.getId());
+                updatedPost.setFilePath(oldPost.getFilePath());
+                updatedPost.setFileType(oldPost.getFileType());
+                updatedPost.setLikes(oldPost.getLikes());
+                updatedPost.setComments(oldPost.getComments());
+                db.save(updatedPost);
+                res.json(db.getPostHandler().findPostById(updatedPost.getUid()));
+                return;
+            }
+
+        });
 
         app.post("/api/users/follow/:userid/:followingId", (req, res) -> {
 
@@ -117,10 +135,10 @@ public class RestApi {
             }
         });
 
-        app.post("/rest/likes",(req,res) ->{
+        app.post("/rest/likes", (req, res) -> {
             Like like = (Like) req.getBody(Like.class);
             Post p = db.getPostHandler().addLike(like);
-            if(p == null){
+            if (p == null) {
                 res.setStatus(Status._403);
                 res.send("Error: you already liked this post");
                 return;
@@ -128,10 +146,10 @@ public class RestApi {
             res.json(p);
         });
 
-        app.post("/rest/unlike",(req,res) ->{
+        app.post("/rest/unlike", (req, res) -> {
             Like like = (Like) req.getBody(Like.class);
             Post p = db.getPostHandler().unlike(like);
-            if(p == null){
+            if (p == null) {
                 res.setStatus(Status._403);
                 res.send("Error: you already not liking this post");
                 return;
@@ -139,16 +157,16 @@ public class RestApi {
             res.json(p);
         });
 
-        app.post("/rest/comments",(req,res) ->{
+        app.post("/rest/comments", (req, res) -> {
             Comment comment = (Comment) req.getBody(Comment.class);
             comment.setId(UUID.randomUUID().toString());
             res.json(db.getPostHandler().addComment(comment));
         });
 
-        app.post("/rest/delete_comment",(req,res)->{
+        app.post("/rest/delete_comment", (req, res) -> {
             Comment comment = (Comment) req.getBody(Comment.class);
-            Post p= db.getPostHandler().deleteComment(comment);
-            if(p == null){
+            Post p = db.getPostHandler().deleteComment(comment);
+            if (p == null) {
                 res.setStatus(Status._403);
                 res.send("Error, comment doesn't exist");
                 return;
@@ -161,15 +179,14 @@ public class RestApi {
 
     private void setUpDeleteApi(String collectionName) {
 
-        app.delete("/rest/" + collectionName + "/:id",(req,res)->{
-            String id = req.getParam("id");
-            var obj = db.deleteById(collectionName,id);
+        app.delete("/rest/" + collectionName + "/:id", (req, res) -> {
+            var id = req.getParam("id");
+            var obj = db.deleteById(collectionName, id);
             res.json(obj);
 
         });
 
     }
-
 
 
     private void setImagePostApi() {
@@ -248,52 +265,53 @@ public class RestApi {
                     break;
                 case "posts":
 
-                    List<FileItem> Postfiles = null;
-                    String PostfileUrl = null;
-                    String description= null;
-                    String ownerId= null;
-                    String title = null;
-                    String categoryName = null;
-                    String fileType = null;
+                        List<FileItem> Postfiles = null;
+                        String PostfileUrl = null;
+                        String description = null;
+                        String ownerId = null;
+                        String title = null;
+                        String categoryName = null;
+                        String fileType = null;
 
-                    try {
-                        Postfiles = req.getFormData("file");
-                        description = req.getFormData("description").get(0).getString().replace("\"", "");
-                        ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
-                        title = req.getFormData("title").get(0).getString().replace("\"", "");
-                        categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
-                        fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
+                        try {
+                            Postfiles = req.getFormData("file");
+                            description = req.getFormData("description").get(0).getString().replace("\"", "");
+                            ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                            title = req.getFormData("title").get(0).getString().replace("\"", "");
+                            categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
+                            fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
-                        PostfileUrl = db.uploadImage(Postfiles.get(0));
-                        System.out.println(PostfileUrl + description + ownerId+ title);
+                            PostfileUrl = db.uploadImage(Postfiles.get(0));
+                            System.out.println(PostfileUrl + description + ownerId + title);
 
-                        Post post = new Post();
-                        post.setDescription(description);
-                        post.setOwnerId(ownerId);
-                        post.setTitle(title);
-                        post.setFilePath(PostfileUrl);
-                        post.setFileType(fileType);
-                        post.setCategoryName(categoryName);
+                            Post post = new Post();
+                            post.setDescription(description);
+                            post.setOwnerId(ownerId);
+                            post.setTitle(title);
+                            post.setFilePath(PostfileUrl);
+                            post.setFileType(fileType);
+                            post.setCategoryName(categoryName);
 
-                        db.save(post);
+                            db.save(post);
 
-                        post.setUid(post.getId().toString());
+                            post.setUid(post.getId().toString());
 
-                        System.out.println(post.getUid());
-                        System.out.println(post);
+                            System.out.println(post.getUid());
+                            System.out.println(post);
 
-                        res.json(post);
-                        res.send("Created Post");
+                            res.json(post);
+                            res.send("Created Post");
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     break;
                 case "pets":
 
                     List<FileItem> Petfiles = null;
                     String PetFileUrl = null;
-                    String PetOwnerId= null;
+                    String PetOwnerId = null;
                     String name = null;
                     String age = null;
                     String bio = null;
@@ -304,7 +322,7 @@ public class RestApi {
                     try {
                         Petfiles = req.getFormData("file");
                         name = req.getFormData("name").get(0).getString().replace("\"", "");
-                        PetOwnerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        PetOwnerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         age = req.getFormData("age").get(0).getString().replace("\"", "");
                         bio = req.getFormData("bio").get(0).getString().replace("\"", "");
                         breed = req.getFormData("breed").get(0).getString().replace("\"", "");
@@ -422,10 +440,10 @@ public class RestApi {
             String searchterm = req.getParam("searchterm");
             System.out.println(searchterm);
 
-            var alluser  = db.getUserHandler().getAllUsers();
+            var alluser = db.getUserHandler().getAllUsers();
             var allpet = db.getPetHandler().getAllPets();
 
-            var searchPost = db.getPostHandler().searchPost(searchterm , alluser, allpet);
+            var searchPost = db.getPostHandler().searchPost(searchterm, alluser, allpet);
             if (searchPost == null) {
                 res.setStatus(Status._403);
                 //res.send("Error: you are not following this Pet");
@@ -436,13 +454,14 @@ public class RestApi {
         });
 
     }
+
     private void setLoginUser() {
 
-        app.post("/rest/login", (req, res) ->{
+        app.post("/rest/login", (req, res) -> {
 
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
-            if(sessionCookie.getData() != null) {
+            if (sessionCookie.getData() != null) {
                 res.send("Already logged in");
                 return;
             }
@@ -471,11 +490,6 @@ public class RestApi {
             userLoggedIn.setUid(user.getId().toString());
             userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
             userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
-//            userLoggedIn.getPosts().forEach(post -> {
-//                post.setUid(post.getId().toString());
-//                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
-//                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
-//            });
 
             res.json(userLoggedIn);
         });
@@ -487,7 +501,7 @@ public class RestApi {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
             if (sessionCookie.getData() == null) {
-                 res.send("Not logged in");
+                res.send("Not logged in");
                 return;
             }
 
