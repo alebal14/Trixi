@@ -356,7 +356,7 @@ public class UserHandler {
                 .collect(Collectors.toSet());
 
          List<Post> removePost =  allPostFromDB.stream()
-                 .filter(e -> !getIds.contains(e.getOwnerId())|| e.getOwnerId().equals(user.getUid()))
+                 .filter(e -> !getIds.contains(e.getOwnerId()) || !e.getOwnerId().equals(user.getUid()))
                  .collect(Collectors.toList());
 
          List<Post> resultList = removePost.stream().limit(50)

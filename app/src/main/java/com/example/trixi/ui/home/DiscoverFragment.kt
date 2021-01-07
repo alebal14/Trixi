@@ -65,10 +65,12 @@ class DiscoverFragment : Fragment() {
 
     private fun setUpDiscoverView() {
 
-            model.getAllPosts().observe(viewLifecycleOwner, Observer { posts ->
+        PostToDb.loggedInUser?.uid?.let {
+            model.getDiscoverPosts(it)?.observe(viewLifecycleOwner, Observer { posts ->
+                Log.d("home", "Discover post size: ${posts?.size}")
                 populatePosts(posts)
             })
-
+        }
     }
 
     private fun populatePosts(posts: List<Post>?) {
