@@ -2,17 +2,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="fontFamily">@font/playfair_display</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/colorLightGreen</item>
         <item name="colorAccent">@color/colorCoral</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
+    <style name="FancyFont" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/playfair_display</item>
+    </style>
+
     <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="titleTextStyle">@style/MyTitleTextStyle</item>
         <item name="android:logo">@drawable/ic_big</item>
-
     </style>
 
     <style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -21,6 +23,12 @@
         <item name="android:textSize">30dp</item>
 
     </style>
+
+    <style name="HomeItemFont" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
 
     <style name="no_actionbar" parent="Theme.AppCompat.DayNight.NoActionBar">
     </style>
