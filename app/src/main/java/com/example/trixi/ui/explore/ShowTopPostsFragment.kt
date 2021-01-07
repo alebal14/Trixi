@@ -145,6 +145,8 @@ class ShowTopPostsFragment : Fragment() {
             ) {
 
                 //get all post by petType
+
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

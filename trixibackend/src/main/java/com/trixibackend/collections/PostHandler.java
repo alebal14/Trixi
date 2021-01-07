@@ -24,8 +24,6 @@ import static com.mongodb.client.model.Filters.eq;
 public class PostHandler {
     private MongoCollection<Post> postColl = null;
     private LikeHandler likeHandler;
-   
-
     private CommentHandler commentHandler;
 
 
@@ -33,6 +31,7 @@ public class PostHandler {
         postColl = database.getCollection("posts", Post.class);
         likeHandler = new LikeHandler(database);
         commentHandler = new CommentHandler(database);
+
 
     }
 
@@ -172,9 +171,6 @@ public class PostHandler {
         List<User> getAllUser = userList ;
         List<Pet>  getAllPet = petList;
 
-
-
-
         List<Post> allPostFromDB = getAllPosts();
         System.out.println(allPostFromDB);
 
@@ -235,6 +231,29 @@ public class PostHandler {
         }
 
         return resultList;
+    }
+
+    public List<Post> findPostByPetType(List<Pet> petsByType){
+        //1. getAllPetsByType -> filter on petype -> get Id's,
+        //2. getAllPost by id's
+
+        List<Post> allPostFromDB = getAllPosts();
+
+        Set<String> petId = petsByType.stream()
+                .map(Pet::getUid)
+                .collect(Collectors.toSet());
+
+
+        System.out.println("PETSBYTYPEID " + petId);
+
+        //List<String> concatlist = Stream.concat(petId.stream()).collect(Collectors.toList());
+
+        List<Post> result = allPostFromDB.stream()
+                .filter(e -> petId.contains(e.getOwnerId()))
+                .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
+                .collect(Collectors.toList());
+
+        return result;
     }
 
     public LikeHandler getLikeHandler() {

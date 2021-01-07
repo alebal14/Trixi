@@ -101,7 +101,7 @@ public class PetHandler {
     public List<Pet> findPetsByPetType(String id){
         List<Pet> pets = null;
         try {
-            FindIterable<Pet> petsIter = petColl.find(eq("petTypeId", id));
+            FindIterable<Pet> petsIter = petColl.find(eq("petType", id));
             pets = new ArrayList<>();
             petsIter.forEach(pets::add);
             pets.forEach(pet -> pet.setUid(pet.getId().toString()));

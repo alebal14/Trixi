@@ -171,7 +171,6 @@ public class RestApi {
     }
 
 
-
     private void setImagePostApi() {
         app.post("/rest/image", (req, res) -> {
             List<FileItem> files = null;
@@ -433,6 +432,17 @@ public class RestApi {
             }
             System.out.println(searchPost.size());
             res.json(searchPost);
+        });
+
+        app.get("/api/post/:pettype", (req, res) -> {
+
+            String petType = req.getParam("pettype");
+            System.out.println(petType);
+
+            var petsByType = db.getPetHandler().findPetsByPetType(petType);
+            var postByPetType = db.getPostHandler().findPostByPetType(petsByType);
+
+            res.json(postByPetType);
         });
 
     }
