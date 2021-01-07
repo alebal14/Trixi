@@ -30,25 +30,12 @@
     </de.hdodenhof.circleimageview.CircleImageView>
 
 
-    <ImageButton
-            android:id="@+id/follow_button"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="28dp"
-            android:background="@drawable/ic_follow"
-            android:paddingLeft="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/profile_bio"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/profile_name"
-            app:layout_constraintTop_toTopOf="@+id/menuFragmentHolder"
-            app:layout_constraintVertical_bias="1.0" />
-
     <TextView
             android:id="@+id/profile_bio"
             android:layout_width="225dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ems="10"
             android:paddingTop="5dp"
             android:text="This is my bio hahah hello i have a dog and hes really nice and sweet and cool"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -186,17 +173,18 @@
             android:id="@+id/owner_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:drawableStart="@drawable/ic_baseline_pets_24"
+            android:ems="10"
+            android:padding="15dp"
             android:text="@string/pet_owner"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/followers_container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.622"
+            app:layout_constraintHorizontal_bias="0.737"
             app:layout_constraintStart_toStartOf="@+id/mid_screen"
-            app:layout_constraintTop_toBottomOf="@+id/profile_bio"
-            app:layout_constraintVertical_bias="0.109" />
+            app:layout_constraintTop_toBottomOf="@+id/user_profile_pet_image"
+            app:layout_constraintVertical_bias="0.361" />
 
     <LinearLayout
             android:id="@+id/menuFragmentHolder"
@@ -207,25 +195,47 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="35dp"
+                android:paddingLeft="70dp"
+                >
+
+
+            <ImageButton
+                    android:id="@+id/follow_button"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/ic_follow"
+                    android:paddingLeft="20dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
 
     <TextView
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:drawablePadding="20dp"
-            android:paddingTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:ems="20"
             android:text="@string/profile_user_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorTeal"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.548"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.008"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.064" />
+            app:layout_constraintVertical_bias="0.101" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

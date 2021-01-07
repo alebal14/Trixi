@@ -124,6 +124,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
                     profile_no_posts.visibility = TextView.VISIBLE
                 } else {
                     Log.d(TAG, "size: posts : ${posts?.size}")
+                    profile_no_posts.visibility = View.GONE
 
                     media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
