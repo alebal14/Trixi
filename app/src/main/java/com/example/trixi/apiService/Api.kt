@@ -135,6 +135,8 @@ interface Api {
     @GET("api/getUserFollowingPost/{id}")
     suspend fun getFollowingsPost(@Path("id") id: String?): Response<List<Post>>
 
+    @GET("api/discover/{id}")
+    suspend fun getDiscover(@Path("id") id: String?): Response<List<Post>>
 
     //Category
     @GET("rest/categories")

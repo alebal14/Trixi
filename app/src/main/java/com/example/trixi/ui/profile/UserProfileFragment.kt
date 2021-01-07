@@ -69,6 +69,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
     }
 
     private fun populateProfile() {
+
+        //TODO: Check username length and make text-size smaller if too long
         profile_name.text = user!!.userName
         profile_bio.text = user.bio
         Picasso.get().load(BASE_URL + user.imageUrl).centerCrop().fit()
@@ -105,7 +107,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
                             redirectToPetProfile(pet)
                         }
                         users_pet_list.adapter = adapter
-                    }
+                    } else
+                        users_pet_list.visibility = View.GONE
                 }
             })
         }
@@ -124,6 +127,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
                     profile_no_posts.visibility = TextView.VISIBLE
                 } else {
                     Log.d(TAG, "size: posts : ${posts?.size}")
+                    profile_no_posts.visibility = View.GONE
 
                     media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
@@ -174,14 +178,14 @@ class UserProfileFragment(val user: User?) : Fragment() {
             loggedInUser?.let { db.follow(it.uid, user?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
-            numberOfFollowers +=1
+            numberOfFollowers += 1
             profile_followers.text = numberOfFollowers.toString() + " Followers"
         } else {
             Log.d("FOLLOW", "already followed; now unfollowing")
             loggedInUser?.let { db.unfollow(it.uid, user?.uid!!) }
             followed = false
             toggleFollowIcon(followed)
-            numberOfFollowers -=1
+            numberOfFollowers -= 1
             profile_followers.text = numberOfFollowers.toString() + " Followers"
         }
 
