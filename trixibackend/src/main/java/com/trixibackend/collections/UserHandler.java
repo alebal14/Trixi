@@ -336,25 +336,33 @@ public class UserHandler {
         List<Post> getFollowingList =
                 allPostFromDB.stream()
                         .filter(e -> concatlist.contains(e.getOwnerId()))
-                        .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
                         .collect(Collectors.toList());
 
-        List<Post> resultList = new ArrayList<>();
+        List<Post> allList = new ArrayList<>();
 
-        resultList.addAll(getFollowingList);
-        resultList.addAll(getyourPost);
-        resultList.addAll(getLikedPost);
+        allList.addAll(getFollowingList);
+        allList.addAll(getyourPost);
+        allList.addAll(getLikedPost);
 
-        Set<String> Categories = resultList.stream()
+        Set<String> Categories = allList.stream()
                 .map(Post::getCategoryName)
                 .collect(Collectors.toSet());
 
         Categories.stream().filter(i -> Collections.frequency(Categories, i) > 1)
                 .collect(Collectors.toSet());
 
-        Set<String> getIds = resultList.stream()
+        Set<String> getIds = allList.stream()
                 .map(Post::getUid)
                 .collect(Collectors.toSet());
+
+         List<Post> removePost =  allPostFromDB.stream()
+                 .filter(e -> !concatlist.contains(e.getOwnerId()))
+                 .collect(Collectors.toList());
+
+         /*List<Post> resultList = removePost.stream()
+                 .filter(e -> !Categories.contains(e.getCategoryName()))
+                 .sorted(Collections.sort(Comparator.comparing(Post::getLikes().length)))
+                 .collect(Collectors.toList());*/
 
 
 

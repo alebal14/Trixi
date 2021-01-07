@@ -205,7 +205,6 @@ public class PostHandler {
                         .collect(Collectors.toList());
 
 
-
         List<Post> listCategory =
                 allPostFromDB.stream()
                         .filter(e -> e.getCategoryName().toLowerCase().contains(searchTerm.toLowerCase()) || e.getDescription().toLowerCase().contains(searchTerm.toLowerCase()) || e.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
