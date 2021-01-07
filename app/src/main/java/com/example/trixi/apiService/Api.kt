@@ -117,7 +117,7 @@ interface Api {
         @Part("categoryName") categoryName: String
     ): Call<Post>
 
-    @POST("rest/posts")
+    @POST("rest/update_post")
     fun updatePost(@Body post:Post): Call<Post>
 
     @GET("rest/posts/{id}")

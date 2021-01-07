@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,16 +22,17 @@ import kotlinx.android.synthetic.main.fragment_upload.*
 
 class EditPostFragment(private val post: Post) : Fragment() {
     private lateinit var model: TrixiViewModel
-    var  mContext : Context? = null;
+    var mContext: Context? = null;
 
     val db = PostToDb()
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
-    var title =""
-    var categoryName =""
-    var description =""
-    var ownerId =""
-    var fileType =""
-    var filePath=""
+    var uid = ""
+    var title = ""
+    var categoryName = ""
+    var description = ""
+    var ownerId = ""
+    var fileType = ""
+    var filePath = ""
 
 
     override fun onAttach(context: Context) {
@@ -59,23 +61,25 @@ class EditPostFragment(private val post: Post) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
         super.onViewCreated(view, savedInstanceState)
-        camera_gallery_buttons_container.visibility=View.GONE
-        uploadVideo.visibility= View.GONE
-        button_post.visibility=View.GONE
-        Log.d("Edit","post id: ${post.uid}")
-        Log.d("Edit","post filepath: ${post.filePath}")
+        camera_gallery_buttons_container.visibility = View.GONE
+        uploadVideo.visibility = View.GONE
+        button_post.visibility = View.GONE
+        Log.d("Edit", "post id: ${post.uid}")
+        Log.d("Edit", "post categoryname: ${post.categoryName}")
 
         assignData()
         populatePost()
         addCategoryToSpinnerAndSelect()
         addPetToSpinnerAndSelect()
-//        updatePost()
-//        deletePost()
+
+        button_update_post.setOnClickListener { updatePost() }
+        button_delete_post.setOnClickListener { deletePost() }
 
 
     }
 
-    private fun assignData(){
+    private fun assignData() {
+        uid = post.uid.toString()
         title = post.title.toString()
         description = post.description.toString()
         categoryName = post.categoryName.toString()
@@ -86,7 +90,7 @@ class EditPostFragment(private val post: Post) : Fragment() {
     }
 
     private fun populatePost() {
-        if(fileType == "image"){
+        if (fileType == "image") {
             uploadImage.visibility = View.VISIBLE;
             uploadVideo.visibility = View.GONE;
             Picasso.get()
@@ -94,7 +98,7 @@ class EditPostFragment(private val post: Post) : Fragment() {
                 .centerCrop()
                 .fit()
                 .into(uploadImage);
-        }else{
+        } else {
             uploadImage.visibility = View.GONE;
             uploadVideo.visibility = View.VISIBLE;
             uploadVideo.setSource(RetrofitClient.BASE_URL + filePath)
@@ -103,7 +107,6 @@ class EditPostFragment(private val post: Post) : Fragment() {
 
         title_field.setText(title)
         description_field.setText(description)
-
 
 
     }
@@ -124,19 +127,16 @@ class EditPostFragment(private val post: Post) : Fragment() {
                         android.R.layout.simple_spinner_item,
                         allPets
                     )
-
                     spinnerAdapter.sort(compareBy { it.name })
-                    model.getOnePet(ownerId)?.observe(viewLifecycleOwner,{pet->
-                        if(pet!=null){
-                            spinnerAdapter.insert(pet, 0)
-                        }else{
-                            spinnerAdapter.insert(petdefault, 0)
-                        }
-
-                    })
-
+                    spinnerAdapter.insert(petdefault, 0)
                     upload_spinner_add_pet.adapter = spinnerAdapter
-
+                    for (pet in allPets) {
+                        if (pet.uid == ownerId) {
+                            var position = spinnerAdapter.getPosition(pet)
+                            upload_spinner_add_pet.setSelection(position)
+                            break
+                        }
+                    }
                 }
             })
 
@@ -165,20 +165,21 @@ class EditPostFragment(private val post: Post) : Fragment() {
 
 
         if (upload_spinner_add_category != null) {
-            var defaultCat = Category("0","Select a category")
+            var defaultCat = Category("0", "Select a category")
             model.getAllCategories().observe(viewLifecycleOwner, { allCategory ->
                 val spinnerAdapter = ArrayAdapter<Category>(
                     mContext!!,
                     android.R.layout.simple_spinner_item,
                     allCategory
                 )
-                allCategory.forEach { category ->
-                    if (category.name == categoryName){
-                        spinnerAdapter.insert(category, 0)
+                upload_spinner_add_category.adapter = spinnerAdapter
+                for (category in allCategory) {
+                    if (category.name == categoryName) {
+                        var position = spinnerAdapter.getPosition(category)
+                        upload_spinner_add_category.setSelection(position)
+                        break
                     }
                 }
-
-                upload_spinner_add_category.adapter = spinnerAdapter
             })
 
             upload_spinner_add_category.onItemSelectedListener = object :
@@ -198,11 +199,21 @@ class EditPostFragment(private val post: Post) : Fragment() {
         }
     }
 
-//    private fun updatePost() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    private fun deletePost() {
-//        TODO("Not yet implemented")
-//    }
+    private fun updatePost() {
+            title = title_field.text.toString()
+            description = description_field.text.toString()
+
+            if (title.isEmpty()) {
+                Toast.makeText(activity, "Please enter a title", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val updatedPost =
+                Post(uid, title, description, "", "", ownerId, categoryName, null, null)
+            db.updatePost(updatedPost)
+
+    }
+
+    private fun deletePost() {
+    }
 }

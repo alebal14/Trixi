@@ -412,8 +412,12 @@ class PostToDb {
         call?.enqueue(object :Callback<Post>{
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
                if (response.isSuccessful){
-                  val updatePost = response.body()
-                   Log.d("updatePost", "updatePost : post updated" + updatePost.toString())
+                  postedPost = response.body()
+                   if(postedPost !=null){
+                       val intent = Intent(context, MainActivity::class.java)
+                       context.startActivity(intent)
+                   }
+                   Log.d("updatePost", "updatePost : post updated" + postedPost.toString())
                }else{
                    Log.d("updatePost", "updatePost : fail to update")
                }

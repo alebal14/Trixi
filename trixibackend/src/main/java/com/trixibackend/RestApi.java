@@ -39,6 +39,7 @@ public class RestApi {
         });
         setUpUpdateApi();
         followUnfollowApi();
+        likeAndCommentApi();
         setLoginUser();
         getLoggedinUser();
         logoutUser();
@@ -141,44 +142,7 @@ public class RestApi {
         });
 
 
-        app.post("/rest/likes", (req, res) -> {
-            Like like = (Like) req.getBody(Like.class);
-            Post p = db.getPostHandler().addLike(like);
-            if (p == null) {
-                res.setStatus(Status._403);
-                res.send("Error: you already liked this post");
-                return;
-            }
-            res.json(p);
-        });
 
-        app.post("/rest/unlike", (req, res) -> {
-            Like like = (Like) req.getBody(Like.class);
-            Post p = db.getPostHandler().unlike(like);
-            if (p == null) {
-                res.setStatus(Status._403);
-                res.send("Error: you already not liking this post");
-                return;
-            }
-            res.json(p);
-        });
-
-        app.post("/rest/comments", (req, res) -> {
-            Comment comment = (Comment) req.getBody(Comment.class);
-            comment.setId(UUID.randomUUID().toString());
-            res.json(db.getPostHandler().addComment(comment));
-        });
-
-        app.post("/rest/delete_comment", (req, res) -> {
-            Comment comment = (Comment) req.getBody(Comment.class);
-            Post p = db.getPostHandler().deleteComment(comment);
-            if (p == null) {
-                res.setStatus(Status._403);
-                res.send("Error, comment doesn't exist");
-                return;
-            }
-            res.json(p);
-        });
 
     }
 
@@ -551,5 +515,47 @@ public class RestApi {
             sessionCookie.setData(null);
             res.send("Successfully logged out");
         });
+    }
+
+    private void likeAndCommentApi(){
+        app.post("/rest/likes", (req, res) -> {
+            Like like = (Like) req.getBody(Like.class);
+            Post p = db.getPostHandler().addLike(like);
+            if (p == null) {
+                res.setStatus(Status._403);
+                res.send("Error: you already liked this post");
+                return;
+            }
+            res.json(p);
+        });
+
+        app.post("/rest/unlike", (req, res) -> {
+            Like like = (Like) req.getBody(Like.class);
+            Post p = db.getPostHandler().unlike(like);
+            if (p == null) {
+                res.setStatus(Status._403);
+                res.send("Error: you already not liking this post");
+                return;
+            }
+            res.json(p);
+        });
+
+        app.post("/rest/comments", (req, res) -> {
+            Comment comment = (Comment) req.getBody(Comment.class);
+            comment.setId(UUID.randomUUID().toString());
+            res.json(db.getPostHandler().addComment(comment));
+        });
+
+        app.post("/rest/delete_comment", (req, res) -> {
+            Comment comment = (Comment) req.getBody(Comment.class);
+            Post p = db.getPostHandler().deleteComment(comment);
+            if (p == null) {
+                res.setStatus(Status._403);
+                res.send("Error, comment doesn't exist");
+                return;
+            }
+            res.json(p);
+        });
+
     }
 }
