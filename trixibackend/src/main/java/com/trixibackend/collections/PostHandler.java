@@ -172,15 +172,16 @@ public class PostHandler {
         List<Pet>  getAllPet = petList;
 
         List<Post> allPostFromDB = getAllPosts();
-        System.out.println(allPostFromDB);
-
+  
         List<User> getUserName = getAllUser.stream()
                 .filter(e -> e.getUserName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
 
+
         List<Pet> getPetName = getAllPet.stream()
                 .filter(e -> e.getName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
+
 
         Set<String> userid =
                 getUserName.stream()
@@ -212,6 +213,7 @@ public class PostHandler {
        resultList.addAll(listUserPetPost);
        resultList.addAll(listCategory);
 
+        System.out.println(resultList.size());
 
         return resultList;
     }

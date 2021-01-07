@@ -450,7 +450,7 @@ public class RestApi {
             res.json(followingPostList);
         });
 
-        app.get("/api/post/:pettype", (req, res) -> {
+        app.get("/api/posttype/:pettype", (req, res) -> {
 
             String petType = req.getParam("pettype");
 
