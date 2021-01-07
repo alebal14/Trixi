@@ -52,7 +52,11 @@ class LoggedInUserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        populateProfile()
+        model.getOneUser(loggedInUser?.uid!!)
+            ?.observe(viewLifecycleOwner, {
+                populateProfile(it)
+            })
+
         getPosts()
         getPets()
     }
@@ -61,7 +65,7 @@ class LoggedInUserProfileFragment : Fragment() {
         val snapHelper2: SnapHelper = GravitySnapHelper(Gravity.START)
         snapHelper2.attachToRecyclerView(users_pet_list)
         loggedInUser?.uid?.let {
-            model.getPetsByOwner(it)?.observe(viewLifecycleOwner,{ pets->
+            model.getPetsByOwner(it)?.observe(viewLifecycleOwner, { pets ->
 
                 users_pet_list.apply {
                     if (pets.isNotEmpty()) {
@@ -89,10 +93,12 @@ class LoggedInUserProfileFragment : Fragment() {
         snapHelper1.attachToRecyclerView(media_grid)
 
         loggedInUser?.uid?.let {
-            model.getPostsByOwner(it)?.observe(viewLifecycleOwner,{ posts ->
+            model.getPostsByOwner(it)?.observe(viewLifecycleOwner, { posts ->
                 if (posts.isNullOrEmpty()) {
                     profile_no_posts.visibility = TextView.VISIBLE
                 } else {
+                    profile_no_posts.visibility = View.GONE
+
                     media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
@@ -148,16 +154,16 @@ class LoggedInUserProfileFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun populateProfile() {
+    private fun populateProfile(updatedLoggedInUser: User) {
 
         follow_button.visibility = View.INVISIBLE
-        profile_name.text = loggedInUser!!.userName
-        profile_bio.text = loggedInUser!!.bio
-        Picasso.get().load(BASE_URL + loggedInUser!!.imageUrl).centerCrop().fit()
+        profile_name.text = updatedLoggedInUser!!.userName
+        profile_bio.text = updatedLoggedInUser!!.bio
+        Picasso.get().load(BASE_URL + updatedLoggedInUser!!.imageUrl).centerCrop().fit()
             .into(user_profile_pet_image)
         profile_following.text =
-            "Following " + (loggedInUser!!.followingsPet?.size?.plus(loggedInUser!!.followingsUser!!.size)).toString()
-        profile_followers.text = loggedInUser!!.followers?.size.toString() + " Followers"
+            "Following " + (updatedLoggedInUser!!.followingsPet?.size?.plus(updatedLoggedInUser!!.followingsUser!!.size)).toString()
+        profile_followers.text = updatedLoggedInUser!!.followers?.size.toString() + " Followers"
 
         owner_name.visibility = View.INVISIBLE
         follow_button.visibility = View.INVISIBLE
