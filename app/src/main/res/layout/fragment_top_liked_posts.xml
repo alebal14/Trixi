@@ -9,39 +9,115 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
-        android:layout_marginBottom="3dp"
-        iconifiedByDefault="false"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        android:background="@drawable/custom_searchbar"
-       >
-
-    </androidx.appcompat.widget.SearchView>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/media_grid_top_posts"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_bar"
+            iconifiedByDefault="false"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingEnd="15dp"
-            android:paddingBottom="15dp"
-            android:clipToPadding="false"
-            android:paddingStart="0dp"
-            >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/custom_searchbar"
+            app:actionViewClass="androidx.appcompat.widget.SearchView">
 
-        </androidx.recyclerview.widget.RecyclerView>
+        </androidx.appcompat.widget.SearchView>
 
-    </ScrollView>
+
+       <HorizontalScrollView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <Spinner
+                    android:id="@+id/cat_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorLightGreen"
+                    android:tooltipText="Type of pet" />
+
+                <Button
+                    android:id="@+id/cat_training"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:background="@color/colorLightGreen"
+                    android:text="Training"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/cat_tricks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:background="@color/colorLightGreen"
+                    android:text="Tricks"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/cat_obedience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:background="@color/colorLightGreen"
+                    android:text="Obedience"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/cat_feeding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:background="@color/colorLightGreen"
+                    android:text="Feeding"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/cat_cute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:background="@color/colorLightGreen"
+                    android:text="Cute"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/cat_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:background="@color/colorLightGreen"
+                    android:text="Other"
+                    android:textAllCaps="false" />
+
+
+            </LinearLayout>
+       </HorizontalScrollView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/media_grid_top_posts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingStart="0dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="15dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>
