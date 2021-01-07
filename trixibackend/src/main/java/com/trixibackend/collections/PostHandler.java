@@ -172,9 +172,6 @@ public class PostHandler {
         List<User> getAllUser = userList ;
         List<Pet>  getAllPet = petList;
 
-
-
-
         List<Post> allPostFromDB = getAllPosts();
         System.out.println(allPostFromDB);
 
