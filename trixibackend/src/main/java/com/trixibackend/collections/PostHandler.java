@@ -172,9 +172,6 @@ public class PostHandler {
         List<User> getAllUser = userList ;
         List<Pet>  getAllPet = petList;
 
-
-
-
         List<Post> allPostFromDB = getAllPosts();
         System.out.println(allPostFromDB);
 
@@ -204,35 +201,18 @@ public class PostHandler {
                         .filter(e -> concatlist.contains(e.getOwnerId()))
                         .collect(Collectors.toList());
 
-        List<Post> listDescription=
-                allPostFromDB.stream()
-                        .filter(e -> e.getDescription().toLowerCase().startsWith(searchTerm.toLowerCase()))
-                        .collect(Collectors.toList());
 
         List<Post> listCategory =
                 allPostFromDB.stream()
-                        .filter(e -> e.getCategoryName().toLowerCase().startsWith(searchTerm.toLowerCase()))
+                        .filter(e -> e.getCategoryName().toLowerCase().contains(searchTerm.toLowerCase()) || e.getDescription().toLowerCase().contains(searchTerm.toLowerCase()) || e.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
-        List<Post> listTitle =
-                allPostFromDB.stream()
-                        .filter(map -> map.getTitle().toLowerCase().startsWith(searchTerm.toLowerCase()))
-                        .collect(Collectors.toList());
 
         List<Post> resultList = new ArrayList<>();
 
-        if (listDescription != null){
-            resultList.addAll(listDescription);
-        }
-        if (listUserPetPost != null){
-            resultList.addAll(listUserPetPost);
-        }
-        if (listTitle != null){
-            resultList.addAll(listTitle);
-        }
-        if (listCategory != null){
-            resultList.addAll(listCategory);
-        }
+       resultList.addAll(listUserPetPost);
+       resultList.addAll(listCategory);
+
 
         return resultList;
     }

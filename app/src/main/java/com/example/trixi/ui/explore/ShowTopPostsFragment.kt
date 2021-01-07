@@ -88,7 +88,7 @@ class ShowTopPostsFragment : Fragment() {
                                     ExploreMediaGridAdapter(post as ArrayList<Post>)
                             }
                         })
-                    clickx()
+                    SearchClickx()
                 }
                 return true
             }
@@ -102,7 +102,7 @@ class ShowTopPostsFragment : Fragment() {
 
     }
 
-    private fun clickx(){
+    private fun SearchClickx(){
     val closeButton: View? = search_bar.findViewById(androidx.appcompat.R.id.search_close_btn)
     val clearText: EditText? = search_bar.findViewById(androidx.appcompat.R.id.search_src_text)
 

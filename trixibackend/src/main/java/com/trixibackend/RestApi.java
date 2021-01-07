@@ -38,6 +38,7 @@ public class RestApi {
 
         });
         setUpUpdateApi();
+        followUnfollowApi();
         setLoginUser();
         getLoggedinUser();
         logoutUser();
@@ -50,23 +51,7 @@ public class RestApi {
         }
     }
 
-    private void setUpUpdateApi() {
-
-        app.post("/rest/update_post", (req, res) -> {
-            Post updatedPost = (Post) req.getBody(Post.class);
-            if (updatedPost != null) {
-                Post oldPost = db.getPostHandler().findPostById(updatedPost.getUid());
-                updatedPost.setId(oldPost.getId());
-                updatedPost.setFilePath(oldPost.getFilePath());
-                updatedPost.setFileType(oldPost.getFileType());
-                updatedPost.setLikes(oldPost.getLikes());
-                updatedPost.setComments(oldPost.getComments());
-                db.save(updatedPost);
-                res.json(db.getPostHandler().findPostById(updatedPost.getUid()));
-                return;
-            }
-
-        });
+    private void followUnfollowApi() {
 
         app.post("/api/users/follow/:userid/:followingId", (req, res) -> {
 
@@ -134,6 +119,27 @@ public class RestApi {
 
             }
         });
+
+    }
+
+    private void setUpUpdateApi() {
+
+        app.post("/rest/update_post", (req, res) -> {
+            Post updatedPost = (Post) req.getBody(Post.class);
+            if (updatedPost != null) {
+                Post oldPost = db.getPostHandler().findPostById(updatedPost.getUid());
+                updatedPost.setId(oldPost.getId());
+                updatedPost.setFilePath(oldPost.getFilePath());
+                updatedPost.setFileType(oldPost.getFileType());
+                updatedPost.setLikes(oldPost.getLikes());
+                updatedPost.setComments(oldPost.getComments());
+                db.save(updatedPost);
+                res.json(db.getPostHandler().findPostById(updatedPost.getUid()));
+                return;
+            }
+
+        });
+
 
         app.post("/rest/likes", (req, res) -> {
             Like like = (Like) req.getBody(Like.class);
@@ -263,41 +269,40 @@ public class RestApi {
 
 
                     break;
+
                 case "posts":
 
-                        List<FileItem> Postfiles = null;
-                        String PostfileUrl = null;
-                        String description = null;
-                        String ownerId = null;
-                        String title = null;
-                        String categoryName = null;
-                        String fileType = null;
+                    List<FileItem> Postfiles = null;
+                    String PostfileUrl = null;
+                    String description= null;
+                    String ownerId= null;
+                    String title = null;
+                    String categoryName = null;
+                    String fileType = null;
 
-                        try {
-                            Postfiles = req.getFormData("file");
-                            description = req.getFormData("description").get(0).getString().replace("\"", "");
-                            ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
-                            title = req.getFormData("title").get(0).getString().replace("\"", "");
-                            categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
-                            fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
-                            PostfileUrl = db.uploadImage(Postfiles.get(0));
-                            System.out.println(PostfileUrl + description + ownerId + title);
+                    try {
+                        Postfiles = req.getFormData("file");
+                        description = req.getFormData("description").get(0).getString().replace("\"", "");
+                        ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        title = req.getFormData("title").get(0).getString().replace("\"", "");
+                        categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
+                        fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
-                            Post post = new Post();
-                            post.setDescription(description);
-                            post.setOwnerId(ownerId);
-                            post.setTitle(title);
-                            post.setFilePath(PostfileUrl);
-                            post.setFileType(fileType);
-                            post.setCategoryName(categoryName);
+                        PostfileUrl = db.uploadImage(Postfiles.get(0));
+                        System.out.println(PostfileUrl + description + ownerId+ title);
 
-                            db.save(post);
+                        Post post = new Post();
+                        post.setDescription(description);
+                        post.setOwnerId(ownerId);
+                        post.setTitle(title);
+                        post.setFilePath(PostfileUrl);
+                        post.setFileType(fileType);
+                        post.setCategoryName(categoryName);
 
-                            post.setUid(post.getId().toString());
+                        db.save(post);
+                        post.setUid(post.getId().toString());
 
-                            System.out.println(post.getUid());
-                            System.out.println(post);
 
                             res.json(post);
                             res.send("Created Post");
@@ -451,6 +456,22 @@ public class RestApi {
             }
             System.out.println(searchPost.size());
             res.json(searchPost);
+        });
+
+        app.get("/api/discover/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+
+            User user = db.getUserHandler().findUserById(id);
+
+            var followingPostList = db.getUserHandler().discoverList(user);
+            if (followingPostList == null) {
+                res.setStatus(Status._403);
+                //res.send("Error: you are not following this Pet");
+                return;
+            }
+            System.out.println(followingPostList.size());
+            res.json(followingPostList);
         });
 
     }

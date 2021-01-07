@@ -63,6 +63,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         profile_bio.text = pet.bio
         Picasso.get().load(RetrofitClient.BASE_URL + pet.imageUrl).centerCrop().fit()
             .into(user_profile_pet_image)
+        users_pet_list.visibility = GONE
         profile_followers.text = pet.followers?.size.toString() + " Followers"
         profile_followers.gravity = TEXT_ALIGNMENT_CENTER
         profile_following.visibility = INVISIBLE
@@ -77,10 +78,19 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         //TODO: funkar ej??
         pet?.ownerId?.let {
             model.getOneUser(it)?.observe(viewLifecycleOwner, { owner ->
+                owner_name.setOnClickListener { redirectToOwner(owner) }
                 owner_name.text = "Owner: " + owner.userName
             }
             )
         }
+    }
+
+    private fun redirectToOwner(owner: User?) {
+        model.getOneUser(owner?.uid!!)?.observe(viewLifecycleOwner, { owner ->
+            val ownersProfile = UserProfileFragment(owner)
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fragment_container, ownersProfile)?.commit()
+        })
     }
 
     private fun getPosts() {
@@ -94,6 +104,8 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                 if (posts.isNullOrEmpty()) {
                     profile_no_posts.visibility = TextView.VISIBLE
                 } else {
+                    profile_no_posts.visibility = GONE
+
                     media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
@@ -135,14 +147,14 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
             loggedInUser?.let { db.follow(it.uid, pet?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
-            numberOfFollowers +=1
+            numberOfFollowers += 1
             profile_followers.text = numberOfFollowers.toString() + " Followers"
         } else {
             loggedInUser?.let { db.unfollow(it.uid, pet?.uid!!) }
             followed = false
             toggleFollowIcon(followed)
-                numberOfFollowers -=1
-                profile_followers.text = numberOfFollowers.toString() + " Followers"
+            numberOfFollowers -= 1
+            profile_followers.text = numberOfFollowers.toString() + " Followers"
         }
     }
 
