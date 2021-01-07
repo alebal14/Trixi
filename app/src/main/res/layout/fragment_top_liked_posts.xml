@@ -36,9 +36,10 @@
 
                 <Spinner
                     android:id="@+id/cat_spinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="2dp"
+                    android:gravity="center"
                     android:layout_weight="1"
                     android:background="@color/colorLightGreen"
                     android:tooltipText="Type of pet" />
