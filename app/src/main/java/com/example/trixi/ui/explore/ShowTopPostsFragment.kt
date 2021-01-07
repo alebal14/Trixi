@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.trixi.R
+import com.example.trixi.entities.Pet
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
@@ -41,6 +42,7 @@ class ShowTopPostsFragment : Fragment() {
         allPostsToAdapter()
         searchToAdapter()
         populateCatSpinner()
+        selectItemInSpinner()
 
         search_bar.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -135,6 +137,8 @@ class ShowTopPostsFragment : Fragment() {
     }
 
     private fun selectItemInSpinner(){
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
         cat_spinner.onItemSelectedListener = object :
         AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -144,9 +148,24 @@ class ShowTopPostsFragment : Fragment() {
                 id: Long
             ) {
 
-                //get all post by petType
+                val petTypeName: PetType = parent!!.selectedItem as PetType
 
-
+                if(position == 0){
+                    allPostsToAdapter()
+                }else{
+                    model.getPostByType(petTypeName.name!!)?.observe(viewLifecycleOwner, Observer { p ->
+                        media_grid_top_posts.apply {
+                            media_grid_top_posts.layoutManager =
+                                StaggeredGridLayoutManager(
+                                    2,
+                                    StaggeredGridLayoutManager.VERTICAL
+                                )
+                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                            media_grid_top_posts.adapter =
+                                ExploreMediaGridAdapter(p as ArrayList<Post>)
+                        }
+                    })
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

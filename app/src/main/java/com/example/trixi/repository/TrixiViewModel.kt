@@ -84,6 +84,18 @@ class TrixiViewModel : ViewModel() {
 
     }
 
+    fun getPostByType(petType: String): MutableLiveData<List<Post>?> {
+        val petTypePosts: MutableLiveData<List<Post>?> = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("explorer", "getting post by search")
+            val fPosts = retrofitClient?.getPostByPetType(petType)?.body()
+            petTypePosts.postValue(fPosts)
+            Log.d("explorer", "got post by search")
+        }
+        return petTypePosts
+    }
+
 
     fun getOneUser(id: String): MutableLiveData<User>? {
         val userById: MutableLiveData<User>? = MutableLiveData()

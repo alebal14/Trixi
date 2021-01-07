@@ -243,11 +243,6 @@ public class PostHandler {
                 .map(Pet::getUid)
                 .collect(Collectors.toSet());
 
-
-        System.out.println("PETSBYTYPEID " + petId);
-
-        //List<String> concatlist = Stream.concat(petId.stream()).collect(Collectors.toList());
-
         List<Post> result = allPostFromDB.stream()
                 .filter(e -> petId.contains(e.getOwnerId()))
                 .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
