@@ -172,7 +172,7 @@ public class PostHandler {
         List<Pet>  getAllPet = petList;
 
         List<Post> allPostFromDB = getAllPosts();
-  
+
         List<User> getUserName = getAllUser.stream()
                 .filter(e -> e.getUserName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
