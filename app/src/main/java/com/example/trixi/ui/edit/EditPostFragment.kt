@@ -61,6 +61,7 @@ class EditPostFragment(private val post: Post) : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
         super.onViewCreated(view, savedInstanceState)
         camera_gallery_buttons_container.visibility = View.GONE
