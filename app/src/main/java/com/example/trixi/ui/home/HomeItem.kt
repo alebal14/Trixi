@@ -62,6 +62,7 @@ class HomeItem(
         viewHolder.itemView.home_item_chat_count.text = numberOfComments.toString()
         val numberOfLike: Int = post.likes!!.size
         viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
+        viewHolder.itemView.home_item_tags.text = post.categoryName
 
         handleLike(viewHolder, numberOfLike)
         handleClickOnComment(viewHolder)
