@@ -161,6 +161,7 @@ class UploadFragment() : Fragment() {
                     view: View, position: Int, id: Long
                 ) {
                     val category: Category = parent.selectedItem as Category
+                    selectCategoryData(category)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
