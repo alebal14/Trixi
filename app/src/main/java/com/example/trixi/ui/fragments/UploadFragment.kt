@@ -143,6 +143,7 @@ class UploadFragment() : Fragment() {
                     android.R.layout.simple_spinner_item,
                     allCategory
                 )
+                spinnerAdapter.sort(compareBy { it.name })
                 upload_spinner_add_category.adapter = spinnerAdapter
             })
 
@@ -178,7 +179,7 @@ class UploadFragment() : Fragment() {
                         allPets
                     )
 
-                    spinnerAdapter.sort(compareBy { it.name })
+                    spinnerAdapter.sort(compareBy { it.name.toLowerCase() })
                     spinnerAdapter.insert(petdefault, 0)
                     upload_spinner_add_pet.adapter = spinnerAdapter
 
