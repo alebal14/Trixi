@@ -15,6 +15,7 @@ import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Category
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
+import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
@@ -24,7 +25,8 @@ class EditPostFragment(private val post: Post) : Fragment() {
     private lateinit var model: TrixiViewModel
     var mContext: Context? = null;
 
-    val db = PostToDb()
+    private val db = PostToDb()
+    private val dbDelete = DeleteFromDb()
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
     var uid = ""
     var title = ""
@@ -215,5 +217,6 @@ class EditPostFragment(private val post: Post) : Fragment() {
     }
 
     private fun deletePost() {
+        dbDelete.deleteAPostFromDb(uid)
     }
 }

@@ -164,4 +164,7 @@ interface Api {
     @POST("api/users/un_follow/{userid}/{followingId}")
     fun postUnfollow(@Path(value = "userid") userId: String?, @Path(value ="followingId") followingId : String?) : Call<User>
 
+    @DELETE("rest/posts/{id}")
+    fun deleteAPost(@Path("id")id :String?): Call<ResponseBody>
+
 }

@@ -138,12 +138,7 @@ public class RestApi {
                 res.json(db.getPostHandler().findPostById(updatedPost.getUid()));
 
             }
-
         });
-
-
-
-
     }
 
 
