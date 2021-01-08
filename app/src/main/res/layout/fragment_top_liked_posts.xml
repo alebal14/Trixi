@@ -33,16 +33,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/cat_spinner_start"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
+                    android:text="Pet types"
+                    android:textAllCaps="false" />
 
                 <Spinner
                     android:id="@+id/cat_spinner"
                     android:layout_width="130dp"
                     android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginLeft="2dp"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/cat_buttons_state_colors"
+                    android:background="@color/colorTeal"
                     android:tooltipText="Type of pet" />
+
 
                 <Button
                     android:id="@+id/cat_all"
