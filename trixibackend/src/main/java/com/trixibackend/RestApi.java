@@ -136,7 +136,7 @@ public class RestApi {
                 updatedPost.setComments(oldPost.getComments());
                 db.save(updatedPost);
                 res.json(db.getPostHandler().findPostById(updatedPost.getUid()));
-                return;
+
             }
 
         });
