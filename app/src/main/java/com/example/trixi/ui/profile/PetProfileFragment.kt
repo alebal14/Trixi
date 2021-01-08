@@ -2,14 +2,15 @@ package com.example.trixi.ui.profile
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.*
+import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SnapHelper
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
@@ -97,6 +98,11 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
     }
 
     private fun redirectToOwner(owner: User?) {
+        if (ownerIsLoggedInUser) {
+            val ownersProfile = LoggedInUserProfileFragment()
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fragment_container, ownersProfile)?.commit()
+        }else
         model.getOneUser(owner?.uid!!)?.observe(viewLifecycleOwner, { owner ->
             val ownersProfile = UserProfileFragment(owner)
             activity?.supportFragmentManager?.beginTransaction()

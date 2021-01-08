@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -31,13 +30,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.security.AccessController.getContext
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -159,19 +156,28 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 CoroutineScope(Main).launch {
-                    if (s?.length != 0) {
+                    if (s?.length != 0 ) {
                         checkIfUserExist(s.toString())
+                        showToastTextLength(s.toString())
+
 
                         delay(500)
-                        if (userExist.get() == true) {
+                        if (userExist.get() == true || s?.length!! > 10 ) {
                             username_check.setColorFilter(getResources().getColor(R.color.red))
+
+
                         } else {
                             username_check.setColorFilter(getResources().getColor(R.color.green))
+
                         }
+
+
                     }
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
+
             }
         })
 
@@ -185,13 +191,20 @@ class RegisterActivity : AppCompatActivity() {
                     if (s?.length != 0) {
                         checkIfUserExist(s.toString())
 
+
+
                         delay(500)
-                        if (userExist.get() == true || !Patterns.EMAIL_ADDRESS.matcher(register_email.text.toString()).matches()) {
+                        if (userExist.get() == true || !Patterns.EMAIL_ADDRESS.matcher(
+                                register_email.text.toString()
+                            ).matches()
+                        ) {
                             email_check.setColorFilter(getResources().getColor(R.color.red))
                         } else {
                             email_check.setColorFilter(getResources().getColor(R.color.green))
                         }
                     }
+
+
                 }
             }
 
@@ -207,27 +220,43 @@ class RegisterActivity : AppCompatActivity() {
                 CoroutineScope(Main).launch {
                     if (s?.length != 0) {
                         password_check.setColorFilter(getResources().getColor(R.color.green))
-                        if (register_password.text.toString().isEmpty()){
+                        if (register_password.text.toString().isEmpty()) {
                             password_check.setColorFilter(getResources().getColor(R.color.gray))
                         }
                     }
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
             }
         })
 
         button_register.setOnClickListener {
-            if (userExist.get() != true && register_username.text.toString().isNotEmpty() && register_email.text.toString().isNotEmpty() && register_password.text.toString().isNotEmpty() && selectedImage != null) {
-                button_register.setTextColor(ContextCompat.getColor(applicationContext, R.color.black))
+            if (userExist.get() != true && register_username.text.toString()
+                    .isNotEmpty() && register_email.text.toString()
+                    .isNotEmpty() && register_password.text.toString()
+                    .isNotEmpty() && selectedImage != null
+            ) {
+                button_register.setTextColor(
+                    ContextCompat.getColor(
+                        applicationContext,
+                        R.color.black
+                    )
+                )
                 registerUser()
             }
             if (selectedImage == null) {
                 Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
             }
-            if (register_username.text.toString().isEmpty() || register_email.text.toString().isEmpty() || register_password.text.toString().isEmpty()) {
-                Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG).show()
+            if (register_username.text.toString().isEmpty() || register_email.text.toString()
+                    .isEmpty() || register_password.text.toString().isEmpty()
+            ) {
+                Toast.makeText(this, "Please enter username/email/password", Toast.LENGTH_LONG)
+                    .show()
 
+            }
+            if (register_username.text.toString().length!! > 10){
+                Toast.makeText(this, "Username cannot be longer than 10 characters", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -255,32 +284,37 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private fun checkIfUserExist(userName: String) {
-            model.getAllUsers()?.observe(this, Observer { user ->
-                Log.d("reg", "size: users : ${user?.size}")
-                for (u in user!!) {
-                    if (userName.contains("@")) {
-                        if (userName == u.email) {
-                            Toast.makeText(this, "Email already exist", Toast.LENGTH_SHORT) .show()
-                            userExist.set(true)
-                            break
-                        } else {
-                            userExist.set(false)
-                        }
-                    }
-                    if (userName == u.userName) {
-                        Toast.makeText(this, "Username already exist", Toast.LENGTH_SHORT).show()
+        model.getAllUsers()?.observe(this, Observer { user ->
+            Log.d("reg", "size: users : ${user?.size}")
+            for (u in user!!) {
+                if (userName.contains("@")) {
+                    if (userName == u.email) {
+                        Toast.makeText(this, "Email already exist", Toast.LENGTH_SHORT).show()
                         userExist.set(true)
-                        println("ISTRUEUSERNAME" + userExist)
                         break
                     } else {
                         userExist.set(false)
                     }
-
+                }
+                if (userName == u.userName) {
+                    Toast.makeText(this, "Username already exist", Toast.LENGTH_SHORT).show()
+                    userExist.set(true)
+                    println("ISTRUEUSERNAME" + userExist)
+                    break
+                } else {
+                    userExist.set(false)
                 }
 
-            })
+            }
 
+        })
 
+    }
 
+    private fun showToastTextLength(userName: String) {
+            if (userName.length > 10){
+
+                Toast.makeText(this, "Username cannot be longer than 10 characters", Toast.LENGTH_SHORT)
+            }
     }
 }

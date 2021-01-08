@@ -12,24 +12,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-    <TextView
-            android:id="@+id/edit_pet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="17dp"
-            android:drawableStart="@drawable/ic_edit_profile"
-            android:drawablePadding="10dp"
-            android:fontFamily="@font/playfair_display"
-            android:gravity="center_vertical"
-            android:text="Edit pet"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:tint="@color/colorTeal"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/top_page"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_pet_image"
@@ -47,21 +29,21 @@
 
     </de.hdodenhof.circleimageview.CircleImageView>
 
+
     <TextView
-            android:id="@+id/profile_bio"
-            style="@style/FancyFont"
-            android:layout_width="225dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:ems="10"
-            android:paddingTop="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toTopOf="@id/users_pet_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.026"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
-            app:layout_constraintTop_toBottomOf="@+id/profile_name"
-            app:layout_constraintVertical_bias="0.211" />
+        android:id="@+id/profile_bio"
+        style="@style/FancyFont"
+        android:layout_width="225dp"
+        android:layout_height="100dp"
+        android:paddingTop="10dp"
+        android:maxLength="150"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toTopOf="@id/users_pet_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline9"
@@ -137,7 +119,6 @@
             android:layout_width="417dp"
             android:layout_height="376dp"
             android:orientation="vertical"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/followers_container">
@@ -224,38 +205,40 @@
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/top_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            app:layout_constraintBottom_toTopOf="@+id/profile_bio"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/top_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/profile_bio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:id="@+id/profile_name"
-                style="@style/FancyFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/profile_user_name"
-                android:textColor="@color/colorTeal"
-                android:textSize="27sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.008"
-                app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.101" />
+            android:id="@+id/profile_name"
+            style="@style/FancyFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/profile_user_name"
+            android:textColor="@color/colorTeal"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.008"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.101" />
 
         <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/ic_pen">
+            android:id="@+id/edit_pet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_pen"
+            android:visibility="gone">
 
         </ImageButton>
 
@@ -263,12 +246,13 @@
 
     <ImageButton
             android:id="@+id/follow_button"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="350dp"
             android:layout_marginEnd="10dp"
+        android:layout_marginTop="30dp"
             android:background="@drawable/ic_follow"
-            android:paddingLeft="30dp"
+            android:paddingLeft="3dp"
             app:layout_constraintBottom_toTopOf="@+id/profile_bio"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
