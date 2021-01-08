@@ -208,14 +208,14 @@ public class PostHandler {
                         .filter(e -> e.getCategoryName().toLowerCase().contains(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
-        System.out.println("all post: " + allPostFromDB.size());
+        //System.out.println("all post: " + allPostFromDB.size());
 
         List<Post> listTitle =
                 allPostFromDB.stream()
                         .filter(e -> e.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
-        System.out.println(listTitle.size());
+        //System.out.println(listTitle.size());
 
         List<Post> listDescription=
                 allPostFromDB.stream()
@@ -229,8 +229,8 @@ public class PostHandler {
         resultList.addAll(listTitle);
         resultList.addAll(listDescription);
 
-;
-        System.out.println("result: " + resultList.size());
+
+        //System.out.println("result: " + resultList.size());
 
 
         return resultList;
