@@ -1,10 +1,10 @@
 package com.example.trixi.ui.profile
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,13 +20,13 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.PopUpFollowWindow
 import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.users_pet_list
 import kotlinx.android.synthetic.main.fragment_profile.view.*
-import kotlin.math.log
 
 
 class UserProfileFragment(val user: User?) : Fragment() {
@@ -57,7 +57,11 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
         checkIfFollowing()
         populateProfile()
+        handleClickOnFollow(user)
         follow_button.setOnClickListener { handleFollow() }
+
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -80,9 +84,13 @@ class UserProfileFragment(val user: User?) : Fragment() {
         profile_followers.text = numberOfFollowers.toString() + " Followers"
         owner_name.visibility = View.INVISIBLE
 
+
+
         getPets()
         getPosts()
     }
+
+
 
     private fun getPets() {
 
@@ -146,6 +154,15 @@ class UserProfileFragment(val user: User?) : Fragment() {
                 }
 
             })
+        }
+
+    }
+
+    private fun handleClickOnFollow(user: User) {
+        profile_followers.setOnClickListener {
+            Toast.makeText(activity, "Click", Toast.LENGTH_LONG).show()
+             val popUp = PopUpFollowWindow(user.followers!!)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
         }
 
     }
