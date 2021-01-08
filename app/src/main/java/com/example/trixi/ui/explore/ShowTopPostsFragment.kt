@@ -153,18 +153,21 @@ class ShowTopPostsFragment : Fragment() {
                 if(position == 0){
                     allPostsToAdapter()
                 }else{
-                    model.getPostByType(petTypeName.name!!)?.observe(viewLifecycleOwner, Observer { p ->
-                        media_grid_top_posts.apply {
-                            media_grid_top_posts.layoutManager =
-                                StaggeredGridLayoutManager(
-                                    2,
-                                    StaggeredGridLayoutManager.VERTICAL
-                                )
-                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                            media_grid_top_posts.adapter =
-                                ExploreMediaGridAdapter(p as ArrayList<Post>)
-                        }
-                    })
+                    model.getPostByType(petTypeName.name).observe(
+                        viewLifecycleOwner,
+                        Observer { p ->
+                            println("IMINS " + p!!.size)
+                            media_grid_top_posts.apply {
+                                media_grid_top_posts.layoutManager =
+                                    StaggeredGridLayoutManager(
+                                        2,
+                                        StaggeredGridLayoutManager.VERTICAL
+                                    )
+                                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                                media_grid_top_posts.adapter =
+                                    ExploreMediaGridAdapter(p as ArrayList<Post>)
+                            }
+                        })
                 }
             }
 

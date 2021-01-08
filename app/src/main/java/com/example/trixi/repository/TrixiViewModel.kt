@@ -89,8 +89,11 @@ class TrixiViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("explorer", "getting post by search")
+            println("IMINGET")
             val fPosts = retrofitClient?.getPostByPetType(petType)?.body()
+            println("IMINAFTER")
             petTypePosts.postValue(fPosts)
+            println("IMINRES " + fPosts!!.size)
             Log.d("explorer", "got post by search")
         }
         return petTypePosts
