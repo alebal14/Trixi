@@ -269,7 +269,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private fun redirectToSinglePost(post: Post) {
         val singlePost = SinglePostFragment(post)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, singlePost)?.commit()
+            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("TopPostFragment")!!.commit()
 
     }
 

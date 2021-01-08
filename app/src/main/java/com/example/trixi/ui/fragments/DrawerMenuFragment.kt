@@ -38,7 +38,7 @@ class DrawerMenuFragment : Fragment() {
 
         create_pet.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragment_container, PetRegister())
+                replace(R.id.fragment_container, PetRegister()).addToBackStack("creatPetFragment")!!.
                 commit()
             }
         }
