@@ -145,6 +145,13 @@ class UploadFragment() : Fragment() {
                 )
                 spinnerAdapter.sort(compareBy { it.name })
                 upload_spinner_add_category.adapter = spinnerAdapter
+                for (category in allCategory) {
+                    if (category.name == "Other") {
+                        var position = spinnerAdapter.getPosition(category)
+                        upload_spinner_add_category.setSelection(position)
+                        break
+                    }
+                }
             })
 
             upload_spinner_add_category.onItemSelectedListener = object :
@@ -154,7 +161,6 @@ class UploadFragment() : Fragment() {
                     view: View, position: Int, id: Long
                 ) {
                     val category: Category = parent.selectedItem as Category
-                    selectCategoryData(category)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
