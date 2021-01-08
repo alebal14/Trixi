@@ -112,6 +112,20 @@ public class PetHandler {
         return pets;
     }
 
+    public List<Pet> findPetsByPetTypeName(String id){
+        List<Pet> pets = null;
+        try {
+            FindIterable<Pet> petsIter = petColl.find(eq("petType", id));
+            pets = new ArrayList<>();
+            petsIter.forEach(pets::add);
+            pets.forEach(pet -> pet.setUid(pet.getId().toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return pets;
+    }
+
     public DeleteResult deletePet(String id, MongoCollection<User> userColl) {
         var pet = findPetById(id);
         var petFollowers = pet.getFollowers();

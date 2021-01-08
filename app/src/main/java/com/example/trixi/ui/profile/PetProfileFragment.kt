@@ -142,7 +142,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
     private fun redirectToSinglePost(post: Post) {
         val singlePost = SinglePostFragment(post)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, singlePost)?.commit()
+            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
 
     }
 
