@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.ui.edit.EditPostFragment
-import com.example.trixi.ui.profile.EditProfleFragment
+import com.example.trixi.ui.profile.EditProfileFragment
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
