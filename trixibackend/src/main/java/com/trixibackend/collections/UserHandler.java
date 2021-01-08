@@ -313,12 +313,12 @@ public class UserHandler {
                  .filter(e -> e.getLikes().stream().anyMatch(f -> f.getUserId().contains(user.getUid())))
                  .collect(Collectors.toList());
 
-        System.out.println("liked post: " + getLikedPost);
+        //System.out.println("liked post: " + getLikedPost);
 
         //get user's post
          List<Post> getUserPost = postHandler.findPostsByOwner(user.getUid());
 
-        System.out.println("My post: " + getUserPost);
+        //System.out.println("My post: " + getUserPost);
 
         List<User> getFollowingUser = user.getFollowingsUser();
         List<Pet>  getFollowingPet = user.getFollowingsPet();
@@ -340,7 +340,7 @@ public class UserHandler {
                         .filter(e -> concatlist.contains(e.getOwnerId()))
                         .collect(Collectors.toList());
 
-        System.out.println("Following post: " + getFollowingList);
+        //System.out.println("Following post: " + getFollowingList);
 
 
         List<Post> allList = new ArrayList<>();
@@ -353,7 +353,7 @@ public class UserHandler {
                 .map(Post::getCategoryName)
                 .collect(Collectors.toSet());
 
-        System.out.println("kategories 1 : " + Categories);
+        //System.out.println("kategories 1 : " + Categories);
 
         List<Post> allListOwnerId = new ArrayList<>();
         allListOwnerId.addAll(getFollowingList);
@@ -363,22 +363,22 @@ public class UserHandler {
                 .map(Post::getOwnerId)
                 .collect(Collectors.toSet());
 
-        System.out.println("get ownerids " + getIds);
+        //System.out.println("get ownerids " + getIds);
 
         Set<String> postIds = getLikedPost.stream()
                 .map(Post::getUid)
                 .collect(Collectors.toSet());
 
-        System.out.println("get liked post: " + postIds);
+        //System.out.println("get liked post: " + postIds);
 
-        System.out.println("all post: " + allPostFromDB.size());
+        //System.out.println("all post: " + allPostFromDB.size());
 
          List<Post> removePost =  allPostFromDB.stream()
                  .filter(e -> !getIds.contains(e.getOwnerId()))
                  .filter(f -> !postIds.contains(f.getUid()))
                  .collect(Collectors.toList());
 
-        System.out.println("list without: " +removePost.size());
+        //System.out.println("list without: " +removePost.size());
 
 
          List<Post> resultList = removePost.stream()
@@ -388,7 +388,7 @@ public class UserHandler {
                  .sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size())))
                  .collect(Collectors.toList());
 
-        System.out.println("endList: " + resultList.size());
+        //System.out.println("endList: " + resultList.size());
 
          if(resultList.isEmpty()){
              return allPostFromDB.stream().limit(50)

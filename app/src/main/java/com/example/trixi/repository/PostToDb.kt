@@ -406,6 +406,32 @@ class PostToDb {
     }
 
 
+    fun updatePost(post:Post){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.updatePost(post)
+        call?.enqueue(object :Callback<Post>{
+            override fun onResponse(call: Call<Post>, response: Response<Post>) {
+               if (response.isSuccessful){
+                  postedPost = response.body()
+                   if(postedPost !=null){
+                       val intent = Intent(context, MainActivity::class.java)
+                       context.startActivity(intent)
+                   }
+                   Log.d("updatePost", "updatePost : post updated" + postedPost.toString())
+               }else{
+                   Log.d("updatePost", "updatePost : fail to update")
+               }
+            }
+
+            override fun onFailure(call: Call<Post>, t: Throwable) {
+                Log.d("updatePost", "updatePost : onFailure " + t.message)
+            }
+
+        })
+
+    }
+
+
 
 
 }
