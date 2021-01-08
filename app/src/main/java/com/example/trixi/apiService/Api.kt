@@ -117,6 +117,9 @@ interface Api {
         @Part("categoryName") categoryName: String
     ): Call<Post>
 
+    @POST("rest/update_post")
+    fun updatePost(@Body post:Post): Call<Post>
+
     @GET("rest/posts/{id}")
     suspend fun getPostById(@Path("id") id: String?): Response<Post>
 
@@ -160,5 +163,8 @@ interface Api {
 
     @POST("api/users/un_follow/{userid}/{followingId}")
     fun postUnfollow(@Path(value = "userid") userId: String?, @Path(value ="followingId") followingId : String?) : Call<User>
+
+    @DELETE("rest/posts/{id}")
+    fun deleteAPost(@Path("id")id :String?): Call<ResponseBody>
 
 }

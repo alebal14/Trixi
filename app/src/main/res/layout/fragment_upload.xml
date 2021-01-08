@@ -24,10 +24,11 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 >
 
                 <LinearLayout
+                    android:id="@+id/camera_gallery_buttons_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -141,6 +142,34 @@
                     android:layout_height="50dp"
                     android:background="@drawable/text_input_rounded_corners"
                     ></Spinner>
+                <LinearLayout
+                    android:id="@+id/edit_buttons_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    >
+                    <Button
+                        android:id="@+id/button_delete_post"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_rounded_corners"
+                        android:text="DELETE POST" />
+                    <Button
+                        android:id="@+id/button_update_post"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_rounded_corners"
+                        android:text="UPDATE" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/button_post"
