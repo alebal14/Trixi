@@ -1,9 +1,10 @@
 package com.example.trixi.ui.explore
 
 //import androidx.fragment.app.viewModels
+
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,17 +15,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.trixi.R
-import com.example.trixi.entities.Pet
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 
-class ShowTopPostsFragment : Fragment() {
+class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private lateinit var model: TrixiViewModel
     //private lateinit var linearLayoutManager: LinearLayoutManager
-    var  mContext : Context? = null;
+    var  mContext : Context? = null
+    var isClicked : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +40,20 @@ class ShowTopPostsFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
         mContext = context
+
+        cat_all.setOnClickListener(this)
+        cat_training.setOnClickListener(this)
+        cat_tricks.setOnClickListener(this)
+        cat_obedience.setOnClickListener(this)
+        cat_feeding.setOnClickListener(this)
+        cat_cute.setOnClickListener(this)
+        cat_other.setOnClickListener(this)
+
         allPostsToAdapter()
         searchToAdapter()
         populateCatSpinner()
         selectItemInSpinner()
+        catButtons()
 
         search_bar.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -62,8 +73,6 @@ class ShowTopPostsFragment : Fragment() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
-            Log.d("post_size_f", post?.size.toString())
-
             media_grid_top_posts.apply {
                 media_grid_top_posts.layoutManager =
                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -76,7 +85,7 @@ class ShowTopPostsFragment : Fragment() {
     private fun searchToAdapter() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
                     model.getPostBySearching(newText!!)
@@ -97,6 +106,7 @@ class ShowTopPostsFragment : Fragment() {
                 }
                 return true
             }
+
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
@@ -106,7 +116,6 @@ class ShowTopPostsFragment : Fragment() {
     private fun SearchClickx(){
     val closeButton: View? = search_bar.findViewById(androidx.appcompat.R.id.search_close_btn)
     val clearText: EditText? = search_bar.findViewById(androidx.appcompat.R.id.search_src_text)
-
     val mSearch: SearchView? = search_bar.findViewById(androidx.appcompat.R.id.search_bar)
 
         closeButton?.setOnClickListener {
@@ -128,9 +137,9 @@ class ShowTopPostsFragment : Fragment() {
             val spinnerAdapter = ArrayAdapter<PetType>(
                 mContext!!,
                 android.R.layout.simple_spinner_item, petType
-                )
+            )
 
-            spinnerAdapter.sort(compareBy{it.name})
+            spinnerAdapter.sort(compareBy { it.name })
             spinnerAdapter.insert(petTypeDefault, 0)
             cat_spinner.adapter = spinnerAdapter
         })
@@ -149,14 +158,12 @@ class ShowTopPostsFragment : Fragment() {
             ) {
 
                 val petTypeName: PetType = parent!!.selectedItem as PetType
-
                 if(position == 0){
                     allPostsToAdapter()
                 }else{
                     model.getPostByType(petTypeName.name).observe(
                         viewLifecycleOwner,
                         Observer { p ->
-                            println("IMINS " + p!!.size)
                             media_grid_top_posts.apply {
                                 media_grid_top_posts.layoutManager =
                                     StaggeredGridLayoutManager(
@@ -178,6 +185,125 @@ class ShowTopPostsFragment : Fragment() {
         }
     }
 
+
+    private fun catButtons(){
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+       /* cat_training.setOnClickListener {
+                model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
+
+                    if (isNotClicked == false) {
+                        cat_training.setBackgroundColor(getResources().getColor(R.color.colorLightGreen))
+                        isNotClicked = true
+                        setAdapter(post!!)
+                        println("KOLLAR 1 " + post.size + isNotClicked)
+                    } else {
+                        cat_training.setBackgroundColor(Color.WHITE)
+                        isNotClicked = false
+                        val finalPost =
+                            post!!.filter { it.categoryName!!.contains("Training") }.map { it }
+                        setAdapter(finalPost)
+                        println("KOLLAR 2 " + finalPost.size + isNotClicked)
+                    }
+                })
+        }
+
+        cat_tricks.setOnClickListener {
+            model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
+
+                if (isNotClicked == false) {
+                    cat_tricks.setBackgroundColor(getResources().getColor(R.color.colorLightGreen))
+                    isNotClicked = true
+                    setAdapter(post!!)
+                    println("KOLLAR 1 " + post.size + isNotClicked)
+                } else {
+                    cat_tricks.setBackgroundColor(Color.WHITE)
+                    isNotClicked = false
+                    val finalPost =
+                        post!!.filter { it.categoryName!!.contains("Tricks") }.map { it }
+                    setAdapter(finalPost)
+                    println("KOLLAR 2 " + finalPost.size + isNotClicked)
+                }
+            })
+        }*/
+
+
+    }
+
+    private fun setAdapter(adapterList: List<Post>){
+        media_grid_top_posts.apply {
+            media_grid_top_posts.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+            media_grid_top_posts.adapter =
+                ExploreMediaGridAdapter(adapterList as ArrayList<Post>)
+        }
+    }
+
+
+    override fun onClick(v: View?) {
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+        var button = v
+
+        cat_all.isSelected = false
+        cat_training.isSelected = false
+        cat_tricks.isSelected = false
+        cat_obedience.isSelected = false
+        cat_feeding.isSelected = false
+        cat_cute.isSelected = false
+        cat_other.isSelected = false
+
+        button!!.isSelected = true
+
+        model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
+            when (v?.getId()) {
+                R.id.cat_all -> {
+                    allPostsToAdapter()
+                    println("KOLLAR 2 " + post!!.size)
+                }
+                R.id.cat_training -> {
+                    val finalPost =
+                        post!!.filter { it.categoryName!!.contains("Training") }.map { it }
+                    setAdapter(finalPost)
+                    println("KOLLAR 2 " + finalPost.size)
+                }
+                R.id.cat_tricks -> {
+                    val finalPost =
+                        post!!.filter { it.categoryName!!.contains("Tricks") }.map { it }
+                    setAdapter(finalPost)
+                    println("KOLLAR 3 " + finalPost.size)
+                }
+                R.id.cat_obedience-> {
+                    val finalPost =
+                        post!!.filter { it.categoryName!!.contains("Obedience") }.map { it }
+                    setAdapter(finalPost)
+                    println("KOLLAR 3 " + finalPost.size)
+                }
+                R.id.cat_feeding -> {
+                    val finalPost =
+                        post!!.filter { it.categoryName!!.contains("Feeding") }.map { it }
+                    setAdapter(finalPost)
+                    println("KOLLAR 3 " + finalPost.size)
+                }
+                R.id.cat_cute -> {
+                    val finalPost =
+                        post!!.filter { it.categoryName!!.contains("Cute") }.map { it }
+                    setAdapter(finalPost)
+                    println("KOLLAR 3 " + finalPost.size)
+                }
+                R.id.cat_other -> {
+                    val finalPost =
+                        post!!.filter { it.categoryName!!.contains("Other") }.map { it }
+                    setAdapter(finalPost)
+                    println("KOLLAR 3 " + finalPost.size)
+                }
+                else -> {
+                }
+            }
+
+        })
+
+    }
 
 
 }

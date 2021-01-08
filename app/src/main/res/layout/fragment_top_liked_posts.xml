@@ -41,15 +41,24 @@
                     android:layout_marginLeft="2dp"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/colorLightGreen"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
                     android:tooltipText="Type of pet" />
+
+                <Button
+                    android:id="@+id/cat_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
+                    android:text="Top List"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/cat_training"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:background="@color/colorLightGreen"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Training"
                     android:textAllCaps="false" />
 
@@ -58,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:background="@color/colorLightGreen"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Tricks"
                     android:textAllCaps="false" />
 
@@ -67,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:background="@color/colorLightGreen"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Obedience"
                     android:textAllCaps="false" />
 
@@ -76,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:background="@color/colorLightGreen"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Feeding"
                     android:textAllCaps="false" />
 
@@ -85,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:background="@color/colorLightGreen"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Cute"
                     android:textAllCaps="false" />
 
@@ -94,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:background="@color/colorLightGreen"
+                    android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Other"
                     android:textAllCaps="false" />
 
