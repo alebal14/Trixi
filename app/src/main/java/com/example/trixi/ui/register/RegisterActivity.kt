@@ -158,8 +158,6 @@ class RegisterActivity : AppCompatActivity() {
                 CoroutineScope(Main).launch {
                     if (s?.length != 0 ) {
                         checkIfUserExist(s.toString())
-                        showToastTextLength(s.toString())
-
 
                         delay(500)
                         if (userExist.get() == true || s?.length!! > 10 ) {
@@ -311,10 +309,4 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private fun showToastTextLength(userName: String) {
-            if (userName.length > 10){
-
-                Toast.makeText(this, "Username cannot be longer than 10 characters", Toast.LENGTH_SHORT)
-            }
-    }
 }
