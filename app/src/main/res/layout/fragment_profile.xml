@@ -203,47 +203,48 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/top_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/profile_bio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+                android:id="@+id/profile_name"
+                style="@style/FancyFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="80dp"
-                android:paddingTop="50dp">
-
-
-            <ImageButton
-                    android:id="@+id/follow_button"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:background="@drawable/ic_follow"
-                    android:paddingLeft="20dp"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+                android:layout_marginTop="10dp"
+                android:text="@string/profile_user_name"
+                android:textColor="@color/colorTeal"
+                android:textSize="27sp"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.008"
+                app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.101" />
 
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/profile_name"
-            style="@style/FancyFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
-            android:ems="20"
-            android:text="@string/profile_user_name"
-            android:textColor="@color/colorTeal"
-            android:textSize="27sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
+    <ImageButton
+            android:id="@+id/follow_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="350dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_follow"
+            android:paddingLeft="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/profile_bio"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.008"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.101" />
-
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
