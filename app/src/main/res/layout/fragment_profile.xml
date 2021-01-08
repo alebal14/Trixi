@@ -12,6 +12,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
+    <TextView
+            android:id="@+id/edit_pet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="17dp"
+            android:drawableStart="@drawable/ic_edit_profile"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/playfair_display"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:text="Edit pet"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:tint="@color/colorTeal"
+            app:layout_constraintBottom_toTopOf="@+id/top_page"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_pet_image"
@@ -220,11 +238,11 @@
                 style="@style/FancyFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/profile_user_name"
                 android:textColor="@color/colorTeal"
                 android:textSize="27sp"
-                android:layout_marginLeft="20dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
                 app:layout_constraintEnd_toEndOf="parent"

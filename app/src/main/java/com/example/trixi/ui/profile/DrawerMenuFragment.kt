@@ -7,9 +7,8 @@ import android.view.View.GONE
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.profile.EditProfileFragment
-import com.example.trixi.ui.profile.PetRegister
 import kotlinx.android.synthetic.main.fragment_drawer_menu.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 
 class DrawerMenuFragment : Fragment() {
@@ -31,9 +30,8 @@ class DrawerMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        edit_pet.visibility = GONE
         addClickListeners()
-        
+
     }
 
     private fun addClickListeners() {
