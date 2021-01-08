@@ -21,11 +21,11 @@
             android:drawablePadding="10dp"
             android:fontFamily="@font/playfair_display"
             android:gravity="center_vertical"
-            android:visibility="gone"
             android:text="Edit pet"
             android:textSize="15sp"
             android:textStyle="bold"
             android:tint="@color/colorTeal"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/top_page"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -250,6 +250,14 @@
                 app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.101" />
+
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_pen">
+
+        </ImageButton>
 
     </LinearLayout>
 
