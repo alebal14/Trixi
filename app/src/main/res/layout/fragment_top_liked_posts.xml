@@ -31,12 +31,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical">
 
                 <Button
                     android:id="@+id/cat_spinner_start"
-                    android:layout_width="130dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="163dp"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Pet types"
@@ -44,20 +45,22 @@
 
                 <Spinner
                     android:id="@+id/cat_spinner"
-                    android:layout_width="130dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="160dp"
+                    android:layout_height="43dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="2dp"
-                    android:gravity="center"
+                    android:layout_marginLeft="3dp"
+                    android:elevation="10dp"
+                    android:translationZ="10dp"
                     android:layout_weight="1"
-                    android:background="@color/colorTeal"
+                    android:background="@color/colorPink"
+                    android:textAlignment="center"
                     android:tooltipText="Type of pet" />
 
 
                 <Button
                     android:id="@+id/cat_all"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Top List"
@@ -66,7 +69,7 @@
                 <Button
                     android:id="@+id/cat_training"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Training"
@@ -75,7 +78,7 @@
                 <Button
                     android:id="@+id/cat_tricks"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Tricks"
@@ -84,7 +87,7 @@
                 <Button
                     android:id="@+id/cat_obedience"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Obedience"
@@ -93,7 +96,7 @@
                 <Button
                     android:id="@+id/cat_feeding"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Feeding"
@@ -102,7 +105,7 @@
                 <Button
                     android:id="@+id/cat_cute"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Cute"
@@ -111,7 +114,7 @@
                 <Button
                     android:id="@+id/cat_other"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginLeft="2dp"
                     android:backgroundTint="@color/cat_buttons_state_colors"
                     android:text="Other"

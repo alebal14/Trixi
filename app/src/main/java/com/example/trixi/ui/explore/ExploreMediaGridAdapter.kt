@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Post
+import com.example.trixi.ui.fragments.SinglePostFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 
 
-class ExploreMediaGridAdapter(private val posts: ArrayList<Post>)
+class ExploreMediaGridAdapter(private val posts: ArrayList<Post>, private val listener:(Post) -> Unit)
     : RecyclerView.Adapter<ExploreMediaGridAdapter.DiscoverViewHolder>(){
 
 
@@ -34,7 +35,7 @@ class ExploreMediaGridAdapter(private val posts: ArrayList<Post>)
     }
 
     override fun onBindViewHolder(holder: DiscoverViewHolder, position: Int) {
-        posts?.get(position)?.let { holder.bindView(it) }
+        posts?.get(position)?.let { holder.bindView(it,  listener)  }
     }
 
 
@@ -49,9 +50,10 @@ class ExploreMediaGridAdapter(private val posts: ArrayList<Post>)
             Log.d("click", "clicking on image")
         }
 
-        fun bindView(post: Post) {
+        fun bindView(post: Post, listener: (Post) -> Unit) {
             var photo: String = BASE_URL + post.filePath
             Picasso.get().load(photo).into(postItem)
+            itemView.setOnClickListener { listener(post) }
         }
 
 

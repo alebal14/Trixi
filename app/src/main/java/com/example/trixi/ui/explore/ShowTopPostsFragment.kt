@@ -19,6 +19,7 @@ import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 
@@ -55,6 +56,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
         allPostsToAdapter()
         searchToAdapter()
+        populateCatSpinner()
 
 
         search_bar.setOnClickListener(object : View.OnClickListener {
@@ -80,6 +82,9 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
                 media_grid_top_posts.adapter = ExploreMediaGridAdapter(post as ArrayList<Post>)
+                {
+                        p -> redirectToSinglePost(p)
+                }
             }
         })
     }
@@ -168,7 +173,9 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
             media_grid_top_posts.adapter =
-                ExploreMediaGridAdapter(adapterList as ArrayList<Post>)
+                ExploreMediaGridAdapter(adapterList as ArrayList<Post>){
+                    p -> redirectToSinglePost(p)
+                }
         }
     }
 
@@ -189,18 +196,18 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         button!!.isSelected = true
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
+            var p = post
             when (v?.getId()) {
                 R.id.cat_spinner_start ->{
                     cat_spinner_start.setVisibility(View.GONE)
                     cat_spinner.setVisibility(View.VISIBLE)
-                    populateCatSpinner()
                     selectItemInSpinner()
                 }
                 R.id.cat_all -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
                     setAdapter(post!!)
-                    println("KOLLAR 2 " + post!!.size)
+                    populateCatSpinner()
                 }
                 R.id.cat_training -> {
                     cat_spinner.setVisibility(View.GONE)
@@ -208,7 +215,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     val finalPost =
                         post!!.filter { it.categoryName!!.contains("Training") }.map { it }
                     setAdapter(finalPost)
-                    println("KOLLAR 2 " + finalPost.size)
+                    populateCatSpinner()
                 }
                 R.id.cat_tricks -> {
                     cat_spinner.setVisibility(View.GONE)
@@ -216,7 +223,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     val finalPost =
                         post!!.filter { it.categoryName!!.contains("Tricks") }.map { it }
                     setAdapter(finalPost)
-                    println("KOLLAR 3 " + finalPost.size)
+                    populateCatSpinner()
                 }
                 R.id.cat_obedience-> {
                     cat_spinner.setVisibility(View.GONE)
@@ -224,7 +231,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     val finalPost =
                         post!!.filter { it.categoryName!!.contains("Obedience") }.map { it }
                     setAdapter(finalPost)
-                    println("KOLLAR 3 " + finalPost.size)
+                    populateCatSpinner()
                 }
                 R.id.cat_feeding -> {
                     cat_spinner.setVisibility(View.GONE)
@@ -232,7 +239,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     val finalPost =
                         post!!.filter { it.categoryName!!.contains("Feeding") }.map { it }
                     setAdapter(finalPost)
-                    println("KOLLAR 3 " + finalPost.size)
+                    populateCatSpinner()
                 }
                 R.id.cat_cute -> {
                     cat_spinner.setVisibility(View.GONE)
@@ -240,7 +247,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     val finalPost =
                         post!!.filter { it.categoryName!!.contains("Cute") }.map { it }
                     setAdapter(finalPost)
-                    println("KOLLAR 3 " + finalPost.size)
+                    populateCatSpinner()
                 }
                 R.id.cat_other -> {
                     cat_spinner.setVisibility(View.GONE)
@@ -248,7 +255,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     val finalPost =
                         post!!.filter { it.categoryName!!.contains("Other") }.map { it }
                     setAdapter(finalPost)
-                    println("KOLLAR 3 " + finalPost.size)
+                    populateCatSpinner()
                 }
                 else -> {
                     button!!.isSelected = false
@@ -257,6 +264,12 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
         })
 
+    }
+
+    private fun redirectToSinglePost(post: Post) {
+        val singlePost = SinglePostFragment(post)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, singlePost)?.commit()
 
     }
 
