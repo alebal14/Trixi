@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 //import androidx.fragment.app.viewModels
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.Pet
 import com.example.trixi.entities.User
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -16,10 +18,10 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.follow_row.view.*
-import kotlinx.android.synthetic.main.fragment_comment.*
+import kotlinx.android.synthetic.main.fragment_follow_list.*
 
-class PopUpFollowWindow(private val followList: ArrayList<User>) :
-    DialogFragment() {
+class PopUpFollowWindow(private val follow: ArrayList<User>?, private val followingPet: ArrayList<Pet>?) :
+        DialogFragment() {
 
     private val adapterChat = GroupAdapter<GroupieViewHolder>()
 
@@ -42,6 +44,7 @@ class PopUpFollowWindow(private val followList: ArrayList<User>) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Toast.makeText(activity, "Click", Toast.LENGTH_SHORT).show()
         setUpFollowView()
     }
 
@@ -56,13 +59,16 @@ class PopUpFollowWindow(private val followList: ArrayList<User>) :
 
     private fun setUpFollowView() {
 
-        followList!!.forEach { follow ->
 
-            adapterChat.add(FollowItem(follow))
-
+        follow!!.forEach { follow ->
+            adapterChat.add(FollowItem(follow, null))
         }
 
-        recyclerView_popup_comment.adapter = adapterChat
+        followingPet?.forEach { followingPet ->
+            adapterChat.add(FollowItem(null, followingPet))
+        }
+
+        recyclerView_popup_follow_list.adapter = adapterChat
 
     }
 }
@@ -71,13 +77,22 @@ class PopUpFollowWindow(private val followList: ArrayList<User>) :
 
 
 
-class FollowItem(private val followUser: User) :
+class FollowItem(private val followUser: User?, private val followingPet: Pet?) :
     Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.follow_user_name.text = followUser!!.userName
-        Picasso.get().load(RetrofitClient.BASE_URL + followUser.imageUrl)
-            .transform(CropCircleTransformation()).fit()
-            .into(viewHolder.itemView.follow_user_image)
+        if(followUser == null){
+            viewHolder.itemView.follow_user_name.text = followingPet!!.name
+            Picasso.get().load(RetrofitClient.BASE_URL + followingPet.imageUrl)
+                    .transform(CropCircleTransformation()).fit()
+                    .into(viewHolder.itemView.follow_user_image)
+        }
+        if(followingPet == null){
+            viewHolder.itemView.follow_user_name.text = followUser!!.userName
+            Picasso.get().load(RetrofitClient.BASE_URL + followUser.imageUrl)
+                    .transform(CropCircleTransformation()).fit()
+                    .into(viewHolder.itemView.follow_user_image)
+        }
+
     }
 
     override fun getLayout(): Int {

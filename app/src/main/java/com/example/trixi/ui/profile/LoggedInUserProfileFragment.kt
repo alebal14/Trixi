@@ -27,9 +27,11 @@ import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.DrawerMenuFragment
+import com.example.trixi.ui.fragments.PopUpFollowWindow
 import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_empty_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
@@ -38,6 +40,7 @@ class LoggedInUserProfileFragment : Fragment() {
     private var loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu: Boolean = false
     private lateinit var model: TrixiViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,10 +58,29 @@ class LoggedInUserProfileFragment : Fragment() {
         model.getOneUser(loggedInUser?.uid!!)
             ?.observe(viewLifecycleOwner, {
                 populateProfile(it)
+                handleClickOnFollow(it)
             })
 
         getPosts()
         getPets()
+
+
+    }
+
+    private fun handleClickOnFollow(user: User) {
+        profile_followers.setOnClickListener {
+
+                val popUp = PopUpFollowWindow(user.followers, null)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
+
+        }
+
+        profile_following.setOnClickListener {
+
+                val popUp = PopUpFollowWindow(user.followingsUser, user.followingsPet)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
+            
+        }
     }
 
     private fun getPets() {

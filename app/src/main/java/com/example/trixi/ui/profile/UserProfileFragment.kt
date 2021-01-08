@@ -34,11 +34,11 @@ class UserProfileFragment(val user: User?) : Fragment() {
     private lateinit var model: TrixiViewModel
     private var followed: Boolean = false
     private var numberOfFollowers = 0
+    private val db = PostToDb()
+    private var loggedInUser: User? = PostToDb.loggedInUser
 
     companion object {
         private val TAG = "profile"
-        private val db = PostToDb()
-        private var loggedInUser: User? = PostToDb.loggedInUser
     }
 
     override fun onCreateView(
@@ -57,7 +57,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
         checkIfFollowing()
         populateProfile()
-        handleClickOnFollow(user)
+
+
         follow_button.setOnClickListener { handleFollow() }
 
 
@@ -158,14 +159,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
     }
 
-    private fun handleClickOnFollow(user: User) {
-        profile_followers.setOnClickListener {
-            Toast.makeText(activity, "Click", Toast.LENGTH_LONG).show()
-             val popUp = PopUpFollowWindow(user.followers!!)
-                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
-        }
-
-    }
 
     private fun redirectToSinglePost(post: Post) {
         val singlePost = SinglePostFragment(post)

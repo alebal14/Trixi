@@ -99,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="60dp"
                 android:text="@string/number_of_followers"
+                 android:clickable="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20dp" />
 
