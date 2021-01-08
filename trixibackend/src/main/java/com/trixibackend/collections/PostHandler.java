@@ -32,7 +32,6 @@ public class PostHandler {
         likeHandler = new LikeHandler(database);
         commentHandler = new CommentHandler(database);
 
-
     }
 
     public MongoCollection<Post> getPostColl() {
@@ -169,7 +168,7 @@ public class PostHandler {
     public List<Post> searchPost(String searchTerm , List<User> userList, List<Pet> petList ){
 
         List<User> getAllUser = userList ;
-        List<Pet>  getAllPet = petList;
+       List<Pet>  getAllPet = petList;
 
         List<Post> allPostFromDB = getAllPosts();
 
@@ -177,11 +176,9 @@ public class PostHandler {
                 .filter(e -> e.getUserName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
 
-
         List<Pet> getPetName = getAllPet.stream()
                 .filter(e -> e.getName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
-
 
         Set<String> userid =
                 getUserName.stream()
@@ -202,18 +199,36 @@ public class PostHandler {
                         .collect(Collectors.toList());
 
 
-        List<Post> listCategory =
+       List<Post> listCategory =
                 allPostFromDB.stream()
-                        .filter(e -> e.getCategoryName().toLowerCase().contains(searchTerm.toLowerCase()) || e.getDescription().toLowerCase().contains(searchTerm.toLowerCase()) || e.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
+                        .filter(d -> d.getCategoryName() != null)
+                        .filter(e -> e.getCategoryName().toLowerCase().contains(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
+        System.out.println("all post: " + allPostFromDB.size());
+
+        List<Post> listTitle =
+                allPostFromDB.stream()
+                        .filter(e -> e.getTitle().toLowerCase().contains(searchTerm.toLowerCase()))
+                        .collect(Collectors.toList());
+
+        System.out.println(listTitle.size());
+
+        List<Post> listDescription=
+                allPostFromDB.stream()
+                        .filter(d -> d.getDescription() != null)
+                        .filter(s -> s.getDescription().toLowerCase().contains(searchTerm.toLowerCase()))
+                        .collect(Collectors.toList());
 
         List<Post> resultList = new ArrayList<>();
+        resultList.addAll(listUserPetPost);
+        resultList.addAll(listCategory);
+        resultList.addAll(listTitle);
+        resultList.addAll(listDescription);
 
-       resultList.addAll(listUserPetPost);
-       resultList.addAll(listCategory);
+;
+        System.out.println("result: " + resultList.size());
 
-        System.out.println(resultList.size());
 
         return resultList;
     }

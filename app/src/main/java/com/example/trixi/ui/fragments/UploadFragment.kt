@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -94,6 +95,7 @@ class UploadFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         uploadVideo.visibility = View.GONE;
+        edit_buttons_container.visibility= View.GONE
 
         btn_open_gallery_picture.setOnClickListener {
             checkGalleryPermission()
@@ -156,6 +158,7 @@ class UploadFragment() : Fragment() {
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
+
             }
         }
 
@@ -371,6 +374,8 @@ class UploadFragment() : Fragment() {
     private fun sendPhoto(){
 
         val totheView = view?.findViewById<View>(R.id.uploadImage) as ImageView
+
+        Log.d("Edit","selectedFile : $selectedFile")
 
         Picasso.get()
             .load(selectedFile)
