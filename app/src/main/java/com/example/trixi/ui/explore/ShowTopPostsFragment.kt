@@ -77,13 +77,15 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
+            val sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
+
             media_grid_top_posts.apply {
                 media_grid_top_posts.layoutManager =
                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                media_grid_top_posts.adapter = ExploreMediaGridAdapter(post as ArrayList<Post>)
-                {
-                        p -> redirectToSinglePost(p)
+                media_grid_top_posts.adapter = ExploreMediaGridAdapter(sortedPosts as ArrayList<Post>)
+                { p ->
+                    redirectToSinglePost(p)
                 }
             }
         })
@@ -206,7 +208,8 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 R.id.cat_all -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    setAdapter(post!!)
+                    val sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
+                    setAdapter(sortedPosts)
                     populateCatSpinner()
                 }
                 R.id.cat_training -> {
