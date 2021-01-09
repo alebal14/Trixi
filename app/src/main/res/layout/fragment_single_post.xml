@@ -71,7 +71,6 @@
                     android:shadowDx="2.5"
                     android:shadowDy="2.3"
                     android:shadowRadius="2.6"
-                    android:text="John Doe"
                     android:textColor="@color/colorPink"
                     android:textSize="20sp"
                     android:textStyle="bold">

@@ -2,12 +2,15 @@ package com.example.trixi.ui.profile
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.*
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SnapHelper
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
@@ -22,15 +25,15 @@ import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.media_grid
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class PetProfileFragment(val pet: Pet?) : Fragment() {
 
     private lateinit var model: TrixiViewModel
     private var followed = false
-    private lateinit var owner: String
+    private lateinit var owner: User
     private var numberOfFollowers = 0
+    private var ownerIsLoggedInUser = false
 
     companion object {
         private val TAG = "petProfile"
@@ -52,11 +55,11 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
 
         numberOfFollowers = pet?.followers?.size!!
 
+        getPetOwner()
         checkIfFollowing()
         follow_button.setOnClickListener { handleFollow() }
         populateProfile()
     }
-
 
     private fun populateProfile() {
         profile_name.text = pet!!.name
@@ -67,25 +70,39 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         profile_followers.text = pet.followers?.size.toString() + " Followers"
         profile_followers.gravity = TEXT_ALIGNMENT_CENTER
         profile_following.visibility = INVISIBLE
-
-        getOwnerName()
         getPosts()
     }
 
-    private fun getOwnerName() {
+    private fun getPetOwner() {
         owner_name.visibility = VISIBLE
 
-        //TODO: funkar ej??
         pet?.ownerId?.let {
             model.getOneUser(it)?.observe(viewLifecycleOwner, { owner ->
-                owner_name.setOnClickListener { redirectToOwner(owner) }
-                owner_name.text = "Owner: " + owner.userName
+                setPetOwner(owner)
             }
             )
         }
     }
 
+    private fun setPetOwner(user: User) {
+        owner = user
+
+        if (owner.uid == loggedInUser?.uid) {
+            ownerIsLoggedInUser = true
+            follow_button.visibility = GONE
+            edit_pet.visibility = VISIBLE
+        }
+
+        owner_name.setOnClickListener { redirectToOwner(owner) }
+        owner_name.text = "Owner: " + owner.userName
+    }
+
     private fun redirectToOwner(owner: User?) {
+        if (ownerIsLoggedInUser) {
+            val ownersProfile = LoggedInUserProfileFragment()
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fragment_container, ownersProfile)?.commit()
+        }else
         model.getOneUser(owner?.uid!!)?.observe(viewLifecycleOwner, { owner ->
             val ownersProfile = UserProfileFragment(owner)
             activity?.supportFragmentManager?.beginTransaction()
@@ -115,22 +132,17 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                         )
                         adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>) {
                             redirectToSinglePost(it)
-
                         }
-                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>)
                     }
-
                 }
-
             })
         }
-
     }
 
     private fun redirectToSinglePost(post: Post) {
         val singlePost = SinglePostFragment(post)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, singlePost)?.commit()
+            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
 
     }
 
@@ -169,5 +181,6 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
             }
         })
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.trixibackend.collections;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -18,14 +19,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 import static com.mongodb.client.model.Filters.eq;
 
 public class PostHandler {
     private MongoCollection<Post> postColl = null;
     private LikeHandler likeHandler;
-   
-
     private CommentHandler commentHandler;
 
 
@@ -174,7 +172,6 @@ public class PostHandler {
 
         List<Post> allPostFromDB = getAllPosts();
 
-
         List<User> getUserName = getAllUser.stream()
                 .filter(e -> e.getUserName().toLowerCase().startsWith(searchTerm.toLowerCase()))
                 .collect(Collectors.toList());
@@ -234,6 +231,21 @@ public class PostHandler {
 
 
         return resultList;
+    }
+
+    public List<Post> findPostByPetType(List<Pet> petsByType){
+        List<Post> allPostFromDB = getAllPosts();
+
+        Set<String> petId = petsByType.stream()
+                .map(Pet::getUid)
+                .collect(Collectors.toSet());
+
+        List<Post> result = allPostFromDB.stream()
+                .filter(e -> petId.contains(e.getOwnerId()))
+                .sorted(Collections.reverseOrder(Comparator.comparing(o -> o.getUid())))
+                .collect(Collectors.toList());
+
+        return result;
     }
 
     public LikeHandler getLikeHandler() {

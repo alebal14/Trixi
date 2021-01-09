@@ -239,7 +239,6 @@ public class RestApi {
                     String categoryName = null;
                     String fileType = null;
 
-
                     try {
                         Postfiles = req.getFormData("file");
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
@@ -433,8 +432,17 @@ public class RestApi {
             res.json(followingPostList);
         });
 
-    }
+        app.get("/api/posttype/:pettype", (req, res) -> {
 
+            String petType = req.getParam("pettype");
+
+            var petsByType = db.getPetHandler().findPetsByPetTypeName(petType);
+            var postByPetType = db.getPostHandler().findPostByPetType(petsByType);
+
+            res.json(postByPetType);
+        });
+
+    }
     private void setLoginUser() {
 
         app.post("/rest/login", (req, res) -> {
