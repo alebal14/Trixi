@@ -20,7 +20,7 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.fragments.SinglePostFragment
+import com.example.trixi.ui.post.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*

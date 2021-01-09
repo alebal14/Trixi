@@ -5,13 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filterable
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Post
-import com.example.trixi.ui.fragments.SinglePostFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_top_liked_post_item.view.*
 

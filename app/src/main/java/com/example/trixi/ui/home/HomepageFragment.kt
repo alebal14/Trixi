@@ -12,13 +12,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
-import com.example.trixi.entities.Comment
-import com.example.trixi.entities.Like
 import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*

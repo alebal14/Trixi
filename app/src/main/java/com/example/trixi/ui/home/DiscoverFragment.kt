@@ -12,7 +12,6 @@ import com.example.trixi.R
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.fragments.EmptyHomeFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*

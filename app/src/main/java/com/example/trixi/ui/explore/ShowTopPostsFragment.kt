@@ -19,7 +19,7 @@ import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.fragments.SinglePostFragment
+import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 
