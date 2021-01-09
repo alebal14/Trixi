@@ -88,15 +88,20 @@ class HomepageFragment : Fragment() {
                 commit()
             }
         } else {
-            posts.forEach { post ->
+            //posts.forEachIndexed { index, post ->
+            for (post in posts) {
+
+                Log.d("home", "post title: ---${post.title}")
                 model.getOneUser(post.ownerId!!)
                     ?.observe(viewLifecycleOwner, Observer { postOwner ->
                         if (postOwner != null) {
                             post.owner = postOwner
+
                             adapter.add(HomeItem(post, fm!!))
 
+
                         } else {
-                            Log.d("home", "user null")
+                            // Log.d("home", "user null")
                             model.getOnePet(post.ownerId!!)
                                 ?.observe(viewLifecycleOwner, Observer { petIsOwner ->
                                     post.ownerIsPet = petIsOwner
@@ -104,8 +109,12 @@ class HomepageFragment : Fragment() {
                                 })
                         }
                     })
+
             }
+
+
             recyclerView_homepage.adapter = adapter
+
         }
     }
 }

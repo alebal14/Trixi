@@ -92,9 +92,9 @@ class DiscoverFragment : Fragment() {
                     }
                 })
         }
-            recyclerView_homepage.adapter = adapter
-        }
+        recyclerView_homepage.adapter = adapter
     }
+}
 
 
 
