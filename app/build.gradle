@@ -133,5 +133,7 @@ dependencies {
 
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
 
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
 
 }

@@ -71,6 +71,7 @@ class HomeItem(
         handleClickOnFollowing(viewHolder)
         handleClickOnImgAndName(viewHolder)
 
+
     }
 
     private fun handleLike(viewHolder: GroupieViewHolder, numberOfLike: Int) {
@@ -91,6 +92,8 @@ class HomeItem(
         }
 
 
+
+
         likeHeart.setOnClickListener {
             val like = Like(post.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
 
@@ -108,6 +111,8 @@ class HomeItem(
                 viewHolder.itemView.home_item_like_count.text = numberOfLike1.toString()
             }
         }
+
+
     }
 
 
@@ -165,6 +170,8 @@ class HomeItem(
     override fun getLayout(): Int {
         return R.layout.fragment_home_item;
     }
+
+    //override fun getSpanSize(spanCount: Int, position: Int) = spanCount/3
 
 
 }
