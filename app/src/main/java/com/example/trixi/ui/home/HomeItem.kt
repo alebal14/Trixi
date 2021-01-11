@@ -47,10 +47,9 @@ class HomeItem(
         }
         val profileImgHolder = viewHolder.itemView.home_item_profileimg
         Picasso.get()
-            .load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl))
-            .transform(CropCircleTransformation()).fit()
-            .placeholder(R.drawable.sample)
-            .error(R.drawable.sample)
+            .load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl)).transform(CropCircleTransformation()).fit()
+            //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
+            //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
             .centerCrop().into(profileImgHolder)
 
 
