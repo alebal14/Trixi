@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.trixi.MainActivity
 import com.example.trixi.R
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
@@ -38,7 +39,7 @@ class EditProfileFragment : Fragment() {
     val db = PostToDb()
     lateinit var model: TrixiViewModel
     val loggedInUser = PostToDb.loggedInUser
-    var newBio : String = ""
+    var newBio: String = ""
     private var postPath: String? = null
     private var mediaPath: String? = null
     var selectedImage: Uri? = null
@@ -57,13 +58,24 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        edit_bio.hint = if(loggedInUser?.bio.isNullOrEmpty()) "Edit bio " else loggedInUser?.bio
+        setUpUI()
         setUpListeners()
         checkInput()
     }
 
+    private fun setUpUI() {
+        edit_bio.hint = if (loggedInUser?.bio.isNullOrEmpty()) "Edit bio " else loggedInUser?.bio
+
+        Picasso.get()
+            .load(loggedInUser?.imageUrl)
+            .transform(CropCircleTransformation())
+            .centerCrop()
+            .fit()
+            .into(edit_profile_image)
+    }
+
     private fun setUpListeners() {
-        button_update_profile.setOnClickListener {handleUpdateProfile()}
+        button_update_profile.setOnClickListener { handleUpdateProfile() }
 
         edit_profile_image.setOnClickListener {
             requestPermissions()
@@ -82,7 +94,11 @@ class EditProfileFragment : Fragment() {
         }
 
         if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this.requireActivity(), permissionsToRequest.toTypedArray(), 0)
+            ActivityCompat.requestPermissions(
+                this.requireActivity(),
+                permissionsToRequest.toTypedArray(),
+                0
+            )
         }
     }
 
@@ -114,22 +130,25 @@ class EditProfileFragment : Fragment() {
             selectedImage = data.getData()
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
-            val cursor = activity?.contentResolver?.query(selectedImage!!, filePathColumn, null, null, null)
+            val cursor =
+                activity?.contentResolver?.query(selectedImage!!, filePathColumn, null, null, null)
             assert(cursor != null)
             cursor!!.moveToFirst()
 
             val columnIndex = cursor.getColumnIndex(filePathColumn[0])
             mediaPath = cursor.getString(columnIndex)
 
-            Picasso.get()
-                .load(selectedImage)
-                .transform(CropCircleTransformation())
-                .centerCrop()
-                .fit().into(edit_profile_image)
+            if (mediaPath != null) {
+                Picasso.get()
+                    .load(selectedImage)
+                    .transform(CropCircleTransformation())
+                    .centerCrop()
+                    .fit()
+                    .into(edit_profile_image)
 
-            cursor.close()
-
-            postPath = mediaPath
+                cursor.close()
+                postPath = mediaPath
+            }
         }
     }
 
@@ -145,32 +164,43 @@ class EditProfileFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.length != 0 ){
+                if (s?.length != 0) {
                     newBio = s.toString()
                 }
             }
         })
-        
+
     }
 
 
-    private fun handleUpdateProfile(){
-        val updatedBio = if (edit_bio.text.toString() != null) edit_bio.text.toString() else null
-        val password = if(edit_password.text.toString() != null) edit_password.text.toString() else null
+    private fun handleUpdateProfile() {
+        var image: MultipartBody.Part? = null
 
-        val file = File(postPath)
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
-        val image = if(selectedImage == null) imagenPerfil else null
+        val updatedBio = if (edit_bio.text.toString().isEmpty()) null else edit_bio.text.toString()
+        val password = if (edit_password.text.toString().isEmpty()) loggedInUser?.password else edit_password.text.toString()
 
+        if (postPath != null) {
+            val file = File(postPath!!)
+            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+            image = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
+        }
 
-        db.PostRegisterUserToDb(image!!, loggedInUser?.uid, loggedInUser?.userName!!, loggedInUser?.email!!, password!!, updatedBio, this.requireContext())
+        db.PostRegisterUserToDb(
+            image,
+            loggedInUser?.uid,
+            loggedInUser?.userName!!,
+            loggedInUser.email!!,
+            password,
+            updatedBio,
+            this.requireContext()
+        )
     }
 
-    private fun checkBioLength(){
+    private fun checkBioLength() {
         newBio = edit_bio.text.toString()
         if (newBio?.length!! < 150)
-            Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT)
+                .show()
 
     }
 

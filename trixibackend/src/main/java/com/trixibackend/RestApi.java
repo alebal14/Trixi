@@ -185,14 +185,12 @@ public class RestApi {
                     String bio = null;
 
                     try {
-                        files = req.getFormData("file");
+                        files = (req.getFormData("file"));
                         uid = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         userName = req.getFormData("userName").get(0).getString().replace("\"", "");
                         email = req.getFormData("email").get(0).getString().replace("\"", "");
-                        password = (req.getFormData("password").get(0).getString()) != null ? req.getFormData("password").get(0).getString().replace("\"", "") : null;
+                        password = (req.getFormData("password") != null ? req.getFormData("password").get(0).getString().replace("\"", "") : null);
                         bio = (req.getFormData("bio") != null ? req.getFormData("bio").get(0).getString().replace("\"", "") : null);
-
-                        fileUrl = (db.uploadImage(files.get(0)));
 
                         System.out.println(uid + fileUrl + userName + email + password + bio);
 
@@ -202,12 +200,14 @@ public class RestApi {
                         user.setEmail(email);
                         user.setPassword(password);
                         user.setBio(bio);
-                        String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                        user.setPassword(hashedPassword);
 
-                        user.setImageUrl(fileUrl);
+                        if (password != null) {
+                            String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                            user.setPassword(hashedPassword);
+                        }
+                        if (files != null) user.setImageUrl(db.uploadImage(files.get(0)));
+
                         user.setRole("user");
-
                         System.out.println(user.getUserName());
                         db.save(user);
 
@@ -241,8 +241,8 @@ public class RestApi {
 
                     List<FileItem> Postfiles = null;
                     String PostfileUrl = null;
-                    String description= null;
-                    String ownerId= null;
+                    String description = null;
+                    String ownerId = null;
                     String title = null;
                     String categoryName = null;
                     String fileType = null;
@@ -250,13 +250,13 @@ public class RestApi {
                     try {
                         Postfiles = req.getFormData("file");
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
-                        ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         title = req.getFormData("title").get(0).getString().replace("\"", "");
                         categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
                         fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
                         PostfileUrl = db.uploadImage(Postfiles.get(0));
-                        System.out.println(PostfileUrl + description + ownerId+ title);
+                        System.out.println(PostfileUrl + description + ownerId + title);
 
                         Post post = new Post();
                         post.setDescription(description);
@@ -270,12 +270,12 @@ public class RestApi {
                         post.setUid(post.getId().toString());
 
 
-                            res.json(post);
-                            res.send("Created Post");
+                        res.json(post);
+                        res.send("Created Post");
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     break;
                 case "pets":
@@ -529,7 +529,7 @@ public class RestApi {
         });
     }
 
-    private void likeAndCommentApi(){
+    private void likeAndCommentApi() {
         app.post("/rest/likes", (req, res) -> {
             Like like = (Like) req.getBody(Like.class);
             Post p = db.getPostHandler().addLike(like);

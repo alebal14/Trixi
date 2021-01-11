@@ -54,7 +54,7 @@ interface Api {
     @Multipart
     @POST("rest/users")
     fun createUser(
-        @Part file: MultipartBody.Part,
+        @Part file: MultipartBody.Part?,
         @Part ("uid") uid: String?,
         @Part("userName") userName: String?,
         @Part("email") email: String?,

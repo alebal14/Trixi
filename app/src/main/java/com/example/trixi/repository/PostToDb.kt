@@ -164,7 +164,7 @@ class PostToDb {
    }
 
      fun PostRegisterUserToDb(
-         image: MultipartBody.Part,
+         image: MultipartBody.Part?,
          uid: String?,
          userName: String?,
          email: String?,
