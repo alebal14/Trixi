@@ -98,6 +98,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun allPostsToAdapter(){
+        
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         model.getAllPostsWithQuery(page, limit)?.observe(viewLifecycleOwner, Observer { post ->
