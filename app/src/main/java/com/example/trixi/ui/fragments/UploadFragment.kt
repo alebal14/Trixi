@@ -450,10 +450,10 @@ class UploadFragment() : Fragment() {
         }
 
 
-        if( file_validation == true){
+        if(file_validation){
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val imagenPerfil = MultipartBody.Part.createFormData("file", file?.name, requestFile);
-            //db.sendPostToDb(imagenPerfil, fileType, description, ownerId, title, categoryName)
+            db.sendPostToDb(imagenPerfil, fileType, description, ownerId, title, categoryName)
         } else {
             Toast.makeText(activity, "Invalid File", Toast.LENGTH_LONG).show()
             return

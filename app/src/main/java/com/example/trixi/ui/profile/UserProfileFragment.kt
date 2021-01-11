@@ -38,6 +38,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
     private val db = PostToDb()
     private var loggedInUser: User? = PostToDb.loggedInUser
 
+    var headerText = ""
+
     companion object {
         private val TAG = "profile"
     }
@@ -58,6 +60,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
         checkIfFollowing()
         populateProfile()
+
+        handleClickOnFollow(user)
 
 
         follow_button.setOnClickListener { handleFollow() }
@@ -92,6 +96,30 @@ class UserProfileFragment(val user: User?) : Fragment() {
         getPosts()
     }
 
+    private fun handleClickOnFollow(user: User) {
+
+        if(user.followers?.size.toString() != "0"){
+            profile_followers.setOnClickListener {
+                headerText =  user.userName.toString() + "'s followers"
+                val popUp = PopUpFollowWindow( activity?.supportFragmentManager!!,headerText,user.followers, null)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
+
+            }
+        }
+
+
+        if((user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString() != "0"){
+
+            profile_following.setOnClickListener {
+                headerText = user.userName.toString() +" is following"
+                val popUp = PopUpFollowWindow(activity?.supportFragmentManager!!, headerText, user.followingsUser, user.followingsPet)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
+
+            }
+        }
+
+
+    }
 
 
     private fun getPets() {

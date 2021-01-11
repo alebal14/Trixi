@@ -61,19 +61,28 @@ class LoggedInUserProfileFragment : Fragment() {
     }
 
     private fun handleClickOnFollow(user: User) {
-        profile_followers.setOnClickListener {
+
+        if(user.followers?.size.toString() != "0"){
+            profile_followers.setOnClickListener {
                 headerText = "Your followers"
                 val popUp = PopUpFollowWindow( activity?.supportFragmentManager!!,headerText,user.followers, null)
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
 
+            }
         }
 
-        profile_following.setOnClickListener {
+
+        if((user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString() != "0"){
+
+            profile_following.setOnClickListener {
                 headerText = "You are following"
                 val popUp = PopUpFollowWindow(activity?.supportFragmentManager!!, headerText, user.followingsUser, user.followingsPet)
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
-            
+
+            }
         }
+
+
     }
 
     private fun getPets() {
