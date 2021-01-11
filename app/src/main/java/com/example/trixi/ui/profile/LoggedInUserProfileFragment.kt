@@ -3,6 +3,7 @@ package com.example.trixi.ui.profile
 import android.os.Bundle
 import android.view.*
 import android.view.View
+import android.view.View.INVISIBLE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -184,9 +185,16 @@ class LoggedInUserProfileFragment : Fragment() {
 
         follow_button.visibility = View.INVISIBLE
         profile_name.text = updatedLoggedInUser!!.userName
-        profile_bio.text = updatedLoggedInUser!!.bio
-        Picasso.get().load(BASE_URL + updatedLoggedInUser!!.imageUrl).centerCrop().fit()
+
+        if(updatedLoggedInUser.bio == null){
+            profile_bio.visibility = INVISIBLE
+        } else profile_bio.text = updatedLoggedInUser!!.bio
+
+        Picasso.get()
+            .load(BASE_URL + updatedLoggedInUser!!.imageUrl)
+            .centerCrop().fit()
             .into(user_profile_pet_image)
+
         profile_following.text =
             "Following " + (updatedLoggedInUser!!.followingsPet?.size?.plus(updatedLoggedInUser!!.followingsUser!!.size)).toString()
         profile_followers.text = updatedLoggedInUser!!.followers?.size.toString() + " Followers"
