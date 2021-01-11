@@ -16,6 +16,7 @@ import com.example.trixi.entities.Comment
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.home.HomeItem
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -23,6 +24,7 @@ import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
+import kotlinx.android.synthetic.main.fragment_home_item.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 import kotlinx.android.synthetic.main.fragment_single_post.*
 
@@ -51,6 +53,8 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
         setUpCommentsView()
 
         send_comment.setOnClickListener {
@@ -70,8 +74,14 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
     }
 
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
+
     private fun setUpCommentsView() {
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
 
         comments!!.forEach { comment ->
@@ -109,7 +119,9 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
         }
         enter_comment.text.clear()
         adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
-        recyclerView_popup_comment.adapter = adapterChat
+        adapterChat.notifyDataSetChanged()
+        //recyclerView_popup_comment.adapter = adapterChat
+
 
     }
 

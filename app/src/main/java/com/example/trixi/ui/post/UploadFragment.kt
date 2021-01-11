@@ -1,4 +1,4 @@
-package com.example.trixi.ui.fragments
+package com.example.trixi.ui.post
 
 import android.Manifest
 import android.app.Activity

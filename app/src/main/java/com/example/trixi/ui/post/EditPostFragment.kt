@@ -1,4 +1,4 @@
-package com.example.trixi.ui.edit
+package com.example.trixi.ui.post
 
 import android.content.Context
 import android.os.Bundle

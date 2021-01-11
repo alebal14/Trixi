@@ -1,4 +1,4 @@
-package com.example.trixi.ui.fragments
+package com.example.trixi.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import com.example.trixi.R
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
-
-import com.example.trixi.ui.home.DiscoverFragment
 
 import kotlinx.android.synthetic.main.fragment_empty_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*

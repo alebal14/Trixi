@@ -1,7 +1,6 @@
-package com.example.trixi.ui.fragments
+package com.example.trixi.ui.post
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +15,11 @@ import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
-import com.example.trixi.ui.edit.EditPostFragment
-import com.example.trixi.ui.profile.EditProfileFragment
+import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_single_post.*
-import java.util.concurrent.atomic.AtomicBoolean
 
 
 class SinglePostFragment(private val post1: Post?) : Fragment() {

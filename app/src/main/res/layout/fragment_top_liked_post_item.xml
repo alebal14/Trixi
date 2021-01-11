@@ -20,5 +20,22 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
+    <com.potyvideo.library.AndExoPlayerView
+        android:id="@+id/video_top_post"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:andexo_full_screen="true"
+        app:andexo_play_when_ready="true"
+        app:andexo_show_controller="true"
+        app:andexo_resize_mode="Zoom"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

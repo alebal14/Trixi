@@ -19,7 +19,7 @@ import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.fragments.SinglePostFragment
+import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 
 
@@ -198,7 +198,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         button!!.isSelected = true
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
-            var p = post
+
             when (v?.getId()) {
                 R.id.cat_spinner_start ->{
                     cat_spinner_start.setVisibility(View.GONE)
