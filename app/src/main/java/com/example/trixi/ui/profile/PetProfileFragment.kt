@@ -21,6 +21,7 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.PopUpFollowWindow
 import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
@@ -34,6 +35,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
     private lateinit var owner: User
     private var numberOfFollowers = 0
     private var ownerIsLoggedInUser = false
+    var headerText = ""
 
     companion object {
         private val TAG = "petProfile"
@@ -55,10 +57,26 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
 
         numberOfFollowers = pet?.followers?.size!!
 
+        handleClickOnFollow(pet)
+
         getPetOwner()
         checkIfFollowing()
         follow_button.setOnClickListener { handleFollow() }
         populateProfile()
+    }
+
+    private fun handleClickOnFollow(pet: Pet) {
+
+        if(pet.followers?.size.toString() != "0"){
+            profile_followers.setOnClickListener {
+                headerText =  pet.name.toString() + "'s followers"
+                val popUp = PopUpFollowWindow( activity?.supportFragmentManager!!,headerText, pet.followers, null)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
+
+            }
+        }
+
+
     }
 
     private fun populateProfile() {
