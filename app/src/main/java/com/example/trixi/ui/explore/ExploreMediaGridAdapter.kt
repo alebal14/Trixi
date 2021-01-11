@@ -9,6 +9,7 @@ import android.widget.Filterable
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Post
 import com.potyvideo.library.AndExoPlayerView
@@ -53,10 +54,18 @@ class ExploreMediaGridAdapter(private val posts: ArrayList<Post>, private val li
         }
 
         fun bindView(post: Post, listener: (Post) -> Unit) {
-            
+            if(post.fileType.toString() == "image"){
+                postItem!!.visibility= View.VISIBLE
+                videoItem!!.visibility= View.GONE
+                var photo: String = BASE_URL + post.filePath
+                Picasso.get().load(photo).into(postItem)
+            }else{
+                postItem!!.visibility= View.GONE
+                videoItem!!.visibility= View.VISIBLE
+                videoItem!!.setSource(BASE_URL + post.filePath.toString())
 
-            var photo: String = BASE_URL + post.filePath
-            Picasso.get().load(photo).into(postItem)
+            }
+
             itemView.setOnClickListener { listener(post) }
         }
 
