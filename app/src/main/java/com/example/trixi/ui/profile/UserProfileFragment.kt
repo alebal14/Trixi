@@ -9,11 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SnapHelper
 import com.example.marvelisimo.adapter.ProfileMediaGridAdapter
 import com.example.trixi.R
-import com.example.trixi.R.drawable.*
+import com.example.trixi.R.drawable.ic_follow
+import com.example.trixi.R.drawable.ic_heart_filled
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
@@ -25,7 +27,6 @@ import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.users_pet_list
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 
@@ -163,7 +164,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
     private fun redirectToSinglePost(post: Post) {
         val singlePost = SinglePostFragment(post)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, singlePost)?.commit()
+            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
 
     }
 
@@ -171,7 +172,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
         val fm = activity?.supportFragmentManager
 
         val petProfile = PetProfileFragment(pet)
-        fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)?.commit()
+        fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)?.addToBackStack("petProfileFragment")!!.commit()
     }
 
     private fun toggleFollowIcon(followed: Boolean) {

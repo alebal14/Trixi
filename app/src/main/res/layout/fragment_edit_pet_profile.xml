@@ -14,16 +14,25 @@
                 android:id="@+id/edit_profile_image"
                 android:layout_width="148dp"
                 android:layout_height="148dp"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/image_btn_circle"
-                android:paddingBottom="40dp" />
-
+                android:paddingBottom="30dp" />
 
         <EditText
-                android:id="@+id/edit_bio"
+                android:id="@+id/edit_username"
+                android:layout_width="283dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/text_input_rounded_corners"
+                android:ems="10"
+                android:hint="Edit pet name"
+                android:inputType="textPersonName"
+                android:paddingLeft="16dp" />
+
+        <EditText
+                android:id="@+id/edit_description"
                 android:layout_width="283dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
@@ -34,16 +43,37 @@
 
 
 
-        <EditText
-                android:id="@+id/edit_password"
+
+
+        <Spinner
+                android:id="@+id/edit_pet_gender"
                 android:layout_width="283dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/text_input_rounded_corners"
                 android:ems="10"
-                android:hint="Edit password"
-                android:inputType="textPassword"
-                android:maxLength="150"
+                android:paddingLeft="16dp"
+                ></Spinner>
+
+        <Spinner
+                android:id="@+id/edit_pet_type"
+                android:layout_width="283dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/text_input_rounded_corners"
+                android:ems="10"
+                android:paddingLeft="16dp"
+                ></Spinner>
+
+        <EditText
+                android:id="@+id/edit_breed"
+                android:layout_width="283dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/text_input_rounded_corners"
+                android:ems="10"
+                android:hint="Edit breed"
+                android:inputType="textPersonName"
                 android:paddingLeft="16dp" />
 
         <Button

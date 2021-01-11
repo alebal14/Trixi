@@ -39,6 +39,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+
+
             <EditText
                 android:id="@+id/register_username"
                 android:layout_width="262dp"

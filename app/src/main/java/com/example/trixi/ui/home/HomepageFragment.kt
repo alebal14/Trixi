@@ -84,7 +84,7 @@ class HomepageFragment : Fragment() {
     private fun populatePosts(posts: List<Post>?) {
         if (posts!!.isEmpty()) {
             activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragment_container, EmptyHomeFragment())
+                replace(R.id.fragment_container, EmptyHomeFragment()).addToBackStack("populateFragment")!!.
                 commit()
             }
         } else {
