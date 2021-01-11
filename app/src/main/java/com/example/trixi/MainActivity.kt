@@ -3,13 +3,12 @@ package com.example.trixi
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.explore.ShowTopPostsFragment
-import com.example.trixi.ui.fragments.SinglePostFragment
-import com.example.trixi.ui.fragments.UploadFragment
+import com.example.trixi.ui.post.SinglePostFragment
+import com.example.trixi.ui.post.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.profile.LoggedInUserProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*

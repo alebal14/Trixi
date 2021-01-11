@@ -1,5 +1,6 @@
 package com.example.trixi.ui.home
 
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class HomeItem(
     val post: Post,
-    private val fm: FragmentManager
+    private val fm: FragmentManager,
 ) : Item<GroupieViewHolder>() {
 
     companion object {
@@ -31,34 +32,33 @@ class HomeItem(
     }
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        Log.d("position", "$position : post title: ${post.title}")
 
-        if(post.fileType.toString() == "image"){
-            viewHolder.itemView.home_item_media.visibility= View.VISIBLE
-            viewHolder.itemView.home_item_video.visibility= View.GONE
+        if (post.fileType.toString() == "image") {
+            viewHolder.itemView.home_item_media.visibility = View.VISIBLE
+            viewHolder.itemView.home_item_video.visibility = View.GONE
             Picasso.get().load(RetrofitClient.BASE_URL + post.filePath).centerCrop().fit()
                 .into(viewHolder.itemView.home_item_media)
-        }else{
-            viewHolder.itemView.home_item_media.visibility= View.GONE
-            viewHolder.itemView.home_item_video.visibility= View.VISIBLE
+        } else {
+            viewHolder.itemView.home_item_media.visibility = View.GONE
+            viewHolder.itemView.home_item_video.visibility = View.VISIBLE
             viewHolder.itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
 
         }
-//        Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: ))
-//            .transform(CropCircleTransformation()).fit()
-//            .into(viewHolder.itemView.home_item_profileimg)
-        val profileImgHolder =viewHolder.itemView.home_item_profileimg
-        Picasso.get().load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl))
-            .transform(CropCircleTransformation()).fit()
-            .placeholder(R.drawable.sample)
-            .error(R.drawable.sample)
+        val profileImgHolder = viewHolder.itemView.home_item_profileimg
+        Picasso.get()
+            .load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl)).transform(CropCircleTransformation()).fit()
+            //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
+            //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
             .centerCrop().into(profileImgHolder)
 
 
-        viewHolder.itemView.home_item_profileName.text = post.owner?.userName ?: post.ownerIsPet?.name
+        viewHolder.itemView.home_item_profileName.text =
+            post.owner?.userName ?: post.ownerIsPet?.name
         viewHolder.itemView.home_item_title.text = post.title
         viewHolder.itemView.home_item_description.text = post.description
         viewHolder.itemView.home_item_edit.isVisible = false
-        val numberOfComments:Int = post.comments!!.size
+        val numberOfComments: Int = post.comments!!.size
         viewHolder.itemView.home_item_chat_count.text = numberOfComments.toString()
         val numberOfLike: Int = post.likes!!.size
         viewHolder.itemView.home_item_like_count.text = numberOfLike.toString()
@@ -69,6 +69,7 @@ class HomeItem(
         handleClickOnDiscovery(viewHolder)
         handleClickOnFollowing(viewHolder)
         handleClickOnImgAndName(viewHolder)
+
 
     }
 
@@ -90,6 +91,8 @@ class HomeItem(
         }
 
 
+
+
         likeHeart.setOnClickListener {
             val like = Like(post.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
 
@@ -107,6 +110,8 @@ class HomeItem(
                 viewHolder.itemView.home_item_like_count.text = numberOfLike1.toString()
             }
         }
+
+
     }
 
 
@@ -123,10 +128,10 @@ class HomeItem(
     }
 
     private fun redirectToUserOrPet() {
-        if(post.owner !=null){
+        if (post.owner != null) {
             val userProfileFragment = UserProfileFragment(post.owner)
             fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
-        }else {
+        } else {
             val petProfileFragment = PetProfileFragment(post.ownerIsPet)
             fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
 
@@ -137,7 +142,7 @@ class HomeItem(
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {
         val commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
         commentIcon.setOnClickListener {
-            val popUp = PopUpCommentWindow(post.comments, post.uid.toString(),viewHolder)
+            val popUp = PopUpCommentWindow(post.comments, post.uid.toString(), viewHolder)
             popUp.show(fm, PopUpCommentWindow.TAG)
         }
     }
@@ -161,10 +166,11 @@ class HomeItem(
     }
 
 
-
     override fun getLayout(): Int {
         return R.layout.fragment_home_item;
     }
+
+    //override fun getSpanSize(spanCount: Int, position: Int) = spanCount/3
 
 
 }
