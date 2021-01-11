@@ -20,12 +20,10 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.fragments.DrawerMenuFragment
 import com.example.trixi.ui.fragments.PopUpFollowWindow
 import com.example.trixi.ui.fragments.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_empty_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
