@@ -102,6 +102,7 @@ class PetRegister : Fragment() {
                     android.R.layout.simple_spinner_item,
                     allPetType
                 )
+                spinnerAdapter.sort(compareBy { it.name.toLowerCase() })
                 register_spinner_pet_type.adapter = spinnerAdapter
             })
 

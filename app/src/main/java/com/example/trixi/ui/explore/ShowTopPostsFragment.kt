@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.airbnb.lottie.LottieAnimationView
 import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
@@ -170,6 +171,10 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
 
     private fun setAdapter(adapterList: List<Post>){
+
+       // val anim: LottieAnimationView? = animationViewLoadingSpinner.findViewById(R.id.animationViewLoadingSpinner)
+       // anim?.visibility = View.GONE
+
         media_grid_top_posts.apply {
             media_grid_top_posts.layoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
