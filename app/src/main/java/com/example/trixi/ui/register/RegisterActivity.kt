@@ -277,7 +277,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
-        post.PostRegisterUserToDb(imagenPerfil, userName, email, password, this)
+        post.PostRegisterUserToDb(imagenPerfil, null, userName, email, password, null, this)
     }
 
 

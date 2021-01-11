@@ -177,23 +177,31 @@ public class RestApi {
                 case "users":
 
                     List<FileItem> files = null;
+                    String uid = null;
                     String fileUrl = null;
                     String userName = null;
                     String email = null;
                     String password = null;
+                    String bio = null;
+
                     try {
                         files = req.getFormData("file");
+                        uid = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         userName = req.getFormData("userName").get(0).getString().replace("\"", "");
                         email = req.getFormData("email").get(0).getString().replace("\"", "");
-                        password = req.getFormData("password").get(0).getString().replace("\"", "");
+                        password = (req.getFormData("password").get(0).getString()) != null ? req.getFormData("password").get(0).getString().replace("\"", "") : null;
+                        bio = (req.getFormData("bio") != null ? req.getFormData("bio").get(0).getString().replace("\"", "") : null);
 
-                        fileUrl = db.uploadImage(files.get(0));
-                        System.out.println(fileUrl + userName + email + password);
+                        fileUrl = (db.uploadImage(files.get(0)));
+
+                        System.out.println(uid + fileUrl + userName + email + password + bio);
 
                         User user = new User();
+                        user.setUid(uid);
                         user.setUserName(userName);
                         user.setEmail(email);
                         user.setPassword(password);
+                        user.setBio(bio);
                         String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                         user.setPassword(hashedPassword);
 
@@ -277,7 +285,7 @@ public class RestApi {
                     String PetOwnerId = null;
                     String name = null;
                     String age = null;
-                    String bio = null;
+                    String petBio = null;
                     String breed = null;
                     String Type = null;
                     String gender = null;
@@ -287,7 +295,7 @@ public class RestApi {
                         name = req.getFormData("name").get(0).getString().replace("\"", "");
                         PetOwnerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         age = req.getFormData("age").get(0).getString().replace("\"", "");
-                        bio = req.getFormData("bio").get(0).getString().replace("\"", "");
+                        petBio = req.getFormData("bio").get(0).getString().replace("\"", "");
                         breed = req.getFormData("breed").get(0).getString().replace("\"", "");
                         Type = req.getFormData("petType").get(0).getString().replace("\"", "");
                         gender = req.getFormData("gender").get(0).getString().replace("\"", "");
@@ -300,7 +308,7 @@ public class RestApi {
                         pet.setName(name);
                         pet.setOwnerId(PetOwnerId);
                         pet.setAge(age);
-                        pet.setBio(bio);
+                        pet.setBio(petBio);
                         pet.setBreed(breed);
                         pet.setPetType(Type);
                         pet.setGender(gender);
@@ -443,6 +451,7 @@ public class RestApi {
         });
 
     }
+
     private void setLoginUser() {
 
         app.post("/rest/login", (req, res) -> {

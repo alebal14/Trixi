@@ -10,6 +10,7 @@ import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.*
 import com.example.trixi.ui.login.LoginActivity
+import com.example.trixi.ui.register.RegisterActivity
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -164,14 +165,16 @@ class PostToDb {
 
      fun PostRegisterUserToDb(
          image: MultipartBody.Part,
-         userName: String,
-         email: String,
-         password: String,
+         uid: String?,
+         userName: String?,
+         email: String?,
+         password: String?,
+         bio: String?,
          context: Context
      ){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.createUser(image, userName, email, password)
+        val call = retrofitClient?.createUser(image, uid, userName, email, password, bio)
      call?.enqueue(object : Callback<User> {
          override fun onFailure(call: Call<User>, t: Throwable) {
              Log.d("uus", "REG-user : onfailure " + t.message)

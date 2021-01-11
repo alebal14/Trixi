@@ -1,16 +1,27 @@
 package com.example.trixi.ui.profile
 
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -23,11 +34,14 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class EditProfileFragment : Fragment() {
-    val post = PostToDb()
+
+    val db = PostToDb()
     lateinit var model: TrixiViewModel
     val loggedInUser = PostToDb.loggedInUser
     var newBio : String = ""
     private var postPath: String? = null
+    private var mediaPath: String? = null
+    var selectedImage: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +58,79 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         edit_bio.hint = if(loggedInUser?.bio.isNullOrEmpty()) "Edit bio " else loggedInUser?.bio
+        setUpListeners()
         checkInput()
+    }
+
+    private fun setUpListeners() {
         button_update_profile.setOnClickListener {handleUpdateProfile()}
 
+        edit_profile_image.setOnClickListener {
+            requestPermissions()
+            val intent = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI
+            )
+            startActivityForResult(intent, 0)
+        }
+    }
+
+    private fun requestPermissions() {
+        var permissionsToRequest = mutableListOf<String>()
+        if (!hasWriteExternalStoragePermission()) {
+            permissionsToRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this.requireActivity(), permissionsToRequest.toTypedArray(), 0)
+        }
+    }
+
+    private fun hasWriteExternalStoragePermission() =
+        ActivityCompat.checkSelfPermission(
+            this.requireContext(),
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 0 && grantResults.isNotEmpty()) {
+            for (i in grantResults.indices) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("permissionRequest", "${permissions[i]} granted.")
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+
+            selectedImage = data.getData()
+            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+            val cursor = activity?.contentResolver?.query(selectedImage!!, filePathColumn, null, null, null)
+            assert(cursor != null)
+            cursor!!.moveToFirst()
+
+            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+            mediaPath = cursor.getString(columnIndex)
+
+            Picasso.get()
+                .load(selectedImage)
+                .transform(CropCircleTransformation())
+                .centerCrop()
+                .fit().into(edit_profile_image)
+
+            cursor.close()
+
+            postPath = mediaPath
+        }
     }
 
     private fun checkInput() {
@@ -71,14 +155,16 @@ class EditProfileFragment : Fragment() {
 
 
     private fun handleUpdateProfile(){
-        val updatedBio = edit_bio.text.toString()
-        val password = edit_password.text.toString()
-        val profileImage = edit_profile_image
+        val updatedBio = if (edit_bio.text.toString() != null) edit_bio.text.toString() else null
+        val password = if(edit_password.text.toString() != null) edit_password.text.toString() else null
 
         val file = File(postPath)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
+        val image = if(selectedImage == null) imagenPerfil else null
 
+
+        db.PostRegisterUserToDb(image!!, loggedInUser?.uid, loggedInUser?.userName!!, loggedInUser?.email!!, password!!, updatedBio, this.requireContext())
     }
 
     private fun checkBioLength(){
