@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomepageFragment : Fragment() {
 
-    val adapter = GroupAdapter<GroupieViewHolder>()
+    //val adapter = GroupAdapter<GroupieViewHolder>()
     private var model: TrixiViewModel = TrixiViewModel()
     private val fm: FragmentManager?
         get() {
@@ -80,7 +80,7 @@ class HomepageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        adapter.clear()
+        //adapter.clear()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

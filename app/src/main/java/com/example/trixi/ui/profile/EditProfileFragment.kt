@@ -190,9 +190,7 @@ class EditProfileFragment : Fragment() {
         if (!newBio.isEmpty() && bioLengthIsOk()) newBio = edit_bio.text.toString()
         else newBio = loggedInUser?.bio!!
 
-        password = if (edit_password.text.toString()
-                .isEmpty()
-        ) loggedInUser?.password else edit_password.text.toString()
+        password = if (edit_password.text.toString().isEmpty()) loggedInUser?.password else edit_password.text.toString()
 
         if (postPath != null) {
             val file = File(postPath)

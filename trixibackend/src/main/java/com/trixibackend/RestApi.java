@@ -172,6 +172,7 @@ public class RestApi {
     }
 
     private void setUpPostApi(String collectionName) {
+
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
@@ -200,7 +201,11 @@ public class RestApi {
                         if(uid != null) {
                             user.setUid(uid);
                             user.setId(new ObjectId(uid));
+                            user.setFollowingsUser(oldUser.getFollowingsUser());
+                            user.setFollowingsPet(oldUser.getFollowingsPet());
+                            user.setFollowers(oldUser.getFollowers());
                             if(password == null){
+                                System.out.println("old password: " +oldUser.getPassword());
                                 user.setPassword(oldUser.getPassword());
                             } else {
                                 String hashedPassword = BCrypt.withDefaults().hashToString(10, password.toCharArray());
