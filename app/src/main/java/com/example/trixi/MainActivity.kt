@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.activity.ActivityFragment
 import com.example.trixi.ui.explore.ShowTopPostsFragment
 import com.example.trixi.ui.post.SinglePostFragment
 import com.example.trixi.ui.post.UploadFragment
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val postFragment = UploadFragment()
         val explorerFragment = ShowTopPostsFragment()
         val profileFragment = LoggedInUserProfileFragment()
+        val activityFragment = ActivityFragment()
 
         if (PostToDb.postedPost != null) {
             post = PostToDb.postedPost
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.footer_search -> makeCurrentFragment(explorerFragment)
                 R.id.footer_post -> makeCurrentFragment(postFragment)
                 R.id.footer_profile -> makeCurrentFragment(profileFragment)
+                R.id.footer_activity ->makeCurrentFragment(activityFragment)
             }
             true
         }
