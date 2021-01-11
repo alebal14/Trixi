@@ -22,7 +22,7 @@
             android:padding="5dp"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_url="https://assets9.lottiefiles.com/packages/lf20_cy11of6d.json" />
+            app:lottie_url="https://assets6.lottiefiles.com/packages/lf20_fy4wzpng.json" />
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

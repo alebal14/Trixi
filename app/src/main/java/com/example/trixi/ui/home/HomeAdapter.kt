@@ -113,9 +113,10 @@ class HomeAdapter(
         ) {
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (petIsOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
-                .transform(CropCircleTransformation()).fit()
-                .placeholder(R.drawable.sample)
-                .error(R.drawable.sample)
+                    .transform(CropCircleTransformation()).fit()
+                //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
+                //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
+
                 .centerCrop().into(itemView.home_item_profileimg)
 
             itemView.home_item_profileName.text = petIsOwner.name
@@ -128,9 +129,9 @@ class HomeAdapter(
         ) {
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (postOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
-                .transform(CropCircleTransformation()).fit()
-                .placeholder(R.drawable.sample)
-                .error(R.drawable.sample)
+                    .transform(CropCircleTransformation()).fit()
+                //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
+                //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
                 .centerCrop().into(itemView.home_item_profileimg)
 
             itemView.home_item_profileName.text = postOwner.userName
