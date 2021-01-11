@@ -32,6 +32,7 @@ class LoggedInUserProfileFragment : Fragment() {
     private var loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu: Boolean = false
     private lateinit var model: TrixiViewModel
+    var headerText = ""
 
 
     override fun onCreateView(
@@ -61,15 +62,15 @@ class LoggedInUserProfileFragment : Fragment() {
 
     private fun handleClickOnFollow(user: User) {
         profile_followers.setOnClickListener {
-
-                val popUp = PopUpFollowWindow(user.followers, null)
+                headerText = "Your followers"
+                val popUp = PopUpFollowWindow( activity?.supportFragmentManager!!,headerText,user.followers, null)
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
 
         }
 
         profile_following.setOnClickListener {
-
-                val popUp = PopUpFollowWindow(user.followingsUser, user.followingsPet)
+                headerText = "You are following"
+                val popUp = PopUpFollowWindow(activity?.supportFragmentManager!!, headerText, user.followingsUser, user.followingsPet)
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
             
         }
