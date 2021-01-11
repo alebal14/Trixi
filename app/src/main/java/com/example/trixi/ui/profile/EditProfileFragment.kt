@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.trixi.BuildConfig
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.repository.PostToDb
@@ -132,7 +133,9 @@ class EditProfileFragment : Fragment() {
 
             val cursor =
                 activity?.contentResolver?.query(selectedImage!!, filePathColumn, null, null, null)
-            assert(cursor != null)
+            if (BuildConfig.DEBUG && cursor == null) {
+                error("Assertion failed")
+            }
             cursor!!.moveToFirst()
 
             val columnIndex = cursor.getColumnIndex(filePathColumn[0])
@@ -148,8 +151,7 @@ class EditProfileFragment : Fragment() {
 
                 cursor.close()
                 postPath = mediaPath
-            }
-            else postPath = loggedInUser?.imageUrl
+            } else postPath = loggedInUser?.imageUrl
         }
     }
 
@@ -170,7 +172,6 @@ class EditProfileFragment : Fragment() {
                 }
             }
         })
-
     }
 
 
@@ -178,20 +179,31 @@ class EditProfileFragment : Fragment() {
 
         //If everything is ok input, go to update User
 
-        if(bioLengthIsOk()) {
-            if(newBio.isEmpty()) newBio = loggedInUser?.bio.toString()
+        //only image -> WORKS
+        //only password -> WORKS
+        //only bio -> WORKS
+        //password & bio -> WORKS
+        //password & image -> WORKS
+        //bio & image -> WORKS
+        //ALL 3 -> WORKS
 
-            password = if (edit_password.text.toString().isEmpty()) loggedInUser?.password else edit_password.text.toString()
+        if (!newBio.isEmpty() && bioLengthIsOk()) newBio = edit_bio.text.toString()
+        else newBio = loggedInUser?.bio!!
 
-            //TODO: image gets deleted
-            if (postPath != null) {
-                val file = File(postPath!!)
-                val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-                image = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
-            }
-            updateUser()
+        password = if (edit_password.text.toString()
+                .isEmpty()
+        ) loggedInUser?.password else edit_password.text.toString()
+
+        if (postPath != null) {
+            val file = File(postPath)
+            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+            image = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
         }
+        updateUser()
+        redirectToProfile()
     }
+
+
 
     private fun updateUser() {
         db.PostRegisterUserToDb(
@@ -200,18 +212,25 @@ class EditProfileFragment : Fragment() {
             loggedInUser?.userName!!,
             loggedInUser.email!!,
             password,
-            newBio!!,
+            newBio,
             this.requireContext()
         )
+
+        Toast.makeText(activity, "Profile updated!", Toast.LENGTH_SHORT)
+            .show()
     }
 
-    private fun bioLengthIsOk() : Boolean {
+    private fun bioLengthIsOk(): Boolean {
         if (newBio.length > 150) {
             Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT)
                 .show()
             return false
-        }
-        else return true
+        } else return true
+    }
+
+    private fun redirectToProfile() {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, LoggedInUserProfileFragment())?.commit()
     }
 
 }

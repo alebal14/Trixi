@@ -202,25 +202,27 @@ public class RestApi {
                             user.setId(new ObjectId(uid));
                             if(password == null){
                                 user.setPassword(oldUser.getPassword());
+                            } else {
+                                String hashedPassword = BCrypt.withDefaults().hashToString(10, password.toCharArray());
+                                user.setPassword(hashedPassword);
                             }
                         }
 
                         user.setUserName(userName);
                         user.setEmail(email);
-                        user.setPassword(password);
 
                         if (bio != null) {
                             user.setBio(bio.trim());
                         }
 
                         if (password != null) {
-                            String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
+                            String hashedPassword = BCrypt.withDefaults().hashToString(10, password.toCharArray());
                             user.setPassword(hashedPassword);
                         }
 
                         if (files != null) {
                             user.setImageUrl(db.uploadImage(files.get(0)));
-                        } else user.setImageUrl(user.getImageUrl());
+                        } else user.setImageUrl(oldUser.getImageUrl());
 
                         user.setRole("user");
                         System.out.println(user.getUserName());
