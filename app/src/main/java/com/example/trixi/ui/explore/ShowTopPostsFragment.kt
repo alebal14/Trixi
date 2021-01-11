@@ -198,7 +198,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         button!!.isSelected = true
 
         model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
-            var p = post
+
             when (v?.getId()) {
                 R.id.cat_spinner_start ->{
                     cat_spinner_start.setVisibility(View.GONE)

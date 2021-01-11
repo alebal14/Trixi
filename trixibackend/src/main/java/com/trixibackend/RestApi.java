@@ -508,7 +508,6 @@ public class RestApi {
             res.json(user);
 
         });
-
     }
 
 

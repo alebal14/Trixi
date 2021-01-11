@@ -27,6 +27,7 @@ import com.example.trixi.entities.Category
 import com.example.trixi.entities.Pet
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.PopUpUpload
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_upload.*
 import okhttp3.MediaType
@@ -450,7 +451,7 @@ class UploadFragment() : Fragment() {
         }
 
 
-        if( file_validation == true){
+        if(file_validation){
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val imagenPerfil = MultipartBody.Part.createFormData("file", file?.name, requestFile);
             db.sendPostToDb(imagenPerfil, fileType, description, ownerId, title, categoryName)
@@ -458,6 +459,9 @@ class UploadFragment() : Fragment() {
             Toast.makeText(activity, "Invalid File", Toast.LENGTH_LONG).show()
             return
         }
+
+        val popUp = PopUpUpload()
+        popUp.show(activity?.supportFragmentManager!!, PopUpUpload.TAG)
 
     }
 

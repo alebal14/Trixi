@@ -44,7 +44,7 @@ class ProfileMediaGridAdapter(private var posts: ArrayList<Post>,
         fun bindThumbnail(post: Post, listener: (Post) -> Unit) {
             var photo = BASE_URL + post.filePath
             Picasso.get().load(photo).placeholder(R.drawable.sample).error(R.drawable.sample)
-                .resize(100, 100).centerCrop().into(mediaItem)
+                .centerCrop().fit().into(mediaItem)
             itemView.setOnClickListener { listener(post) }
 
         }

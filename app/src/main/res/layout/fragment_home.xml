@@ -6,6 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        >
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_url="https://assets9.lottiefiles.com/packages/lf20_cy11of6d.json" />
+    </LinearLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"

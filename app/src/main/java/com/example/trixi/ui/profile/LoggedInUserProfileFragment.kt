@@ -20,6 +20,7 @@ import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.PopUpFollowWindow
 import com.example.trixi.ui.post.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.squareup.picasso.Picasso
@@ -31,6 +32,8 @@ class LoggedInUserProfileFragment : Fragment() {
     private var loggedInUser: User? = PostToDb.loggedInUser
     var toggleHamMenu: Boolean = false
     private lateinit var model: TrixiViewModel
+    var headerText = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +51,38 @@ class LoggedInUserProfileFragment : Fragment() {
         model.getOneUser(loggedInUser?.uid!!)
             ?.observe(viewLifecycleOwner, {
                 populateProfile(it)
+                handleClickOnFollow(it)
             })
 
         getPosts()
         getPets()
+
+
+    }
+
+    private fun handleClickOnFollow(user: User) {
+
+        if(user.followers?.size.toString() != "0"){
+            profile_followers.setOnClickListener {
+                headerText = "Your followers"
+                val popUp = PopUpFollowWindow( activity?.supportFragmentManager!!,headerText,user.followers, null)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
+
+            }
+        }
+
+
+        if((user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString() != "0"){
+
+            profile_following.setOnClickListener {
+                headerText = "You are following"
+                val popUp = PopUpFollowWindow(activity?.supportFragmentManager!!, headerText, user.followingsUser, user.followingsPet)
+                popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
+
+            }
+        }
+
+
     }
 
     private fun getPets() {

@@ -6,10 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.trixi.R
+import com.example.trixi.entities.User
+import com.example.trixi.repository.PostToDb
 
 import kotlinx.android.synthetic.main.fragment_empty_home.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class EmptyHomeFragment : Fragment() {
+
+    private var loggedInUser: User? = PostToDb.loggedInUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +31,7 @@ class EmptyHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         home_item_discover.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.apply {

@@ -16,6 +16,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:text="Halo"/>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_popup_follow_list"
             android:layout_width="match_parent"
