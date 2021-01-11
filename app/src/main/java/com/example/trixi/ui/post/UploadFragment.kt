@@ -409,6 +409,11 @@ class UploadFragment() : Fragment() {
         }
 
         fileType = "image"
+
+        if( file == null){
+            Toast.makeText(activity, "Please select a image", Toast.LENGTH_SHORT).show()
+            return
+        }
     }
 
     private fun sendVideo(){
@@ -430,6 +435,8 @@ class UploadFragment() : Fragment() {
             file_validation = true
         }
 
+
+
         fileType = "video"
 
     }
@@ -445,8 +452,8 @@ class UploadFragment() : Fragment() {
             return
         }
 
-        if( selectedFile == null){
-            Toast.makeText(activity, "Please select a image", Toast.LENGTH_SHORT).show()
+        if( file == null){
+            Toast.makeText(activity, "Please select a file", Toast.LENGTH_SHORT).show()
             return
         }
 
