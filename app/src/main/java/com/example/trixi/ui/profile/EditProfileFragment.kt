@@ -12,17 +12,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.example.trixi.MainActivity
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -43,6 +41,8 @@ class EditProfileFragment : Fragment() {
     private var postPath: String? = null
     private var mediaPath: String? = null
     var selectedImage: Uri? = null
+    var image: MultipartBody.Part? = null
+    var password: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +59,7 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpUI()
-        setUpListeners()
+        setUpClickListeners()
         checkInput()
     }
 
@@ -67,14 +67,14 @@ class EditProfileFragment : Fragment() {
         edit_bio.hint = if (loggedInUser?.bio.isNullOrEmpty()) "Edit bio " else loggedInUser?.bio
 
         Picasso.get()
-            .load(loggedInUser?.imageUrl)
+            .load(BASE_URL + loggedInUser?.imageUrl)
             .transform(CropCircleTransformation())
             .centerCrop()
             .fit()
             .into(edit_profile_image)
     }
 
-    private fun setUpListeners() {
+    private fun setUpClickListeners() {
         button_update_profile.setOnClickListener { handleUpdateProfile() }
 
         edit_profile_image.setOnClickListener {
@@ -149,6 +149,7 @@ class EditProfileFragment : Fragment() {
                 cursor.close()
                 postPath = mediaPath
             }
+            else postPath = loggedInUser?.imageUrl
         }
     }
 
@@ -174,34 +175,43 @@ class EditProfileFragment : Fragment() {
 
 
     private fun handleUpdateProfile() {
-        var image: MultipartBody.Part? = null
 
-        val updatedBio = if (edit_bio.text.toString().isEmpty()) null else edit_bio.text.toString()
-        val password = if (edit_password.text.toString().isEmpty()) loggedInUser?.password else edit_password.text.toString()
+        //If everything is ok input, go to update User
 
-        if (postPath != null) {
-            val file = File(postPath!!)
-            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-            image = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
+        if(bioLengthIsOk()) {
+            if(newBio.isEmpty()) newBio = loggedInUser?.bio.toString()
+
+            password = if (edit_password.text.toString().isEmpty()) loggedInUser?.password else edit_password.text.toString()
+
+            //TODO: image gets deleted
+            if (postPath != null) {
+                val file = File(postPath!!)
+                val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                image = MultipartBody.Part.createFormData("file", file.getName(), requestFile)
+            }
+            updateUser()
         }
+    }
 
+    private fun updateUser() {
         db.PostRegisterUserToDb(
             image,
             loggedInUser?.uid,
             loggedInUser?.userName!!,
             loggedInUser.email!!,
             password,
-            updatedBio,
+            newBio!!,
             this.requireContext()
         )
     }
 
-    private fun checkBioLength() {
-        newBio = edit_bio.text.toString()
-        if (newBio?.length!! < 150)
+    private fun bioLengthIsOk() : Boolean {
+        if (newBio.length > 150) {
             Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT)
                 .show()
-
+            return false
+        }
+        else return true
     }
 
 }

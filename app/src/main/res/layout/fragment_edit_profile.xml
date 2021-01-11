@@ -10,13 +10,13 @@
             android:gravity="center"
             android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
                 android:id="@+id/edit_profile_image"
-                android:layout_width="148dp"
-                android:layout_height="148dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/image_btn_circle"
-                android:paddingBottom="40dp" />
+                android:paddingBottom="40dp"
+                android:clickable="true"/>
 
 
         <EditText

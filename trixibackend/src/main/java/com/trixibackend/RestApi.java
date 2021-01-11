@@ -195,17 +195,32 @@ public class RestApi {
                         System.out.println(uid + fileUrl + userName + email + password + bio);
 
                         User user = new User();
-                        user.setUid(uid);
+                        User oldUser = db.getUserHandler().findUserById(uid);
+
+                        if(uid != null) {
+                            user.setUid(uid);
+                            user.setId(new ObjectId(uid));
+                            if(password == null){
+                                user.setPassword(oldUser.getPassword());
+                            }
+                        }
+
                         user.setUserName(userName);
                         user.setEmail(email);
                         user.setPassword(password);
-                        user.setBio(bio);
+
+                        if (bio != null) {
+                            user.setBio(bio.trim());
+                        }
 
                         if (password != null) {
                             String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
                             user.setPassword(hashedPassword);
                         }
-                        if (files != null) user.setImageUrl(db.uploadImage(files.get(0)));
+
+                        if (files != null) {
+                            user.setImageUrl(db.uploadImage(files.get(0)));
+                        } else user.setImageUrl(user.getImageUrl());
 
                         user.setRole("user");
                         System.out.println(user.getUserName());
@@ -217,8 +232,10 @@ public class RestApi {
                         sessionCookie.setData(user);
 
                         var userLoggedIn = (User) sessionCookie.getData();
+                        userLoggedIn.setImageUrl(user.getImageUrl());
                         userLoggedIn.setPassword(null); // sanitize password
                         userLoggedIn.setUid(user.getId().toString());
+                        userLoggedIn.setBio(user.getBio());
                         userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
                         userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
                         userLoggedIn.getPosts().forEach(post -> {

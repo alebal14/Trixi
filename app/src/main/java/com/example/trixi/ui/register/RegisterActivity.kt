@@ -264,17 +264,9 @@ class RegisterActivity : AppCompatActivity() {
         val email = register_email.text.toString()
         val password = register_password.text.toString()
 
-        /*if (selectedImage == null) {
-            Toast.makeText(this, "Please select profile image", Toast.LENGTH_LONG).show()
-            return
-        }*/
-
         val file = File(postPath)
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-
-
-
 
 
         post.PostRegisterUserToDb(imagenPerfil, null, userName, email, password, null, this)
