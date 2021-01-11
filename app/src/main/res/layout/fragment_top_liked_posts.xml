@@ -124,7 +124,8 @@
             </LinearLayout>
        </HorizontalScrollView>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/top_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -136,11 +137,12 @@
                 android:clipToPadding="false"
                 android:paddingStart="0dp"
                 android:paddingEnd="15dp"
+                android:nestedScrollingEnabled="false"
                 android:paddingBottom="15dp">
 
             </androidx.recyclerview.widget.RecyclerView>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
 </RelativeLayout>

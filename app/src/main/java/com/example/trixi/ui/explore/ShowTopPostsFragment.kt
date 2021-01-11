@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -27,6 +28,10 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private lateinit var model: TrixiViewModel
     //private lateinit var linearLayoutManager: LinearLayoutManager
     var  mContext : Context? = null
+    var page = 1
+    var limit = 10
+
+
 
 
     override fun onCreateView(
@@ -57,6 +62,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         allPostsToAdapter()
         searchToAdapter()
         populateCatSpinner()
+        ScrollToLoad()
 
 
         search_bar.setOnClickListener(object : View.OnClickListener {
@@ -73,13 +79,31 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    private fun ScrollToLoad(){
+
+        top_scroll.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+            override fun onScrollChange(
+                v: NestedScrollView?,
+                scrollX: Int,
+                scrollY: Int,
+                oldScrollX: Int,
+                oldScrollY: Int
+            ) {
+                if(scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight){
+                    page++
+                    allPostsToAdapter()
+                }
+            }
+        })
+    }
+
     private fun allPostsToAdapter(){
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
-            val sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
+        model.getAllPostsWithQuery(page, limit)?.observe(viewLifecycleOwner, Observer { post ->
+                var sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
 
-            media_grid_top_posts.apply {
+                media_grid_top_posts.apply {
                 media_grid_top_posts.layoutManager =
                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
