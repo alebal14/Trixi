@@ -27,6 +27,7 @@ import com.example.trixi.entities.Category
 import com.example.trixi.entities.Pet
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.fragments.PopUpUpload
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_upload.*
 import okhttp3.MediaType
