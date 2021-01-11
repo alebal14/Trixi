@@ -205,7 +205,6 @@ public class DatabaseHandler {
 
     }
 
-
     public Object getLoginByNameOrEmail(User user) {
         return userHandler.findUserByNameOrEmail(user);
     }

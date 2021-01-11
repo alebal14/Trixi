@@ -54,12 +54,13 @@ interface Api {
     @Multipart
     @POST("rest/users")
     fun createUser(
-        @Part file: MultipartBody.Part,
-        @Part("userName") userName: String,
-        @Part("email") email: String,
-        @Part("password") password: String
+        @Part file: MultipartBody.Part?,
+        @Part ("uid") uid: String?,
+        @Part("userName") userName: String?,
+        @Part("email") email: String?,
+        @Part("password") password: String?,
+        @Part("bio") bio: String?
     ): Call<User>
-
 
     //Api User Collection
     /* @POST("rest/users")

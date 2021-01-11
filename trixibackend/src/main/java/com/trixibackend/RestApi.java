@@ -177,29 +177,54 @@ public class RestApi {
                 case "users":
 
                     List<FileItem> files = null;
+                    String uid = null;
                     String fileUrl = null;
                     String userName = null;
                     String email = null;
                     String password = null;
+                    String bio = null;
+
                     try {
-                        files = req.getFormData("file");
+                        files = (req.getFormData("file"));
+                        uid = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         userName = req.getFormData("userName").get(0).getString().replace("\"", "");
                         email = req.getFormData("email").get(0).getString().replace("\"", "");
-                        password = req.getFormData("password").get(0).getString().replace("\"", "");
+                        password = (req.getFormData("password") != null ? req.getFormData("password").get(0).getString().replace("\"", "") : null);
+                        bio = (req.getFormData("bio") != null ? req.getFormData("bio").get(0).getString().replace("\"", "") : null);
 
-                        fileUrl = db.uploadImage(files.get(0));
-                        System.out.println(fileUrl + userName + email + password);
+                        System.out.println(uid + fileUrl + userName + email + password + bio);
 
                         User user = new User();
+                        User oldUser = db.getUserHandler().findUserById(uid);
+
+                        if(uid != null) {
+                            user.setUid(uid);
+                            user.setId(new ObjectId(uid));
+                            if(password == null){
+                                user.setPassword(oldUser.getPassword());
+                            } else {
+                                String hashedPassword = BCrypt.withDefaults().hashToString(10, password.toCharArray());
+                                user.setPassword(hashedPassword);
+                            }
+                        }
+
                         user.setUserName(userName);
                         user.setEmail(email);
-                        user.setPassword(password);
-                        String hashedPassword = BCrypt.withDefaults().hashToString(10, user.getPassword().toCharArray());
-                        user.setPassword(hashedPassword);
 
-                        user.setImageUrl(fileUrl);
+                        if (bio != null) {
+                            user.setBio(bio.trim());
+                        }
+
+                        if (password != null) {
+                            String hashedPassword = BCrypt.withDefaults().hashToString(10, password.toCharArray());
+                            user.setPassword(hashedPassword);
+                        }
+
+                        if (files != null) {
+                            user.setImageUrl(db.uploadImage(files.get(0)));
+                        } else user.setImageUrl(oldUser.getImageUrl());
+
                         user.setRole("user");
-
                         System.out.println(user.getUserName());
                         db.save(user);
 
@@ -209,8 +234,10 @@ public class RestApi {
                         sessionCookie.setData(user);
 
                         var userLoggedIn = (User) sessionCookie.getData();
+                        userLoggedIn.setImageUrl(user.getImageUrl());
                         userLoggedIn.setPassword(null); // sanitize password
                         userLoggedIn.setUid(user.getId().toString());
+                        userLoggedIn.setBio(user.getBio());
                         userLoggedIn.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
                         userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
                         userLoggedIn.getPosts().forEach(post -> {
@@ -233,8 +260,8 @@ public class RestApi {
 
                     List<FileItem> Postfiles = null;
                     String PostfileUrl = null;
-                    String description= null;
-                    String ownerId= null;
+                    String description = null;
+                    String ownerId = null;
                     String title = null;
                     String categoryName = null;
                     String fileType = null;
@@ -242,13 +269,13 @@ public class RestApi {
                     try {
                         Postfiles = req.getFormData("file");
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
-                        ownerId= req.getFormData("ownerId").get(0).getString().replace("\"", "");
+                        ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         title = req.getFormData("title").get(0).getString().replace("\"", "");
                         categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
                         fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
                         PostfileUrl = db.uploadImage(Postfiles.get(0));
-                        System.out.println(PostfileUrl + description + ownerId+ title);
+                        System.out.println(PostfileUrl + description + ownerId + title);
 
                         Post post = new Post();
                         post.setDescription(description);
@@ -262,12 +289,12 @@ public class RestApi {
                         post.setUid(post.getId().toString());
 
 
-                            res.json(post);
-                            res.send("Created Post");
+                        res.json(post);
+                        res.send("Created Post");
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     break;
                 case "pets":
@@ -277,7 +304,7 @@ public class RestApi {
                     String PetOwnerId = null;
                     String name = null;
                     String age = null;
-                    String bio = null;
+                    String petBio = null;
                     String breed = null;
                     String Type = null;
                     String gender = null;
@@ -287,7 +314,7 @@ public class RestApi {
                         name = req.getFormData("name").get(0).getString().replace("\"", "");
                         PetOwnerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         age = req.getFormData("age").get(0).getString().replace("\"", "");
-                        bio = req.getFormData("bio").get(0).getString().replace("\"", "");
+                        petBio = req.getFormData("bio").get(0).getString().replace("\"", "");
                         breed = req.getFormData("breed").get(0).getString().replace("\"", "");
                         Type = req.getFormData("petType").get(0).getString().replace("\"", "");
                         gender = req.getFormData("gender").get(0).getString().replace("\"", "");
@@ -300,7 +327,7 @@ public class RestApi {
                         pet.setName(name);
                         pet.setOwnerId(PetOwnerId);
                         pet.setAge(age);
-                        pet.setBio(bio);
+                        pet.setBio(petBio);
                         pet.setBreed(breed);
                         pet.setPetType(Type);
                         pet.setGender(gender);
@@ -443,6 +470,7 @@ public class RestApi {
         });
 
     }
+
     private void setLoginUser() {
 
         app.post("/rest/login", (req, res) -> {
@@ -519,7 +547,7 @@ public class RestApi {
         });
     }
 
-    private void likeAndCommentApi(){
+    private void likeAndCommentApi() {
         app.post("/rest/likes", (req, res) -> {
             Like like = (Like) req.getBody(Like.class);
             Post p = db.getPostHandler().addLike(like);
