@@ -129,6 +129,8 @@ interface Api {
     @GET("api/search/{searchterm}")
     suspend fun getPostBySearch(@Path("searchterm") searchterm: String?): Response<List<Post>>
 
+    @GET("api/posttype/{pettype}")
+    suspend fun getPostByPetType(@Path("pettype") pettype: String?): Response<List<Post>>
 
 //    @GET("rest/posts/by_category/{category_id}")
 //    fun getPostByCategoryId(@Path(value="category_id") id : String?): Call<List<Post>>

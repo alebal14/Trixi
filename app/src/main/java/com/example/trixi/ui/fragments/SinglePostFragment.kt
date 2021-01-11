@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.ui.edit.EditPostFragment
-import com.example.trixi.ui.profile.EditProfleFragment
+import com.example.trixi.ui.profile.EditProfileFragment
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -74,7 +74,7 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     private fun redirectToUserProfile(user: User) {
         val userProfile = UserProfileFragment(user)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, userProfile)?.commit()
+            ?.replace(R.id.fragment_container, userProfile)?.addToBackStack("userFragment")!!.commit()
     }
 
     private fun handleCLickOnPet(pet: Pet) {
@@ -90,7 +90,7 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     private fun redirectToPetProfile(pet: Pet) {
         val petProfile = PetProfileFragment(pet)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, petProfile)?.commit()
+            ?.replace(R.id.fragment_container, petProfile)?.addToBackStack("petFragment")!!.commit()
     }
 
     private fun populatePost(post: Post) {

@@ -47,6 +47,7 @@ class PostToDb {
                     Log.d("loggedInUser", loggedInUser.toString())
 
                     val intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     context.startActivity(intent)
                 } else {
                     Log.d(
@@ -362,7 +363,10 @@ class PostToDb {
 
         call?.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId + "follow : onFailure " + t.message)
+                Log.d(
+                    "Follow",
+                    "loggedIn: " + userId + "other user: " + followingUserId + "follow : onFailure " + t.message
+                )
             }
 
             override fun onResponse(
@@ -370,10 +374,16 @@ class PostToDb {
             ) {
                 if (response.isSuccessful) {
                     val l: User? = response.body()
-                    Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId + l.toString())
+                    Log.d(
+                        "Follow",
+                        "loggedIn: " + userId + "other user: " + followingUserId + l.toString()
+                    )
 
                 } else {
-                    Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId +  "fail to follow")
+                    Log.d(
+                        "Follow",
+                        "loggedIn: " + userId + "other user: " + followingUserId + "fail to follow"
+                    )
                 }
             }
         })
@@ -387,7 +397,10 @@ class PostToDb {
 
         call?.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.d("Follow", "loggedIn: " + userId + "other user: " + followingUserId +  "unfollow : onFailure " + t.message)
+                Log.d(
+                    "Follow",
+                    "loggedIn: " + userId + "other user: " + followingUserId + "unfollow : onFailure " + t.message
+                )
             }
 
             override fun onResponse(
@@ -395,10 +408,16 @@ class PostToDb {
             ) {
                 if (response.isSuccessful) {
                     val l: User? = response.body()
-                    Log.d("Unfollow", "loggedIn: " + userId + "other user: " + followingUserId + l.toString())
+                    Log.d(
+                        "Unfollow",
+                        "loggedIn: " + userId + "other user: " + followingUserId + l.toString()
+                    )
 
                 } else {
-                    Log.d("Unfollow", "loggedIn: " + userId + "other user: " + followingUserId + "fail to unfollow")
+                    Log.d(
+                        "Unfollow",
+                        "loggedIn: " + userId + "other user: " + followingUserId + "fail to unfollow"
+                    )
                 }
             }
         })
@@ -406,21 +425,21 @@ class PostToDb {
     }
 
 
-    fun updatePost(post:Post){
+    fun updatePost(post: Post){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         val call = retrofitClient?.updatePost(post)
-        call?.enqueue(object :Callback<Post>{
+        call?.enqueue(object : Callback<Post> {
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
-               if (response.isSuccessful){
-                  postedPost = response.body()
-                   if(postedPost !=null){
-                       val intent = Intent(context, MainActivity::class.java)
-                       context.startActivity(intent)
-                   }
-                   Log.d("updatePost", "updatePost : post updated" + postedPost.toString())
-               }else{
-                   Log.d("updatePost", "updatePost : fail to update")
-               }
+                if (response.isSuccessful) {
+                    postedPost = response.body()
+                    if (postedPost != null) {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                    Log.d("updatePost", "updatePost : post updated" + postedPost.toString())
+                } else {
+                    Log.d("updatePost", "updatePost : fail to update")
+                }
             }
 
             override fun onFailure(call: Call<Post>, t: Throwable) {

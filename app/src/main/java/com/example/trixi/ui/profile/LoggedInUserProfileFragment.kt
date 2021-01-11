@@ -136,7 +136,7 @@ class LoggedInUserProfileFragment : Fragment() {
                             R.anim.enter_left_to_right, R.anim.exit_left_to_right
                         )
                         .replace(R.id.menuFragmentHolder, drawmenu)
-                        .addToBackStack(null)
+                        .addToBackStack("drawer")
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                 } else {
@@ -168,7 +168,7 @@ class LoggedInUserProfileFragment : Fragment() {
     private fun redirectToSinglePost(post: Post) {
         val singlePost = SinglePostFragment(post)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, singlePost)?.commit()
+            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
     }
 
 
@@ -176,7 +176,7 @@ class LoggedInUserProfileFragment : Fragment() {
         val fm = activity?.supportFragmentManager
 
         val petProfile = PetProfileFragment(pet)
-        fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)?.commit()
+        fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)?.addToBackStack("petprofileFragment")!!.commit()
     }
 
 }

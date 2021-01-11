@@ -3,15 +3,15 @@ package com.example.trixi
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.explore.ShowTopPostsFragment
-import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.fragments.SinglePostFragment
+import com.example.trixi.ui.fragments.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.profile.LoggedInUserProfileFragment
-import com.example.trixi.ui.profile.PetRegister
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -52,11 +52,22 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun makeCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, fragment)
+            replace(R.id.fragment_container, fragment).addToBackStack("NavFragment").
             commit()
         }
+
+
+
 }
 
 

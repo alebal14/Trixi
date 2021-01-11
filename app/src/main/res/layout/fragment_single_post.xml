@@ -68,11 +68,10 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
                     android:shadowColor="#000000"
-                    android:shadowDx="1"
-                    android:shadowDy="2"
+                    android:shadowDx="2.5"
+                    android:shadowDy="2.3"
                     android:shadowRadius="2.6"
-                    android:text="John Doe"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorPink"
                     android:textSize="20sp"
                     android:textStyle="bold">
 
@@ -222,11 +221,11 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
                 android:shadowColor="#000000"
-                android:shadowDx="1"
-                android:shadowDy="2"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
                 android:shadowRadius="2.6"
                 android:text="Title"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPink"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -236,11 +235,11 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="15dp"
                 android:shadowColor="#000000"
-                android:shadowDx="1"
-                android:shadowDy="2"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
                 android:shadowRadius="2.6"
                 android:text="Description"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPink"
                 android:textSize="15sp" />
 
             <TextView
@@ -250,11 +249,11 @@
                 android:layout_marginBottom="40dp"
                 android:gravity="bottom"
                 android:shadowColor="#000000"
-                android:shadowDx="1"
-                android:shadowDy="2"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
                 android:shadowRadius="2.6"
                 android:text="Tags"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPink"
                 android:textSize="15sp" />
 
 
