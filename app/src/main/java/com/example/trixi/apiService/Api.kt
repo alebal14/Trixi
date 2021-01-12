@@ -176,4 +176,7 @@ interface Api {
     @DELETE("rest/posts/{id}")
     fun deleteAPost(@Path("id")id :String?): Call<ResponseBody>
 
+    @DELETE("rest/pets/{id}")
+    fun deleteAPet(@Path("id")id :String?): Call<ResponseBody>
+
 }

@@ -239,6 +239,11 @@ class PetRegister : Fragment() {
             return
         }
 
+        if( file == null){
+            Toast.makeText(activity, "Please select an image", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if( file_validation == true){
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val imagenPerfil = MultipartBody.Part.createFormData("file", file?.name, requestFile);

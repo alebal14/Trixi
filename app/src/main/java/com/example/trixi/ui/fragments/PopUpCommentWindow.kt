@@ -9,14 +9,12 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-//import androidx.fragment.app.viewModels
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Comment
 import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.home.HomeItem
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -24,9 +22,8 @@ import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
-import kotlinx.android.synthetic.main.fragment_home_item.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
-import kotlinx.android.synthetic.main.fragment_single_post.*
+
 
 class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String, var viewHolder: GroupieViewHolder?) :
     DialogFragment() {

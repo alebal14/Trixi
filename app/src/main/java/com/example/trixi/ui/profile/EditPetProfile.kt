@@ -23,13 +23,14 @@ import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.PetType
+import com.example.trixi.entities.Post
+import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_edit_pet_profile.*
 import kotlinx.android.synthetic.main.fragment_pet_register.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_upload.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -39,7 +40,8 @@ import java.io.File
 
 class EditPetProfile(private val pet : Pet)  : Fragment(){
 
-    val db = PostToDb()
+    private val db = PostToDb()
+    private val dbDelete = DeleteFromDb()
     var uid = ""
     var ownerId = PostToDb.loggedInUser?.uid.toString()
     var petName = ""
@@ -85,6 +87,8 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         assingData()
         populateView()
         setUpSpinners()
+        button_update_profile.setOnClickListener { updatePet() }
+        button_delete_profile.setOnClickListener { deletePet() }
 
     }
 
@@ -250,7 +254,7 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
 
     }
 
-    private fun createPet(){
+    /*private fun createPet(){
 
         petName = register_pet_name.text.toString()
         petAge = register_pet_age.text.toString()
@@ -274,6 +278,25 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         }
 
 
+    }*/
+
+    private fun updatePet() {
+        /*title = title_field.text.toString()
+        description = description_field.text.toString()
+
+        if (title.isEmpty()) {
+            Toast.makeText(activity, "Please enter a title", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val updatedPost =
+            Post(uid, title, description, "", "", ownerId, categoryName, null, null)
+        db.updatePost(updatedPost)*/
+
+    }
+
+    private fun deletePet() {
+        dbDelete.deleteAPetFromDb(uid)
     }
 
 }
