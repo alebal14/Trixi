@@ -112,6 +112,7 @@ interface Api {
         @Query("page") page: Int,
         @Query("limit") limit: Int): Response<List<Post>>
 
+
     @Multipart
     @POST("rest/posts")
     fun postPostToDb(

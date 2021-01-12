@@ -375,11 +375,23 @@ public class RestApi {
 
             int startIndex = (pageNumber -1) * limitNumber;
             int endIndex = startIndex + limitNumber;
-
             var results = db.getPostHandler().getAllPosts();
-            var re = results.subList(startIndex, endIndex);
+            
+            int lastPage = results.size()/limitNumber + 1;
 
-            res.json(re);
+
+            if(pageNumber > lastPage){
+                res.json(null);
+            } else if (pageNumber == lastPage) {
+                var re = results.subList(startIndex, results.size());
+                res.json(re);
+            } else {
+                var re = results.subList(startIndex, endIndex);
+
+                res.json(re);
+            }
+
+
 
         });
 

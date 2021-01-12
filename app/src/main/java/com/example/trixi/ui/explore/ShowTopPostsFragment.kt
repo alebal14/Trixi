@@ -19,6 +19,7 @@ import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
+import kotlin.NullPointerException
 
 
 class ShowTopPostsFragment : Fragment(), View.OnClickListener {
@@ -29,6 +30,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     var limit = 30
     var loading = true
 
+    var lastPage = 0
 
 
     override fun onCreateView(
@@ -44,6 +46,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
         super.onViewCreated(view, savedInstanceState)
         mContext = context
+
 
 
 
@@ -78,8 +81,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun ScrollToLoad(cat: Int?) {
-
-
         animationViewLoadingSpinner.visibility = View.GONE;
         top_scroll.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
             override fun onScrollChange(
@@ -90,10 +91,12 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 oldScrollY: Int
             ) {
 
-                if(scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight){
-                    page++
-                    allPostsToAdapter(cat)
+                if (scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight) {
+                        page++
+                        allPostsToAdapter(cat)
                 }
+
+
             }
         })
 
@@ -111,8 +114,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private fun allPostsToAdapter(cat: Int?) {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-
-
+       // Toast.makeText(activity, "Page Number: $page", Toast.LENGTH_SHORT).show()
 
         if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
             limit = 100
@@ -158,19 +160,25 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                         }
                     })
         }else {
-            model.getAllPostsWithQuery(page, limit)?.observe(viewLifecycleOwner, Observer { post ->
-                var sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
-                ScrollToLoad(null)
-                media_grid_top_posts.apply {
-                    media_grid_top_posts.layoutManager =
-                        StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                    StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                    media_grid_top_posts.adapter =
-                        ExploreMediaGridAdapter(sortedPosts as ArrayList<Post>)
-                        { p ->
-                            redirectToSinglePost(p)
-                        }
+            model.getAllPostsWithQuery(page, limit).observe(viewLifecycleOwner, Observer { post ->
+                if (post != null) {
+                    var sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it }
+                    ScrollToLoad(null)
+                    media_grid_top_posts.apply {
+                        media_grid_top_posts.layoutManager =
+                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                        media_grid_top_posts.adapter =
+                            ExploreMediaGridAdapter(sortedPosts as ArrayList<Post>)
+                            { p ->
+                                redirectToSinglePost(p)
+                            }
+                    }
+                } else {
+                    top_scroll.isEnabled = false;
+                    Toast.makeText(activity, "You reached the last Post", Toast.LENGTH_SHORT).show()
                 }
+
             })
         }
     }
