@@ -349,11 +349,9 @@ public class RestApi {
             int startIndex = (pageNumber -1) * limitNumber;
             int endIndex = startIndex + limitNumber;
 
-            System.out.println("Startindex: " +  startIndex);
-            System.out.println("EndIndex: " + endIndex);
-
             var results = db.getPostHandler().getAllPosts();
             var re = results.subList(startIndex, endIndex);
+
             res.json(re);
 
         });
