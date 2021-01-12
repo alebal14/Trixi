@@ -1,5 +1,6 @@
 package com.example.trixi.ui.profile
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -25,6 +26,7 @@ import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.PopUpFollowWindow
 import com.example.trixi.ui.post.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
+import com.google.android.material.tabs.TabLayout
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
@@ -152,40 +154,88 @@ class UserProfileFragment(val user: User?) : Fragment() {
         }
     }
 
-
     private fun getPosts() {
 
         val snapHelper1: SnapHelper = GravitySnapHelper(Gravity.TOP)
         snapHelper1.attachToRecyclerView(media_grid)
 
-
         user?.uid?.let {
-            model.getPostsByOwner(it)?.observe(viewLifecycleOwner, Observer { posts ->
+            model.getPostsByOwner(it)?.observe(viewLifecycleOwner, { posts ->
                 if (posts.isNullOrEmpty()) {
+                    profile_no_posts.text = "No posts yet"
                     profile_no_posts.visibility = TextView.VISIBLE
                 } else {
-                    Log.d(TAG, "size: posts : ${posts?.size}")
                     profile_no_posts.visibility = View.GONE
-
-                    media_grid.apply {
+                    val postMedia = posts!!.filter { post -> post.fileType!!.contains("image")}
+                    pics_videos_tab.addOnTabSelectedListener(object :
+                        TabLayout.OnTabSelectedListener {
+                        @SuppressLint("SetTextI18n")
+                        override fun onTabSelected(tab: TabLayout.Tab) {
+                            when (tab.position) {
+                                0 -> {
+                                    val postImage = posts!!.filter { post -> post.fileType!!.contains("image") }
+                                    if(postImage.isNullOrEmpty()){
+                                        profile_no_posts.text = "No images yet"
+                                        profile_no_posts.visibility = TextView.VISIBLE
+                                        media_grid.adapter = null
+                                    } else {
+                                        profile_no_posts.visibility = View.GONE
+                                        media_grid.apply {
+                                            media_grid.layoutManager = GridLayoutManager(
+                                                context,
+                                                3,
+                                                GridLayoutManager.VERTICAL,
+                                                false
+                                            )
+                                            adapter = ProfileMediaGridAdapter(postImage as ArrayList<Post>) {
+                                                redirectToSinglePost(it)
+                                            }
+                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
+                                        }
+                                    }
+                                }
+                                1 -> {
+                                    val postVideo = posts!!.filter { post -> post.fileType!!.contains("video")}
+                                    if(postVideo.isNullOrEmpty()){
+                                        profile_no_posts.text = "No videos yet"
+                                        profile_no_posts.visibility = TextView.VISIBLE
+                                        media_grid.adapter = null
+                                    } else {
+                                        profile_no_posts.visibility = View.GONE
+                                        media_grid.apply {
+                                            media_grid.layoutManager = GridLayoutManager(
+                                                context,
+                                                3,
+                                                GridLayoutManager.VERTICAL,
+                                                false
+                                            )
+                                            adapter = ProfileMediaGridAdapter(postVideo as ArrayList<Post>) {
+                                                redirectToSinglePost(it)
+                                            }
+                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        override fun onTabUnselected(tab: TabLayout.Tab) {}
+                        override fun onTabReselected(tab: TabLayout.Tab) {}
+                    })
+                   media_grid.apply {
                         media_grid.layoutManager = GridLayoutManager(
                             context,
                             3,
                             GridLayoutManager.VERTICAL,
                             false
                         )
-                        adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>) {
+                        adapter = ProfileMediaGridAdapter(postMedia as ArrayList<Post>) {
                             redirectToSinglePost(it)
-
                         }
                         //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                     }
-
                 }
-
             })
         }
-
     }
 
 

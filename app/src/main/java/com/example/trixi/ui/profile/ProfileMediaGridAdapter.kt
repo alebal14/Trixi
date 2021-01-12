@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
+import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Post
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_home_item.view.*
 import kotlinx.android.synthetic.main.profile_media_item.view.*
 
 class ProfileMediaGridAdapter(private var posts: ArrayList<Post>,
@@ -34,7 +36,8 @@ class ProfileMediaGridAdapter(private var posts: ArrayList<Post>,
 
      class ProfileMediaGridViewHolder(view: View) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
-        val mediaItem = itemView.profile_media_thumbnail
+        val image = itemView.profile_image_thumbnail
+         val video = itemView.profile_video_thumbnail
 
 
         override fun onClick(view: View) {
@@ -42,10 +45,22 @@ class ProfileMediaGridAdapter(private var posts: ArrayList<Post>,
         }
 
         fun bindThumbnail(post: Post, listener: (Post) -> Unit) {
-            var photo = BASE_URL + post.filePath
-            Picasso.get().load(photo).placeholder(R.drawable.sample).error(R.drawable.sample)
-                .centerCrop().fit().into(mediaItem)
-            itemView.setOnClickListener { listener(post) }
+
+            if (post.fileType.toString() == "image") {
+                image.visibility = View.VISIBLE
+                video.visibility = View.GONE
+                val photo = BASE_URL + post.filePath
+                Picasso.get().load(photo).placeholder(R.drawable.sample).error(R.drawable.sample)
+                    .centerCrop().fit().into(image)
+
+            } else {
+               image.visibility = View.GONE
+                video.visibility = View.VISIBLE
+                video.setSource(BASE_URL + post.filePath.toString())
+
+            }
+
+            itemView.setOnClickListener { listener(post)}
 
         }
 
