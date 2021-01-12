@@ -3,11 +3,13 @@ package com.example.trixi.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trixi.R
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
@@ -15,6 +17,8 @@ import com.example.trixi.repository.TrixiViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.recyclerView_homepage
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 
 class DiscoverFragment : Fragment() {
@@ -46,6 +50,21 @@ class DiscoverFragment : Fragment() {
 
         Log.d("home", "in home fragment")
         setUpDiscoverView()
+        pullToRefresh.setOnRefreshListener {
+            Log.d("home", "pull to refresh called")
+            setUpDiscoverView()
+            if (pullToRefresh.isRefreshing) {
+                pullToRefresh.isRefreshing = false;
+            }
+        }
+
+
+        refresh_button.setOnClickListener {
+            Log.d("home", "in home fragment")
+            val deg = refresh_button.rotation + 180F
+            refresh_button.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
+            setUpDiscoverView()
+        }
 
 
     }
@@ -74,25 +93,18 @@ class DiscoverFragment : Fragment() {
 
     private fun populatePosts(posts: List<Post>?) {
 
-        posts?.forEach { post ->
-            model.getOneUser(post.ownerId!!)
-                ?.observe(viewLifecycleOwner, Observer { postOwner ->
-                    if (postOwner != null) {
-                        post.owner = postOwner
-                        adapter.add(HomeItem(post, fm!!))
-
-                    } else {
-                        Log.d("home", "user null")
-                        model.getOnePet(post.ownerId!!)
-                            ?.observe(viewLifecycleOwner, Observer { petIsOwner ->
-                                post.ownerIsPet = petIsOwner
-                                adapter.add(HomeItem(post, fm!!))
-                            })
-                    }
-                })
+        recyclerView_homepage.apply {
+            val layoutManager = LinearLayoutManager(context)
+            layoutManager.orientation = LinearLayoutManager.VERTICAL
+            recyclerView_homepage.layoutManager = layoutManager
+            adapter = HomeAdapter(
+                posts as ArrayList<Post>,
+                activity?.supportFragmentManager!!,
+                viewLifecycleOwner
+            )
         }
-        recyclerView_homepage.adapter = adapter
     }
+
 }
 
 

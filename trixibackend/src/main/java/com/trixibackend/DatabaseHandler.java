@@ -142,8 +142,8 @@ public class DatabaseHandler {
             default:
                 return null;
         }
-
     }
+
 
     public DeleteResult deleteById(String collectionName, String id){
         switch (collectionName){
@@ -204,7 +204,6 @@ public class DatabaseHandler {
         return fileUrl;
 
     }
-
 
     public Object getLoginByNameOrEmail(User user) {
         return userHandler.findUserByNameOrEmail(user);
