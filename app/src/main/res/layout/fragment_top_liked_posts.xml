@@ -125,9 +125,16 @@
             </LinearLayout>
        </HorizontalScrollView>
 
-        <RelativeLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/top_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="always">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -159,14 +166,14 @@
                 android:scrollbars="vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:paddingBottom="15dp"
-                />
+                android:nestedScrollingEnabled="true"
+                android:paddingBottom="15dp"/>
 
 
 
 
-
-        </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 </RelativeLayout>
