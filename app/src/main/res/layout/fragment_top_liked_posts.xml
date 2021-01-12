@@ -125,6 +125,29 @@
             </LinearLayout>
        </HorizontalScrollView>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            >
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationViewLoadingSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_url="https://assets6.lottiefiles.com/packages/lf20_fy4wzpng.json" />
+        </LinearLayout>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
@@ -135,28 +158,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="always">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                >
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/animationViewLoadingSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="5dp"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_url="https://assets6.lottiefiles.com/packages/lf20_fy4wzpng.json" />
-            </LinearLayout>
-
-
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/media_grid_top_posts"
@@ -174,6 +175,7 @@
 
         </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

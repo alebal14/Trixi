@@ -27,7 +27,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     var  mContext : Context? = null
     var page = 1
     var limit = 30
-
+    var loading = true
 
 
 
@@ -44,6 +44,8 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
         super.onViewCreated(view, savedInstanceState)
         mContext = context
+
+
 
         cat_spinner.setVisibility(View.GONE)
 
@@ -77,6 +79,8 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
     private fun ScrollToLoad(cat: Int?) {
 
+
+        animationViewLoadingSpinner.visibility = View.GONE;
         top_scroll.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
             override fun onScrollChange(
                 v: NestedScrollView?,
@@ -85,6 +89,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 oldScrollX: Int,
                 oldScrollY: Int
             ) {
+
                 if(scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight){
                     page++
                     allPostsToAdapter(cat)
@@ -100,10 +105,13 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
             }
             pullToRefresh.isEnabled = true;
         })
+
     }
 
     private fun allPostsToAdapter(cat: Int?) {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+
 
 
         if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
@@ -138,6 +146,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                         }
 
                         media_grid_top_posts.apply {
+
                             media_grid_top_posts.layoutManager =
                                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                             StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
@@ -152,7 +161,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
             model.getAllPostsWithQuery(page, limit)?.observe(viewLifecycleOwner, Observer { post ->
                 var sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
                 ScrollToLoad(null)
-
                 media_grid_top_posts.apply {
                     media_grid_top_posts.layoutManager =
                         StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
