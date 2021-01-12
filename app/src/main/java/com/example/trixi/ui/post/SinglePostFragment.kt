@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.RelativeLayout
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
@@ -19,6 +22,7 @@ import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.fragment_home_item.*
 import kotlinx.android.synthetic.main.fragment_single_post.*
 
 
@@ -41,12 +45,16 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_single_post, container, false)
+        return inflater.inflate(R.layout.fragment_home_item, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        home_item_following.visibility = View.GONE
+        home_item_discover.visibility = View.GONE
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
         if (post1 != null) {
             model.aPostById(post1.uid.toString()).observe(viewLifecycleOwner, {
                 numberOfLike = it.likes!!.size
@@ -60,10 +68,10 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     }
 
     private fun handleClickOnUser(user: User) {
-        single_item_profileimg.setOnClickListener {
+        home_item_profileimg.setOnClickListener {
             redirectToUserProfile(user)
         }
-        single_item_profileName.setOnClickListener {
+        home_item_profileName.setOnClickListener {
             redirectToUserProfile(user)
         }
     }
@@ -75,10 +83,10 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     }
 
     private fun handleCLickOnPet(pet: Pet) {
-        single_item_profileimg.setOnClickListener {
+        home_item_profileimg.setOnClickListener {
             redirectToPetProfile(pet)
         }
-        single_item_profileName.setOnClickListener {
+        home_item_profileName.setOnClickListener {
             redirectToPetProfile(pet)
         }
 
@@ -94,57 +102,63 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
         setVisibilityByOwner(post)
 
-        single_item_title.text = post?.title.toString()
-        single_item_description.text = post?.description.toString()
-        single_item_tags.text = post?.categoryName.toString()
-        single_item_chat_count.text = post?.comments?.size.toString()
-        single_item_like_count.text = numberOfLike.toString()
+       home_item_title.text = post?.title.toString()
+        home_item_description.text = post?.description.toString()
+        home_item_tags.text = post?.categoryName.toString()
+        home_item_chat_count.text = post?.comments?.size.toString()
+        home_item_like_count.text = numberOfLike.toString()
 
         if (post?.fileType.toString() == "image") {
-            single_item_video.visibility = View.GONE;
-            single_item_image.visibility = View.VISIBLE;
+            home_item_video.visibility = View.GONE;
+            home_item_media.visibility = View.VISIBLE;
             Picasso.get().load(RetrofitClient.BASE_URL + post?.filePath.toString()).centerCrop()
-                .fit().into(single_item_image)
+                .fit().into(home_item_media)
         } else {
-            single_item_image.visibility = View.GONE;
-            single_item_video.visibility = View.VISIBLE;
-            single_item_video.setSource(RetrofitClient.BASE_URL + post?.filePath.toString())
+
+            val layoutParams = home_item_media_holder.layoutParams as FrameLayout.LayoutParams
+            layoutParams.setMargins(0, 0, 0, 50)
+            home_item_media_holder.layoutParams = layoutParams
+
+            home_item_media.visibility = View.GONE;
+            home_item_video.visibility = View.VISIBLE;
+            home_item_video.setSource(RetrofitClient.BASE_URL + post?.filePath.toString())
         }
 
     }
 
     private fun setVisibilityByOwner(post: Post) {
         if (post.ownerId == PostToDb.loggedInUser?.uid) { // logged-in user's post
-            single_item_profileName.visibility = View.GONE
-            single_item_profileimg.visibility = View.GONE
-            single_item_profile.visibility = View.GONE
-            single_item_report.visibility = View.GONE
+            home_item_profileName.visibility = View.GONE
+            home_item_profileimg.visibility = View.GONE
+            home_item_profile.visibility = View.GONE
+            home_item_top_shadow.visibility = View.GONE
+            home_item_report.visibility = View.GONE
             handleClickOnEdit(post)
         } else { // other users post
-            single_item_edit.visibility = View.GONE
+            home_item_edit.visibility = View.GONE
             post.ownerId?.let {
                 model.getOneUser(it)?.observe(viewLifecycleOwner, { user ->
                     if (user != null) {
-                        single_item_profile.visibility = View.GONE
-                        single_item_profileName.text = user.userName
+                        home_item_profile.visibility = View.GONE
+                        home_item_profileName.text = user.userName
                         Picasso.get().load(RetrofitClient.BASE_URL + user.imageUrl)
                             .transform(CropCircleTransformation()).fit()
                             .placeholder(R.drawable.sample)
                             .error(R.drawable.sample)
-                            .centerCrop().into(single_item_profileimg)
+                            .centerCrop().into(home_item_profileimg)
                         handleClickOnUser(user)
                     } else {
                         model.getOnePet(it)?.observe(viewLifecycleOwner, { pet ->
                             if (pet != null) {
-                                single_item_profileName.text = pet.name
+                                home_item_profileName.text = pet.name
                                 Picasso.get().load(RetrofitClient.BASE_URL + pet.imageUrl)
                                     .transform(CropCircleTransformation()).fit()
                                     .placeholder(R.drawable.sample)
                                     .error(R.drawable.sample)
-                                    .centerCrop().into(single_item_profileimg)
+                                    .centerCrop().into(home_item_profileimg)
                                 if (pet.ownerId == PostToDb.loggedInUser?.uid) {
-                                    single_item_edit.visibility = View.VISIBLE
-                                    single_item_report.visibility = View.GONE
+                                    home_item_edit.visibility = View.VISIBLE
+                                    home_item_report.visibility = View.GONE
                                     handleClickOnEdit(post)
                                 }
                                 handleCLickOnPet(pet)
@@ -159,7 +173,7 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     }
 
     private fun handleClickOnEdit(post: Post) {
-        single_item_edit.setOnClickListener {
+        home_item_edit.setOnClickListener {
             activity?.supportFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.fragment_container, EditPostFragment(post))?.commit()
@@ -168,11 +182,11 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
 
     private fun handleClickOnComment(post: Post) {
-        single_item_chat.setOnClickListener {
+        home_item_chat.setOnClickListener {
             model.aPostById(post.uid.toString()).observe(viewLifecycleOwner, {
                 val popUp = PopUpCommentWindow(it?.comments, it?.uid.toString(), null)
                 popUp.show(activity?.supportFragmentManager!!, PopUpCommentWindow.TAG)
-                single_item_chat_count.text = it?.comments?.size.toString()
+                home_item_chat_count.text = it?.comments?.size.toString()
 
             })
 
@@ -191,28 +205,28 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
             }
         }
         if (liked) {
-            single_item_like.setImageResource(R.drawable.ic_baseline_favorite_24)
+            home_item_like.setImageResource(R.drawable.ic_baseline_favorite_24)
         } else {
-            single_item_like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            home_item_like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
         }
 
 
 
-        single_item_like.setOnClickListener {
+        home_item_like.setOnClickListener {
             val like = Like(post?.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
 
             if (liked) {
                 db.unlike(like)
                 liked = false
-                single_item_like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                home_item_like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 numberOfLike -= 1
-                single_item_like_count.text = numberOfLike.toString()
+                home_item_like_count.text = numberOfLike.toString()
             } else {
                 db.like(like)
                 liked = true
-                single_item_like.setImageResource(R.drawable.ic_baseline_favorite_24)
+                home_item_like.setImageResource(R.drawable.ic_baseline_favorite_24)
                 numberOfLike += 1
-                single_item_like_count.text = numberOfLike.toString()
+                home_item_like_count.text = numberOfLike.toString()
             }
         }
 
