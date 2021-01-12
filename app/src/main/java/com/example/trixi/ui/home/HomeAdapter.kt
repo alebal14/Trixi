@@ -1,5 +1,6 @@
 package com.example.trixi.ui.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Like
-import com.example.trixi.entities.Pet
-import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
+import com.example.trixi.entities.*
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.PopUpCommentWindow
@@ -27,7 +25,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class HomeAdapter(
-    private var posts: ArrayList<Post>, private val fm: FragmentManager,
+    private var posts: List<Post>, private val fm: FragmentManager,
    /* private val listener: ((Post) -> Unit)?,*/ private val viewLifeCycleOwner: LifecycleOwner
 ): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
@@ -50,7 +48,7 @@ class HomeAdapter(
     class HomeViewHolder(view: View):RecyclerView.ViewHolder(view),View.OnClickListener {
 
         override fun onClick(p0: View?) {
-            TODO("Not yet implemented")
+            Log.d("home", " click on home recycle view!")
         }
         fun bindPost(post:Post,fm:FragmentManager, /*listener: (Post) -> Unit,*/viewLifeCycleOwner: LifecycleOwner){
 
