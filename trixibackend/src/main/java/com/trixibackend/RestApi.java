@@ -339,14 +339,20 @@ public class RestApi {
 
         app.get("/rest/" + collectionName, (req, res) -> res.json(db.getAll(collectionName)));
 
-        app.get("/rest/posts/pagelimit", (req, res) -> {
-            int page = parseInt(req.getQuery("page"));
-            int limit = parseInt(req.getQuery("limit"));
+        app.get("/rest/posts/pagelimit/", (req, res) -> {
+            String page = req.getQuery("page");
+            String limit = req.getQuery("limit");
+            //int limit = parseInt(req.getQuery("limit"));
+            int pageNumber = parseInt(page);
+            int limitNumber = parseInt(limit);
 
-            int startIndex = (page -1) * limit;
-            int endIndex = page * limit;
+            int startIndex = (pageNumber -1) * limitNumber;
+            int endIndex = startIndex + limitNumber;
 
-            var results = db.getAll("posts");
+            System.out.println("Startindex: " +  startIndex);
+            System.out.println("EndIndex: " + endIndex);
+
+            var results = db.getPostHandler().getAllPosts();
             var re = results.subList(startIndex, endIndex);
             res.json(re);
 

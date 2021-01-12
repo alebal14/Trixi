@@ -106,7 +106,7 @@ interface Api {
     @GET("rest/posts")
     suspend fun getAllPosts(): Response<List<Post>>
 
-    @GET("rest/posts/pagelimit")
+    @GET("rest/posts/pagelimit/")
     suspend fun getAllPostQuery(
         @Query("page") page: Int,
         @Query("limit") limit: Int): Response<List<Post>>
