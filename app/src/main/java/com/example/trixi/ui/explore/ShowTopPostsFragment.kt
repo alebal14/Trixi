@@ -243,7 +243,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
             }
         }
     }
-    
+
     private fun setAdapter(adapterList: List<Post>){
         media_grid_top_posts.apply {
             media_grid_top_posts.layoutManager =
