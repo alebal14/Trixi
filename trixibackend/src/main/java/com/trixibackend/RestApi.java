@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 
 public class RestApi {
 
@@ -363,6 +365,36 @@ public class RestApi {
     private void setUpGetApi(String collectionName) {
 
         app.get("/rest/" + collectionName, (req, res) -> res.json(db.getAll(collectionName)));
+
+        app.get("/rest/posts/pagelimit/", (req, res) -> {
+            String page = req.getQuery("page");
+            String limit = req.getQuery("limit");
+            //int limit = parseInt(req.getQuery("limit"));
+            int pageNumber = parseInt(page);
+            int limitNumber = parseInt(limit);
+
+            int startIndex = (pageNumber -1) * limitNumber;
+            int endIndex = startIndex + limitNumber;
+            var results = db.getPostHandler().getAllPosts();
+            
+            int lastPage = results.size()/limitNumber + 1;
+
+
+            if(pageNumber > lastPage){
+                res.json(null);
+            } else if (pageNumber == lastPage) {
+                var re = results.subList(startIndex, results.size());
+                res.json(re);
+            } else {
+                var re = results.subList(startIndex, endIndex);
+
+                res.json(re);
+            }
+
+
+
+        });
+
         app.get("/rest/posts/by_category/:id", (req, res) -> {
 
             String id = req.getParam("id");

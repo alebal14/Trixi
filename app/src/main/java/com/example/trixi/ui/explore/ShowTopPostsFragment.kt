@@ -3,30 +3,34 @@ package com.example.trixi.ui.explore
 //import androidx.fragment.app.viewModels
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
+import kotlin.NullPointerException
 
 
 class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private lateinit var model: TrixiViewModel
     //private lateinit var linearLayoutManager: LinearLayoutManager
     var  mContext : Context? = null
+    var page = 1
+    var limit = 30
+    var loading = true
+
+    var lastPage = 0
 
 
     override fun onCreateView(
@@ -43,6 +47,9 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         mContext = context
 
+
+
+
         cat_spinner.setVisibility(View.GONE)
 
         cat_all.setOnClickListener(this)
@@ -54,7 +61,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         cat_other.setOnClickListener(this)
         cat_spinner_start.setOnClickListener(this)
 
-        allPostsToAdapter()
+        allPostsToAdapter(null)
         searchToAdapter()
         populateCatSpinner()
 
@@ -73,22 +80,107 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun allPostsToAdapter(){
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+    private fun ScrollToLoad(cat: Int?) {
+        animationViewLoadingSpinner.visibility = View.GONE;
+        top_scroll.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+            override fun onScrollChange(
+                v: NestedScrollView?,
+                scrollX: Int,
+                scrollY: Int,
+                oldScrollX: Int,
+                oldScrollY: Int
+            ) {
 
-        model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
-            val sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
-
-            media_grid_top_posts.apply {
-                media_grid_top_posts.layoutManager =
-                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                media_grid_top_posts.adapter = ExploreMediaGridAdapter(sortedPosts as ArrayList<Post>)
-                { p ->
-                    redirectToSinglePost(p)
+                if (scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight) {
+                        page++
+                        allPostsToAdapter(cat)
                 }
+
+
             }
         })
+
+        pullToRefresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            pullToRefresh.isEnabled = false;
+            if(page > 1){
+                page--
+                allPostsToAdapter(cat)
+            }
+            pullToRefresh.isEnabled = true;
+        })
+
+    }
+
+    private fun allPostsToAdapter(cat: Int?) {
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
+
+       // Toast.makeText(activity, "Page Number: $page", Toast.LENGTH_SHORT).show()
+
+        if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
+            limit = 100
+                model.getAllPostsWithQuery(page, limit)
+                    ?.observe(viewLifecycleOwner, Observer { post ->
+                        var finalPost = post
+                        if (cat == R.id.cat_other) {
+                            finalPost =
+                                post!!.filter { it.categoryName!!.contains("Other") }.map { it }
+                            ScrollToLoad(R.id.cat_other)
+                        }
+                        if (cat == R.id.cat_tricks) {
+                            finalPost =
+                                post!!.filter { it.categoryName!!.contains("Tricks") }.map { it }
+                            ScrollToLoad(R.id.cat_training)
+                        }
+                        if (cat == R.id.cat_obedience) {
+                            finalPost =
+                                post!!.filter { it.categoryName!!.contains("Obedience") }.map { it }
+                            ScrollToLoad(R.id.cat_training)
+                        }
+                        if (cat == R.id.cat_feeding) {
+                            finalPost =
+                                post!!.filter { it.categoryName!!.contains("Feeding") }.map { it }
+                            ScrollToLoad(R.id.cat_training)
+                        }
+                        if (cat == R.id.cat_cute) {
+                            finalPost =
+                                post!!.filter { it.categoryName!!.contains("Cute") }.map { it }
+                            ScrollToLoad(R.id.cat_training)
+                        }
+
+                        media_grid_top_posts.apply {
+
+                            media_grid_top_posts.layoutManager =
+                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                            media_grid_top_posts.adapter =
+                                ExploreMediaGridAdapter(finalPost as ArrayList<Post>)
+                                { p ->
+                                    redirectToSinglePost(p)
+                                }
+                        }
+                    })
+        }else {
+            model.getAllPostsWithQuery(page, limit).observe(viewLifecycleOwner, Observer { post ->
+                if (post != null) {
+                    var sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it }
+                    ScrollToLoad(null)
+                    media_grid_top_posts.apply {
+                        media_grid_top_posts.layoutManager =
+                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                        media_grid_top_posts.adapter =
+                            ExploreMediaGridAdapter(sortedPosts as ArrayList<Post>)
+                            { p ->
+                                redirectToSinglePost(p)
+                            }
+                    }
+                } else {
+                    top_scroll.isEnabled = false;
+                    Toast.makeText(activity, "You reached the last Post", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+        }
     }
 
     private fun searchToAdapter() {
@@ -122,7 +214,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
             mSearch!!.onActionViewCollapsed()
 
             clearText!!.setText("")
-            allPostsToAdapter()
+            allPostsToAdapter(null)
         }
 
     }
@@ -168,7 +260,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
     private fun setAdapter(adapterList: List<Post>){
         media_grid_top_posts.apply {
             media_grid_top_posts.layoutManager =
@@ -208,56 +299,50 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 R.id.cat_all -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    val sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it!! }
-                    setAdapter(sortedPosts)
+                    page =1
+                    allPostsToAdapter(null)
                     populateCatSpinner()
                 }
                 R.id.cat_training -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    val finalPost =
-                        post!!.filter { it.categoryName!!.contains("Training") }.map { it }
-                    setAdapter(finalPost)
+                    page =1
+                    allPostsToAdapter(R.id.cat_training)
                     populateCatSpinner()
                 }
                 R.id.cat_tricks -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    val finalPost =
-                        post!!.filter { it.categoryName!!.contains("Tricks") }.map { it }
-                    setAdapter(finalPost)
+                    page =1
+                    allPostsToAdapter(R.id.cat_tricks)
                     populateCatSpinner()
                 }
                 R.id.cat_obedience-> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    val finalPost =
-                        post!!.filter { it.categoryName!!.contains("Obedience") }.map { it }
-                    setAdapter(finalPost)
+                    page =1
+                    allPostsToAdapter(R.id.cat_obedience)
                     populateCatSpinner()
                 }
                 R.id.cat_feeding -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    val finalPost =
-                        post!!.filter { it.categoryName!!.contains("Feeding") }.map { it }
-                    setAdapter(finalPost)
+                    page =1
+                    allPostsToAdapter(R.id.cat_feeding)
                     populateCatSpinner()
                 }
                 R.id.cat_cute -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    val finalPost =
-                        post!!.filter { it.categoryName!!.contains("Cute") }.map { it }
-                    setAdapter(finalPost)
+                    page =1
+                    allPostsToAdapter(R.id.cat_cute)
                     populateCatSpinner()
                 }
                 R.id.cat_other -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    val finalPost =
-                        post!!.filter { it.categoryName!!.contains("Other") }.map { it }
-                    setAdapter(finalPost)
+                    page =1
+                    allPostsToAdapter(R.id.cat_other)
                     populateCatSpinner()
                 }
                 else -> {
