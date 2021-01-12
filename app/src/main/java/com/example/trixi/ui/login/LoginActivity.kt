@@ -34,13 +34,7 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
         setContentView(R.layout.activity_login)
         RetrofitClient.context = this
 
-        //supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorTeal)))
-        //supportActionBar!!.setDisplayShowTitleEnabled(false)
-
-
         post.GetLoggedInUserFromDB(this)
-
-
 
         registerReceiver(
             NetworkStateReceiver(),
@@ -65,21 +59,6 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
             }
         }
 
-
-
-        //testObserver getAllUsers:
-
-        /*
-
-        model.GetAllUsersFromDB()
-        model.getUserMutableLiveDataList().observe(this, Observer {
-            it.forEach {
-                Log.d("uus", "UserName : ${it.userName!!}")
-            }
-        })
-
-         */
-
     }
 
     private fun showMessage(isConnected: Boolean) {
@@ -93,14 +72,6 @@ class LoginActivity : AppCompatActivity(), NetworkStateReceiver.ConnectivityRece
             Log.d("networkaccess", "connected")
         }
     }
-
-        /*model.GetAllUsersFromDB()
-        model.getUserMutableLiveDataList().observe(this, Observer{
-            it.forEach{
-                Log.d("uus", "UserName : ${it.userName!!}")
-            }
-        } )*/
-
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         showMessage(isConnected)

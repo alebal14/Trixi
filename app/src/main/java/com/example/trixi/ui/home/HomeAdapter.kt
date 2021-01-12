@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.Like
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
@@ -27,32 +29,42 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class HomeAdapter(
-    private var posts: ArrayList<Post>, private val fm: FragmentManager,
-   /* private val listener: ((Post) -> Unit)?,*/ private val viewLifeCycleOwner: LifecycleOwner
-): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+    private var posts: ArrayList<Post>,
+    private val fm: FragmentManager,
+    private val viewLifeCycleOwner: LifecycleOwner,
+    private var activeButton: String,
+) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.HomeViewHolder {
         val linearView = (LayoutInflater.from(parent.context).inflate(
-            R.layout.fragment_home_item,parent,false))
-        return HomeViewHolder(linearView)
+            R.layout.fragment_home_item, parent, false))
+        return HomeViewHolder(linearView, activeButton)
     }
 
     override fun onBindViewHolder(holder: HomeAdapter.HomeViewHolder, position: Int) {
 
-        holder.bindPost(posts[position],fm,/*listener,*/viewLifeCycleOwner)
+        holder.bindPost(posts[position], fm,/*listener,*/viewLifeCycleOwner)
     }
 
     override fun getItemCount(): Int {
         return posts.size
     }
 
-    class HomeViewHolder(view: View):RecyclerView.ViewHolder(view),View.OnClickListener {
+    class HomeViewHolder(view: View, active: String) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
+
+        val activeButton = active
 
         override fun onClick(p0: View?) {
             TODO("Not yet implemented")
         }
-        fun bindPost(post:Post,fm:FragmentManager, /*listener: (Post) -> Unit,*/viewLifeCycleOwner: LifecycleOwner){
+
+        fun bindPost(
+            post: Post,
+            fm: FragmentManager, /*listener: (Post) -> Unit,*/
+            viewLifeCycleOwner: LifecycleOwner,
+        ) {
 
             val db = PostToDb()
             val model = TrixiViewModel()
@@ -71,7 +83,6 @@ class HomeAdapter(
                         model.getOnePet(post.ownerId!!)
                             ?.observe(viewLifeCycleOwner, Observer { petIsOwner ->
                                 populatePetInfo(petIsOwner, fm)
-
                             })
                     }
                 })
@@ -84,13 +95,19 @@ class HomeAdapter(
             itemView.home_item_like_count.text = numberOfLike.toString()
             itemView.home_item_tags.text = post.categoryName
 
-            handleLike(numberOfLike,post,db)
-            handleClickOnComment(post,fm)
+            var activeTextView: TextView
+            if (activeButton.equals("discover")) {
+                activeTextView = itemView.home_item_following
+            } else activeTextView = itemView.home_item_discover
+
+            activeTextView.setTextColor(
+                ContextCompat.getColor(context, R.color.gray)
+            )
+
+            handleLike(numberOfLike, post, db)
+            handleClickOnComment(post, fm)
             handleClickOnDiscovery(fm)
             handleClickOnFollowing(fm)
-
-
-
         }
 
         private fun populateImgOrVideo(post: Post) {
@@ -109,11 +126,11 @@ class HomeAdapter(
 
         private fun populatePetInfo(
             petIsOwner: Pet,
-            fm: FragmentManager
+            fm: FragmentManager,
         ) {
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (petIsOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
-                    .transform(CropCircleTransformation()).fit()
+                .transform(CropCircleTransformation()).fit()
                 //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
                 //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
 
@@ -125,11 +142,11 @@ class HomeAdapter(
 
         private fun populateUserInfo(
             postOwner: User,
-            fm: FragmentManager
+            fm: FragmentManager,
         ) {
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (postOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
-                    .transform(CropCircleTransformation()).fit()
+                .transform(CropCircleTransformation()).fit()
                 //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
                 //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
                 .centerCrop().into(itemView.home_item_profileimg)
@@ -138,7 +155,7 @@ class HomeAdapter(
             redirectToUser(postOwner, fm)
         }
 
-        private fun redirectToUser(user: User, fm:FragmentManager){
+        private fun redirectToUser(user: User, fm: FragmentManager) {
 
             val profileName: TextView = itemView.findViewById(R.id.home_item_profileName)
             val profileImg: ImageView = itemView.findViewById(R.id.home_item_profileimg)
@@ -153,9 +170,9 @@ class HomeAdapter(
                 fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
 
             }
-
         }
-        private fun redirectToPet(pet: Pet, fm:FragmentManager){
+
+        private fun redirectToPet(pet: Pet, fm: FragmentManager) {
 
             val profileName: TextView = itemView.findViewById(R.id.home_item_profileName)
             val profileImg: ImageView = itemView.findViewById(R.id.home_item_profileimg)
@@ -170,28 +187,26 @@ class HomeAdapter(
                 fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
 
             }
-
         }
 
-
-
-        private fun handleClickOnFollowing(fm:FragmentManager) {
-            val discoveryText: TextView = itemView.findViewById(R.id.home_item_following)
-            discoveryText.setOnClickListener {
+        private fun handleClickOnFollowing(fm: FragmentManager) {
+            val followingText: TextView = itemView.findViewById(R.id.home_item_following)
+            followingText.setOnClickListener {
                 fm.beginTransaction().replace(R.id.fragment_container, HomepageFragment())
                     .commit()
             }
         }
 
-        private fun handleClickOnDiscovery(fm:FragmentManager) {
+        private fun handleClickOnDiscovery(fm: FragmentManager) {
             val discoveryText: TextView = itemView.findViewById(R.id.home_item_discover)
             discoveryText.setOnClickListener {
                 fm.beginTransaction().replace(R.id.fragment_container, DiscoverFragment())
                     .commit()
+
             }
         }
 
-        private fun handleClickOnComment(post:Post,fm:FragmentManager) {
+        private fun handleClickOnComment(post: Post, fm: FragmentManager) {
             val commentIcon: ImageButton = itemView.findViewById(R.id.home_item_chat)
             commentIcon.setOnClickListener {
                 val popUp = PopUpCommentWindow(post.comments, post.uid.toString(), null)
@@ -199,7 +214,7 @@ class HomeAdapter(
             }
         }
 
-        private fun handleLike(numberOfLike: Int,post:Post,db:PostToDb) {
+        private fun handleLike(numberOfLike: Int, post: Post, db: PostToDb) {
             var numberOfLike1 = numberOfLike
             val likeHeart: ImageButton = itemView.findViewById(R.id.home_item_like)
 
@@ -215,9 +230,6 @@ class HomeAdapter(
             } else {
                 likeHeart.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
-
-
-
 
             likeHeart.setOnClickListener {
                 val like = Like(post.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
@@ -236,8 +248,6 @@ class HomeAdapter(
                     itemView.home_item_like_count.text = numberOfLike1.toString()
                 }
             }
-
-
 
         }
 
