@@ -11,16 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 //import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.trixi.R
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.post.SinglePostFragment
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.recyclerView_homepage
 import kotlinx.android.synthetic.main.fragment_home.view.*
