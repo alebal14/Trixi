@@ -23,7 +23,7 @@ import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.*
-import kotlinx.android.synthetic.main.fragment_single_post.*
+
 
 
 class SinglePostFragment(private val post1: Post?) : Fragment() {
