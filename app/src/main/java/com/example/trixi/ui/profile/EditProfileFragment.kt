@@ -1,6 +1,8 @@
 package com.example.trixi.ui.profile
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -18,9 +20,11 @@ import androidx.fragment.app.Fragment
 import com.example.trixi.BuildConfig
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
+import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
+import io.realm.Realm.getApplicationContext
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import okhttp3.MediaType
@@ -36,6 +40,7 @@ private const val ARG_PARAM2 = "param2"
 class EditProfileFragment : Fragment() {
 
     val db = PostToDb()
+    val delete = DeleteFromDb()
     lateinit var model: TrixiViewModel
     val loggedInUser = PostToDb.loggedInUser
     var newBio: String = ""
@@ -76,8 +81,11 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun setUpClickListeners() {
+
+        //done with editing
         button_update_profile.setOnClickListener { handleUpdateProfile() }
 
+        //change profile pic
         edit_profile_image.setOnClickListener {
             requestPermissions()
             val intent = Intent(
@@ -86,6 +94,9 @@ class EditProfileFragment : Fragment() {
             )
             startActivityForResult(intent, 0)
         }
+
+        //deleting profile
+        delete_profile.setOnClickListener({ handleDeleteProfile() })
     }
 
     private fun requestPermissions() {
@@ -177,16 +188,6 @@ class EditProfileFragment : Fragment() {
 
     private fun handleUpdateProfile() {
 
-        //If everything is ok input, go to update User
-
-        //only image -> WORKS
-        //only password -> WORKS
-        //only bio -> WORKS
-        //password & bio -> WORKS
-        //password & image -> WORKS
-        //bio & image -> WORKS
-        //ALL 3 -> WORKS
-
         if (!newBio.isEmpty() && bioLengthIsOk()) newBio = edit_bio.text.toString()
         else newBio = loggedInUser?.bio!!
 
@@ -231,6 +232,37 @@ class EditProfileFragment : Fragment() {
     private fun redirectToProfile() {
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.fragment_container, LoggedInUserProfileFragment())?.commit()
+    }
+
+    private fun handleDeleteProfile() {
+        showDialogue()
+    }
+
+    private fun showDialogue() {
+
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle("Delete profile")
+        builder.setMessage("Are you sure you want to delete your account?")
+
+        builder.setPositiveButton("Yes, I'm sure") { dialog, which ->
+            deleteProfile()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(
+            "No!"
+        ) { dialog, which -> // Do nothing
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
+    private fun deleteProfile() {
+        //remove user from db
+        delete.deleteUser(loggedInUser?.uid!!)
     }
 
 }

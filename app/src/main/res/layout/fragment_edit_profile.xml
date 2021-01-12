@@ -56,6 +56,14 @@
                 android:background="@drawable/btn_rounded_corners"
                 android:text="Update profile" />
 
+        <Button
+            android:id="@+id/delete_profile"
+            android:layout_width="282dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_round_red"
+            android:text="Delete profile" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

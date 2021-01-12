@@ -106,7 +106,7 @@ public class UserHandler {
         //delete user
         Bson userTobeDeleted = eq("_id", new ObjectId(id));
         DeleteResult deletedUser = userColl.deleteOne(userTobeDeleted);
-        System.out.println("user deleted: " + deletedUser);
+        System.out.println("user deleted: " + deletedUser + " " + userTobeDeleted);
 
         //delete user's post
         Bson posts = eq("ownerId", id);
