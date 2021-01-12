@@ -9,6 +9,10 @@ import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.User
 import com.example.trixi.ui.login.LoginActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -34,7 +38,6 @@ class DeleteFromDb {
                     Log.d("delete", "delete: id :$postId")
                     postDeleted = true
 
-
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
 
@@ -46,6 +49,7 @@ class DeleteFromDb {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("delete", "delete : onFailure " + t.message)
+
             }
 
         })
@@ -54,8 +58,18 @@ class DeleteFromDb {
 
     fun deleteUser(userId: String) {
 
-//        val db = PostToDb()
-//        db.logOutUser(context)
+        //because response takes too long..?
+        GlobalScope.launch(Dispatchers.Main) {
+
+            Log.d("DELETE_USER", "Redirecting to login")
+
+            val db = PostToDb()
+            db.logOutUser(context)
+
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+        }
+
 
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
         val call = retrofitClient?.deleteUser(userId)
@@ -68,13 +82,10 @@ class DeleteFromDb {
                     Log.d("DELETE_USER", "successfully deleted user:---- $result with id $userId")
                     userDeleted = true
 
-                    val intent = Intent(context, LoginActivity::class.java)
-                    context.startActivity(intent)
 
                 } else {
                     Log.d("DELETE_USER", "failed to delete user")
                 }
-
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
