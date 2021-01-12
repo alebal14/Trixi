@@ -70,7 +70,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun setUpUI() {
-        edit_bio.hint = if (loggedInUser?.bio.isNullOrEmpty()) "Edit bio " else loggedInUser?.bio
+        edit_bio.hint = if (loggedInUser?.bio.isNullOrEmpty()) "Edit bio " else loggedInUser?.bio!!.replace("\\\\n".toRegex(), "\n").trimEnd()
 
         Picasso.get()
             .load(BASE_URL + loggedInUser?.imageUrl)
