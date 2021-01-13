@@ -28,6 +28,7 @@ import com.example.trixi.ui.post.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.tabs.TabLayout
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_drawer_menu.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
@@ -91,6 +92,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
             "Following " + (user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString()
         profile_followers.text = numberOfFollowers.toString() + " Followers"
         owner_name.visibility = View.INVISIBLE
+
 
 
 
