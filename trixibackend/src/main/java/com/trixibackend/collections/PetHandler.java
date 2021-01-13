@@ -10,14 +10,9 @@ import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.User;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.gte;
-
 
 public class PetHandler {
 
@@ -41,12 +36,6 @@ public class PetHandler {
             petIter.forEach(pets::add);
             pets.forEach(pet -> {
                 pet.setUid(pet.getId().toString());
-//                pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
-//                pet.getPosts().forEach(post -> {
-//                    post.setUid(post.getId().toString());
-//                    post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-//                    post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-//                });
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,11 +50,7 @@ public class PetHandler {
             if (pet == null) return null;
             pet.setUid(pet.getId().toString());
             pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
-//            pet.getPosts().forEach(post -> {
-//                post.setUid(post.getId().toString());
-//                post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-//                post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-//            });
+
             return pet;
         } catch (Exception e) {
             return null;
@@ -80,22 +65,11 @@ public class PetHandler {
             petsIter.forEach(pets::add);
             pets.forEach(pet -> {
                 pet.setUid(pet.getId().toString());
-//                pet.setPosts(postHandler.findPostsByOwner(pet.getUid()));
-//                pet.getPosts().forEach(post -> {
-//                    post.setUid(post.getId().toString());
-//                    post.setLikes(postHandler.getLikeHandler().findLikesByPostId(post.getUid()));
-//                    post.setComments(postHandler.getCommentHandler().findCommentsByPostId(post.getUid()));
-//                });
             });
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return pets;
-
     }
 
     public List<Pet> findPetsByPetType(String id){
@@ -108,7 +82,6 @@ public class PetHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return pets;
     }
 
@@ -122,7 +95,6 @@ public class PetHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return pets;
     }
 
@@ -131,16 +103,12 @@ public class PetHandler {
         var petFollowers = pet.getFollowers();
         for(User u:petFollowers){
             userColl.updateOne(eq("_id",u.getId()),Updates.pull("followingsPet",new BasicDBObject("_id", pet.getId())));
-            System.out.println(pet.getName() + " is deleted from  " + u.getUserName() + "'s followingsPet list");
-
         }
         Bson petTobeDeleted = eq("_id",new ObjectId(id));
         DeleteResult deletedPet = petColl.deleteOne(petTobeDeleted);
 
         Bson posts = eq("ownerId",id);
         DeleteResult deletedPost = postHandler.getPostColl().deleteMany(posts);
-        System.out.println("pet deleted: " + deletedPet);
-        System.out.println("pet's post deleted: " + deletedPost);
         return deletedPet;
     }
 }
