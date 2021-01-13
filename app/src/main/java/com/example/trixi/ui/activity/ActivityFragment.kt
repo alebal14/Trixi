@@ -10,7 +10,7 @@ import com.example.trixi.entities.Activity
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
-import com.example.trixi.ui.home.HomeAdapter
+import com.example.trixi.ui.home.EmptyHomeFragment
 import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_activity.*
 
@@ -39,66 +39,36 @@ class ActivityFragment : Fragment() {
     }
 
     private fun setUpActivityView() {
-//        model.getPostsByOwner(PostToDb.loggedInUser?.uid.toString())
-//            ?.observe(viewLifecycleOwner, { posts ->
-//                if (posts.isNotEmpty()) {
-//                    Log.d("PageAct", "post size on activity ${posts.size}")
-//                    posts.forEach { post ->
-//
-//                        recyclerView_activity.apply {
-//                            val layoutManager = LinearLayoutManager(context)
-//                            layoutManager.orientation = LinearLayoutManager.VERTICAL
-//                            recyclerView_activity.layoutManager = layoutManager
-//                            if (post.likes!!.isNotEmpty()) {
-//                                adapter = ActivityAdapter(
-//                                    post.likes as ArrayList<Like>,
-//                                    null,
-//                                    post,
-//                                    activity?.supportFragmentManager!!,
-//                                    viewLifecycleOwner
-//                                ) {
-//                                    redirectToSinglePost(it)
-//                                }
-//                            }
-//
-//                            if (post.comments!!.isNotEmpty()) {
-//                                adapter = ActivityAdapter(
-//                                    null,
-//                                    post.comments as ArrayList<Comment>,
-//                                    post,
-//                                    activity?.supportFragmentManager!!,
-//                                    viewLifecycleOwner
-//                                ) {
-//                                    redirectToSinglePost(it)
-//                                }
-//                            }
-//                        }
-//
-//
-//
-//                    }
-//
-//                }
-//
-//            })
+        model.getActivityByOwner(PostToDb.loggedInUser?.uid.toString()).observe(viewLifecycleOwner,
+            { activities ->
+                if (!activities.isNullOrEmpty()) {
+                    recyclerView_activity.apply {
+                        val layoutManager = LinearLayoutManager(context)
+                        layoutManager.orientation = LinearLayoutManager.VERTICAL
+                        recyclerView_activity.layoutManager = layoutManager
+                        adapter = ActivityAdapter(
+                            activities as ArrayList<Activity>,
+                            activity?.supportFragmentManager!!,
+                            viewLifecycleOwner
+                        ) { activity ->
+                            redirectToSinglePost(activity.post)
 
-        model.getActivityByOwner(PostToDb.loggedInUser?.uid.toString()).observe(viewLifecycleOwner,{ activities->
-            recyclerView_activity.apply {
-                val layoutManager = LinearLayoutManager(context)
-                layoutManager.orientation = LinearLayoutManager.VERTICAL
-                recyclerView_activity.layoutManager = layoutManager
-                adapter = ActivityAdapter(
-                    activities as ArrayList<Activity>,
-                    activity?.supportFragmentManager!!,
-                    viewLifecycleOwner
-                ){ activity ->
-                    redirectToSinglePost(activity.post)
+                        }
+                    }
+                } else {
+                    val bundle = Bundle()
+                    bundle.putString("message", "NoActivity")
+                    val emptyHomeFragment = EmptyHomeFragment()
+                    emptyHomeFragment.arguments = bundle
+                    activity?.supportFragmentManager?.beginTransaction()?.apply {
+                        replace(
+                            R.id.fragment_container,
+                            emptyHomeFragment
+                        ).addToBackStack("populateFragment")!!.commit()
+                    }
 
                 }
-            }
-
-
-        })
+            })
     }
 
     private fun redirectToSinglePost(post: Post) {

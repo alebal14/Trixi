@@ -232,8 +232,7 @@ public class RestApi {
                         userLoggedIn.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
                         userLoggedIn.getPosts().forEach(post -> {
                             post.setUid(post.getId().toString());
-                            post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
-                            post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
+
                         });
 
                         res.json(userLoggedIn);
@@ -430,7 +429,7 @@ public class RestApi {
             String id = req.getParam("id");
 
             if (collectionName.equals("notifications")) {
-                var notifications = db.getNotificationByPostOwner(id);
+                var notifications = db.getNotificationHandler().getNotificationByPostOwner(id);
                 res.json(notifications);
                 return;
             }
@@ -604,6 +603,8 @@ public class RestApi {
                 res.send("Error: you already not liking this post");
                 return;
             }
+            db.getNotificationHandler().deleteNotificationByLike(like);
+            //System.out.println("notification deleted: " + result);
             res.json(p);
         });
 
