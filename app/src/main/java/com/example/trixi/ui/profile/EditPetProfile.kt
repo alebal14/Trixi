@@ -50,8 +50,11 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
     var petBio = ""
     var petTypeName = ""
     var gender = ""
+    var newPhoto = false
 
     var mContext: Context? = null;
+
+    var image: MultipartBody.Part? = null
 
 
     private val REQUEST_PERMISSION = 100
@@ -87,8 +90,23 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         assingData()
         populateView()
         setUpSpinners()
-        button_update_profile.setOnClickListener { updatePet() }
-        button_delete_profile.setOnClickListener { deletePet() }
+
+
+        button_update_profile.setOnClickListener {
+            sendPhoto()
+            updatePet() }
+        button_delete_profile.setOnClickListener {
+            deletePet() }
+
+        edit_profile_image.setOnClickListener {
+            requestPermissions()
+            val intent = Intent(
+                    Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+            )
+            startActivityForResult(intent, 0)
+        }
 
     }
 
@@ -116,7 +134,7 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
 
         edit_username.setText(petName)
         edit_description.setText(petBio)
-
+        edit_pet_age.setText(petAge)
         edit_breed.setText(petBreed)
 
 
@@ -230,7 +248,8 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
 
     private fun sendPhoto(){
 
-        val totheView = view?.findViewById<View>(R.id.register_pet_image) as ImageView
+
+        val totheView = view?.findViewById<View>(R.id.edit_profile_image) as ImageView
 
         Picasso.get()
                 .load(selectedFile)
@@ -244,6 +263,8 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         //get the file size
         val file_size = ( file!!.length().toString().toDouble() / 1024 / 1024 )
 
+        newPhoto = true;
+
         // checks if picture size is more than 5 mb
         if (file_size > 5.0){
             Toast.makeText(activity, "Picture is too big, max sixe: 5 Mb", Toast.LENGTH_LONG).show()
@@ -254,44 +275,25 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
 
     }
 
-    /*private fun createPet(){
-
-        petName = register_pet_name.text.toString()
-        petAge = register_pet_age.text.toString()
-        petBreed = register_breed.text.toString()
-        petBio = register_pet_bio.text.toString()
-
-
-
-        if (petName.isEmpty()) {
-            Toast.makeText(activity, "Please enter your pet's name", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if( file_validation == true){
-            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-            val imagenPerfil = MultipartBody.Part.createFormData("file", file?.name, requestFile);
-            db.sendPetToDb(imagenPerfil, ownerId, petName, petAge, petBio, petBreed, petTypeName, gender)
-        } else {
-            Toast.makeText(activity, "Invalid File", Toast.LENGTH_LONG).show()
-            return
-        }
-
-
-    }*/
-
+  
     private fun updatePet() {
-        /*title = title_field.text.toString()
-        description = description_field.text.toString()
+        petName = edit_username.text.toString()
+        petAge = edit_pet_age.text.toString()
+        petBreed = edit_breed.text.toString()
+        petBio = edit_description.text.toString()
 
-        if (title.isEmpty()) {
-            Toast.makeText(activity, "Please enter a title", Toast.LENGTH_SHORT).show()
-            return
-        }
 
-        val updatedPost =
-            Post(uid, title, description, "", "", ownerId, categoryName, null, null)
-        db.updatePost(updatedPost)*/
+            if( file_validation == true){
+                if(newPhoto){
+                    val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file!!)
+                    image = MultipartBody.Part.createFormData("file", file?.name, requestFile);
+                }
+                db.sendPetToDb(image, uid, ownerId, petName, petAge, petBio, petBreed, petTypeName, gender)
+            } else {
+                Toast.makeText(activity, "Invalid File", Toast.LENGTH_LONG).show()
+                return
+            }
+
 
     }
 

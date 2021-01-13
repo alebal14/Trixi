@@ -88,12 +88,13 @@ interface Api {
 
     @Multipart
     @POST("rest/pets")
-    fun postPet(  @Part file: MultipartBody.Part,
+    fun postPet(  @Part file: MultipartBody.Part?,
+                  @Part("uid") uid: String?,
                   @Part("ownerId") ownerId: String,
                   @Part("name") name: String,
                   @Part("age") age: String,
-                  @Part("bio") bio: String,
-                  @Part("breed") breed: String,
+                  @Part("bio") bio: String?,
+                  @Part("breed") breed: String?,
                   @Part("petType") petType: String,
                   @Part("gender") gender: String): Call<Pet>
 

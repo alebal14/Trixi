@@ -262,6 +262,7 @@ public class RestApi {
 
                     List<FileItem> Postfiles = null;
                     String PostfileUrl = null;
+                    String petId = null;
                     String description = null;
                     String ownerId = null;
                     String title = null;
@@ -270,6 +271,7 @@ public class RestApi {
 
                     try {
                         Postfiles = req.getFormData("file");
+                        petId = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
                         ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         title = req.getFormData("title").get(0).getString().replace("\"", "");
@@ -305,6 +307,7 @@ public class RestApi {
                     String PetFileUrl = null;
                     String PetOwnerId = null;
                     String name = null;
+                    String petUid = null;
                     String age = null;
                     String petBio = null;
                     String breed = null;
@@ -314,6 +317,7 @@ public class RestApi {
                     try {
                         Petfiles = req.getFormData("file");
                         name = req.getFormData("name").get(0).getString().replace("\"", "");
+                        petUid =  req.getFormData("uid").get(0).getString().replace("\"", "");
                         PetOwnerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         age = req.getFormData("age").get(0).getString().replace("\"", "");
                         petBio = req.getFormData("bio").get(0).getString().replace("\"", "");
@@ -321,11 +325,30 @@ public class RestApi {
                         Type = req.getFormData("petType").get(0).getString().replace("\"", "");
                         gender = req.getFormData("gender").get(0).getString().replace("\"", "");
 
-                        PetFileUrl = db.uploadImage(Petfiles.get(0));
-                        System.out.println(PetFileUrl + name + PetOwnerId);
-
                         Pet pet = new Pet();
-                        pet.setImageUrl(PetFileUrl);
+
+
+                        //System.out.println(PetFileUrl + name + PetOwnerId);
+
+
+
+                        if(petUid != null){
+                            Pet oldPet = db.getPetHandler().findPetById(petUid);
+                            pet.setUid(petUid);
+                            pet.setId(new ObjectId(petUid));
+                            if(Petfiles == null){
+                                pet.setImageUrl(oldPet.getImageUrl());
+                            }
+                        }
+
+                        if(Petfiles != null){
+                            PetFileUrl = db.uploadImage(Petfiles.get(0));
+                            pet.setImageUrl(PetFileUrl);
+                        }
+
+
+
+
                         pet.setName(name);
                         pet.setOwnerId(PetOwnerId);
                         pet.setAge(age);

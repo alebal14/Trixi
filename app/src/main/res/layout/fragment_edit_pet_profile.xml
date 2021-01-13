@@ -36,6 +36,17 @@
                 android:paddingLeft="16dp" />
 
         <EditText
+            android:id="@+id/edit_pet_age"
+            android:layout_width="283dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/text_input_rounded_corners"
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="text"
+            android:paddingLeft="16dp" />
+
+        <EditText
                 android:id="@+id/edit_description"
                 android:layout_width="283dp"
                 android:layout_height="80dp"
