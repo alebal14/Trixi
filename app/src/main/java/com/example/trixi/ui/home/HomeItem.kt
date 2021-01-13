@@ -30,8 +30,6 @@ class HomeItem(
     }
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        Log.d("position", "$position : post title: ${post.title}")
-
         if (post.fileType.toString() == "image") {
             viewHolder.itemView.home_item_media.visibility = View.VISIBLE
             viewHolder.itemView.home_item_video.visibility = View.GONE
@@ -41,15 +39,11 @@ class HomeItem(
             viewHolder.itemView.home_item_media.visibility = View.GONE
             viewHolder.itemView.home_item_video.visibility = View.VISIBLE
             viewHolder.itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
-
         }
         val profileImgHolder = viewHolder.itemView.home_item_profileimg
         Picasso.get()
             .load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl)).transform(CropCircleTransformation()).fit()
-            //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
-            //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
             .centerCrop().into(profileImgHolder)
-
 
         viewHolder.itemView.home_item_profileName.text =
             post.owner?.userName ?: post.ownerIsPet?.name
@@ -125,9 +119,7 @@ class HomeItem(
         } else {
             val petProfileFragment = PetProfileFragment(post.ownerIsPet)
             fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
-
         }
-
     }
 
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {

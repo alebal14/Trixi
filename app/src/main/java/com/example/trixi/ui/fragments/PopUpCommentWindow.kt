@@ -50,8 +50,6 @@ class PopUpCommentWindow(
     ): View? {
 
         return inflater.inflate(R.layout.fragment_comment, container, false)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,9 +59,11 @@ class PopUpCommentWindow(
         setUpCommentsView()
 
         send_comment.setOnClickListener {
+
             sendComment(chatCount)
 
             //setUpCommentsView()
+
         }
 
     }
@@ -80,13 +80,9 @@ class PopUpCommentWindow(
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
 
-
     private fun setUpCommentsView() {
-
-
         comments!!.forEach { comment ->
             model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commentOwner ->
                 if(commentOwner != null){
@@ -95,14 +91,11 @@ class PopUpCommentWindow(
 
                     adapterChat.add(CommentItem(comment, commentOwner))
                 }
-
             })
-
         }
-
         recyclerView_popup_comment.adapter = adapterChat
-
     }
+
 
     private fun sendComment(homeItemChatCount: TextView) {
 
@@ -122,12 +115,7 @@ class PopUpCommentWindow(
         enter_comment.text.clear()
         adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
         adapterChat.notifyDataSetChanged()
-        //recyclerView_popup_comment.adapter = adapterChat
-
-
     }
-
-
 }
 
 class CommentItem(private val comment: Comment, private val commentOwner: User?) :

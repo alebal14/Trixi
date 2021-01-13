@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
-import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.BASE_URL
 import com.example.trixi.entities.Post
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_home_item.view.*
 import kotlinx.android.synthetic.main.profile_media_item.view.*
 
 class ProfileMediaGridAdapter(private var posts: ArrayList<Post>,
@@ -39,7 +37,6 @@ class ProfileMediaGridAdapter(private var posts: ArrayList<Post>,
         val image = itemView.profile_image_thumbnail
          val video = itemView.profile_video_thumbnail
 
-
         override fun onClick(view: View) {
             Log.d("Recyclerview media grid", "click!")
         }
@@ -57,13 +54,9 @@ class ProfileMediaGridAdapter(private var posts: ArrayList<Post>,
                image.visibility = View.GONE
                 video.visibility = View.VISIBLE
                 video.setSource(BASE_URL + post.filePath.toString())
-
             }
-
             itemView.setOnClickListener { listener(post)}
-
         }
-
     }
 
 }

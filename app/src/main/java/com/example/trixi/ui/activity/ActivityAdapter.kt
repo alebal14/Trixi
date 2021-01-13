@@ -82,10 +82,21 @@ class ActivityAdapter(
             }
 
 
+            if (activity.post.fileType.toString() == "image") {
+                itemView.activity_postImg.visibility = View.VISIBLE
+                itemView.activity_postVideo.visibility = View.GONE
+                Picasso.get()
+                        .load(RetrofitClient.BASE_URL + (activity.post.filePath))
+                        .fit().into(itemView.activity_postImg)
 
-            Picasso.get()
-                .load(RetrofitClient.BASE_URL + (activity.post.filePath))
-                .fit().into(itemView.activity_postImg)
+            } else {
+                itemView.activity_postImg.visibility = View.GONE
+                itemView.activity_postVideo.visibility = View.VISIBLE
+                itemView.activity_postVideo.setSource(RetrofitClient.BASE_URL + activity.post.filePath.toString())
+
+            }
+
+
 
 
 

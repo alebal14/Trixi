@@ -78,6 +78,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
             }
         }
     }
+
     private fun handleClickEdit(pet: Pet) {
         edit_pet.setOnClickListener {
             val editPet = EditPetProfile(pet)
@@ -85,7 +86,6 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                     ?.replace(R.id.fragment_container, editPet)?.commit()
         }
     }
-
 
     private fun populateProfile() {
         profile_name.text = pet!!.name
@@ -118,7 +118,6 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
             follow_button.visibility = GONE
             edit_pet.visibility = VISIBLE
         }
-
 
         owner_name.setOnClickListener { redirectToOwner(owner) }
         owner_name.text = "Owner: " + owner.userName
@@ -176,7 +175,6 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                                             adapter = ProfileMediaGridAdapter(postImage as ArrayList<Post>) {
                                                 redirectToSinglePost(it)
                                             }
-                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                                         }
                                     }
                                 }
@@ -197,7 +195,6 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                                             adapter = ProfileMediaGridAdapter(postVideo as ArrayList<Post>) {
                                                 redirectToSinglePost(it)
                                             }
-                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                                         }
                                     }
                                 }
@@ -216,7 +213,6 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                         adapter = ProfileMediaGridAdapter(postMedia as ArrayList<Post>) {
                             redirectToSinglePost(it)
                         }
-                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                     }
                 }
             })
@@ -270,6 +266,5 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         super.onDestroyView()
         PostToDb.createdPet = null
     }
-
 
 }

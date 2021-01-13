@@ -9,7 +9,6 @@ public class Like {
 
 
     public Like(){
-
     }
 
     public Like(String userId, String postId) {

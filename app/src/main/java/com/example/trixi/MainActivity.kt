@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
             makeCurrentFragment(homepageFragment)
         }
 
-
         bottom_nav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.footer_home -> makeCurrentFragment(homepageFragment)
@@ -74,8 +73,6 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fragment_container, fragment).addToBackStack("NavFragment").
             commit()
         }
-
-
 
 }
 

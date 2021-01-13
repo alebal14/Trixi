@@ -84,5 +84,14 @@
             android:layout_height="45dp"
             app:srcCompat="@drawable/ic_big" />
 
+        <com.potyvideo.library.AndExoPlayerView
+            android:id="@+id/activity_postVideo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:andexo_play_when_ready="false"
+            app:andexo_resize_mode="Zoom"
+            app:andexo_show_controller="false"
+            app:srcCompat="@drawable/ic_big" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

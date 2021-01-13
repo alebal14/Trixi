@@ -1,7 +1,6 @@
 package com.trixibackend;
 
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
@@ -12,18 +11,12 @@ import org.apache.commons.fileupload.FileItem;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
-
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
-
 import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -75,7 +68,6 @@ public class DatabaseHandler {
         database = database.withCodecRegistry(pojoCodecRegistry);
 
         // get users collection linked with POJO
-
         userHandler = new UserHandler(database);
         postHandler = new PostHandler(database);
         petHandler = new PetHandler(database);
@@ -102,13 +94,10 @@ public class DatabaseHandler {
         collections.putIfAbsent(Category.class, categoryColl);
         collections.putIfAbsent(PetType.class, petTypeColl);
         collections.putIfAbsent(Notification.class,notColl);
-
-
     }
 
     public <T> T save(Object object) {
         ObjectId id = null;
-
 
         try {
             Field privateStringField = object.getClass().getDeclaredField("id");
@@ -126,9 +115,7 @@ public class DatabaseHandler {
             var res = coll.insertOne(object);
             updated = (T) object;
             System.out.println("save : " + updated);
-
         }
-
         return updated;
     }
 
@@ -175,7 +162,6 @@ public class DatabaseHandler {
                 return categoryHandler.findCategoryById(id);
             case "pet_types":
                 return petTypeHandler.findPetTypesById(id);
-
             default:
                 return null;
         }
@@ -205,15 +191,12 @@ public class DatabaseHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return fileUrl;
-
     }
 
     public Object getLoginByNameOrEmail(User user) {
         return userHandler.findUserByNameOrEmail(user);
     }
-
 
     public PostHandler getPostHandler() {
         return postHandler;
@@ -252,9 +235,6 @@ public class DatabaseHandler {
                 Collections.reverse(notifications);
         return notifications;
     }
-
-
-
 
     public MongoDatabase getDatabase() {
         return database;

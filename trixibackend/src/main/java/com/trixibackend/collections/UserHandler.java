@@ -9,30 +9,13 @@ import com.mongodb.client.result.DeleteResult;
 import com.trixibackend.entity.Pet;
 import com.trixibackend.entity.Post;
 import com.trixibackend.entity.User;
-import jdk.jfr.Timestamp;
-import org.apache.commons.fileupload.FileItem;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.gte;
 
 public class UserHandler {
     private MongoCollection<User> userColl;
@@ -63,7 +46,6 @@ public class UserHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return users;
     }
 
@@ -87,21 +69,18 @@ public class UserHandler {
         for(User aFollower :followers){
             userColl.updateOne(eq("_id",aFollower.getId()),Updates.pull("followingsUser",new BasicDBObject("_id", u.getId())));
             System.out.println(u.getUserName() + " is deleted from  " + aFollower.getUserName() + "'s followingsUsers list");
-
         }
         // delete this user from other user's followers list
         var followings = u.getFollowingsUser();
         for(User aFollowing :followings){
             userColl.updateOne(eq("_id",aFollowing.getId()),Updates.pull("followers",new BasicDBObject("_id", u.getId())));
             System.out.println(u.getUserName() + " is deleted from  " + aFollowing.getUserName() + "'s followers list");
-
         }
         // delete this user from pet's followers list
         var petFollowings = u.getFollowingsPet();
         for(Pet p:petFollowings){
             petHandler.getPetColl().updateOne(eq("_id",p.getId()),Updates.pull("followers",new BasicDBObject("_id", u.getId())));
             System.out.println(u.getUserName() + " is deleted from  " + p.getName() + "'s followers list");
-
         }
         //delete user
         Bson userTobeDeleted = eq("_id", new ObjectId(id));
@@ -120,7 +99,6 @@ public class UserHandler {
             petHandler.deletePet(p.getUid(),userColl);
         }
 
-
     // remove this users comments and likes for other user's/pet's posts
         var allPosts = postHandler.getAllPosts();
         for (Post p : allPosts) {
@@ -135,10 +113,7 @@ public class UserHandler {
                     .collect(Collectors.toList());
             postHandler.getPostColl().updateOne(eq("_id",p.getId()),Updates.pullAll("likes",likes));
         }
-
-
         return deletedUser;
-
     }
 
 
@@ -219,7 +194,6 @@ public class UserHandler {
         makeUsersListEmpty(j);
         //update the pet's list
         petHandler.getPetColl().updateOne(eq("_id", following.getId()), Updates.addToSet("followers", j));
-
 
         User updatedUser = findUserById(user.getUid());
         System.out.println("---------------------------------------------------------------");
@@ -313,12 +287,8 @@ public class UserHandler {
                  .filter(e -> e.getLikes().stream().anyMatch(f -> f.getUserId().contains(user.getUid())))
                  .collect(Collectors.toList());
 
-        //System.out.println("liked post: " + getLikedPost);
-
         //get user's post
          List<Post> getUserPost = postHandler.findPostsByOwner(user.getUid());
-
-        //System.out.println("My post: " + getUserPost);
 
         List<User> getFollowingUser = user.getFollowingsUser();
         List<Pet>  getFollowingPet = user.getFollowingsPet();
@@ -340,9 +310,6 @@ public class UserHandler {
                         .filter(e -> concatlist.contains(e.getOwnerId()))
                         .collect(Collectors.toList());
 
-        //System.out.println("Following post: " + getFollowingList);
-
-
         List<Post> allList = new ArrayList<>();
 
         allList.addAll(getFollowingList);
@@ -353,8 +320,6 @@ public class UserHandler {
                 .map(Post::getCategoryName)
                 .collect(Collectors.toSet());
 
-        //System.out.println("kategories 1 : " + Categories);
-
         List<Post> allListOwnerId = new ArrayList<>();
         allListOwnerId.addAll(getFollowingList);
         allListOwnerId.addAll(getUserPost);
@@ -363,23 +328,14 @@ public class UserHandler {
                 .map(Post::getOwnerId)
                 .collect(Collectors.toSet());
 
-        //System.out.println("get ownerids " + getIds);
-
         Set<String> postIds = getLikedPost.stream()
                 .map(Post::getUid)
                 .collect(Collectors.toSet());
-
-        //System.out.println("get liked post: " + postIds);
-
-        //System.out.println("all post: " + allPostFromDB.size());
 
          List<Post> removePost =  allPostFromDB.stream()
                  .filter(e -> !getIds.contains(e.getOwnerId()))
                  .filter(f -> !postIds.contains(f.getUid()))
                  .collect(Collectors.toList());
-
-        //System.out.println("list without: " +removePost.size());
-
 
          List<Post> resultList = removePost.stream()
                  .filter(e -> Categories.contains(e.getCategoryName()))
@@ -388,8 +344,6 @@ public class UserHandler {
                  .sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size())))
                  .collect(Collectors.toList());
 
-        //System.out.println("endList: " + resultList.size());
-
          if(resultList.isEmpty()){
              return allPostFromDB.stream().limit(50)
                      .sorted(Collections.reverseOrder(Comparator.comparing(Post::getId)))
@@ -397,13 +351,10 @@ public class UserHandler {
                      .sorted(Collections.reverseOrder(Comparator.comparing(f ->  f.getLikes().size())))
                      .collect(Collectors.toList());
          }
-
-
         return resultList;
     }
 
     private void makeUsersListEmpty(User u){
-
         u.setFollowingsUser(null);
         u.setFollowingsPet(null);
         u.setFollowers(null);
@@ -415,6 +366,5 @@ public class UserHandler {
         p.setFollowers(null);
         p.setPosts(null);
     }
-
 
 }
