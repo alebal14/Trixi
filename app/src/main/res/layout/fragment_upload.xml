@@ -1,12 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorTeal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorTeal">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/camera_gallery_buttons_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageButton
+                android:id="@+id/btn_open_camera_picture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_baseline_camera_alt_24">
+
+            </ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_open_camera_video"
+                android:layout_width="48dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_video_solid">
+
+            </ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_open_gallery_picture"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_image_solid"></ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_open_gallery_video"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_film_solid"></ImageButton>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
     <ScrollView
@@ -19,71 +70,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="40dp">
+            android:layout_marginBottom="40dp"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <LinearLayout
-                    android:id="@+id/camera_gallery_buttons_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:padding="5dp">
-
-                    <ImageButton
-                        android:id="@+id/btn_open_camera_picture"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/border"
-                        android:src="@drawable/ic_baseline_camera_alt_24">
-
-                    </ImageButton>
-
-                    <ImageButton
-                        android:id="@+id/btn_open_camera_video"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/border"
-                        android:src="@drawable/ic_video_solid">
-
-                    </ImageButton>
-
-                    <ImageButton
-                        android:id="@+id/btn_open_gallery_picture"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/border"
-                        android:src="@drawable/ic_image_solid"></ImageButton>
-
-                    <ImageButton
-                        android:id="@+id/btn_open_gallery_video"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/border"
-                        android:src="@drawable/ic_film_solid"></ImageButton>
-
-                </LinearLayout>
-
-            </RelativeLayout>
 
 
 
             <ImageView
                 android:id="@+id/uploadImage"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="200dp"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/ic_baseline_cloud_upload_24"/>
+                android:src="@drawable/ic_baseline_cloud_upload_24" />
+
 
             <com.potyvideo.library.AndExoPlayerView
                 android:id="@+id/uploadVideo"
@@ -92,18 +91,23 @@
                 android:layout_marginBottom="20dp"
                 app:andexo_full_screen="true"
                 app:andexo_play_when_ready="true"
-                app:andexo_show_controller="true"
                 app:andexo_resize_mode="Zoom"
+                app:andexo_show_controller="true"
 
                 />
+
+
+
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
                 android:orientation="vertical"
-                android:padding="20dp"
-                android:layout_marginBottom="0dp">
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp">
+
 
                 <EditText
                     android:id="@+id/title_field"
@@ -133,58 +137,60 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/text_input_rounded_corners"
-                    ></Spinner>
+                    android:background="@drawable/text_input_rounded_corners"></Spinner>
 
                 <Spinner
                     android:id="@+id/upload_spinner_add_category"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="@drawable/text_input_rounded_corners"
-                    ></Spinner>
-                <LinearLayout
-                    android:id="@+id/edit_buttons_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="20dp"
-                    >
-                    <Button
-                        android:id="@+id/button_delete_post"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/btn_rounded_corners"
-                        android:text="DELETE POST" />
-                    <Button
-                        android:id="@+id/button_update_post"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/btn_rounded_corners"
-                        android:text="UPDATE" />
+                    android:background="@drawable/text_input_rounded_corners"></Spinner>
 
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/button_post"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/btn_rounded_corners"
-                    android:layout_marginBottom="20dp"
-                    android:text="Share" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/edit_buttons_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp">
 
+                <Button
+                    android:id="@+id/button_delete_post"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_rounded_corners"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="DELETE POST" />
 
+                <Button
+                    android:id="@+id/button_update_post"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_rounded_corners"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="UPDATE" />
 
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_post"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_rounded_corners"
+                android:text="Share" />
         </LinearLayout>
+
 
     </ScrollView>
 

@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke
-        android:width="1dp"
-        android:color="#FFF" />
-    <padding
-        android:left="1dp"
-        android:top="1dp"
-        android:right="1dp"
-        android:bottom="1dp" />
-    <corners
-        android:bottomRightRadius="8dip"
-        android:bottomLeftRadius="8dip"
-        android:topRightRadius="8dip"
-        android:topLeftRadius="8dip" />
-</shape>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorTeal">
+    <item>
+        <shape>
+            <stroke
+                android:width="1dp"
+                android:color="#FFF" />
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+            <corners
+                android:bottomLeftRadius="8dip"
+                android:bottomRightRadius="8dip"
+                android:topLeftRadius="8dip"
+                android:topRightRadius="8dip" />
+        </shape>
+    </item>
+</ripple>

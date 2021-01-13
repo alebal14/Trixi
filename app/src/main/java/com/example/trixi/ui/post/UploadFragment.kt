@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.example.trixi.BuildConfig
 import com.example.trixi.R
 import com.example.trixi.entities.Category
@@ -91,7 +92,7 @@ class UploadFragment() : Fragment() {
         setHasOptionsMenu(true)
         super.onViewCreated(view, savedInstanceState)
 
-        uploadVideo.visibility = View.GONE;
+        uploadVideo.visibility = View.GONE
         edit_buttons_container.visibility= View.GONE
 
         btn_open_gallery_picture.setOnClickListener {
