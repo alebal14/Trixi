@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,14 +23,19 @@ import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
-import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 
-class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String, var viewHolder: GroupieViewHolder?) :
+class PopUpCommentWindow(
+    private val comments: List<Comment>?,
+    var postId: String,
+    homeItemChatCount: TextView
+) :
     DialogFragment() {
     private lateinit var model: TrixiViewModel
     private val db = PostToDb()
     private val adapterChat = GroupAdapter<GroupieViewHolder>()
+    private val chatCount :TextView = homeItemChatCount
+
 
 
     companion object {
@@ -55,7 +61,7 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
         setUpCommentsView()
 
         send_comment.setOnClickListener {
-            sendComment()
+            sendComment(chatCount)
 
             //setUpCommentsView()
         }
@@ -98,7 +104,7 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
     }
 
-    private fun sendComment() {
+    private fun sendComment(homeItemChatCount: TextView) {
 
         val commentText = enter_comment.text.toString()
         val postId = postId
@@ -111,9 +117,8 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
         val commentObj = Comment(commentText, postId, userId, null)
         db.comment(commentObj)
-        if(viewHolder!=null){
-            viewHolder?.itemView?.home_item_chat_count!!.text = ((comments!!.size  + 1).toString())
-        }
+        homeItemChatCount.text = ((comments!!.size  + 1).toString())
+
         enter_comment.text.clear()
         adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
         adapterChat.notifyDataSetChanged()

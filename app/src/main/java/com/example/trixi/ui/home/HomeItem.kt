@@ -7,11 +7,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Like
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.explore.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
@@ -135,7 +133,11 @@ class HomeItem(
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {
         val commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
         commentIcon.setOnClickListener {
-            val popUp = PopUpCommentWindow(post.comments, post.uid.toString(), viewHolder)
+            val popUp = PopUpCommentWindow(
+                post.comments,
+                post.uid.toString(),
+                viewHolder.itemView.home_item_chat_count
+            )
             popUp.show(fm, PopUpCommentWindow.TAG)
         }
     }

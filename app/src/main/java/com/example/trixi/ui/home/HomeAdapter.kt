@@ -28,11 +28,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class HomeAdapter(
-//<<<<<<< HEAD
-//    private var posts: List<Post>, private val fm: FragmentManager,
-//   /* private val listener: ((Post) -> Unit)?,*/ private val viewLifeCycleOwner: LifecycleOwner
-//): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
-//=======
+
     private var posts: ArrayList<Post>,
     private val fm: FragmentManager,
     private val viewLifeCycleOwner: LifecycleOwner,
@@ -109,7 +105,7 @@ class HomeAdapter(
             )
 
             handleLike(numberOfLike, post, db)
-            handleClickOnComment(post, fm)
+            handleClickOnComment(post, fm,model,viewLifeCycleOwner)
             handleClickOnDiscovery(fm)
             handleClickOnFollowing(fm)
         }
@@ -208,11 +204,21 @@ class HomeAdapter(
             }
         }
 
-        private fun handleClickOnComment(post: Post, fm: FragmentManager) {
+        private fun handleClickOnComment(
+            post: Post,
+            fm: FragmentManager,
+            model: TrixiViewModel,
+            viewLifeCycleOwner: LifecycleOwner
+        ) {
             val commentIcon: ImageButton = itemView.findViewById(R.id.home_item_chat)
+
             commentIcon.setOnClickListener {
-                val popUp = PopUpCommentWindow(post.comments, post.uid.toString(), null)
-                popUp.show(fm, PopUpCommentWindow.TAG)
+                model.aPostById(post.uid.toString()).observe(viewLifeCycleOwner,{
+                    val popUp = PopUpCommentWindow(it.comments, it.uid.toString(),itemView.home_item_chat_count)
+                    popUp.show(fm, PopUpCommentWindow.TAG)
+                    itemView.home_item_chat_count.text = it?.comments?.size.toString()
+                })
+
             }
         }
 
