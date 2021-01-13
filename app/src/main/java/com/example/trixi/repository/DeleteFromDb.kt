@@ -66,7 +66,7 @@ class DeleteFromDb {
             val db = PostToDb()
             db.logOutUser(context)
 
-            val intent = Intent(context, MainActivity::class.java)
+            val intent = Intent(context, LoginActivity::class.java)
             context.startActivity(intent)
         }
 
