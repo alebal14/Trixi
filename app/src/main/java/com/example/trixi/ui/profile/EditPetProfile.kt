@@ -2,6 +2,7 @@ package com.example.trixi.ui.profile
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -95,7 +96,7 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         button_update_profile.setOnClickListener {
             updatePet() }
         button_delete_profile.setOnClickListener {
-            deletePet() }
+            showDeleteDialog() }
 
         edit_profile_image.setOnClickListener {
             requestPermissions()
@@ -295,6 +296,29 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
 
 
     }
+
+    private fun showDeleteDialog() {
+
+        val builder = AlertDialog.Builder(context)
+
+        builder.setTitle("Delete profile")
+        builder.setMessage("Are you sure you want to delete this pet?")
+
+        builder.setPositiveButton("Yes, I'm sure") { dialog, which ->
+            deletePet()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(
+                "No!"
+        ) { dialog, which -> // Do nothing
+            dialog.dismiss()
+        }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
 
     private fun deletePet() {
         dbDelete.deleteAPetFromDb(uid)
