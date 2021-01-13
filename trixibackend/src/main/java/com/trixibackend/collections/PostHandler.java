@@ -16,13 +16,11 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class PostHandler {
     private MongoCollection<Post> postColl = null;
-    private LikeHandler likeHandler;
-    private CommentHandler commentHandler;
+
 
     public PostHandler(MongoDatabase database) {
         postColl = database.getCollection("posts", Post.class);
-        likeHandler = new LikeHandler(database);
-        commentHandler = new CommentHandler(database);
+
     }
 
     public MongoCollection<Post> getPostColl() {
@@ -32,9 +30,9 @@ public class PostHandler {
     public List<Post> getAllPosts() {
         List<Post> posts = null;
         try {
-            FindIterable<Post> usersIter = postColl.find();
+            FindIterable<Post> postIter = postColl.find();
             posts = new ArrayList<>();
-            usersIter.forEach(posts::add);
+            postIter.forEach(posts::add);
             posts.forEach(post -> post.setUid(post.getId().toString()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,13 +212,7 @@ public class PostHandler {
         return result;
     }
 
-    public LikeHandler getLikeHandler() {
-        return likeHandler;
-    }
 
-    public CommentHandler getCommentHandler() {
-        return commentHandler;
-    }
 
     public DeleteResult deletePost(String id) {
         Bson post = eq("_id",new ObjectId(id));

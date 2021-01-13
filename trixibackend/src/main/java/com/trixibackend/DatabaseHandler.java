@@ -27,16 +27,17 @@ public class DatabaseHandler {
     private UserHandler userHandler = null;
     private PostHandler postHandler = null;
     private PetHandler petHandler = null;
-    private LikeHandler likeHandler = null;
-    private CommentHandler commentHandler = null;
+//    private LikeHandler likeHandler = null;
+//    private CommentHandler commentHandler = null;
     private CategoryHandler categoryHandler = null;
     private PetTypeHandler petTypeHandler = null;
+    private NotificationHandler notificationHandler = null;
 
     MongoCollection<User> userColl = null;
     MongoCollection<Post> postColl = null;
     MongoCollection<Pet> petColl = null;
-    MongoCollection<Like> likeColl = null;
-    MongoCollection<Comment> commentColl = null;
+//    MongoCollection<Like> likeColl = null;
+//    MongoCollection<Comment> commentColl = null;
     MongoCollection<Category> categoryColl = null;
     MongoCollection<PetType> petTypeColl = null;
     MongoCollection<Notification> notColl = null;
@@ -71,26 +72,27 @@ public class DatabaseHandler {
         userHandler = new UserHandler(database);
         postHandler = new PostHandler(database);
         petHandler = new PetHandler(database);
-        likeHandler = new LikeHandler(database);
-        commentHandler = new CommentHandler(database);
+//        likeHandler = new LikeHandler(database);
+//        commentHandler = new CommentHandler(database);
         categoryHandler = new CategoryHandler(database);
         petTypeHandler = new PetTypeHandler(database);
+        notificationHandler = new NotificationHandler(database);
 
         userColl = userHandler.getUserColl();
         postColl = postHandler.getPostColl();
         petColl = petHandler.getPetColl();
-        likeColl = likeHandler.getLikeColl();
-        commentColl = commentHandler.getCommentColl();
+//        likeColl = likeHandler.getLikeColl();
+//        commentColl = commentHandler.getCommentColl();
         categoryColl = categoryHandler.getCategoryColl();
         petTypeColl = petTypeHandler.getPetTypeColl();
-        notColl = database.getCollection("notifications",Notification.class);
+        notColl = notificationHandler.getNotColl();
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
         collections.putIfAbsent(Post.class, postColl);
         collections.putIfAbsent(Pet.class, petColl);
-        collections.putIfAbsent(Like.class, likeColl);
-        collections.putIfAbsent(Comment.class, commentColl);
+//        collections.putIfAbsent(Like.class, likeColl);
+//        collections.putIfAbsent(Comment.class, commentColl);
         collections.putIfAbsent(Category.class, categoryColl);
         collections.putIfAbsent(PetType.class, petTypeColl);
         collections.putIfAbsent(Notification.class,notColl);
@@ -131,6 +133,8 @@ public class DatabaseHandler {
                 return categoryHandler.getAllCategories();
             case "pet_types":
                 return petTypeHandler.getAllPetTypes();
+            case "notifications":
+                return notificationHandler.getAllNotifications();
             default:
                 return null;
         }
@@ -214,26 +218,10 @@ public class DatabaseHandler {
         return categoryHandler;
     }
 
-    public LikeHandler getLikeHandler() {
-        return likeHandler;
-    }
 
-    public CommentHandler getCommentHandler() {
-        return commentHandler;
-    }
 
-    public List<Notification> getNotificationByPostOwner(String postOwnerId){
-        List<Notification> notifications = null;
-                try{
-                    FindIterable<Notification> notIter = notColl.find(eq("postOwnerId",postOwnerId));
-                    notifications = new ArrayList<>();
-                    notIter.forEach(notifications::add);
-                    notifications.forEach(notification -> notification.setUid(notification.getId().toString()));
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                Collections.reverse(notifications);
-        return notifications;
+    public NotificationHandler getNotificationHandler(){
+        return notificationHandler;
     }
 
     public MongoDatabase getDatabase() {
