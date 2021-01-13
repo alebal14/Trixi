@@ -2,7 +2,6 @@ package com.example.trixi.ui.profile
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -24,7 +23,6 @@ import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
-import io.realm.Realm.getApplicationContext
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import okhttp3.MediaType
@@ -32,8 +30,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -81,7 +78,6 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun setUpClickListeners() {
-
         //done with editing
         button_update_profile.setOnClickListener { handleUpdateProfile() }
 
@@ -94,7 +90,6 @@ class EditProfileFragment : Fragment() {
             )
             startActivityForResult(intent, 0)
         }
-
         //deleting profile
         delete_profile.setOnClickListener({ handleDeleteProfile() })
     }
@@ -170,13 +165,9 @@ class EditProfileFragment : Fragment() {
 
         edit_bio.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length != 0) {
                     newBio = s.toString()

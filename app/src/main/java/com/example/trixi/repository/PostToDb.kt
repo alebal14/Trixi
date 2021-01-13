@@ -10,7 +10,6 @@ import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.context
 import com.example.trixi.entities.*
 import com.example.trixi.ui.login.LoginActivity
-import com.example.trixi.ui.register.RegisterActivity
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -91,52 +90,6 @@ class PostToDb {
             }
         })
     }
-
-
-    fun PostImageToDb(image: MultipartBody.Part) {
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-
-        val call = retrofitClient?.postProfileImage(image)
-
-        call?.enqueue(object : Callback<Image> {
-            override fun onFailure(call: Call<Image>, t: Throwable) {
-                //Log.d("user", "User: onfailure " + t.message)
-            }
-
-            override fun onResponse(
-                call: Call<Image>, response: Response<Image>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("imageurl", "Url:" + response.body()!!.url)
-                    //PostRegisterUserToDb( response.body()!!.url)
-                } else {
-                    //Log.d("user", "User : onResponse else, failed" + response.message())
-                }
-            }
-        })
-    }
-
-   /* fun PostImageToDb(image: String, user: User, context: Context) {
-        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
-
-        val call = retrofitClient?.postProfileImage(image)
-
-        call?.enqueue(object : Callback<Image> {
-            override fun onFailure(call: Call<Image>, t: Throwable) {
-                //Log.d("user", "User: onfailure " + t.message)
-            }
-            override fun onResponse(
-                    call: Call<Image>, response: Response<Image>
-            ) {
-                if(response.isSuccessful){
-                    //Log.d("user", "User : onResponse success" + response.message())
-                    PostRegisterUserToDb( response.body()!!.url , user, context)
-                }else{
-                    //Log.d("user", "User : onResponse else, failed" + response.message())
-                }
-            }
-        })
-    }*/
 
    fun logOutUser(context: Context?) {
        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -452,8 +405,4 @@ class PostToDb {
         })
 
     }
-
-
-
-
 }

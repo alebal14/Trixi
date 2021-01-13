@@ -14,27 +14,6 @@ class TrixiViewModel : ViewModel() {
     private val TAG = "TrixiViewModel"
     private val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-
-//    init {
-//
-//        viewModelScope.launch{
-//            //allPosts as MutableLiveData
-//            followingsPosts as MutableLiveData
-//
-////            allPosts.value = getAllPosts()
-//            followingsPosts.value = getFollowingsPosts("5fd622cc746f5a50f0f10ed9")
-//
-//
-//            //allPosts.value = async { getAllPosts() }.await()
-//
-//            //followingsPosts.value = async { getFollowingsPosts("5fd622cc746f5a50f0f10ed9") }.await()
-//
-//            //followingsPosts.value = PostToDb.loggedInUser?.uid?.let { getFollowingsPosts(it) }
-//
-//        }
-//
-//    }
-
     fun getAllUsers(): MutableLiveData<List<User>?> {
         val allUsers: MutableLiveData<List<User>?> = MutableLiveData()
 
@@ -100,11 +79,8 @@ class TrixiViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             Log.d("explorer", "getting post by search")
-            println("IMINGET")
             val fPosts = retrofitClient?.getPostByPetType(petType)?.body()
-            println("IMINAFTER")
             petTypePosts.postValue(fPosts)
-            println("IMINRES " + fPosts!!.size)
             Log.d("explorer", "got post by search")
         }
         return petTypePosts

@@ -1,7 +1,5 @@
 package com.example.trixi.ui.explore
 
-//import androidx.fragment.app.viewModels
-
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -19,26 +17,20 @@ import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
-import kotlin.NullPointerException
+
 
 
 class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private lateinit var model: TrixiViewModel
-    //private lateinit var linearLayoutManager: LinearLayoutManager
     var  mContext : Context? = null
     var page = 1
     var limit = 30
-    var loading = true
-
-    var lastPage = 0
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_top_liked_posts, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,9 +38,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
         super.onViewCreated(view, savedInstanceState)
         mContext = context
-
-
-
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         cat_spinner.setVisibility(View.GONE)
 
@@ -95,8 +85,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                         page++
                         allPostsToAdapter(cat)
                 }
-
-
             }
         })
 
@@ -112,53 +100,61 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun allPostsToAdapter(cat: Int?) {
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-
-       // Toast.makeText(activity, "Page Number: $page", Toast.LENGTH_SHORT).show()
-
-        if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
+         if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
             limit = 100
                 model.getAllPostsWithQuery(page, limit)
                     ?.observe(viewLifecycleOwner, Observer { post ->
                         var finalPost = post
-                        if (cat == R.id.cat_other) {
-                            finalPost =
-                                post!!.filter { it.categoryName!!.contains("Other") }.map { it }
-                            ScrollToLoad(R.id.cat_other)
-                        }
-                        if (cat == R.id.cat_tricks) {
-                            finalPost =
-                                post!!.filter { it.categoryName!!.contains("Tricks") }.map { it }
-                            ScrollToLoad(R.id.cat_training)
-                        }
-                        if (cat == R.id.cat_obedience) {
-                            finalPost =
-                                post!!.filter { it.categoryName!!.contains("Obedience") }.map { it }
-                            ScrollToLoad(R.id.cat_training)
-                        }
-                        if (cat == R.id.cat_feeding) {
-                            finalPost =
-                                post!!.filter { it.categoryName!!.contains("Feeding") }.map { it }
-                            ScrollToLoad(R.id.cat_training)
-                        }
-                        if (cat == R.id.cat_cute) {
-                            finalPost =
-                                post!!.filter { it.categoryName!!.contains("Cute") }.map { it }
-                            ScrollToLoad(R.id.cat_training)
-                        }
+                        if (post != null) {
+                            if (cat == R.id.cat_other) {
+                                finalPost =
+                                    post!!.filter { it.categoryName!!.contains("Other") }.map { it }
+                                ScrollToLoad(R.id.cat_other)
+                            }
+                            if (cat == R.id.cat_tricks) {
+                                finalPost =
+                                    post!!.filter { it.categoryName!!.contains("Tricks") }
+                                        .map { it }
+                                ScrollToLoad(R.id.cat_training)
+                            }
+                            if (cat == R.id.cat_obedience) {
+                                finalPost =
+                                    post!!.filter { it.categoryName!!.contains("Obedience") }
+                                        .map { it }
+                                ScrollToLoad(R.id.cat_training)
+                            }
+                            if (cat == R.id.cat_feeding) {
+                                finalPost =
+                                    post!!.filter { it.categoryName!!.contains("Feeding") }
+                                        .map { it }
+                                ScrollToLoad(R.id.cat_training)
+                            }
+                            if (cat == R.id.cat_cute) {
+                                finalPost =
+                                    post!!.filter { it.categoryName!!.contains("Cute") }.map { it }
+                                ScrollToLoad(R.id.cat_training)
+                            }
 
-                        media_grid_top_posts.apply {
+                            media_grid_top_posts.apply {
 
-                            media_grid_top_posts.layoutManager =
-                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                            StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-                            media_grid_top_posts.adapter =
-                                ExploreMediaGridAdapter(finalPost as ArrayList<Post>)
-                                { p ->
-                                    redirectToSinglePost(p)
-                                }
+                                media_grid_top_posts.layoutManager =
+                                    StaggeredGridLayoutManager(
+                                        2,
+                                        StaggeredGridLayoutManager.VERTICAL
+                                    )
+                                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                                media_grid_top_posts.adapter =
+                                    ExploreMediaGridAdapter(finalPost as ArrayList<Post>)
+                                    { p ->
+                                        redirectToSinglePost(p)
+                                    }
+                            }
+                        }else{
+                            top_scroll.isEnabled = false;
+                            Toast.makeText(activity, "You reached the last Post", Toast.LENGTH_SHORT).show()
                         }
                     })
+
         }else {
             model.getAllPostsWithQuery(page, limit).observe(viewLifecycleOwner, Observer { post ->
                 if (post != null) {
@@ -184,8 +180,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun searchToAdapter() {
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-
         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
@@ -209,10 +203,8 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     val mSearch: SearchView? = search_bar.findViewById(androidx.appcompat.R.id.search_bar)
 
         closeButton?.setOnClickListener {
-            println("ONCLICK!!")
             mSearch!!.setQuery("", false)
             mSearch!!.onActionViewCollapsed()
-
             clearText!!.setText("")
             allPostsToAdapter(null)
         }
@@ -220,7 +212,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun populateCatSpinner(){
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
         var petTypeDefault = (PetType("0", "", "select animal.."))
 
         model.getPetType()?.observe(viewLifecycleOwner, Observer { petType ->
@@ -236,8 +227,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun selectItemInSpinner(){
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-
         cat_spinner.onItemSelectedListener = object :
         AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -274,7 +263,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
 
     override fun onClick(v: View?) {
-        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
         var button = v
 
         cat_spinner_start.isSelected = false

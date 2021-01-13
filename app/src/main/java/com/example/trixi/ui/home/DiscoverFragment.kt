@@ -32,14 +32,12 @@ class DiscoverFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -58,15 +56,12 @@ class DiscoverFragment : Fragment() {
             }
         }
 
-
         refresh_button.setOnClickListener {
             Log.d("home", "in home fragment")
             val deg = refresh_button.rotation + 180F
             refresh_button.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
             setUpDiscoverView()
         }
-
-
     }
 
     override fun onDestroyView() {
@@ -82,7 +77,6 @@ class DiscoverFragment : Fragment() {
 
 
     private fun setUpDiscoverView() {
-
         PostToDb.loggedInUser?.uid?.let {
             model.getDiscoverPosts(it)?.observe(viewLifecycleOwner, Observer { posts ->
                 Log.d("home", "Discover post size: ${posts?.size}")
@@ -92,7 +86,6 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun populatePosts(posts: List<Post>?) {
-
         recyclerView_homepage.apply {
             val layoutManager = LinearLayoutManager(context)
             layoutManager.orientation = LinearLayoutManager.VERTICAL
