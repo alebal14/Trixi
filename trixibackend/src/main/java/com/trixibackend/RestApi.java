@@ -358,7 +358,14 @@ public class RestApi {
 
     private void setUpGetApi(String collectionName) {
 
-        app.get("/rest/" + collectionName, (req, res) -> res.json(db.getAll(collectionName)));
+        app.get("/rest/" + collectionName, (req, res) ->{
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+            if(Acl.allowed(req,res,collectionName,sessionCookie)){
+                res.json(db.getAll(collectionName));
+            }
+
+
+        });
 
         app.get("/rest/posts/pagelimit/", (req, res) -> {
             String page = req.getQuery("page");
@@ -422,21 +429,26 @@ public class RestApi {
         });
 
         app.get("/rest/" + collectionName + "/:id", (req, res) -> {
-
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
             String id = req.getParam("id");
+            if(Acl.allowed(req,res,collectionName,sessionCookie)){
 
-            if (collectionName.equals("notifications")) {
-                var notifications = db.getNotificationByPostOwner(id);
-                res.json(notifications);
-                return;
-            }
-            var obj = db.getById(collectionName, id);
-            if (obj == null) {
-                res.send("Error: no Object found");
-                return;
+                if (collectionName.equals("notifications")) {
+                    var notifications = db.getNotificationByPostOwner(id);
+                    res.json(notifications);
+                    return;
+                }
+                var obj = db.getById(collectionName, id);
+                if (obj == null) {
+                    res.send("Error: no Object found");
+                    return;
+                }
+
+                res.json(db.getById(collectionName, id));
+
             }
 
-            res.json(db.getById(collectionName, id));
+
         });
 
 
@@ -541,7 +553,7 @@ public class RestApi {
 
 
     private void getLoggedinUser() {
-        app.get("/rest/login", (req, res) -> {
+        app.get("/rest/login", (req,res) -> {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
 
             if (sessionCookie.getData() == null) {
