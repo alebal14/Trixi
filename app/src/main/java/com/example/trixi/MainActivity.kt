@@ -3,6 +3,7 @@ package com.example.trixi
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
@@ -11,12 +12,14 @@ import com.example.trixi.ui.post.SinglePostFragment
 import com.example.trixi.ui.post.UploadFragment
 import com.example.trixi.ui.home.HomepageFragment
 import com.example.trixi.ui.profile.LoggedInUserProfileFragment
+import com.example.trixi.ui.profile.PetProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
     var post: Post? = null
+    var pet: Pet? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,10 @@ class MainActivity : AppCompatActivity() {
             post = PostToDb.postedPost
             var singleFragment = SinglePostFragment(post)
             makeCurrentFragment(singleFragment)
+        } else if (PostToDb.createdPet != null) {
+            pet = PostToDb.createdPet
+            var petFragment = PetProfileFragment(pet)
+            makeCurrentFragment(petFragment)
         } else if (DeleteFromDb.postDeleted || DeleteFromDb.petDeleted) {
             makeCurrentFragment(profileFragment)
         } else {

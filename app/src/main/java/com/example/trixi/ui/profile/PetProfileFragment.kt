@@ -266,5 +266,10 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        PostToDb.createdPet = null
+    }
+
 
 }

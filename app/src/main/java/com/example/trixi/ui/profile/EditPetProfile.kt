@@ -65,7 +65,7 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
     var postPath: String? = null
 
     var file: File? = null
-    var file_validation = false
+    var file_validation = true
     lateinit var model: TrixiViewModel
 
     override fun onAttach(context: Context) {
@@ -93,7 +93,6 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
 
 
         button_update_profile.setOnClickListener {
-            sendPhoto()
             updatePet() }
         button_delete_profile.setOnClickListener {
             deletePet() }
@@ -258,7 +257,7 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
                 .fit()
                 .into(totheView);
 
-        file = File(postPath)
+        file = File(postPath!!)
 
         //get the file size
         val file_size = ( file!!.length().toString().toDouble() / 1024 / 1024 )
