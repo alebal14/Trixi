@@ -45,7 +45,6 @@ class PetRegister : Fragment() {
 
    var  mContext : Context? = null;
 
-
     private val REQUEST_PERMISSION = 100
 
     var selectedFile: Uri? = null
@@ -115,7 +114,6 @@ class PetRegister : Fragment() {
                     val petType: PetType = parent.selectedItem as PetType
                     selectPetTypeData(petType)
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
             }
@@ -135,28 +133,22 @@ class PetRegister : Fragment() {
                     parent: AdapterView<*>,
                     view: View, position: Int, id: Long
                 ) {
-
                     gender = parent.getItemAtPosition(position).toString()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
             }
-
         }
 
         register_add.setOnClickListener {
             createPet()
         }
-
-
     }
 
     private fun selectPetTypeData(petType: PetType) {
         petTypeName = petType.name
     }
-
-
 
     private fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(
@@ -171,8 +163,6 @@ class PetRegister : Fragment() {
             )
         }
     }
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -195,7 +185,6 @@ class PetRegister : Fragment() {
             postPath = mediaPath
 
             sendPhoto()
-
         }
     }
 
@@ -222,7 +211,6 @@ class PetRegister : Fragment() {
         } else {
             file_validation = true
         }
-
     }
 
     private fun createPet(){
@@ -231,7 +219,6 @@ class PetRegister : Fragment() {
         petAge = register_pet_age.text.toString()
         petBreed = register_breed.text.toString()
         petBio = register_pet_bio.text.toString()
-
 
 
         if (petName.isEmpty()) {
@@ -252,12 +239,7 @@ class PetRegister : Fragment() {
             Toast.makeText(activity, "Invalid File", Toast.LENGTH_LONG).show()
             return
         }
-
-
     }
-
-
-
 
 }
 

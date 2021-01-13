@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -43,15 +42,11 @@ class RegisterActivity : AppCompatActivity() {
     val post = PostToDb()
     var selectedImage: Uri? = null
     lateinit var bitmap: Bitmap
-    var byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
-    var encodedImage: String = ""
     var filePath = ""
-    private var mediaPath: String? = null
-    private var postPath: String? = null
+    var mediaPath: String? = null
+    var postPath: String? = null
 
     val model: TrixiViewModel by viewModels()
-
-
     var userExist: AtomicBoolean = AtomicBoolean(false)
 
 
@@ -89,7 +84,6 @@ class RegisterActivity : AppCompatActivity() {
         if (!hasWriteExternalStoragePermission()) {
             permissionsToRequest.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
-
         if (permissionsToRequest.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 0)
         }
@@ -124,11 +118,6 @@ class RegisterActivity : AppCompatActivity() {
 
             val columnIndex = cursor.getColumnIndex(filePathColumn[0])
             mediaPath = cursor.getString(columnIndex)
-            // Set the Image in ImageView for Previewing the Media
-
-            //Setting the image on frontend
-            //bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
-            //register_profile_image.setImageBitmap(bitmap)
 
             val container = findViewById<View>(R.id.register_profile_image) as ImageView
 
@@ -144,12 +133,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun checkInput() {
-
         register_username.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 CoroutineScope(Main).launch {
                     if (s?.length != 0 ) {
@@ -162,16 +148,11 @@ class RegisterActivity : AppCompatActivity() {
 
                         } else {
                             username_check.setColorFilter(getResources().getColor(R.color.green))
-
                         }
-
-
                     }
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
-
             }
         })
 
@@ -185,8 +166,6 @@ class RegisterActivity : AppCompatActivity() {
                     if (s?.length != 0) {
                         checkIfUserExist(s.toString())
 
-
-
                         delay(500)
                         if (userExist.get() == true || !Patterns.EMAIL_ADDRESS.matcher(
                                 register_email.text.toString()
@@ -197,11 +176,8 @@ class RegisterActivity : AppCompatActivity() {
                             email_check.setColorFilter(getResources().getColor(R.color.green))
                         }
                     }
-
-
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -220,7 +196,6 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -264,7 +239,6 @@ class RegisterActivity : AppCompatActivity() {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val imagenPerfil = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-
         post.PostRegisterUserToDb(imagenPerfil, null, userName, email, password, null, this)
     }
 
@@ -290,11 +264,8 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     userExist.set(false)
                 }
-
             }
-
         })
-
     }
 
 }

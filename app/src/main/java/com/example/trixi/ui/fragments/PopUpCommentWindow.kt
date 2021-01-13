@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,14 +23,19 @@ import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.fragment_comment.*
-import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 
-class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String, var viewHolder: GroupieViewHolder?) :
+class PopUpCommentWindow(
+    private val comments: List<Comment>?,
+    var postId: String,
+    homeItemChatCount: TextView
+) :
     DialogFragment() {
     private lateinit var model: TrixiViewModel
     private val db = PostToDb()
     private val adapterChat = GroupAdapter<GroupieViewHolder>()
+    private val chatCount :TextView = homeItemChatCount
+
 
 
     companion object {
@@ -44,8 +50,6 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
     ): View? {
 
         return inflater.inflate(R.layout.fragment_comment, container, false)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,9 +59,11 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
         setUpCommentsView()
 
         send_comment.setOnClickListener {
-            sendComment()
+
+            sendComment(chatCount)
 
             //setUpCommentsView()
+
         }
 
     }
@@ -74,13 +80,9 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
 
-
     private fun setUpCommentsView() {
-
-
         comments!!.forEach { comment ->
             model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commentOwner ->
                 if(commentOwner != null){
@@ -89,16 +91,13 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
                     adapterChat.add(CommentItem(comment, commentOwner))
                 }
-
             })
-
         }
-
         recyclerView_popup_comment.adapter = adapterChat
-
     }
 
-    private fun sendComment() {
+
+    private fun sendComment(homeItemChatCount: TextView) {
 
         val commentText = enter_comment.text.toString()
         val postId = postId
@@ -111,18 +110,12 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
         val commentObj = Comment(commentText, postId, userId, null)
         db.comment(commentObj)
-        if(viewHolder!=null){
-            viewHolder?.itemView?.home_item_chat_count!!.text = ((comments!!.size  + 1).toString())
-        }
+        homeItemChatCount.text = ((comments!!.size  + 1).toString())
+
         enter_comment.text.clear()
         adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
         adapterChat.notifyDataSetChanged()
-        //recyclerView_popup_comment.adapter = adapterChat
-
-
     }
-
-
 }
 
 class CommentItem(private val comment: Comment, private val commentOwner: User?) :

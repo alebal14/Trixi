@@ -3,27 +3,16 @@
 package com.example.trixi.apiService
 
 
+import android.app.Notification
 import android.content.Context
 import com.example.trixi.entities.*
-import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-
 import okhttp3.ResponseBody
-import okhttp3.logging.HttpLoggingInterceptor
-
-
 import retrofit2.Call
 import retrofit2.http.*
-import java.net.CookieManager
-import java.net.CookiePolicy
-import java.util.*
-import java.util.concurrent.TimeUnit
+
 
 interface Api {
 
@@ -37,20 +26,6 @@ interface Api {
     @GET("rest/logout")
     fun logOutUser(): Call<ResponseBody>
 
-
-    /* //Posting Images
-     @Multipart
-     @POST("rest/image")
-     fun postProfileImage(
-             @Part("file") file: String
-     ):Call<Image>*/
-
-    @Multipart
-    @POST("rest/image")
-    fun postProfileImage(
-        @Part file: MultipartBody.Part
-    ): Call<Image>
-
     @Multipart
     @POST("rest/users")
     fun createUser(
@@ -61,10 +36,6 @@ interface Api {
         @Part("password") password: String?,
         @Part("bio") bio: String?
     ): Call<User>
-
-    //Api User Collection
-    /* @POST("rest/users")
-     fun createUser(@Body user: User, @Query("imageUrl") url: String): Call<User>*/
 
     @GET("rest/users")
     suspend fun getAllUsers(): Response<List<User>>
@@ -103,7 +74,6 @@ interface Api {
     @GET("rest/pet_types")
     suspend fun getAllPetTypes(): Response<List<PetType>>
 
-
     //Posts
     @GET("rest/posts")
     suspend fun getAllPosts(): Response<List<Post>>
@@ -140,9 +110,6 @@ interface Api {
     @GET("api/posttype/{pettype}")
     suspend fun getPostByPetType(@Path("pettype") pettype: String?): Response<List<Post>>
 
-//    @GET("rest/posts/by_category/{category_id}")
-//    fun getPostByCategoryId(@Path(value="category_id") id : String?): Call<List<Post>>
-
     @GET("api/getUserFollowingPost/{id}")
     suspend fun getFollowingsPost(@Path("id") id: String?): Response<List<Post>>
 
@@ -152,6 +119,9 @@ interface Api {
     //Category
     @GET("rest/categories")
     suspend fun getAllCategories(): Response<List<Category>>
+
+    @GET("rest/notifications/{postOwnerId}")
+    suspend fun getNotifications(@Path("postOwnerId") id:String?):Response<List<Activity>>
 
 
     @POST("rest/comments")

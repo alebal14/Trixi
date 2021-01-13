@@ -19,7 +19,6 @@ class MyPersistentCookieJar(context: Context) : PersistentCookieJar(SetCookieCac
             .forEach { cookieValue = it[1] }
 
         return cookieValue
-
     }
 
     private fun String.splitIntoArray(delimiter: String) =

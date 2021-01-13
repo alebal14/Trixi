@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.RelativeLayout
-import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
@@ -25,7 +23,6 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.*
 
 
-
 class SinglePostFragment(private val post1: Post?) : Fragment() {
     private lateinit var model: TrixiViewModel
     var numberOfLike: Int = 0
@@ -37,14 +34,12 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_home_item, container, false)
     }
 
@@ -61,7 +56,6 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
                 populatePost(it)
                 handleClickOnComment(it)
                 handleClickOnLike(it)
-                //handleClickOnProfile(it)
             })
         }
 
@@ -99,7 +93,6 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     }
 
     private fun populatePost(post: Post) {
-
         setVisibilityByOwner(post)
 
        home_item_title.text = post?.title.toString()
@@ -123,18 +116,17 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
             home_item_video.visibility = View.VISIBLE;
             home_item_video.setSource(RetrofitClient.BASE_URL + post?.filePath.toString())
         }
-
     }
 
     private fun setVisibilityByOwner(post: Post) {
-        if (post.ownerId == PostToDb.loggedInUser?.uid) { // logged-in user's post
+        if (post.ownerId == PostToDb.loggedInUser?.uid) {
             home_item_profileName.visibility = View.GONE
             home_item_profileimg.visibility = View.GONE
             home_item_profile.visibility = View.GONE
             home_item_top_shadow.visibility = View.GONE
             home_item_report.visibility = View.GONE
             handleClickOnEdit(post)
-        } else { // other users post
+        } else {
             home_item_edit.visibility = View.GONE
             post.ownerId?.let {
                 model.getOneUser(it)?.observe(viewLifecycleOwner, { user ->
@@ -163,10 +155,8 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
                                 }
                                 handleCLickOnPet(pet)
                             }
-
                         })
                     }
-
                 })
             }
         }
@@ -184,14 +174,15 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     private fun handleClickOnComment(post: Post) {
         home_item_chat.setOnClickListener {
             model.aPostById(post.uid.toString()).observe(viewLifecycleOwner, {
-                val popUp = PopUpCommentWindow(it?.comments, it?.uid.toString(), null)
+                val popUp = PopUpCommentWindow(
+                    it?.comments,
+                    it?.uid.toString(),
+                    home_item_chat_count
+                )
                 popUp.show(activity?.supportFragmentManager!!, PopUpCommentWindow.TAG)
                 home_item_chat_count.text = it?.comments?.size.toString()
-
             })
-
         }
-
     }
 
     private fun handleClickOnLike(post: Post) {
@@ -209,8 +200,6 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
         } else {
             home_item_like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
         }
-
-
 
         home_item_like.setOnClickListener {
             val like = Like(post?.uid.toString(), PostToDb.loggedInUser?.uid.toString(), null)
@@ -236,6 +225,5 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
         super.onDestroyView()
         PostToDb.postedPost = null
     }
-
 
 }

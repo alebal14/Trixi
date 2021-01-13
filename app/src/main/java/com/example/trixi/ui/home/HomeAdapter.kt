@@ -1,5 +1,6 @@
 package com.example.trixi.ui.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.*
 import com.example.trixi.apiService.RetrofitClient.Companion.context
-import com.example.trixi.entities.Like
-import com.example.trixi.entities.Pet
-import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.PopUpCommentWindow
@@ -29,6 +27,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class HomeAdapter(
+
     private var posts: ArrayList<Post>,
     private val fm: FragmentManager,
     private val viewLifeCycleOwner: LifecycleOwner,
@@ -43,7 +42,6 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: HomeAdapter.HomeViewHolder, position: Int) {
-
         holder.bindPost(posts[position], fm,/*listener,*/viewLifeCycleOwner)
     }
 
@@ -57,7 +55,7 @@ class HomeAdapter(
         val activeButton = active
 
         override fun onClick(p0: View?) {
-            TODO("Not yet implemented")
+            Log.d("home", " click on home recycle view!")
         }
 
         fun bindPost(
@@ -69,8 +67,6 @@ class HomeAdapter(
             val db = PostToDb()
             val model = TrixiViewModel()
 
-            //itemView.setOnClickListener { listener(post) }
-
             populateImgOrVideo(post)
 
             model.getOneUser(post.ownerId!!)
@@ -79,7 +75,6 @@ class HomeAdapter(
                         populateUserInfo(postOwner, fm)
 
                     } else {
-                        // Log.d("home", "user null")
                         model.getOnePet(post.ownerId!!)
                             ?.observe(viewLifeCycleOwner, Observer { petIsOwner ->
                                 populatePetInfo(petIsOwner, fm)
@@ -105,7 +100,7 @@ class HomeAdapter(
             )
 
             handleLike(numberOfLike, post, db)
-            handleClickOnComment(post, fm)
+            handleClickOnComment(post, fm,model,viewLifeCycleOwner)
             handleClickOnDiscovery(fm)
             handleClickOnFollowing(fm)
         }
@@ -120,7 +115,6 @@ class HomeAdapter(
                 itemView.home_item_media.visibility = View.GONE
                 itemView.home_item_video.visibility = View.VISIBLE
                 itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
-
             }
         }
 
@@ -131,9 +125,6 @@ class HomeAdapter(
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (petIsOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
                 .transform(CropCircleTransformation()).fit()
-                //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
-                //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
-
                 .centerCrop().into(itemView.home_item_profileimg)
 
             itemView.home_item_profileName.text = petIsOwner.name
@@ -147,8 +138,6 @@ class HomeAdapter(
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (postOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
                 .transform(CropCircleTransformation()).fit()
-                //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
-                //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
                 .centerCrop().into(itemView.home_item_profileimg)
 
             itemView.home_item_profileName.text = postOwner.userName
@@ -156,24 +145,20 @@ class HomeAdapter(
         }
 
         private fun redirectToUser(user: User, fm: FragmentManager) {
-
             val profileName: TextView = itemView.findViewById(R.id.home_item_profileName)
             val profileImg: ImageView = itemView.findViewById(R.id.home_item_profileimg)
 
             profileImg.setOnClickListener {
                 val userProfileFragment = UserProfileFragment(user)
                 fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
-
             }
             profileName.setOnClickListener {
                 val userProfileFragment = UserProfileFragment(user)
                 fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
-
             }
         }
 
         private fun redirectToPet(pet: Pet, fm: FragmentManager) {
-
             val profileName: TextView = itemView.findViewById(R.id.home_item_profileName)
             val profileImg: ImageView = itemView.findViewById(R.id.home_item_profileimg)
 
@@ -185,7 +170,6 @@ class HomeAdapter(
             profileName.setOnClickListener {
                 val petProfileFragment = PetProfileFragment(pet)
                 fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
-
             }
         }
 
@@ -202,15 +186,24 @@ class HomeAdapter(
             discoveryText.setOnClickListener {
                 fm.beginTransaction().replace(R.id.fragment_container, DiscoverFragment())
                     .commit()
-
             }
         }
 
-        private fun handleClickOnComment(post: Post, fm: FragmentManager) {
+        private fun handleClickOnComment(
+            post: Post,
+            fm: FragmentManager,
+            model: TrixiViewModel,
+            viewLifeCycleOwner: LifecycleOwner
+        ) {
             val commentIcon: ImageButton = itemView.findViewById(R.id.home_item_chat)
+
             commentIcon.setOnClickListener {
-                val popUp = PopUpCommentWindow(post.comments, post.uid.toString(), null)
-                popUp.show(fm, PopUpCommentWindow.TAG)
+                model.aPostById(post.uid.toString()).observe(viewLifeCycleOwner,{
+                    val popUp = PopUpCommentWindow(it.comments, it.uid.toString(),itemView.home_item_chat_count)
+                    popUp.show(fm, PopUpCommentWindow.TAG)
+                    itemView.home_item_chat_count.text = it?.comments?.size.toString()
+                })
+
             }
         }
 
@@ -248,8 +241,7 @@ class HomeAdapter(
                     itemView.home_item_like_count.text = numberOfLike1.toString()
                 }
             }
-
         }
-
     }
+
 }

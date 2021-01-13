@@ -21,7 +21,6 @@ public class CommentHandler {
     }
 
 
-
     public List<Comment> findCommentsByPostId(String postId){
         List<Comment> comments = null;
         try{

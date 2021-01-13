@@ -65,11 +65,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
         handleClickOnFollow(user)
 
-
         follow_button.setOnClickListener { handleFollow() }
-
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -82,7 +78,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
     private fun populateProfile() {
 
-        //TODO: Check username length and make text-size smaller if too long
         profile_name.text = user!!.userName
         profile_bio.text = user.bio
         Picasso.get().load(BASE_URL + user.imageUrl).centerCrop().fit()
@@ -91,8 +86,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
             "Following " + (user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString()
         profile_followers.text = numberOfFollowers.toString() + " Followers"
         owner_name.visibility = View.INVISIBLE
-
-
 
         getPets()
         getPosts()
@@ -105,10 +98,8 @@ class UserProfileFragment(val user: User?) : Fragment() {
                 headerText =  user.userName.toString() + "'s followers"
                 val popUp = PopUpFollowWindow( activity?.supportFragmentManager!!,headerText,user.followers, null)
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
-
             }
         }
-
 
         if((user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString() != "0"){
 
@@ -116,13 +107,9 @@ class UserProfileFragment(val user: User?) : Fragment() {
                 headerText = user.userName.toString() +" is following"
                 val popUp = PopUpFollowWindow(activity?.supportFragmentManager!!, headerText, user.followingsUser, user.followingsPet)
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
-
             }
         }
-
-
     }
-
 
     private fun getPets() {
 
@@ -131,7 +118,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
         user?.uid?.let {
             model.getPetsByOwner(it)?.observe(viewLifecycleOwner, { pets ->
-                Log.d(TAG, "size: pets  : ${pets?.size}")
 
                 users_pet_list.apply {
                     if (!pets?.isEmpty()!!) {
@@ -142,7 +128,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
                             GridLayoutManager.HORIZONTAL,
                             false
                         )
-
                         adapter = ProfilePetListAdapter(pets as ArrayList<Pet>) { pet ->
                             redirectToPetProfile(pet)
                         }
@@ -190,7 +175,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
                                             adapter = ProfileMediaGridAdapter(postImage as ArrayList<Post>) {
                                                 redirectToSinglePost(it)
                                             }
-                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                                         }
                                     }
                                 }
@@ -212,7 +196,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
                                             adapter = ProfileMediaGridAdapter(postVideo as ArrayList<Post>) {
                                                 redirectToSinglePost(it)
                                             }
-                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                                         }
                                     }
                                 }
@@ -231,7 +214,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
                         adapter = ProfileMediaGridAdapter(postMedia as ArrayList<Post>) {
                             redirectToSinglePost(it)
                         }
-                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                     }
                 }
             })
@@ -243,7 +225,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
         val singlePost = SinglePostFragment(post)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
-
     }
 
     private fun redirectToPetProfile(pet: Pet) {
@@ -254,34 +235,28 @@ class UserProfileFragment(val user: User?) : Fragment() {
     }
 
     private fun toggleFollowIcon(followed: Boolean) {
-
         if (followed) follow_button.setBackgroundResource(ic_heart_filled)
         else follow_button.setBackgroundResource(ic_follow)
         Log.d("Profile", "not filled")
     }
 
     private fun handleFollow() {
-
         if (!followed) {
-            Log.d("FOLLOW", "not followed; now following")
             loggedInUser?.let { db.follow(it.uid, user?.uid!!) }
             followed = true
             toggleFollowIcon(followed)
             numberOfFollowers += 1
             profile_followers.text = numberOfFollowers.toString() + " Followers"
         } else {
-            Log.d("FOLLOW", "already followed; now unfollowing")
             loggedInUser?.let { db.unfollow(it.uid, user?.uid!!) }
             followed = false
             toggleFollowIcon(followed)
             numberOfFollowers -= 1
             profile_followers.text = numberOfFollowers.toString() + " Followers"
         }
-
     }
 
     private fun checkIfFollowing() {
-
         model.getOneUser(loggedInUser?.uid!!)?.observe(viewLifecycleOwner, Observer {
             it?.followingsUser?.forEach { followingUser ->
                 if (followingUser.uid == user?.uid) {
@@ -291,7 +266,6 @@ class UserProfileFragment(val user: User?) : Fragment() {
             }
         })
     }
-
 
 }
 

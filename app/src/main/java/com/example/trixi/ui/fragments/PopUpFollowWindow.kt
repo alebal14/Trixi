@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.trixi.R
@@ -32,10 +31,7 @@ class PopUpFollowWindow(private val fm: FragmentManager, private val headerText:
 
     companion object {
         const val TAG = "popUpFollow"
-
     }
-
-
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -44,8 +40,6 @@ class PopUpFollowWindow(private val fm: FragmentManager, private val headerText:
     ): View? {
 
         return inflater.inflate(R.layout.fragment_follow_list, container, false)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,9 +58,6 @@ class PopUpFollowWindow(private val fm: FragmentManager, private val headerText:
 
 
     private fun setUpFollowView() {
-
-
-
         follow!!.forEach { follow ->
             adapterChat.add(FollowItem( this,fm, follow, null))
         }
@@ -86,7 +77,6 @@ class PopUpFollowWindow(private val fm: FragmentManager, private val headerText:
 
 class FollowItem(private  val df: DialogFragment, private val fm: FragmentManager, private val followUser: User?, private val followingPet: Pet?) :
     Item<GroupieViewHolder>() {
-
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         if(followUser == null){
@@ -121,7 +111,6 @@ class FollowItem(private  val df: DialogFragment, private val fm: FragmentManage
             val petProfileFragment = PetProfileFragment(followingPet)
             fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
         }
-
     }
 
 

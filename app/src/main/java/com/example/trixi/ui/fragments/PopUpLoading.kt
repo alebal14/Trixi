@@ -12,10 +12,8 @@ import com.example.trixi.R
 class PopUpUpload () :
     DialogFragment() {
 
-
     companion object {
         const val TAG = "Upload"
-
     }
 
     override fun onCreateView(
@@ -25,16 +23,12 @@ class PopUpUpload () :
     ): View? {
 
         return inflater.inflate(R.layout.upload_loading, container, false)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog!!.setCancelable(false);
         dialog!!.setCanceledOnTouchOutside(false);
-
-
     }
 
     override fun onStart() {
@@ -44,8 +38,5 @@ class PopUpUpload () :
             WindowManager.LayoutParams.WRAP_CONTENT
         )
     }
-
-
-
 
 }
