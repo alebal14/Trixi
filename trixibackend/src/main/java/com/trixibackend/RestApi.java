@@ -150,7 +150,7 @@ public class RestApi {
             var id = req.getParam("id");
             var obj = db.deleteById(collectionName, id);
             res.json(obj);
-
+            res.send("Succesfully deleted");
         });
 
     }

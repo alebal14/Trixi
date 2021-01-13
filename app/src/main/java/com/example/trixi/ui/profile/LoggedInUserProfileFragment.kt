@@ -66,7 +66,7 @@ class LoggedInUserProfileFragment : Fragment() {
 
     private fun handleClickOnFollow(user: User) {
 
-        if(user.followers?.size.toString() != "0"){
+        if (user.followers?.size.toString() != "0") {
             profile_followers.setOnClickListener {
                 headerText = "Your followers"
                 val popUp = PopUpFollowWindow(
@@ -81,7 +81,7 @@ class LoggedInUserProfileFragment : Fragment() {
         }
 
 
-        if((user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString() != "0"){
+        if ((user.followingsPet?.size?.plus(user.followingsUser!!.size)).toString() != "0") {
 
             profile_following.setOnClickListener {
                 headerText = "You are following"
@@ -249,15 +249,17 @@ class LoggedInUserProfileFragment : Fragment() {
 
     private fun populateProfile(updatedLoggedInUser: User) {
 
-        follow_button.visibility = View.INVISIBLE
-        profile_name.text = updatedLoggedInUser!!.userName
+        follow_button.visibility = INVISIBLE
+        profile_name.text = updatedLoggedInUser.userName
 
-        if(updatedLoggedInUser.bio == null){
+        if (updatedLoggedInUser.bio == null) {
             profile_bio.visibility = INVISIBLE
-        } else profile_bio.text = updatedLoggedInUser!!.bio
+        } else {
+            profile_bio.text = updatedLoggedInUser.bio.replace("\\\\n".toRegex(), "\n").trimEnd()
+        }
 
         Picasso.get()
-            .load(BASE_URL + updatedLoggedInUser!!.imageUrl)
+            .load(BASE_URL + updatedLoggedInUser.imageUrl)
             .centerCrop().fit()
             .into(user_profile_pet_image)
 
@@ -265,15 +267,16 @@ class LoggedInUserProfileFragment : Fragment() {
             "Following " + (updatedLoggedInUser!!.followingsPet?.size?.plus(updatedLoggedInUser!!.followingsUser!!.size)).toString()
         profile_followers.text = updatedLoggedInUser!!.followers?.size.toString() + " Followers"
 
-        owner_name.visibility = View.INVISIBLE
-        follow_button.visibility = View.INVISIBLE
+        owner_name.visibility = INVISIBLE
+        follow_button.visibility = INVISIBLE
 
     }
 
     private fun redirectToSinglePost(post: Post) {
         val singlePost = SinglePostFragment(post)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
+            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!
+            .commit()
     }
 
 
@@ -281,7 +284,8 @@ class LoggedInUserProfileFragment : Fragment() {
         val fm = activity?.supportFragmentManager
 
         val petProfile = PetProfileFragment(pet)
-        fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)?.addToBackStack("petprofileFragment")!!.commit()
+        fm?.beginTransaction()?.replace(R.id.fragment_container, petProfile)
+            ?.addToBackStack("petprofileFragment")!!.commit()
     }
 
 }

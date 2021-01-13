@@ -180,4 +180,7 @@ interface Api {
     @DELETE("rest/pets/{id}")
     fun deleteAPet(@Path("id")id :String?): Call<ResponseBody>
 
+    @DELETE("rest/users/{id}")
+    fun deleteUser(@Path(value = "id") id: String?): Call<ResponseBody>
+
 }

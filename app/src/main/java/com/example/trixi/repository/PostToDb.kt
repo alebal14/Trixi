@@ -27,8 +27,6 @@ class PostToDb {
         var userBoolean = false
     }
 
-
-
     fun PostLoginUserToDb(user: User, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
