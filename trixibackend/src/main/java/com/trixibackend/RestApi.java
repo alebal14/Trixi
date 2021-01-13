@@ -384,6 +384,10 @@ public class RestApi {
                 case "pet_types":
                     PetType petType = (PetType) req.getBody(PetType.class);
                     res.json(db.save(petType));
+                case "reports":
+                    Report report = (Report) req.getBody(Report.class);
+                    System.out.println(report);
+                    res.json(db.save(report));
                 default:
                     break;
             }
