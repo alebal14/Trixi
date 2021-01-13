@@ -276,7 +276,7 @@ public class RestApi {
 
                     try {
                         Postfiles = req.getFormData("file");
-                        postId = req.getFormData("uid").get(0).getString().replace("\"", "");
+                        postId = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
                         ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         title = req.getFormData("title").get(0).getString().replace("\"", "");
@@ -349,7 +349,7 @@ public class RestApi {
                             PetFileUrl = db.uploadImage(Petfiles.get(0));
                             pet.setImageUrl(PetFileUrl);
                         }
-                        
+
                         pet.setName(name);
                         pet.setOwnerId(PetOwnerId);
                         pet.setAge(age);
@@ -493,20 +493,24 @@ public class RestApi {
 
         app.get("/api/search/:searchterm", (req, res) -> {
 
-            String searchterm = req.getParam("searchterm");
-            System.out.println(searchterm);
+            try {
+                String searchterm = req.getParam("searchterm");
+                System.out.println(searchterm);
 
-            var alluser = db.getUserHandler().getAllUsers();
-            var allpet = db.getPetHandler().getAllPets();
+                var alluser = db.getUserHandler().getAllUsers();
+                var allpet = db.getPetHandler().getAllPets();
 
-            var searchPost = db.getPostHandler().searchPost(searchterm, alluser, allpet);
-            if (searchPost == null) {
-                res.setStatus(Status._403);
-                //res.send("Error: you are not following this Pet");
-                return;
+                var searchPost = db.getPostHandler().searchPost(searchterm, alluser, allpet);
+                if (searchPost == null) {
+                    res.setStatus(Status._403);
+                    //res.send("Error: you are not following this Pet");
+                    return;
+                }
+                System.out.println(searchPost.size());
+                res.json(searchPost);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            System.out.println(searchPost.size());
-            res.json(searchPost);
         });
 
         app.get("/api/discover/:id", (req, res) -> {

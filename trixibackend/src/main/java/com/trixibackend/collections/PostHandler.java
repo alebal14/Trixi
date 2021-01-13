@@ -70,7 +70,12 @@ public class PostHandler {
             e.printStackTrace();
         }
 
-        return posts;
+        List<Post> listOutput =
+                posts.stream()
+                        .sorted(Collections.reverseOrder(Comparator.comparing(Post::getUid)))
+                        .collect(Collectors.toList());
+
+        return listOutput;
 
     }
 
@@ -218,6 +223,7 @@ public class PostHandler {
         List<Post> listDescription=
                 allPostFromDB.stream()
                         .filter(d -> d.getDescription() != null)
+                        .filter(e -> e.getDescription().isEmpty())
                         .filter(s -> s.getDescription().toLowerCase().contains(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
