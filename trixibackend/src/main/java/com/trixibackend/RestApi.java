@@ -364,7 +364,14 @@ public class RestApi {
 
     private void setUpGetApi(String collectionName) {
 
-        app.get("/rest/" + collectionName, (req, res) -> res.json(db.getAll(collectionName)));
+
+
+        app.get("/rest/" + collectionName, (req, res) ->{
+
+                res.json(db.getAll(collectionName));
+
+        });
+
 
         app.get("/rest/posts/pagelimit/", (req, res) -> {
             String page = req.getQuery("page");
