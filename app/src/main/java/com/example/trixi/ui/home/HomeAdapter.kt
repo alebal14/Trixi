@@ -43,7 +43,6 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: HomeAdapter.HomeViewHolder, position: Int) {
-
         holder.bindPost(posts[position], fm,/*listener,*/viewLifeCycleOwner)
     }
 
@@ -57,7 +56,6 @@ class HomeAdapter(
         val activeButton = active
 
         override fun onClick(p0: View?) {
-            TODO("Not yet implemented")
         }
 
         fun bindPost(
@@ -69,8 +67,6 @@ class HomeAdapter(
             val db = PostToDb()
             val model = TrixiViewModel()
 
-            //itemView.setOnClickListener { listener(post) }
-
             populateImgOrVideo(post)
 
             model.getOneUser(post.ownerId!!)
@@ -79,7 +75,6 @@ class HomeAdapter(
                         populateUserInfo(postOwner, fm)
 
                     } else {
-                        // Log.d("home", "user null")
                         model.getOnePet(post.ownerId!!)
                             ?.observe(viewLifeCycleOwner, Observer { petIsOwner ->
                                 populatePetInfo(petIsOwner, fm)
@@ -120,7 +115,6 @@ class HomeAdapter(
                 itemView.home_item_media.visibility = View.GONE
                 itemView.home_item_video.visibility = View.VISIBLE
                 itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
-
             }
         }
 
@@ -131,9 +125,6 @@ class HomeAdapter(
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (petIsOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
                 .transform(CropCircleTransformation()).fit()
-                //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
-                //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
-
                 .centerCrop().into(itemView.home_item_profileimg)
 
             itemView.home_item_profileName.text = petIsOwner.name
@@ -147,8 +138,6 @@ class HomeAdapter(
             Picasso.get()
                 .load(RetrofitClient.BASE_URL + (postOwner?.imageUrl /*?: post.ownerIsPet?.imageUrl*/))
                 .transform(CropCircleTransformation()).fit()
-                //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
-                //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
                 .centerCrop().into(itemView.home_item_profileimg)
 
             itemView.home_item_profileName.text = postOwner.userName
@@ -156,24 +145,20 @@ class HomeAdapter(
         }
 
         private fun redirectToUser(user: User, fm: FragmentManager) {
-
             val profileName: TextView = itemView.findViewById(R.id.home_item_profileName)
             val profileImg: ImageView = itemView.findViewById(R.id.home_item_profileimg)
 
             profileImg.setOnClickListener {
                 val userProfileFragment = UserProfileFragment(user)
                 fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
-
             }
             profileName.setOnClickListener {
                 val userProfileFragment = UserProfileFragment(user)
                 fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
-
             }
         }
 
         private fun redirectToPet(pet: Pet, fm: FragmentManager) {
-
             val profileName: TextView = itemView.findViewById(R.id.home_item_profileName)
             val profileImg: ImageView = itemView.findViewById(R.id.home_item_profileimg)
 
@@ -185,7 +170,6 @@ class HomeAdapter(
             profileName.setOnClickListener {
                 val petProfileFragment = PetProfileFragment(pet)
                 fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
-
             }
         }
 
@@ -202,7 +186,6 @@ class HomeAdapter(
             discoveryText.setOnClickListener {
                 fm.beginTransaction().replace(R.id.fragment_container, DiscoverFragment())
                     .commit()
-
             }
         }
 
@@ -248,8 +231,7 @@ class HomeAdapter(
                     itemView.home_item_like_count.text = numberOfLike1.toString()
                 }
             }
-
         }
-
     }
+
 }

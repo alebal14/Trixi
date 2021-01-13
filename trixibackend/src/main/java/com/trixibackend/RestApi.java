@@ -392,7 +392,7 @@ public class RestApi {
         app.get("/rest/posts/pagelimit/", (req, res) -> {
             String page = req.getQuery("page");
             String limit = req.getQuery("limit");
-            //int limit = parseInt(req.getQuery("limit"));
+
             int pageNumber = parseInt(page);
             int limitNumber = parseInt(limit);
 
@@ -401,7 +401,6 @@ public class RestApi {
             var results = db.getPostHandler().getAllPosts();
             
             int lastPage = results.size()/limitNumber + 1;
-
 
             if(pageNumber > lastPage){
                 res.json(null);
@@ -413,8 +412,6 @@ public class RestApi {
 
                 res.json(re);
             }
-
-
 
         });
 

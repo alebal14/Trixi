@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
@@ -60,8 +59,6 @@ class LoggedInUserProfileFragment : Fragment() {
 
         getPosts()
         getPets()
-
-
     }
 
     private fun handleClickOnFollow(user: User) {
@@ -76,7 +73,6 @@ class LoggedInUserProfileFragment : Fragment() {
                     null
                 )
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
-
             }
         }
 
@@ -92,11 +88,8 @@ class LoggedInUserProfileFragment : Fragment() {
                     user.followingsPet
                 )
                 popUp.show(activity?.supportFragmentManager!!, PopUpFollowWindow.TAG)
-
             }
         }
-
-
     }
 
     private fun getPets() {
@@ -122,7 +115,6 @@ class LoggedInUserProfileFragment : Fragment() {
                         users_pet_list.visibility = View.GONE
                 }
             })
-
         }
     }
 
@@ -151,7 +143,6 @@ class LoggedInUserProfileFragment : Fragment() {
                                         profile_no_posts.text = "No images yet"
                                         profile_no_posts.visibility = TextView.VISIBLE
                                         media_grid.adapter = null
-
                                     } else {
                                         profile_no_posts.visibility = View.GONE
                                         media_grid.apply {
@@ -164,7 +155,6 @@ class LoggedInUserProfileFragment : Fragment() {
                                             adapter = ProfileMediaGridAdapter(postImage as ArrayList<Post>) {
                                                 redirectToSinglePost(it)
                                             }
-                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                                         }
                                     }
                                 }
@@ -185,7 +175,6 @@ class LoggedInUserProfileFragment : Fragment() {
                                             adapter = ProfileMediaGridAdapter(postVideo as ArrayList<Post>) {
                                                 redirectToSinglePost(it)
                                             }
-                                            //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                                         }
                                     }
                                 }
@@ -204,7 +193,6 @@ class LoggedInUserProfileFragment : Fragment() {
                         adapter = ProfileMediaGridAdapter(postMedia as ArrayList<Post>) {
                             redirectToSinglePost(it)
                         }
-                        //media_grid.adapter = ProfileMediaGridAdapter(posts as ArrayList<Post>
                     }
                 }
             })
@@ -242,7 +230,6 @@ class LoggedInUserProfileFragment : Fragment() {
                     requireActivity().supportFragmentManager.popBackStack()
                 }
             }
-
         }
         return super.onOptionsItemSelected(item)
     }
@@ -269,7 +256,6 @@ class LoggedInUserProfileFragment : Fragment() {
 
         owner_name.visibility = INVISIBLE
         follow_button.visibility = INVISIBLE
-
     }
 
     private fun redirectToSinglePost(post: Post) {
@@ -278,7 +264,6 @@ class LoggedInUserProfileFragment : Fragment() {
             ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!
             .commit()
     }
-
 
     private fun redirectToPetProfile(pet: Pet) {
         val fm = activity?.supportFragmentManager

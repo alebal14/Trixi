@@ -31,9 +31,7 @@ class ProfilePetListAdapter(private var pets: ArrayList<Pet>, private val listen
             R.layout.profile_user_pet,
             parent, false
         ))
-
         return ProfilePetListViewHolder(gridView)
-
     }
 
     override fun onBindViewHolder(holder: ProfilePetListViewHolder, position: Int) {
@@ -48,13 +46,10 @@ class ProfilePetListAdapter(private var pets: ArrayList<Pet>, private val listen
         val petProfileThumbnail = itemView.pet_list_profile_image
         val petName = itemView.pet_name
 
-
         override fun onClick(view: View) {
-
         }
 
         fun bindView(pet: Pet, listener: (Pet) -> Unit) {
-
             Picasso.get().load(BASE_URL + pet.imageUrl!!).into(petProfileThumbnail)
             petName.text = pet.name
             itemView.setOnClickListener { listener(pet) }

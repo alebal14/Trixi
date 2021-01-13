@@ -7,11 +7,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Like
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
-import com.example.trixi.ui.explore.ShowTopPostsFragment
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
@@ -32,8 +30,6 @@ class HomeItem(
     }
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        Log.d("position", "$position : post title: ${post.title}")
-
         if (post.fileType.toString() == "image") {
             viewHolder.itemView.home_item_media.visibility = View.VISIBLE
             viewHolder.itemView.home_item_video.visibility = View.GONE
@@ -43,15 +39,11 @@ class HomeItem(
             viewHolder.itemView.home_item_media.visibility = View.GONE
             viewHolder.itemView.home_item_video.visibility = View.VISIBLE
             viewHolder.itemView.home_item_video.setSource(RetrofitClient.BASE_URL + post.filePath.toString())
-
         }
         val profileImgHolder = viewHolder.itemView.home_item_profileimg
         Picasso.get()
             .load(RetrofitClient.BASE_URL + (post.owner?.imageUrl ?: post.ownerIsPet?.imageUrl)).transform(CropCircleTransformation()).fit()
-            //.placeholder(R.drawable.sample).transform(CropCircleTransformation()).fit()
-            //.error(R.drawable.sample).transform(CropCircleTransformation()).fit()
             .centerCrop().into(profileImgHolder)
-
 
         viewHolder.itemView.home_item_profileName.text =
             post.owner?.userName ?: post.ownerIsPet?.name
@@ -127,9 +119,7 @@ class HomeItem(
         } else {
             val petProfileFragment = PetProfileFragment(post.ownerIsPet)
             fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
-
         }
-
     }
 
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {

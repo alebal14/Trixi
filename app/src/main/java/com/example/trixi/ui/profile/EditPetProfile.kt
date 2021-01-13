@@ -30,8 +30,6 @@ import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_edit_pet_profile.*
-import kotlinx.android.synthetic.main.fragment_pet_register.*
-import kotlinx.android.synthetic.main.fragment_upload.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -51,19 +49,14 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
     var petTypeName = ""
     var gender = ""
     var newPhoto = false
-
     var mContext: Context? = null;
-
     var image: MultipartBody.Part? = null
-
-
     private val REQUEST_PERMISSION = 100
 
     var selectedFile: Uri? = null
     var filePath = ""
     var mediaPath: String? = null
     var postPath: String? = null
-
     var file: File? = null
     var file_validation = true
     lateinit var model: TrixiViewModel
@@ -73,12 +66,10 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         mContext = context
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_pet_profile, container, false)
     }
 
@@ -91,7 +82,6 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         populateView()
         setUpSpinners()
 
-
         button_update_profile.setOnClickListener {
             updatePet() }
         button_delete_profile.setOnClickListener {
@@ -102,11 +92,9 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
             val intent = Intent(
                     Intent.ACTION_PICK,
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-
             )
             startActivityForResult(intent, 0)
         }
-
     }
 
     private fun assingData() {
@@ -122,7 +110,6 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
     }
 
     private fun populateView() {
-
         Picasso.get()
                 .load(RetrofitClient.BASE_URL + filePath)
                 .centerCrop()
@@ -130,17 +117,13 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
                 .fit()
                 .into(edit_profile_image);
 
-
         edit_username.setText(petName)
         edit_description.setText(petBio)
         edit_pet_age.setText(petAge)
         edit_breed.setText(petBreed)
-
-
     }
 
     private fun setUpSpinners() {
-
         if (edit_pet_type != null) {
             model.getPetType().observe(viewLifecycleOwner, { allPetType ->
                 val spinnerAdapter = ArrayAdapter<PetType>(
@@ -168,7 +151,6 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
                     val petType: PetType = parent.selectedItem as PetType
                     selectPetTypeData(petType)
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
             }
@@ -190,10 +172,8 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
                     parent: AdapterView<*>,
                     view: View, position: Int, id: Long
                 ) {
-
                     gender = parent.getItemAtPosition(position).toString()
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
             }
@@ -241,13 +221,10 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
             postPath = mediaPath
 
             sendPhoto()
-
         }
     }
 
     private fun sendPhoto(){
-
-
         val totheView = view?.findViewById<View>(R.id.edit_profile_image) as ImageView
 
         Picasso.get()
@@ -292,8 +269,6 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
                 Toast.makeText(activity, "Invalid File", Toast.LENGTH_LONG).show()
                 return
             }
-
-
     }
 
     private fun deletePet() {

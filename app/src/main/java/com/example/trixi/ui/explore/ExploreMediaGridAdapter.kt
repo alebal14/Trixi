@@ -70,12 +70,6 @@ class ExploreMediaGridAdapter(private val posts: ArrayList<Post>, private val li
 
             itemView.setOnClickListener { listener(post) }
         }
-
-
-
     }
-
-
-
 
 }
