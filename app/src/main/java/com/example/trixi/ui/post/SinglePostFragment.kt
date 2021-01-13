@@ -19,6 +19,7 @@ import com.example.trixi.entities.User
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
+import com.example.trixi.ui.report.PopUpReportWindow
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.*
 
@@ -56,9 +57,18 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
                 populatePost(it)
                 handleClickOnComment(it)
                 handleClickOnLike(it)
+                handleClickOnReport(it)
             })
         }
 
+    }
+
+    private fun handleClickOnReport(post: Post?) {
+        home_item_report.setOnClickListener {
+
+                val popUp = PopUpReportWindow(post)
+                popUp.show(activity?.supportFragmentManager!!, PopUpReportWindow.TAG)
+        }
     }
 
     private fun handleClickOnUser(user: User) {

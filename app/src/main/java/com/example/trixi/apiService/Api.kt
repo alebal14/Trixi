@@ -153,4 +153,14 @@ interface Api {
     @DELETE("rest/users/{id}")
     fun deleteUser(@Path(value = "id") id: String?): Call<ResponseBody>
 
+    //Reports
+    @GET("rest/reports")
+    suspend fun getAllReports(): Response<List<Report>>
+
+    @POST("rest/reports")
+    fun addReportToDb(@Body report: Report): Call<Report>
+
+    @DELETE("rest/reports/{id}")
+    fun removeReport(@Path(value = "id") id: String?): Call<ResponseBody>
+
 }
