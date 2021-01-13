@@ -102,7 +102,7 @@ class HomeAdapter(
             )
 
             handleLike(numberOfLike, post, db)
-            handleClickOnComment(post, fm)
+            handleClickOnComment(post,fm,model,viewLifeCycleOwner)
             handleClickOnReport(fm, post)
             handleClickOnDiscovery(fm)
             handleClickOnFollowing(fm)

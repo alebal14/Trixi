@@ -193,7 +193,7 @@ public class PostHandler {
         List<Post> listDescription=
                 allPostFromDB.stream()
                         .filter(d -> d.getDescription() != null)
-                        .filter(e -> e.getDescription().isEmpty())
+                        .filter(e -> !e.getDescription().isEmpty())
                         .filter(s -> s.getDescription().toLowerCase().contains(searchTerm.toLowerCase()))
                         .collect(Collectors.toList());
 
