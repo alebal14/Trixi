@@ -27,12 +27,6 @@ interface Api {
     fun logOutUser(): Call<ResponseBody>
 
     @Multipart
-    @POST("rest/image")
-    fun postProfileImage(
-        @Part file: MultipartBody.Part
-    ): Call<Image>
-
-    @Multipart
     @POST("rest/users")
     fun createUser(
         @Part file: MultipartBody.Part?,
