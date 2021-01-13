@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             post = PostToDb.postedPost
             var singleFragment = SinglePostFragment(post)
             makeCurrentFragment(singleFragment)
-        } else if (DeleteFromDb.postDeleted) {
+        } else if (DeleteFromDb.postDeleted || DeleteFromDb.petDeleted) {
             makeCurrentFragment(profileFragment)
         } else {
             makeCurrentFragment(homepageFragment)

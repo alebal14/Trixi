@@ -102,6 +102,7 @@ class PetRegister : Fragment() {
                     android.R.layout.simple_spinner_item,
                     allPetType
                 )
+                spinnerAdapter.sort(compareBy { it.name.toLowerCase() })
                 register_spinner_pet_type.adapter = spinnerAdapter
             })
 
@@ -238,10 +239,15 @@ class PetRegister : Fragment() {
             return
         }
 
+        if( file == null){
+            Toast.makeText(activity, "Please select an image", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if( file_validation == true){
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val imagenPerfil = MultipartBody.Part.createFormData("file", file?.name, requestFile);
-            db.sendPetToDb(imagenPerfil, ownerId, petName, petAge, petBio, petBreed, petTypeName, gender)
+            db.sendPetToDb(imagenPerfil, "",  ownerId, petName, petAge, petBio, petBreed, petTypeName, gender)
         } else {
             Toast.makeText(activity, "Invalid File", Toast.LENGTH_LONG).show()
             return

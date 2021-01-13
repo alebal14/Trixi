@@ -247,7 +247,8 @@ class PostToDb {
     }
 
     fun sendPetToDb(
-        image: MultipartBody.Part,
+        image: MultipartBody.Part?,
+        uid: String?,
         ownerId: String,
         name: String,
         age: String,
@@ -259,7 +260,7 @@ class PostToDb {
 
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.postPet(image, ownerId, name, age, bio, breed, petType, gender)
+        val call = retrofitClient?.postPet(image, uid, ownerId, name, age, bio, breed, petType, gender)
 
 
         call?.enqueue(object : Callback<Pet> {
