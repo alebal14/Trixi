@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_row_parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPink">
@@ -65,7 +66,7 @@
                 android:textColor="@color/colorLightGreen"
                 android:textSize="15sp"
                 android:maxLines="1"
-                android:maxLength="100"
+                android:maxLength="250"
                 android:paddingBottom="5dp"
                 android:shadowColor="#000000"
                 android:shadowDx="1"

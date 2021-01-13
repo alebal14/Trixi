@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.Post
+import com.example.trixi.entities.Report
 import com.example.trixi.repository.DeleteFromDb
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.ui.activity.ActivityFragment
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     var post: Post? = null
     var pet: Pet? = null
+    var report: Report? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +37,13 @@ class MainActivity : AppCompatActivity() {
 
         if (PostToDb.postedPost != null) {
             post = PostToDb.postedPost
-            var singleFragment = SinglePostFragment(post)
+            var singleFragment = SinglePostFragment(post, report)
             makeCurrentFragment(singleFragment)
         } else if (PostToDb.createdPet != null) {
             pet = PostToDb.createdPet
             var petFragment = PetProfileFragment(pet)
             makeCurrentFragment(petFragment)
-        } else if (DeleteFromDb.postDeleted || DeleteFromDb.petDeleted || PostToDb.userBoolean) {
+        } else if (DeleteFromDb.deleted) {
             makeCurrentFragment(profileFragment)
         } else {
             makeCurrentFragment(homepageFragment)

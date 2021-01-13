@@ -6,6 +6,7 @@ import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.context
+import com.example.trixi.entities.Post
 import com.example.trixi.ui.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,9 +17,8 @@ import retrofit2.Response
 
 class DeleteFromDb {
     companion object {
-        var postDeleted = false
-        var petDeleted = false
-        var userDeleted = false
+        var deleted = false
+
     }
 
     fun deleteAPostFromDb(postId: String) {
@@ -33,7 +33,7 @@ class DeleteFromDb {
                     var result = response.body()
                     Log.d("delete", "delete : successfully deleted:---- $result")
                     Log.d("delete", "delete: id :$postId")
-                    postDeleted = true
+                    deleted = true
 
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
@@ -60,8 +60,34 @@ class DeleteFromDb {
                     var result = response.body()
                     Log.d("delete", "delete : successfully deleted:---- $result")
                     Log.d("delete", "delete: id :$petId")
-                    petDeleted = true
+                    deleted = true
                     val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+
+                } else {
+                    Log.d("delete", "delete : failed to delete ")
+                }
+
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("delete", "delete : onFailure " + t.message)
+            }
+        })
+    }
+
+    fun deleteAReportFromDb(reportUid: String) {
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.removeReport(reportUid)
+        call?.enqueue(object : retrofit2.Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    var result = response.body()
+                    Log.d("delete", "delete : successfully deleted:---- $result")
+                    Log.d("delete", "delete: id :$reportUid")
+
+                    val intent = Intent(context, MainActivity::class.java)
+                    deleted = true
                     context.startActivity(intent)
 
                 } else {
@@ -101,7 +127,7 @@ class DeleteFromDb {
                 if (response.isSuccessful) {
                     var result = response.body()
                     Log.d("DELETE_USER", "successfully deleted user:---- $result with id $userId")
-                    userDeleted = true
+                    deleted = true
 
                 } else {
                     Log.d("DELETE_USER", "failed to delete user")

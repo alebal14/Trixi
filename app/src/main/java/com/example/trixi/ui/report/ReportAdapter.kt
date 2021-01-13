@@ -1,5 +1,7 @@
 package com.example.trixi.ui.report
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -43,11 +45,12 @@ class ReportAdapter(
 
     class ReportViewHolder(view:View):RecyclerView.ViewHolder(view),View.OnClickListener{
         override fun onClick(p0: View?) {
-            Log.d("PageAct", "click on activity recycle view!")
+            Log.d("PageReport", "click on report recycle view!")
         }
         val model = TrixiViewModel()
 
 
+        @SuppressLint("SetTextI18n", "ResourceAsColor")
         fun bindData(
             report: Report,
             listener: ((Report) -> Unit)?,
@@ -58,44 +61,36 @@ class ReportAdapter(
                     listener(report)
                 }
             }
-           /* if(activity.comment !=null){
-                model.getOneUser(activity.comment.userId)?.observe(viewLifecycleOwner,{user ->
+
+
+            itemView.activity_row_parent.setBackgroundResource(R.color.colorLightGreen);
+
+
                     Picasso.get()
-                        .load(RetrofitClient.BASE_URL + (user.imageUrl))
+                        .load(RetrofitClient.BASE_URL + (report.reporter.imageUrl))
                         .transform(CropCircleTransformation()).fit()
                         .centerCrop().into(itemView.activity_profile_img)
-                    itemView.activity_sender_name.text = user.userName
-                    itemView.activity_detail.text = "has commented on your post"
+                    itemView.activity_sender_name.text = report.reporter.userName
+                    itemView.activity_detail.text = "has reported a post"
                     itemView.activity_comment.visibility = View.VISIBLE
-                    itemView.activity_comment.text = "\"${activity.comment.comment}\""
-                })
-            }
+                    itemView.activity_comment.setShadowLayer(0f, 0F, 0F, R.color.colorTeal);
+                    itemView.activity_comment.setTextColor(R.color.colorTeal)
+                    itemView.activity_comment.text = report.reportText
 
-            if(activity.like!=null){
-                model.getOneUser(activity.like.userId)?.observe(viewLifecycleOwner,{user ->
-                    Picasso.get()
-                        .load(RetrofitClient.BASE_URL + (user.imageUrl))
-                        .transform(CropCircleTransformation()).fit()
-                        .centerCrop().into(itemView.activity_profile_img)
-                    itemView.activity_sender_name.text = user.userName
-                    itemView.activity_detail.text = "has liked your post"
-                })
-            }
-
-
-            if (activity.post.fileType.toString() == "image") {
+            if (report.post.fileType.toString() == "image") {
                 itemView.activity_postImg.visibility = View.VISIBLE
                 itemView.activity_postVideo.visibility = View.GONE
                 Picasso.get()
-                        .load(RetrofitClient.BASE_URL + (activity.post.filePath))
+                        .load(RetrofitClient.BASE_URL + (report.post.filePath))
+                        .centerCrop()
                         .fit().into(itemView.activity_postImg)
 
             } else {
                 itemView.activity_postImg.visibility = View.GONE
                 itemView.activity_postVideo.visibility = View.VISIBLE
-                itemView.activity_postVideo.setSource(RetrofitClient.BASE_URL + activity.post.filePath.toString())
+                itemView.activity_postVideo.setSource(RetrofitClient.BASE_URL + report.post.filePath.toString())
 
-            }*/
+            }
 
 
 

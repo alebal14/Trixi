@@ -223,7 +223,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
 
     private fun redirectToSinglePost(post: Post) {
-        val singlePost = SinglePostFragment(post)
+        val singlePost = SinglePostFragment(post, null)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
     }

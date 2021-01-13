@@ -9,22 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
-import com.example.trixi.entities.Like
-import com.example.trixi.entities.Pet
+import com.example.trixi.entities.*
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
-import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import com.example.trixi.ui.report.PopUpReportWindow
+import com.example.trixi.ui.report.PopUpSendReportWindow
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_home_item.*
 
 
-class SinglePostFragment(private val post1: Post?) : Fragment() {
+class SinglePostFragment(private val post1: Post?, private val report: Report?) : Fragment() {
     private lateinit var model: TrixiViewModel
     var numberOfLike: Int = 0
 
@@ -51,6 +49,8 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
         home_item_discover.visibility = View.GONE
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
+
+
         if (post1 != null) {
             model.aPostById(post1.uid.toString()).observe(viewLifecycleOwner, {
                 numberOfLike = it.likes!!.size
@@ -63,12 +63,23 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
 
     }
 
-    private fun handleClickOnReport(post: Post?) {
-        home_item_report.setOnClickListener {
+    private fun handleClickOnReport(postToReport: Post?) {
+        if(report != null && (PostToDb.loggedInUser!!.role!! == "admin")){
+            home_item_report.visibility = View.VISIBLE
+            home_item_report.setOnClickListener {
 
-                val popUp = PopUpReportWindow(post)
-                popUp.show(activity?.supportFragmentManager!!, PopUpReportWindow.TAG)
+                val popUp = PopUpReportWindow(report)
+                popUp.show(activity?.supportFragmentManager!!, PopUpSendReportWindow.TAG)
+            }
+
+        } else {
+            home_item_report.setOnClickListener {
+
+                val popUp = PopUpSendReportWindow(postToReport)
+                popUp.show(activity?.supportFragmentManager!!, PopUpSendReportWindow.TAG)
+            }
         }
+
     }
 
     private fun handleClickOnUser(user: User) {

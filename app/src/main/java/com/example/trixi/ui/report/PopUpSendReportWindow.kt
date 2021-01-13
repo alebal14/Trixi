@@ -1,28 +1,37 @@
 package com.example.trixi.ui.report
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
+import com.example.trixi.entities.Comment
 import com.example.trixi.entities.Post
 import com.example.trixi.entities.Report
-import com.example.trixi.repository.DeleteFromDb
+import com.example.trixi.entities.User
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.repository.TrixiViewModel
 import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Item
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.comment_row.view.*
+import kotlinx.android.synthetic.main.fragment_comment.*
+import kotlinx.android.synthetic.main.fragment_home_item.view.*
 import kotlinx.android.synthetic.main.fragment_report_content.*
-import kotlinx.android.synthetic.main.popup_report.*
 
 
-class PopUpReportWindow( private var report: Report?) :
+class PopUpSendReportWindow(var post: Post?) :
     DialogFragment() {
 
-    private val dbDelete = DeleteFromDb()
+    private val db = PostToDb()
 
     companion object {
         const val TAG = "popUpReport"
@@ -34,45 +43,15 @@ class PopUpReportWindow( private var report: Report?) :
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.popup_report, container, false)
+        return inflater.inflate(R.layout.fragment_report_content, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        populateReport()
-
-        button_approve_post.setOnClickListener {
-            deleteReport(report)
+        send_report.setOnClickListener {
+            sendReport()
         }
-
-        button_delete_post.setOnClickListener {
-            deletePost(report)
-        }
-
-    }
-
-    private fun deleteReport(deleteReport: Report?) {
-        dbDelete.deleteAReportFromDb(deleteReport!!.uid)
-
-    }
-
-    private fun deletePost(deleteReport: Report?) {
-        if (deleteReport != null) {
-            deleteReport.post.uid?.let { dbDelete.deleteAPostFromDb(it) }
-        }
-        deleteReport(deleteReport)
-    }
-
-    private fun populateReport() {
-
-        Picasso.get()
-            .load(RetrofitClient.BASE_URL + (report!!.reporter.imageUrl))
-            .transform(CropCircleTransformation()).fit()
-            .centerCrop().into(report_profileimg)
-
-        report_profileName.text = report!!.reporter.userName
-        report_text.text = report!!.reportText
     }
 
     override fun onStart() {
@@ -97,8 +76,8 @@ class PopUpReportWindow( private var report: Report?) :
             return
         }
 
-        //val reportObj = Report("", user, reportText, post!! )
-        //db.addReportToDb(reportObj)
+        val reportObj = Report("", user, reportText, post!! )
+        db.addReportToDb(reportObj)
 
         Toast.makeText(context, "Thank you! Your report has been sent to Trixi and will be reviewed.", Toast.LENGTH_LONG).show()
         dialog!!.dismiss()

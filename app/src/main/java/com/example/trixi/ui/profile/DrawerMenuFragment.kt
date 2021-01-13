@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.trixi.R
 import com.example.trixi.repository.PostToDb
+import com.example.trixi.ui.report.ReportFragment
 import kotlinx.android.synthetic.main.fragment_drawer_menu.*
 
 
@@ -31,6 +32,19 @@ class DrawerMenuFragment : Fragment() {
     }
 
     private fun addClickListeners() {
+
+        if(PostToDb.loggedInUser!!.role!! == "admin"){
+            see_reported_content.setOnClickListener {
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.fragment_container, ReportFragment()).addToBackStack("reportFragment").
+                    commit()
+                }
+            }
+        } else {
+            see_reported_content.visibility = View.GONE
+        }
+
+
         create_pet.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.apply {
                 replace(R.id.fragment_container, PetRegister()).addToBackStack("creatPetFragment")!!.
