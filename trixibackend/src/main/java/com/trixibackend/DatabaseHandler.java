@@ -46,6 +46,7 @@ public class DatabaseHandler {
     MongoCollection<Comment> commentColl = null;
     MongoCollection<Category> categoryColl = null;
     MongoCollection<PetType> petTypeColl = null;
+    MongoCollection<Notification> notColl = null;
 
     Map<Type, MongoCollection> collections = new HashMap<>();
 
@@ -90,6 +91,7 @@ public class DatabaseHandler {
         commentColl = commentHandler.getCommentColl();
         categoryColl = categoryHandler.getCategoryColl();
         petTypeColl = petTypeHandler.getPetTypeColl();
+        notColl = database.getCollection("notifications",Notification.class);
 
         // generic collections
         collections.putIfAbsent(User.class, userColl);
@@ -99,12 +101,14 @@ public class DatabaseHandler {
         collections.putIfAbsent(Comment.class, commentColl);
         collections.putIfAbsent(Category.class, categoryColl);
         collections.putIfAbsent(PetType.class, petTypeColl);
+        collections.putIfAbsent(Notification.class,notColl);
 
 
     }
 
     public <T> T save(Object object) {
         ObjectId id = null;
+
 
         try {
             Field privateStringField = object.getClass().getDeclaredField("id");
@@ -121,6 +125,7 @@ public class DatabaseHandler {
 
             var res = coll.insertOne(object);
             updated = (T) object;
+            System.out.println("save : " + updated);
 
         }
 
@@ -233,6 +238,22 @@ public class DatabaseHandler {
     public CommentHandler getCommentHandler() {
         return commentHandler;
     }
+
+    public List<Notification> getNotificationByPostOwner(String postOwnerId){
+        List<Notification> notifications = null;
+                try{
+                    FindIterable<Notification> notIter = notColl.find(eq("postOwnerId",postOwnerId));
+                    notifications = new ArrayList<>();
+                    notIter.forEach(notifications::add);
+                    notifications.forEach(notification -> notification.setUid(notification.getId().toString()));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                Collections.reverse(notifications);
+        return notifications;
+    }
+
+
 
 
     public MongoDatabase getDatabase() {

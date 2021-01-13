@@ -6,17 +6,13 @@ import com.example.trixi.MainActivity
 import com.example.trixi.apiService.Api
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.apiService.RetrofitClient.Companion.context
-import com.example.trixi.entities.Post
-import com.example.trixi.entities.User
 import com.example.trixi.ui.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
-import javax.security.auth.callback.Callback
 
 class DeleteFromDb {
     companion object {
@@ -106,7 +102,6 @@ class DeleteFromDb {
                     var result = response.body()
                     Log.d("DELETE_USER", "successfully deleted user:---- $result with id $userId")
                     userDeleted = true
-
 
                 } else {
                     Log.d("DELETE_USER", "failed to delete user")

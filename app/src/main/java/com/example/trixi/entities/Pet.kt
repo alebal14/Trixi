@@ -17,7 +17,6 @@ data class Pet (
 ) : Serializable
 {
 
-
     override fun toString(): String {
         return name
     }

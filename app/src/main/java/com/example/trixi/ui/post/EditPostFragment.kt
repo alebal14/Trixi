@@ -77,8 +77,6 @@ class EditPostFragment(private val post: Post) : Fragment() {
 
         button_update_post.setOnClickListener { updatePost() }
         button_delete_post.setOnClickListener { deletePost() }
-
-
     }
 
     private fun assignData() {
@@ -89,7 +87,6 @@ class EditPostFragment(private val post: Post) : Fragment() {
         ownerId = post.ownerId.toString()
         fileType = post.fileType.toString()
         filePath = post.filePath.toString()
-
     }
 
     private fun populatePost() {
@@ -105,13 +102,10 @@ class EditPostFragment(private val post: Post) : Fragment() {
             uploadImage.visibility = View.GONE;
             uploadVideo.visibility = View.VISIBLE;
             uploadVideo.setSource(RetrofitClient.BASE_URL + filePath)
-
         }
 
         title_field.setText(title)
         description_field.setText(description)
-
-
     }
 
     private fun addPetToSpinnerAndSelect() {
@@ -156,17 +150,13 @@ class EditPostFragment(private val post: Post) : Fragment() {
                         pet.uid
                     }
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
-
             }
         }
     }
 
     private fun addCategoryToSpinnerAndSelect() {
-
-
         if (upload_spinner_add_category != null) {
             var defaultCat = Category("0", "Select a category")
             model.getAllCategories().observe(viewLifecycleOwner, { allCategory ->
@@ -195,7 +185,6 @@ class EditPostFragment(private val post: Post) : Fragment() {
                     val category: Category = parent.selectedItem as Category
                     categoryName = category.name
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
 
@@ -211,7 +200,6 @@ class EditPostFragment(private val post: Post) : Fragment() {
                 Toast.makeText(activity, "Please enter a title", Toast.LENGTH_SHORT).show()
                 return
             }
-
             val updatedPost =
                 Post(uid, title, description, "", "", ownerId, categoryName, null, null)
             db.updatePost(updatedPost)

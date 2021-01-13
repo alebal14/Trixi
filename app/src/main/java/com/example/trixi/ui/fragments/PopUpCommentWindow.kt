@@ -44,8 +44,6 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
     ): View? {
 
         return inflater.inflate(R.layout.fragment_comment, container, false)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,8 +54,6 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
         send_comment.setOnClickListener {
             sendComment()
-
-            //setUpCommentsView()
         }
 
     }
@@ -74,13 +70,9 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
 
-
     private fun setUpCommentsView() {
-
-
         comments!!.forEach { comment ->
             model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commentOwner ->
                 if(commentOwner != null){
@@ -89,17 +81,12 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
 
                     adapterChat.add(CommentItem(comment, commentOwner))
                 }
-
             })
-
         }
-
         recyclerView_popup_comment.adapter = adapterChat
-
     }
 
     private fun sendComment() {
-
         val commentText = enter_comment.text.toString()
         val postId = postId
         val userId = PostToDb.loggedInUser?.uid.toString()
@@ -117,12 +104,7 @@ class PopUpCommentWindow(private val comments: List<Comment>?,var postId:String,
         enter_comment.text.clear()
         adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
         adapterChat.notifyDataSetChanged()
-        //recyclerView_popup_comment.adapter = adapterChat
-
-
     }
-
-
 }
 
 class CommentItem(private val comment: Comment, private val commentOwner: User?) :

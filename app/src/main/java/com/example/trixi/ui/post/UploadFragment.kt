@@ -56,15 +56,11 @@ class UploadFragment() : Fragment() {
     val loggedInUserId = PostToDb.loggedInUser?.uid.toString()
     var ownerId: String = ""
     var categoryName:String = ""
-
     var selectedFile: Uri? = null
     var filePath = ""
     var mediaPath: String? = null
     var postPath: String? = null
-
     var fileType: String = ""
-
-
     var file: File? = null
     var file_validation = false
 
@@ -103,7 +99,6 @@ class UploadFragment() : Fragment() {
             val intent = Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-
             )
             startActivityForResult(intent, REQUEST_IMAGE)
         }
@@ -114,7 +109,6 @@ class UploadFragment() : Fragment() {
                 Intent.ACTION_PICK,
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI
             )
-
             startActivityForResult(intent, REQUEST_VIDEO)
         }
 
@@ -128,13 +122,10 @@ class UploadFragment() : Fragment() {
             openCameraVideo()
         }
 
-
-
         button_post.setOnClickListener() {
             sendPost()
         }
 
-        //SELECT
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
         if (upload_spinner_add_category != null) {
@@ -164,7 +155,6 @@ class UploadFragment() : Fragment() {
                     val category: Category = parent.selectedItem as Category
                     selectCategoryData(category)
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
 
@@ -186,7 +176,6 @@ class UploadFragment() : Fragment() {
                         android.R.layout.simple_spinner_item,
                         allPets
                     )
-
                     spinnerAdapter.sort(compareBy { it.name.toLowerCase() })
                     spinnerAdapter.insert(petdefault, 0)
                     upload_spinner_add_pet.adapter = spinnerAdapter
@@ -207,10 +196,8 @@ class UploadFragment() : Fragment() {
                         selectPetData(pet)
                     }
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                 }
-
             }
         }
     }
@@ -219,7 +206,6 @@ class UploadFragment() : Fragment() {
         if (ContextCompat.checkSelfPermission(
                 mContext!!,
                 Manifest.permission.CAMERA
-
             )
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
@@ -234,7 +220,6 @@ class UploadFragment() : Fragment() {
         if (ContextCompat.checkSelfPermission(
                 mContext!!,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
-
             )
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
@@ -251,7 +236,6 @@ class UploadFragment() : Fragment() {
                 val photoFile: File? = try {
                     createCapturedPhoto()
                 } catch (ex: IOException) {
-                    // If there is error while creating the File, it will be null
                     null
                 }
                 photoFile?.also {
@@ -273,7 +257,6 @@ class UploadFragment() : Fragment() {
                 val photoFile: File? = try {
                     createCapturedVideo()
                 } catch (ex: IOException) {
-                    // If there is error while creating the File, it will be null
                     null
                 }
                 photoFile?.also {
@@ -328,7 +311,6 @@ class UploadFragment() : Fragment() {
             getCursor()
 
             sendPhoto()
-
         }
 
         if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK && data != null) {
@@ -338,11 +320,9 @@ class UploadFragment() : Fragment() {
             getCursor()
 
             sendVideo()
-
         }
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-
 
             var uris = Uri.parse(currentFilePath)
 
@@ -353,8 +333,6 @@ class UploadFragment() : Fragment() {
             postPath = currentFilePath
 
             sendPhoto()
-
-
         }
 
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -383,8 +361,6 @@ class UploadFragment() : Fragment() {
     private fun sendPhoto(){
 
         val totheView = view?.findViewById<View>(R.id.uploadImage) as ImageView
-
-        Log.d("Edit","selectedFile : $selectedFile")
 
         Picasso.get()
             .load(selectedFile)
@@ -419,7 +395,6 @@ class UploadFragment() : Fragment() {
     private fun sendVideo(){
         uploadImage.visibility = View.GONE;
         uploadVideo.visibility = View.VISIBLE;
-
         uploadVideo.setSource(postPath)
 
         file = File(postPath)
@@ -434,18 +409,13 @@ class UploadFragment() : Fragment() {
         } else {
             file_validation = true
         }
-
-
-
         fileType = "video"
-
     }
 
 
     private fun sendPost(){
         val title = title_field.text.toString()
         val description = description_field.text.toString()
-
 
         if (title.isEmpty()) {
             Toast.makeText(activity, "Please enter a title", Toast.LENGTH_SHORT).show()
@@ -456,7 +426,6 @@ class UploadFragment() : Fragment() {
             Toast.makeText(activity, "Please select a file", Toast.LENGTH_SHORT).show()
             return
         }
-
 
         if(file_validation){
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
