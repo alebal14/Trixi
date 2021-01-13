@@ -38,11 +38,10 @@ class HomepageFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_home, container, false)
-
 
     }
 
@@ -62,15 +61,12 @@ class HomepageFragment : Fragment() {
             }
         }
 
-
         refresh_button.setOnClickListener {
             Log.d("home", "in home fragment")
             val deg = refresh_button.rotation + 180F
             refresh_button.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
             setUpHomeView()
         }
-
-
     }
 
     override fun onDestroyView() {
@@ -106,31 +102,10 @@ class HomepageFragment : Fragment() {
         } else {
             for (post in posts) {
 
-                               Log.d("home", "post title: ---${post.title}")
-//                model.getOneUser(post.ownerId!!)
-//                    ?.observe(viewLifecycleOwner, Observer { postOwner ->
-//                        if (postOwner != null) {
-//                            post.owner = postOwner
-//
-//                            //adapter.add(HomeItem(post, fm!!))
-//
-//                        } else {
-//                            // Log.d("home", "user null")
-//                            model.getOnePet(post.ownerId!!)
-//                                ?.observe(viewLifecycleOwner, Observer { petIsOwner ->
-//                                    post.ownerIsPet = petIsOwner
-//                                    //adapter.add(HomeItem(post, fm!!))
-//                                })
-//                        }
-//                    })
-
+                Log.d("home", "post title: ---${post.title}")
             }
 
-
             setToCustomHomeAdapter(posts)
-
-            //recyclerView_homepage.adapter = adapter
-
         }
     }
 
@@ -142,10 +117,10 @@ class HomepageFragment : Fragment() {
             adapter = HomeAdapter(
                 posts as ArrayList<Post>,
                 activity?.supportFragmentManager!!,
-                viewLifecycleOwner
+                viewLifecycleOwner,
+                "following"
             )
         }
     }
-
 
 }

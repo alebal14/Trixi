@@ -129,27 +129,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            >
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationViewLoadingSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                >
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/animationViewLoadingSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="5dp"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_url="https://assets6.lottiefiles.com/packages/lf20_fy4wzpng.json" />
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:padding="5dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_url="https://assets6.lottiefiles.com/packages/lf20_fy4wzpng.json" />
+        </LinearLayout>
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/top_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="always">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/media_grid_top_posts"
@@ -159,13 +167,14 @@
                 android:scrollbars="vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:paddingBottom="15dp"
-                />
+                android:nestedScrollingEnabled="true"
+                android:paddingBottom="15dp"/>
 
 
 
 
-
+        </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </RelativeLayout>
     </LinearLayout>
 

@@ -71,6 +71,17 @@ class TrixiViewModel : ViewModel() {
         return allPosts
     }
 
+    fun getAllPostsWithQuery(page: Int, limit: Int) : MutableLiveData<List<Post>?> {
+        val allPostsQuery: MutableLiveData<List<Post>?> = MutableLiveData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All post")
+            val p = retrofitClient?.getAllPostQuery(page, limit)?.body()
+            allPostsQuery.postValue(p)
+        }
+        return allPostsQuery
+    }
+
     fun getPostBySearching(newText: String): MutableLiveData<List<Post>?> {
         val searchPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 

@@ -100,7 +100,8 @@ class DiscoverFragment : Fragment() {
             adapter = HomeAdapter(
                 posts as ArrayList<Post>,
                 activity?.supportFragmentManager!!,
-                viewLifecycleOwner
+                viewLifecycleOwner,
+                "discover"
             )
         }
     }

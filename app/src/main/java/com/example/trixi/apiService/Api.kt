@@ -89,12 +89,13 @@ interface Api {
 
     @Multipart
     @POST("rest/pets")
-    fun postPet(  @Part file: MultipartBody.Part,
+    fun postPet(  @Part file: MultipartBody.Part?,
+                  @Part("uid") uid: String?,
                   @Part("ownerId") ownerId: String,
                   @Part("name") name: String,
                   @Part("age") age: String,
-                  @Part("bio") bio: String,
-                  @Part("breed") breed: String,
+                  @Part("bio") bio: String?,
+                  @Part("breed") breed: String?,
                   @Part("petType") petType: String,
                   @Part("gender") gender: String): Call<Pet>
 
@@ -107,6 +108,12 @@ interface Api {
     //Posts
     @GET("rest/posts")
     suspend fun getAllPosts(): Response<List<Post>>
+
+    @GET("rest/posts/pagelimit/")
+    suspend fun getAllPostQuery(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int): Response<List<Post>>
+
 
     @Multipart
     @POST("rest/posts")
@@ -173,5 +180,11 @@ interface Api {
 
     @DELETE("rest/posts/{id}")
     fun deleteAPost(@Path("id")id :String?): Call<ResponseBody>
+
+    @DELETE("rest/pets/{id}")
+    fun deleteAPet(@Path("id")id :String?): Call<ResponseBody>
+
+    @DELETE("rest/users/{id}")
+    fun deleteUser(@Path(value = "id") id: String?): Call<ResponseBody>
 
 }

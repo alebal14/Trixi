@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 
 public class RestApi {
 
@@ -148,7 +150,7 @@ public class RestApi {
             var id = req.getParam("id");
             var obj = db.deleteById(collectionName, id);
             res.json(obj);
-
+            res.send("Succesfully deleted");
         });
 
     }
@@ -265,6 +267,7 @@ public class RestApi {
 
                     List<FileItem> Postfiles = null;
                     String PostfileUrl = null;
+                    String petId = null;
                     String description = null;
                     String ownerId = null;
                     String title = null;
@@ -273,6 +276,7 @@ public class RestApi {
 
                     try {
                         Postfiles = req.getFormData("file");
+                        petId = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
                         ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         title = req.getFormData("title").get(0).getString().replace("\"", "");
@@ -308,6 +312,7 @@ public class RestApi {
                     String PetFileUrl = null;
                     String PetOwnerId = null;
                     String name = null;
+                    String petUid = null;
                     String age = null;
                     String petBio = null;
                     String breed = null;
@@ -317,6 +322,7 @@ public class RestApi {
                     try {
                         Petfiles = req.getFormData("file");
                         name = req.getFormData("name").get(0).getString().replace("\"", "");
+                        petUid =  req.getFormData("uid").get(0).getString().replace("\"", "");
                         PetOwnerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         age = req.getFormData("age").get(0).getString().replace("\"", "");
                         petBio = req.getFormData("bio").get(0).getString().replace("\"", "");
@@ -324,11 +330,30 @@ public class RestApi {
                         Type = req.getFormData("petType").get(0).getString().replace("\"", "");
                         gender = req.getFormData("gender").get(0).getString().replace("\"", "");
 
-                        PetFileUrl = db.uploadImage(Petfiles.get(0));
-                        System.out.println(PetFileUrl + name + PetOwnerId);
-
                         Pet pet = new Pet();
-                        pet.setImageUrl(PetFileUrl);
+
+
+                        //System.out.println(PetFileUrl + name + PetOwnerId);
+
+
+
+                        if(petUid != null){
+                            Pet oldPet = db.getPetHandler().findPetById(petUid);
+                            pet.setUid(petUid);
+                            pet.setId(new ObjectId(petUid));
+                            if(Petfiles == null){
+                                pet.setImageUrl(oldPet.getImageUrl());
+                            }
+                        }
+
+                        if(Petfiles != null){
+                            PetFileUrl = db.uploadImage(Petfiles.get(0));
+                            pet.setImageUrl(PetFileUrl);
+                        }
+
+
+
+
                         pet.setName(name);
                         pet.setOwnerId(PetOwnerId);
                         pet.setAge(age);
@@ -368,6 +393,36 @@ public class RestApi {
     private void setUpGetApi(String collectionName) {
 
         app.get("/rest/" + collectionName, (req, res) -> res.json(db.getAll(collectionName)));
+
+        app.get("/rest/posts/pagelimit/", (req, res) -> {
+            String page = req.getQuery("page");
+            String limit = req.getQuery("limit");
+            //int limit = parseInt(req.getQuery("limit"));
+            int pageNumber = parseInt(page);
+            int limitNumber = parseInt(limit);
+
+            int startIndex = (pageNumber -1) * limitNumber;
+            int endIndex = startIndex + limitNumber;
+            var results = db.getPostHandler().getAllPosts();
+            
+            int lastPage = results.size()/limitNumber + 1;
+
+
+            if(pageNumber > lastPage){
+                res.json(null);
+            } else if (pageNumber == lastPage) {
+                var re = results.subList(startIndex, results.size());
+                res.json(re);
+            } else {
+                var re = results.subList(startIndex, endIndex);
+
+                res.json(re);
+            }
+
+
+
+        });
+
         app.get("/rest/posts/by_category/:id", (req, res) -> {
 
             String id = req.getParam("id");

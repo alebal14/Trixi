@@ -147,8 +147,8 @@ public class DatabaseHandler {
             default:
                 return null;
         }
-
     }
+
 
     public DeleteResult deleteById(String collectionName, String id){
         switch (collectionName){

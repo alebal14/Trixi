@@ -8,6 +8,7 @@
         app:cardCornerRadius="4dp">
 
     <RelativeLayout
+        android:id="@+id/home_item_media_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -29,7 +30,7 @@
                 android:layout_marginEnd="0dp"
                 android:layout_marginBottom="0dp"
                 android:background="@color/colorLightGreen"
-                android:foregroundGravity="center"></ImageView>
+                android:foregroundGravity="center"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -82,6 +83,7 @@
 
 
             <LinearLayout
+                android:id="@+id/home_item_top_shadow"
                     android:layout_width="match_parent"
                     android:layout_height="71dp"
                     android:background="#1A000000"
@@ -153,6 +155,7 @@
                     android:paddingTop="20dp"
                     android:paddingRight="5dp">
 
+
                 <ImageButton
                         android:id="@+id/home_item_edit"
                         android:layout_width="40dp"
@@ -160,6 +163,15 @@
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/ic_baseline_edit_24"
                         android:backgroundTint="@color/colorPink" />
+
+                <ImageButton
+                    android:id="@+id/home_item_report"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/ic_baseline_report_24"
+                    android:backgroundTint="@color/colorPink" />
+
 
                 <ImageButton
                         android:id="@+id/home_item_profile"

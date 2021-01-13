@@ -24,9 +24,8 @@ class PostToDb {
         var loggedInUser: User? = null
         var postedPost : Post? = null
         var createdPet : Pet? = null
+        var userBoolean = false
     }
-
-
 
     fun PostLoginUserToDb(user: User, context: Context){
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
@@ -187,7 +186,7 @@ class PostToDb {
                  Log.d("uus", "REGuser : onResponse success" + response.body())
                  loggedInUser = response.body()
                  Log.d("loggedInUser", loggedInUser.toString())
-
+                 userBoolean = true
                  val intent = Intent(context, MainActivity::class.java)
                  context.startActivity(intent)
              } else {
@@ -247,7 +246,8 @@ class PostToDb {
     }
 
     fun sendPetToDb(
-        image: MultipartBody.Part,
+        image: MultipartBody.Part?,
+        uid: String?,
         ownerId: String,
         name: String,
         age: String,
@@ -259,7 +259,7 @@ class PostToDb {
 
         val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
 
-        val call = retrofitClient?.postPet(image, ownerId, name, age, bio, breed, petType, gender)
+        val call = retrofitClient?.postPet(image, uid, ownerId, name, age, bio, breed, petType, gender)
 
 
         call?.enqueue(object : Callback<Pet> {

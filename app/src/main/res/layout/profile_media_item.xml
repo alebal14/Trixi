@@ -7,7 +7,7 @@
         android:padding="2dp">
 
     <ImageView
-            android:id="@+id/profile_media_thumbnail"
+            android:id="@+id/profile_image_thumbnail"
             android:layout_width="120dp"
             android:layout_height="120dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -15,5 +15,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
+
+    <com.potyvideo.library.AndExoPlayerView
+        android:id="@+id/profile_video_thumbnail"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:andexo_play_when_ready="false"
+        app:andexo_resize_mode="Zoom"
+        app:andexo_show_controller="false"
+        tools:src="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
