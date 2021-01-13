@@ -39,7 +39,7 @@ class TrixiViewModel : ViewModel() {
     }
 
 
-    fun getAllPosts() : MutableLiveData<List<Post>?> {
+    fun getAllPosts(): MutableLiveData<List<Post>?> {
         val allPosts: MutableLiveData<List<Post>?> = MutableLiveData()
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -143,7 +143,7 @@ class TrixiViewModel : ViewModel() {
     }
 
     fun getAllCategories(): MutableLiveData<List<Category>> {
-        val allCategory =  MutableLiveData<List<Category>>()
+        val allCategory = MutableLiveData<List<Category>>()
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All category")
             val categories = retrofitClient?.getAllCategories()?.body()
@@ -153,9 +153,9 @@ class TrixiViewModel : ViewModel() {
         return allCategory
     }
 
-    fun aPostById(id: String):MutableLiveData<Post>{
+    fun aPostById(id: String): MutableLiveData<Post> {
         val post = MutableLiveData<Post>()
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             val aPost = retrofitClient?.getPostById(id)?.body()
             post.postValue(aPost)
         }
@@ -164,7 +164,7 @@ class TrixiViewModel : ViewModel() {
 
 
     fun getPetType(): MutableLiveData<List<PetType>> {
-        val allPetType =  MutableLiveData<List<PetType>>()
+        val allPetType = MutableLiveData<List<PetType>>()
         viewModelScope.launch(Dispatchers.IO) {
             Log.d(TAG, "getting All Pet Type")
             val pettypes = retrofitClient?.getAllPetTypes()?.body()
@@ -186,5 +186,15 @@ class TrixiViewModel : ViewModel() {
         return discoverPosts
 
     }
+
+    fun getActivityByOwner(id: String): MutableLiveData<List<Activity>> {
+        val activities: MutableLiveData<List<Activity>> = MutableLiveData()
+        viewModelScope.launch(Dispatchers.IO) {
+            val actFromDb = retrofitClient?.getNotifications(id)?.body()
+            activities.postValue(actFromDb)
+        }
+        return activities
+    }
+
 
 }

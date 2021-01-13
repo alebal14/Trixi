@@ -2,6 +2,9 @@
 
 package com.example.trixi.apiService
 
+
+import android.app.Notification
+import android.content.Context
 import com.example.trixi.entities.*
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -122,6 +125,9 @@ interface Api {
     //Category
     @GET("rest/categories")
     suspend fun getAllCategories(): Response<List<Category>>
+
+    @GET("rest/notifications/{postOwnerId}")
+    suspend fun getNotifications(@Path("postOwnerId") id:String?):Response<List<Activity>>
 
 
     @POST("rest/comments")
