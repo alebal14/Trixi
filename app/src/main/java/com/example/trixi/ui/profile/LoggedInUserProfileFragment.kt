@@ -1,7 +1,6 @@
 package com.example.trixi.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.View
 import android.view.View.INVISIBLE

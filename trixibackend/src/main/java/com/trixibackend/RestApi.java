@@ -174,7 +174,6 @@ public class RestApi {
     }
 
     private void setUpPostApi(String collectionName) {
-
         app.post("/rest/" + collectionName, (req, res) -> {
             switch (collectionName) {
                 case "users":
@@ -200,14 +199,10 @@ public class RestApi {
                         User user = new User();
                         User oldUser = db.getUserHandler().findUserById(uid);
 
-                        if (uid != null) {
+                        if(uid != null) {
                             user.setUid(uid);
                             user.setId(new ObjectId(uid));
-                            user.setFollowingsUser(oldUser.getFollowingsUser());
-                            user.setFollowingsPet(oldUser.getFollowingsPet());
-                            user.setFollowers(oldUser.getFollowers());
-                            if (password == null) {
-                                System.out.println("old password: " + oldUser.getPassword());
+                            if(password == null){
                                 user.setPassword(oldUser.getPassword());
                             } else {
                                 String hashedPassword = BCrypt.withDefaults().hashToString(10, password.toCharArray());
@@ -461,22 +456,13 @@ public class RestApi {
         app.get("/rest/" + collectionName + "/:id", (req, res) -> {
 
             String id = req.getParam("id");
-
-            if (collectionName.equals("notifications")) {
-                var notifications = db.getNotificationByPostOwner(id);
-                res.json(notifications);
-                return;
-            }
             var obj = db.getById(collectionName, id);
             if (obj == null) {
                 res.send("Error: no Object found");
                 return;
             }
-
-
             res.json(db.getById(collectionName, id));
         });
-
 
         app.get("/api/getUserFollowingPost/:id", (req, res) -> {
 
@@ -625,16 +611,6 @@ public class RestApi {
                 res.send("Error: you already liked this post");
                 return;
             }
-            if (!like.getUserId().equals(p.getOwnerId())) {
-
-                Notification notification = new Notification();
-                notification.setLike(like);
-                notification.setComment(null);
-                notification.setPost(p);
-                notification.setPostOwnerId(p.getOwnerId());
-                db.save(notification);
-                notification.setUid(notification.getId().toString());
-            }
             res.json(p);
         });
 
@@ -652,20 +628,7 @@ public class RestApi {
         app.post("/rest/comments", (req, res) -> {
             Comment comment = (Comment) req.getBody(Comment.class);
             comment.setId(UUID.randomUUID().toString());
-
-            Post p = db.getPostHandler().findPostById(comment.getPostId());
-            if (!comment.getUserId().equals(p.getOwnerId())) {
-                Notification notification = new Notification();
-                notification.setComment(comment);
-                notification.setPost(p);
-                notification.setPostOwnerId(p.getOwnerId());
-                db.save(notification);
-                notification.setUid(notification.getId().toString());
-            }
-
             res.json(db.getPostHandler().addComment(comment));
-
-
         });
 
         app.post("/rest/delete_comment", (req, res) -> {

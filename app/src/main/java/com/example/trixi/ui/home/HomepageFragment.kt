@@ -11,11 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 //import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.trixi.R
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
+import com.example.trixi.ui.post.SinglePostFragment
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.recyclerView_homepage
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -23,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomepageFragment : Fragment() {
 
-    //val adapter = GroupAdapter<GroupieViewHolder>()
+    val adapter = GroupAdapter<GroupieViewHolder>()
     private var model: TrixiViewModel = TrixiViewModel()
     private val fm: FragmentManager?
         get() {
@@ -71,7 +76,7 @@ class HomepageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        //adapter.clear()
+        adapter.clear()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -13,9 +13,9 @@
         android:icon="@drawable/ic_baseline_add_circle_outline_24"
         android:title="Post"></item>
 
-    <item android:id="@+id/footer_activity"
-        android:icon="@drawable/ic_baseline_notifications_none_24"
-        android:title="Activity"></item>
+    <item android:id="@+id/footer_chat"
+        android:icon="@drawable/ic_baseline_chat_bubble_outline_24"
+        android:title="Chat"></item>
 
     <item android:id="@+id/footer_profile"
         android:icon="@drawable/ic_baseline_person_outline_24"
