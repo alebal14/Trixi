@@ -24,6 +24,7 @@ class PostToDb {
         var loggedInUser: User? = null
         var postedPost : Post? = null
         var createdPet : Pet? = null
+        var userBoolean = false
     }
 
 
@@ -187,7 +188,7 @@ class PostToDb {
                  Log.d("uus", "REGuser : onResponse success" + response.body())
                  loggedInUser = response.body()
                  Log.d("loggedInUser", loggedInUser.toString())
-
+                 userBoolean = true
                  val intent = Intent(context, MainActivity::class.java)
                  context.startActivity(intent)
              } else {

@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             pet = PostToDb.createdPet
             var petFragment = PetProfileFragment(pet)
             makeCurrentFragment(petFragment)
-        } else if (DeleteFromDb.postDeleted || DeleteFromDb.petDeleted) {
+        } else if (DeleteFromDb.postDeleted || DeleteFromDb.petDeleted || PostToDb.userBoolean) {
             makeCurrentFragment(profileFragment)
         } else {
             makeCurrentFragment(homepageFragment)
