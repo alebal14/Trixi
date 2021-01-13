@@ -213,12 +213,19 @@ class PetRegister : Fragment() {
         }
     }
 
+
     private fun createPet(){
 
         petName = register_pet_name.text.toString()
         petAge = register_pet_age.text.toString()
         petBreed = register_breed.text.toString()
         petBio = register_pet_bio.text.toString()
+
+        if (petBio.length > 150) {
+            Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
 
 
         if (petName.isEmpty()) {

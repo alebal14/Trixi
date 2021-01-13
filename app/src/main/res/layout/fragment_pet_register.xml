@@ -96,16 +96,22 @@
                 <EditText
                     android:id="@+id/register_pet_bio"
                     android:layout_width="283dp"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="20"
+                    android:minLines="4"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/text_input_rounded_corners"
+                    android:background="@drawable/rounded_text_view"
                     android:ems="10"
                     android:hint="Bio"
                     android:inputType="textMultiLine"
-                    android:paddingLeft="16dp" />
+                    android:paddingLeft="16dp"
+                    android:paddingTop="10dp" />
 
 
-                    <Button
+
+
+
+                <Button
                         android:id="@+id/register_add"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

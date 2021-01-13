@@ -259,6 +259,11 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         petBreed = edit_breed.text.toString()
         petBio = edit_description.text.toString()
 
+        if (petBio.length > 150) {
+            Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
 
             if( file_validation == true){
                 if(newPhoto){

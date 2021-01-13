@@ -44,14 +44,17 @@
             android:ems="10"
             android:hint="Age"
             android:inputType="text"
+            android:paddingBottom="5dp"
             android:paddingLeft="16dp" />
 
         <EditText
                 android:id="@+id/edit_description"
                 android:layout_width="283dp"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
+                android:maxLines="20"
+                android:minLines="4"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
+                android:background="@drawable/rounded_text_view"
                 android:ems="10"
                 android:hint="Edit bio"
                 android:inputType="textMultiLine"
