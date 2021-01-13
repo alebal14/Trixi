@@ -8,13 +8,10 @@ import express.middleware.Middleware;
 import express.utils.Status;
 import org.apache.commons.fileupload.FileItem;
 import org.bson.types.ObjectId;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
-
 import static java.lang.Integer.parseInt;
-
 
 public class RestApi {
 
@@ -64,8 +61,6 @@ public class RestApi {
             User user = db.getUserHandler().findUserById(userid);
             User followingUser = db.getUserHandler().findUserById(followingId);
 
-            System.out.println("Logged in user:  " + user);
-
             if (followingUser == null) {
                 Pet followingPet = db.getPetHandler().findPetById(followingId);
                 System.out.println("(Pet) Following:  " + followingPet);
@@ -77,7 +72,6 @@ public class RestApi {
                 }
                 res.json(updatedUser);
             } else {
-                System.out.println("(User) following:  " + followingUser);
                 var updatedUser = db.getUserHandler().updateFollowUserList(user, followingUser);
                 if (updatedUser == null) {
                     res.setStatus(Status._403);
@@ -98,11 +92,9 @@ public class RestApi {
             User followingUser = db.getUserHandler().findUserById(followingId);
             User user = db.getUserHandler().findUserById(userid);
 
-            System.out.println("User:  " + user);
-
             if (followingUser == null) {
                 Pet followingPet = db.getPetHandler().findPetById(followingId);
-                System.out.println("(Pet) unfollow:  " + followingPet);
+
                 var updatedUser = db.getUserHandler().removeFromFollowPetList(user, followingPet);
                 if (updatedUser == null) {
                     res.setStatus(Status._403);
@@ -111,7 +103,6 @@ public class RestApi {
                 }
                 res.json(updatedUser);
             } else {
-                System.out.println("(User) unfollow:  " + followingUser);
                 var updatedUser = db.getUserHandler().removeFromFollowUserList(user, followingUser);
                 if (updatedUser == null) {
                     res.setStatus(Status._403);
@@ -119,7 +110,6 @@ public class RestApi {
                     return;
                 }
                 res.json(updatedUser);
-
             }
         });
 
@@ -138,7 +128,6 @@ public class RestApi {
                 updatedPost.setComments(oldPost.getComments());
                 db.save(updatedPost);
                 res.json(db.getPostHandler().findPostById(updatedPost.getUid()));
-
             }
         });
     }
@@ -152,9 +141,7 @@ public class RestApi {
             res.json(obj);
             res.send("Succesfully deleted");
         });
-
     }
-
 
     private void setImagePostApi() {
         app.post("/rest/image", (req, res) -> {
@@ -164,7 +151,6 @@ public class RestApi {
                 files = req.getFormData("file");
                 fileUrl = db.uploadImage(files.get(0));
                 System.out.println(files.get(0).getName());
-                //res.json(files.get(0).getName());
                 res.json(Map.of("url", files.get(0).getName()));
 
             } catch (Exception e) {
@@ -195,8 +181,6 @@ public class RestApi {
                         password = (req.getFormData("password") != null ? req.getFormData("password").get(0).getString().replace("\"", "") : null);
                         bio = (req.getFormData("bio") != null ? req.getFormData("bio").get(0).getString().replace("\"", "") : null);
 
-                        System.out.println(uid + fileUrl + userName + email + password + bio);
-
                         User user = new User();
                         User oldUser = db.getUserHandler().findUserById(uid);
 
@@ -207,7 +191,6 @@ public class RestApi {
                             user.setFollowingsPet(oldUser.getFollowingsPet());
                             user.setFollowers(oldUser.getFollowers());
                             if (password == null) {
-                                System.out.println("old password: " + oldUser.getPassword());
                                 user.setPassword(oldUser.getPassword());
                             } else {
                                 String hashedPassword = BCrypt.withDefaults().hashToString(10, password.toCharArray());
@@ -259,12 +242,9 @@ public class RestApi {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                     break;
 
                 case "posts":
-
                     List<FileItem> Postfiles = null;
                     String PostfileUrl = null;
                     String postId = null;
@@ -284,7 +264,6 @@ public class RestApi {
                         fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
                         PostfileUrl = db.uploadImage(Postfiles.get(0));
-                        System.out.println(PostfileUrl + description + ownerId + title);
 
                         Post post = new Post();
                         post.setDescription(description);
@@ -297,7 +276,6 @@ public class RestApi {
                         db.save(post);
                         post.setUid(post.getId().toString());
 
-
                         res.json(post);
                         res.send("Created Post");
 
@@ -307,7 +285,6 @@ public class RestApi {
 
                     break;
                 case "pets":
-
                     List<FileItem> Petfiles = null;
                     String PetFileUrl = null;
                     String PetOwnerId = null;
@@ -332,11 +309,6 @@ public class RestApi {
 
                         Pet pet = new Pet();
 
-
-                        //System.out.println(PetFileUrl + name + PetOwnerId);
-
-
-
                         if(petUid != null){
                             Pet oldPet = db.getPetHandler().findPetById(petUid);
                             pet.setUid(petUid);
@@ -344,7 +316,6 @@ public class RestApi {
                                 pet.setImageUrl(oldPet.getImageUrl());
                             }
                         }
-
                         if(Petfiles != null){
                             PetFileUrl = db.uploadImage(Petfiles.get(0));
                             pet.setImageUrl(PetFileUrl);
@@ -371,7 +342,6 @@ public class RestApi {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     break;
                 case "categories":
                     Category category = (Category) req.getBody(Category.class);
@@ -470,7 +440,6 @@ public class RestApi {
                 return;
             }
 
-
             res.json(db.getById(collectionName, id));
         });
 
@@ -484,7 +453,6 @@ public class RestApi {
             var followingPostList = db.getUserHandler().findUserFollowingPostList(user);
             if (followingPostList == null) {
                 res.setStatus(Status._403);
-                //res.send("Error: you are not following this Pet");
                 return;
             }
             System.out.println(followingPostList.size());
@@ -506,10 +474,10 @@ public class RestApi {
                     //res.send("Error: you are not following this Pet");
                     return;
                 }
-                System.out.println(searchPost.size());
                 res.json(searchPost);
             } catch (Exception e) {
                 e.printStackTrace();
+
             }
         });
 
@@ -522,7 +490,6 @@ public class RestApi {
             var followingPostList = db.getUserHandler().discoverList(user);
             if (followingPostList == null) {
                 res.setStatus(Status._403);
-                //res.send("Error: you are not following this Pet");
                 return;
             }
             System.out.println(followingPostList.size());
@@ -593,21 +560,11 @@ public class RestApi {
 
             var user = (User) sessionCookie.getData();
             user.setUid(user.getId().toString());
-//            user.setPosts(db.getPostHandler().findPostsByOwner(user.getUid()));
-//            user.setPets(db.getPetHandler().findPetsByOwner(user.getUid()));
-
-//            user.getPosts().forEach(post -> {
-//                post.setUid(post.getId().toString());
-//                post.setLikes(db.getPostHandler().getLikeHandler().findLikesByPostId(post.getUid()));
-//                post.setComments(db.getPostHandler().getCommentHandler().findCommentsByPostId(post.getUid()));
-//            });
             user.setPassword(null); // sanitize password
 
             res.json(user);
-
         });
     }
-
 
     private void logoutUser() {
         app.get("/rest/logout", (req, res) -> {
@@ -663,10 +620,7 @@ public class RestApi {
                 db.save(notification);
                 notification.setUid(notification.getId().toString());
             }
-
             res.json(db.getPostHandler().addComment(comment));
-
-
         });
 
         app.post("/rest/delete_comment", (req, res) -> {
@@ -679,6 +633,6 @@ public class RestApi {
             }
             res.json(p);
         });
-
     }
+    
 }

@@ -28,15 +28,65 @@
                 android:gravity="center">
 
 
-                <ImageButton
-                    android:id="@+id/register_pet_image"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="148dp"
-                    android:layout_height="148dp"
-                    android:clickable="true"
-                    android:background="@drawable/ic_baseline_person_outline_24"
-                    />
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center">
 
+
+                    <LinearLayout
+                            android:layout_width="170dp"
+                            android:layout_height="170dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/ic_circle2"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/pet_register_image"
+                                    android:layout_width="132dp"
+                                    android:layout_height="132dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginEnd="2dp"
+                                    android:gravity="center"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.0" />
+
+                            <ImageView
+                                    android:id="@+id/plus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="116dp"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:src="@drawable/ic_plus"
+                                    app:layout_constraintBottom_toBottomOf="@+id/pet_register_image"
+                                    app:layout_constraintEnd_toEndOf="@+id/pet_register_image"
+                                    app:layout_constraintHorizontal_bias="0.568"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/pet_register_image"
+                                    app:layout_constraintVertical_bias="1.0" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
                 <EditText
                     android:id="@+id/register_pet_name"
                     android:layout_width="283dp"

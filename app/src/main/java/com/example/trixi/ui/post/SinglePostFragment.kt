@@ -184,7 +184,11 @@ class SinglePostFragment(private val post1: Post?) : Fragment() {
     private fun handleClickOnComment(post: Post) {
         home_item_chat.setOnClickListener {
             model.aPostById(post.uid.toString()).observe(viewLifecycleOwner, {
-                val popUp = PopUpCommentWindow(it?.comments, it?.uid.toString(), null)
+                val popUp = PopUpCommentWindow(
+                    it?.comments,
+                    it?.uid.toString(),
+                    home_item_chat_count
+                )
                 popUp.show(activity?.supportFragmentManager!!, PopUpCommentWindow.TAG)
                 home_item_chat_count.text = it?.comments?.size.toString()
             })

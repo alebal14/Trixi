@@ -4,7 +4,6 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.trixibackend.entity.Category;
-import com.trixibackend.entity.Comment;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -37,9 +36,7 @@ public class CategoryHandler {
         return categories;
     }
 
-
     public Category findCategoryById(String id) {
-
         try {
             var categoryIter = categoryColl.find(eq("_id",  new ObjectId(id)));
             var category = categoryIter.first();

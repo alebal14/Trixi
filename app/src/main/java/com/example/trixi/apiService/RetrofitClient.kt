@@ -21,8 +21,6 @@ class RetrofitClient {
 
         //Anna
         //val BASE_URL = "http://192.168.1.71:3000/"
-       // val BASE_URL = "http://192.168.1.7:3000/"
-
 
         //Alexandra
         val BASE_URL = "http://192.168.0.162:3000/"
@@ -30,7 +28,9 @@ class RetrofitClient {
         //Sofia
         //val BASE_URL = "http://192.168.0.2:3000/"
 
-        //val BASE_URL = "http://192.168.0.2:3000/"
+        //common ip address for all who are using Emulator
+        val BASE_URL = "http://10.0.2.2:3000/"
+
 
 
         fun okHttpClient() : OkHttpClient {

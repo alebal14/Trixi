@@ -125,7 +125,11 @@ class HomeItem(
     private fun handleClickOnComment(viewHolder: GroupieViewHolder) {
         val commentIcon: ImageButton = viewHolder.itemView.findViewById(R.id.home_item_chat)
         commentIcon.setOnClickListener {
-            val popUp = PopUpCommentWindow(post.comments, post.uid.toString(), viewHolder)
+            val popUp = PopUpCommentWindow(
+                post.comments,
+                post.uid.toString(),
+                viewHolder.itemView.home_item_chat_count
+            )
             popUp.show(fm, PopUpCommentWindow.TAG)
         }
     }

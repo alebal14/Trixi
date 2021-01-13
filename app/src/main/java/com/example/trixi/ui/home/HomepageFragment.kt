@@ -94,7 +94,6 @@ class HomepageFragment : Fragment() {
             }
         } else {
             for (post in posts) {
-
                 Log.d("home", "post title: ---${post.title}")
             }
             setToCustomHomeAdapter(posts)
