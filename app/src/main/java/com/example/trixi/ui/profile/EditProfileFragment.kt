@@ -74,7 +74,6 @@ class EditProfileFragment : Fragment() {
 
         Picasso.get()
             .load(BASE_URL + loggedInUser?.imageUrl)
-            .transform(CropCircleTransformation())
             .centerCrop()
             .fit()
             .into(edit_profile_image)

@@ -85,7 +85,7 @@ class PetRegister : Fragment() {
 
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        register_pet_image.setOnClickListener {
+        pet_register_image.setOnClickListener {
             requestPermissions()
             val intent = Intent(
                 Intent.ACTION_PICK,
@@ -201,7 +201,7 @@ class PetRegister : Fragment() {
 
     private fun sendPhoto(){
 
-        val totheView = view?.findViewById<View>(R.id.register_pet_image) as ImageView
+        val totheView = view?.findViewById<View>(R.id.pet_register_image) as ImageView
 
         Picasso.get()
             .load(selectedFile)

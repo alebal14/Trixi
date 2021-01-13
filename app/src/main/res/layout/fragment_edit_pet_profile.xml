@@ -19,39 +19,60 @@
                 android:orientation="vertical"
                 android:paddingTop="20dp">
 
+            <LinearLayout
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/ic_circle2"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/edit_profile_image"
-                        android:layout_width="148dp"
-                        android:layout_height="148dp"
-                        android:layout_marginTop="30dp"
-                        app:civ_border_color="@color/colorPink" />
-
-                <ImageView
-                        android:id="@+id/plus"
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/edit_profile_image"
-                        android:layout_alignTop="@+id/edit_profile_image"
-                        android:layout_alignEnd="@+id/edit_profile_image"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="bottom"
-                        android:gravity="bottom"
-                        android:src="@drawable/ic_plus" />
+                        android:layout_height="wrap_content">
 
 
-            </RelativeLayout>
+                    <ImageButton
+                            android:id="@+id/edit_profile_image"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="@drawable/image_btn_circle"
+                            android:gravity="center"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                    <ImageView
+                            android:id="@+id/plus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="116dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_plus"
+                            app:layout_constraintBottom_toBottomOf="@+id/edit_profile_image"
+                            app:layout_constraintEnd_toEndOf="@+id/edit_profile_image"
+                            app:layout_constraintHorizontal_bias="0.568"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/edit_profile_image"
+                            app:layout_constraintVertical_bias="1.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <EditText
                     android:id="@+id/edit_username"
                     android:layout_width="283dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="64dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/text_input_rounded_corners"
                     android:ems="10"
