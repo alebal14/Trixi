@@ -11,6 +11,7 @@ import com.example.trixi.entities.Post
 import com.example.trixi.repository.PostToDb
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.home.HomeAdapter
+import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_activity.*
 
 
@@ -90,7 +91,8 @@ class ActivityFragment : Fragment() {
                     activities as ArrayList<Activity>,
                     activity?.supportFragmentManager!!,
                     viewLifecycleOwner
-                ){
+                ){ activity ->
+                    redirectToSinglePost(activity.post)
 
                 }
             }
@@ -100,6 +102,10 @@ class ActivityFragment : Fragment() {
     }
 
     private fun redirectToSinglePost(post: Post) {
+        val singlePost = SinglePostFragment(post)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
+
 
     }
 
