@@ -31,19 +31,19 @@
 
 
     <TextView
-        android:id="@+id/profile_bio"
-        style="@style/FancyFont"
-        android:layout_width="225dp"
-        android:layout_height="100dp"
-        android:paddingTop="10dp"
-        android:maxLength="150"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toTopOf="@id/users_pet_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+            android:id="@+id/profile_bio"
+            style="@style/FancyFont"
+            android:layout_width="225dp"
+            android:layout_height="100dp"
+            android:maxLength="150"
+            android:paddingTop="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@id/users_pet_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.784"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_page"
+            app:layout_constraintVertical_bias="0.962" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline9"
@@ -97,9 +97,9 @@
                 style="@style/FancyFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:paddingRight="60dp"
                 android:text="@string/number_of_followers"
-                 android:clickable="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20dp" />
 
@@ -140,7 +140,7 @@
                     android:id="@+id/tab_videos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Videos"/>
+                    android:text="Videos" />
         </com.google.android.material.tabs.TabLayout>
 
         <TextView
@@ -151,7 +151,7 @@
                 android:paddingTop="20dp"
                 android:text="No posts yet"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="20sp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -206,40 +206,41 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/top_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/profile_bio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/top_page"
+            android:layout_width="208dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/profile_bio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/user_profile_pet_image"
+            app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/profile_name"
-            style="@style/FancyFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/profile_user_name"
-            android:textColor="@color/colorTeal"
-            android:textSize="27sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.008"
+                android:id="@+id/profile_name"
+                style="@style/FancyFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/profile_user_name"
+                android:textColor="@color/colorTeal"
+                android:textSize="27sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/users_pet_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.008"
 
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.101" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.101" />
 
         <ImageButton
-            android:id="@+id/edit_pet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_pen"
-            android:visibility="gone">
+                android:id="@+id/edit_pet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_pen"
+                android:visibility="invisible">
 
         </ImageButton>
 
@@ -250,8 +251,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="350dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
-        android:layout_marginTop="30dp"
             android:background="@drawable/ic_follow"
             android:paddingLeft="3dp"
             app:layout_constraintBottom_toTopOf="@+id/profile_bio"
