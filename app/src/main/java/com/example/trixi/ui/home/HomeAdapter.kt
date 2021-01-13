@@ -22,8 +22,10 @@ import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.fragments.PopUpCommentWindow
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
+import com.example.trixi.ui.report.PopUpReportWindow
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.fragment_home_item.*
 import kotlinx.android.synthetic.main.fragment_home_item.view.*
 
 class HomeAdapter(
@@ -100,9 +102,18 @@ class HomeAdapter(
             )
 
             handleLike(numberOfLike, post, db)
-            handleClickOnComment(post, fm,model,viewLifeCycleOwner)
+            handleClickOnComment(post,fm,model,viewLifeCycleOwner)
+            handleClickOnReport(fm, post)
             handleClickOnDiscovery(fm)
             handleClickOnFollowing(fm)
+        }
+
+        private fun handleClickOnReport(fm: FragmentManager, post: Post?) {
+            val reportIcon: ImageButton = itemView.findViewById(R.id.home_item_report)
+            reportIcon.setOnClickListener {
+                val popUp = PopUpReportWindow(post)
+                popUp.show(fm, PopUpCommentWindow.TAG)
+            }
         }
 
         private fun populateImgOrVideo(post: Post) {

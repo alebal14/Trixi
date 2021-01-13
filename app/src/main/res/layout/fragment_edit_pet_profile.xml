@@ -1,125 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorTeal"
-            android:paddingTop="20dp"
-            android:gravity="center"
-            android:orientation="vertical">
+            tools:layout_editor_absoluteX="-44dp"
+            tools:layout_editor_absoluteY="-16dp">
 
-        <ImageView
-                android:id="@+id/edit_profile_image"
-                android:layout_width="148dp"
-                android:layout_height="148dp"
-                android:background="@drawable/image_btn_circle"
-                />
 
-        <EditText
-                android:id="@+id/edit_username"
-                android:layout_width="283dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="64dp"
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorTeal"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="20dp">
+
+            <LinearLayout
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/ic_circle2"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                    <ImageButton
+                            android:id="@+id/edit_profile_image"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="@drawable/image_btn_circle"
+                            android:gravity="center"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                    <ImageView
+                            android:id="@+id/plus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="116dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_plus"
+                            app:layout_constraintBottom_toBottomOf="@+id/edit_profile_image"
+                            app:layout_constraintEnd_toEndOf="@+id/edit_profile_image"
+                            app:layout_constraintHorizontal_bias="0.568"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/edit_profile_image"
+                            app:layout_constraintVertical_bias="1.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <EditText
+                    android:id="@+id/edit_username"
+                    android:layout_width="283dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/text_input_rounded_corners"
+                    android:ems="10"
+                    android:hint="Edit pet name"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="16dp" />
+
+            <EditText
+                    android:id="@+id/edit_pet_age"
+                    android:layout_width="283dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/text_input_rounded_corners"
+                    android:ems="10"
+                    android:hint="Age"
+                    android:inputType="text"
+                    android:paddingLeft="16dp" />
+
+            <EditText
+                    android:id="@+id/edit_description"
+                    android:layout_width="283dp"
+                android:layout_height="wrap_content"
+                android:maxLines="20"
+                android:minLines="4"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
-                android:ems="10"
-                android:hint="Edit pet name"
-                android:inputType="textPersonName"
-                android:paddingLeft="16dp" />
-
-        <EditText
-            android:id="@+id/edit_pet_age"
-            android:layout_width="283dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/text_input_rounded_corners"
-            android:ems="10"
-            android:hint="Age"
-            android:inputType="text"
-            android:paddingLeft="16dp" />
-
-        <EditText
-                android:id="@+id/edit_description"
-                android:layout_width="283dp"
-                android:layout_height="80dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
+                android:background="@drawable/rounded_text_view"
                 android:ems="10"
                 android:hint="Edit bio"
                 android:inputType="textMultiLine"
                 android:paddingLeft="16dp"
-                android:paddingTop="10dp" />
+                android:paddingTop="10dp"  />
 
 
+            <Spinner
+                    android:id="@+id/edit_pet_gender"
+                    android:layout_width="283dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/text_input_rounded_corners"
+                    android:ems="10"
+                    android:paddingLeft="16dp"></Spinner>
+
+            <Spinner
+                    android:id="@+id/edit_pet_type"
+                    android:layout_width="283dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/text_input_rounded_corners"
+                    android:ems="10"
+                    android:paddingLeft="16dp"></Spinner>
+
+            <EditText
+                    android:id="@+id/edit_breed"
+                    android:layout_width="283dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/text_input_rounded_corners"
+                    android:ems="10"
+                    android:hint="Edit breed"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="16dp" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="40dp">
+
+                <Button
+                        android:id="@+id/button_delete_profile"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_round_red"
+                        android:text="Delete Pet" />
+
+                <Button
+                        android:id="@+id/button_update_profile"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/btn_rounded_corners"
+                        android:text="Update profile" />
+            </LinearLayout>
 
 
-
-        <Spinner
-                android:id="@+id/edit_pet_gender"
-                android:layout_width="283dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
-                android:ems="10"
-                android:paddingLeft="16dp"
-                ></Spinner>
-
-        <Spinner
-                android:id="@+id/edit_pet_type"
-                android:layout_width="283dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
-                android:ems="10"
-                android:paddingLeft="16dp"
-                ></Spinner>
-
-        <EditText
-                android:id="@+id/edit_breed"
-                android:layout_width="283dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/text_input_rounded_corners"
-                android:ems="10"
-                android:hint="Edit breed"
-                android:inputType="textPersonName"
-                android:paddingLeft="16dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="40dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="5dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <Button
-                android:id="@+id/button_delete_profile"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_rounded_corners"
-                android:text="Delete Pet" />
-            <Button
-                android:id="@+id/button_update_profile"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/btn_rounded_corners"
-                android:text="Update profile" />
         </LinearLayout>
-
-
-
-    </LinearLayout>
 
     </ScrollView>
 

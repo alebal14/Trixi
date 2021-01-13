@@ -405,4 +405,25 @@ class PostToDb {
         })
 
     }
+
+    fun addReportToDb(report: Report){
+        val retrofitClient = RetrofitClient.getRetroInstance()?.create(Api::class.java)
+        val call = retrofitClient?.addReportToDb(report)
+        call?.enqueue(object : Callback<Report> {
+            override fun onResponse(call: Call<Report>, response: Response<Report>) {
+                if (response.isSuccessful) {
+
+                    Log.d("addReport", "report : report added " + response.body())
+                } else {
+                    Log.d("addReport", "report : failed to send")
+                }
+            }
+
+            override fun onFailure(call: Call<Report>, t: Throwable) {
+                Log.d("addReport", "report: onFailure " + t.message)
+            }
+
+        })
+
+    }
 }

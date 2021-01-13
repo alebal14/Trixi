@@ -71,7 +71,6 @@ class EditProfileFragment : Fragment() {
 
         Picasso.get()
             .load(BASE_URL + loggedInUser?.imageUrl)
-            .transform(CropCircleTransformation())
             .centerCrop()
             .fit()
             .into(edit_profile_image)
@@ -91,7 +90,7 @@ class EditProfileFragment : Fragment() {
             startActivityForResult(intent, 0)
         }
         //deleting profile
-        delete_profile.setOnClickListener({ handleDeleteProfile() })
+        button_delete_profile.setOnClickListener({ handleDeleteProfile() })
     }
 
     private fun requestPermissions() {
@@ -231,10 +230,15 @@ class EditProfileFragment : Fragment() {
 
         val builder = AlertDialog.Builder(context)
 
-        builder.setTitle("Delete profile")
+        builder.setTitle("DELETE ACCOUNT")
         builder.setMessage("Are you sure you want to delete your account?")
 
+        val secondBuilder = AlertDialog.Builder(context)
+        secondBuilder.setMessage("Hope to see you soon again!")
+        val secondAlert = secondBuilder.create()
+
         builder.setPositiveButton("Yes, I'm sure") { dialog, which ->
+            secondAlert.show()
             deleteProfile()
             dialog.dismiss()
         }

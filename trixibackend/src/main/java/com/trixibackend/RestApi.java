@@ -246,7 +246,7 @@ public class RestApi {
                 case "posts":
                     List<FileItem> Postfiles = null;
                     String PostfileUrl = null;
-                    String petId = null;
+                    String postId = null;
                     String description = null;
                     String ownerId = null;
                     String title = null;
@@ -255,7 +255,7 @@ public class RestApi {
 
                     try {
                         Postfiles = req.getFormData("file");
-                        petId = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
+                        postId = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         description = req.getFormData("description").get(0).getString().replace("\"", "");
                         ownerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         title = req.getFormData("title").get(0).getString().replace("\"", "");
@@ -298,7 +298,7 @@ public class RestApi {
                     try {
                         Petfiles = req.getFormData("file");
                         name = req.getFormData("name").get(0).getString().replace("\"", "");
-                        petUid =  req.getFormData("uid").get(0).getString().replace("\"", "");
+                        petUid = (req.getFormData("uid") != null ? req.getFormData("uid").get(0).getString().replace("\"", "") : null);
                         PetOwnerId = req.getFormData("ownerId").get(0).getString().replace("\"", "");
                         age = req.getFormData("age").get(0).getString().replace("\"", "");
                         petBio = req.getFormData("bio").get(0).getString().replace("\"", "");
@@ -311,7 +311,6 @@ public class RestApi {
                         if(petUid != null){
                             Pet oldPet = db.getPetHandler().findPetById(petUid);
                             pet.setUid(petUid);
-                            pet.setId(new ObjectId(petUid));
                             if(Petfiles == null){
                                 pet.setImageUrl(oldPet.getImageUrl());
                             }
@@ -320,6 +319,7 @@ public class RestApi {
                             PetFileUrl = db.uploadImage(Petfiles.get(0));
                             pet.setImageUrl(PetFileUrl);
                         }
+
                         pet.setName(name);
                         pet.setOwnerId(PetOwnerId);
                         pet.setAge(age);
@@ -349,6 +349,10 @@ public class RestApi {
                 case "pet_types":
                     PetType petType = (PetType) req.getBody(PetType.class);
                     res.json(db.save(petType));
+                case "reports":
+                    Report report = (Report) req.getBody(Report.class);
+                    System.out.println(report);
+                    res.json(db.save(report));
                 default:
                     break;
             }
@@ -456,19 +460,24 @@ public class RestApi {
 
         app.get("/api/search/:searchterm", (req, res) -> {
 
-            String searchterm = req.getParam("searchterm");
-            System.out.println(searchterm);
+            try {
+                String searchterm = req.getParam("searchterm");
+                System.out.println(searchterm);
 
-            var alluser = db.getUserHandler().getAllUsers();
-            var allpet = db.getPetHandler().getAllPets();
+                var alluser = db.getUserHandler().getAllUsers();
+                var allpet = db.getPetHandler().getAllPets();
 
-            var searchPost = db.getPostHandler().searchPost(searchterm, alluser, allpet);
-            if (searchPost == null) {
-                res.setStatus(Status._403);
-                return;
+                var searchPost = db.getPostHandler().searchPost(searchterm, alluser, allpet);
+                if (searchPost == null) {
+                    res.setStatus(Status._403);
+                    //res.send("Error: you are not following this Pet");
+                    return;
+                }
+                res.json(searchPost);
+            } catch (Exception e) {
+                e.printStackTrace();
+
             }
-            System.out.println(searchPost.size());
-            res.json(searchPost);
         });
 
         app.get("/api/discover/:id", (req, res) -> {
