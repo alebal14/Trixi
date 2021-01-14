@@ -7,6 +7,8 @@ import com.mongodb.client.*;
 import com.mongodb.client.result.DeleteResult;
 import com.trixibackend.collections.*;
 import com.trixibackend.entity.*;
+import express.http.request.Request;
+import express.http.response.Response;
 import org.apache.commons.fileupload.FileItem;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -150,16 +152,38 @@ public class DatabaseHandler {
     }
 
 
-    public DeleteResult deleteById(String collectionName, String id){
+    public DeleteResult deleteById(String collectionName, String id, User loggedInUser, Response res,Request req){
         switch (collectionName){
             case "users":
-                return userHandler.deleteUser(id);
+                if(loggedInUser.getUid().equals(id) || loggedInUser.getRole().equals("admin")){
+                    return userHandler.deleteUser(id);
+                }else{
+                    res.send("not allowed");
+                }
+
             case "posts":
-                return postHandler.deletePost(id);
+                Post p  = postHandler.findPostById(id);
+                if(loggedInUser.getUid().equals(p.getOwnerId()) || loggedInUser.getRole().equals("admin")){
+                    return postHandler.deletePost(id);
+                }else{
+                    res.send("not allowed");
+                }
+
             case "pets":
-                return petHandler.deletePet(id,userColl);
+                Pet pet = petHandler.findPetById(id);
+                if(loggedInUser.getUid().equals(pet.getOwnerId()) || loggedInUser.getRole().equals("admin")){
+                    return petHandler.deletePet(id,userColl);
+                }else{
+                    res.send("not allowed");
+                }
+
             case "reports":
-                return reportHandler.deleteReport(id);
+                if(loggedInUser.getRole().equals("admin")){
+                    return reportHandler.deleteReport(id);
+                }else{
+                    res.send("not allowed");
+                }
+
             default:
                 return null;
         }

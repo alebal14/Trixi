@@ -11,6 +11,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
+import android.view.ActionMode
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -49,9 +50,10 @@ class RegisterActivity : AppCompatActivity() {
     val model: TrixiViewModel by viewModels()
     var userExist: AtomicBoolean = AtomicBoolean(false)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+
         setContentView(R.layout.activity_register)
 
         register_already_account.setOnClickListener {
