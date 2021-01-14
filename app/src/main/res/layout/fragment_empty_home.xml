@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.EmptyHomeFragment">
+    tools:context=".ui.home.EmptyHomeFragment"
+    android:background="@color/colorTeal">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -29,13 +30,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:inputType="textPersonName"
-                android:text="Following  /"
+                android:text="Following  "
                 android:textStyle="bold"
+                android:textSize="17sp"
                 android:shadowColor="#000000"
                 android:shadowDx="2.5"
                 android:shadowDy="2.3"
                 android:shadowRadius="2.6"
-                android:textColor="@color/colorPink"
+                android:textColor="@color/white"
                 tools:ignore="RtlHardcoded" />
 
             <TextView
@@ -51,7 +53,8 @@
                 android:shadowDx="2.5"
                 android:shadowDy="2.3"
                 android:shadowRadius="2.6"
-                android:textColor="@color/colorPink"
+                android:textSize="17sp"
+               android:textColor="@color/gray"
                 tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
@@ -83,7 +86,7 @@
                 android:shadowDx="2.5"
                 android:shadowDy="2.3"
                 android:shadowRadius="2.6"
-                android:textColor="@color/colorPink"
+                android:textColor="@color/black"
                 >
 
             </TextView>
