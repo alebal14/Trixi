@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
-    android:layout_marginTop="300dp"
+    android:layout_marginTop="200dp"
     android:background="@color/colorTeal">
 
     <LinearLayout
@@ -22,15 +22,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/enter_report_content"
+
+            <TextView
+                android:id="@+id/reportheader"
                 android:layout_width="320dp"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_rounded_corners"
                 android:ems="10"
+                android:textSize="20sp"
+                android:textAlignment="center"
                 android:paddingStart="16dp"
                 android:paddingEnd="5dp"
                 android:hint="What is disturbing about the content?"
@@ -38,16 +41,31 @@
                 android:inputType="textMultiLine"
 
                 />
+            <EditText
+                android:id="@+id/enter_report_content"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorLightGreen"
+                android:ems="10"
+                android:gravity="top"
+                android:minLines="10"
+                android:paddingStart="16dp"
+                android:hint="Write your report message here..."
+                android:layout_marginStart="10dp"
+                android:inputType="textMultiLine"
+
+                />
             <Button
                 android:id="@+id/send_report"
-                android:layout_width="40dp"
+                android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_baseline_send_24"
-                android:textColor="@color/colorTeal"
+                android:background="@drawable/btn_rounded_corners"
+                android:text="Send"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="6dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="10dp"
                 >
 
             </Button>

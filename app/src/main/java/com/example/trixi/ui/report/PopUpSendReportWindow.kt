@@ -76,6 +76,12 @@ class PopUpSendReportWindow(var post: Post?) :
             return
         }
 
+        if (reportText.length > 500) {
+            Toast.makeText(activity, "Report message cannot be longer than 500 characters", Toast.LENGTH_SHORT)
+                    .show()
+            return
+        }
+
         val reportObj = Report("", user, reportText, post!! )
         db.addReportToDb(reportObj)
 
