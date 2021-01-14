@@ -79,9 +79,6 @@ class PopUpCommentWindow(
 
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     private fun setUpCommentsView() {
         comments!!.forEach { comment ->
@@ -117,6 +114,8 @@ class PopUpCommentWindow(
         adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
         adapterChat.notifyDataSetChanged()
     }
+
+
 }
 
 class CommentItem(private val comment: Comment, private val commentOwner: User?) :
