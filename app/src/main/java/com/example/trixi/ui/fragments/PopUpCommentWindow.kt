@@ -1,7 +1,6 @@
 package com.example.trixi.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Comment
@@ -35,8 +34,8 @@ class PopUpCommentWindow(
     private lateinit var model: TrixiViewModel
     private val db = PostToDb()
     private val adapterChat = GroupAdapter<GroupieViewHolder>()
-    private val chatCount :TextView = homeItemChatCount
-
+    private val chatCount: TextView = homeItemChatCount
+    private val commentsOnPopup: ArrayList<Comment> = comments as ArrayList<Comment>
 
 
     companion object {
@@ -59,13 +58,6 @@ class PopUpCommentWindow(
 
         setUpCommentsView()
 
-        send_comment.setOnClickListener {
-
-            sendComment(chatCount)
-
-            //setUpCommentsView()
-
-        }
 
     }
 
@@ -78,27 +70,47 @@ class PopUpCommentWindow(
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
     }
 
     private fun setUpCommentsView() {
-        comments!!.forEach { comment ->
-            model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commentOwner ->
-                if(commentOwner != null){
-                    Log.d("home1", "Comment owner ${commentOwner.userName}")
-                    Log.d("home", "Comment  ${comment.comment}")
 
-                    adapterChat.add(CommentItem(comment, commentOwner))
-                }
-            })
+
+        recyclerView_popup_comment.apply {
+            val layoutManager = LinearLayoutManager(context)
+            layoutManager.orientation = LinearLayoutManager.VERTICAL
+            recyclerView_popup_comment.layoutManager = layoutManager
+            adapter = CommentAdapter(
+                commentsOnPopup,
+                activity?.supportFragmentManager!!,
+                viewLifecycleOwner
+            )
+            send_comment.setOnClickListener {
+                sendComment(chatCount, adapter as CommentAdapter)
+
+            }
+
         }
-        recyclerView_popup_comment.adapter = adapterChat
+
+
+
+
+//        comments!!.forEach { comment ->
+//            model.getOneUser(comment.userId)?.observe(viewLifecycleOwner, { commentOwner ->
+//                if(commentOwner != null){
+//                    Log.d("home1", "Comment owner ${commentOwner.userName}")
+//                    Log.d("home", "Comment  ${comment.comment}")
+//
+//                    adapterChat.add(CommentItem(comment, commentOwner))
+//                }
+//            })
+//        }
+//        recyclerView_popup_comment.adapter = adapterChat
     }
 
 
-    private fun sendComment(homeItemChatCount: TextView) {
+    private fun sendComment(homeItemChatCount: TextView, adapter: CommentAdapter) {
 
         val commentText = enter_comment.text.toString()
         val postId = postId
@@ -111,11 +123,14 @@ class PopUpCommentWindow(
 
         val commentObj = Comment(commentText, postId, userId, null)
         db.comment(commentObj)
-        homeItemChatCount.text = ((comments!!.size  + 1).toString())
+        homeItemChatCount.text = ((comments!!.size + 1).toString())
 
         enter_comment.text.clear()
-        adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
-        adapterChat.notifyDataSetChanged()
+        commentsOnPopup.add(commentObj)
+        adapter.notifyDataSetChanged()
+
+//        adapterChat.add(CommentItem(commentObj, PostToDb.loggedInUser))
+//        adapterChat.notifyDataSetChanged()
     }
 }
 
