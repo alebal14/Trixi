@@ -462,7 +462,6 @@ public class RestApi {
 
             try {
                 String searchterm = req.getParam("searchterm");
-                System.out.println(searchterm);
 
                 var alluser = db.getUserHandler().getAllUsers();
                 var allpet = db.getPetHandler().getAllPets();
