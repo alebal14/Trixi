@@ -228,6 +228,8 @@ public class PostHandler {
                         .filter(e -> !concatlist.contains(e.getOwnerId()))
                         .collect(Collectors.toList());
 
+        //result.forEach(r -> deletePost(r.getUid()));
+
         return result;
     }
 
