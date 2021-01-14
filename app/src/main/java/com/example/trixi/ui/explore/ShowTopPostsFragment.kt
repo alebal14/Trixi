@@ -21,6 +21,7 @@ import com.example.trixi.ui.post.SinglePostFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.pullToRefresh
+import kotlinx.android.synthetic.main.fragment_upload.*
 
 
 class ShowTopPostsFragment : Fragment(), View.OnClickListener {
@@ -28,6 +29,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     var  mContext : Context? = null
     var page = 1
     var limit = 20
+    var scrollToLoad =  true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,13 +91,23 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 oldScrollY: Int
             ) {
 
-                if (scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight) {
+
+
+
+
+                if (scrollToLoad && scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight) {
                     page++
                     allPostsToAdapter(cat)
                 }
             }
         })
 
+        if(page == 1){
+            pullToRefresh.isEnabled = false
+            pullToRefresh.isRefreshing = false
+        } else {
+            pullToRefresh.isEnabled = true
+        }
        
         pullToRefresh.setOnRefreshListener {
             if (page > 1) {
@@ -110,6 +122,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
     private fun allPostsToAdapter(cat: Int?) {
          if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
+             scrollToLoad = true
             limit = 50
                 model.getAllPostsWithQuery(page, limit)
                     ?.observe(viewLifecycleOwner, Observer { post ->
@@ -171,6 +184,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         }else {
             model.getAllPostsWithQuery(page, limit).observe(viewLifecycleOwner, Observer { post ->
                 if (post != null) {
+                    scrollToLoad = true
                     var sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it }
                     ScrollToLoad(null)
                     media_grid_top_posts.apply {
@@ -199,11 +213,15 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onQueryTextSubmit(newText: String?): Boolean {
+
                 if (newText != null) {
+                    scrollToLoad = false
+                    
                     model.getPostBySearching(newText!!)
                         .observe(viewLifecycleOwner, Observer { post ->
                             setAdapter(post!!)
                         })
+
                     SearchClickx()
                 }
                 return true
@@ -277,6 +295,8 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         var button = v
+        scrollToLoad = true
+
 
         cat_spinner_start.isSelected = false
         cat_all.isSelected = false
@@ -286,6 +306,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         cat_feeding.isSelected = false
         cat_cute.isSelected = false
         cat_other.isSelected = false
+
 
         button!!.isSelected = true
 
