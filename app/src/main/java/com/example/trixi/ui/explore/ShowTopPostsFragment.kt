@@ -66,7 +66,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.empty_menu, menu)
-        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Explorer"
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Explore"
         super.onCreateOptionsMenu(menu, inflater)
     }
 
