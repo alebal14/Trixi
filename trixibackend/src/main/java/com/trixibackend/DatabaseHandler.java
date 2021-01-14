@@ -157,23 +157,33 @@ public class DatabaseHandler {
             case "users":
                 if(loggedInUser.getUid().equals(id) || loggedInUser.getRole().equals("admin")){
                     return userHandler.deleteUser(id);
+                }else{
+                    res.send("not allowed");
                 }
 
             case "posts":
                 Post p  = postHandler.findPostById(id);
                 if(loggedInUser.getUid().equals(p.getOwnerId()) || loggedInUser.getRole().equals("admin")){
                     return postHandler.deletePost(id);
+                }else{
+                    res.send("not allowed");
                 }
 
             case "pets":
                 Pet pet = petHandler.findPetById(id);
                 if(loggedInUser.getUid().equals(pet.getOwnerId()) || loggedInUser.getRole().equals("admin")){
                     return petHandler.deletePet(id,userColl);
+                }else{
+                    res.send("not allowed");
                 }
 
             case "reports":
-                if(loggedInUser.getRole().equals("admin"))
-                return reportHandler.deleteReport(id);
+                if(loggedInUser.getRole().equals("admin")){
+                    return reportHandler.deleteReport(id);
+                }else{
+                    res.send("not allowed");
+                }
+
             default:
                 return null;
         }
