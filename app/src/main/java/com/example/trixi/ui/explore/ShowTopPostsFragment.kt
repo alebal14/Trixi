@@ -216,7 +216,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
                 if (newText != null) {
                     scrollToLoad = false
-                    
+
                     model.getPostBySearching(newText!!)
                         .observe(viewLifecycleOwner, Observer { post ->
                             setAdapter(post!!)
