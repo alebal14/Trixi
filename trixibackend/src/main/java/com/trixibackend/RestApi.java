@@ -136,8 +136,11 @@ public class RestApi {
     private void setUpDeleteApi(String collectionName) {
 
         app.delete("/rest/" + collectionName + "/:id", (req, res) -> {
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+            var loggedInUser = (User) sessionCookie.getData();
+
             var id = req.getParam("id");
-            var obj = db.deleteById(collectionName, id);
+            var obj = db.deleteById(collectionName, id,loggedInUser,res,req);
             res.json(obj);
             res.send("Succesfully deleted");
         });
