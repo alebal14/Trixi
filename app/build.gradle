@@ -132,7 +132,7 @@ dependencies {
 
     implementation 'io.realm:android-adapters:2.1.1'
 
-    implementation 'com.google.android.exoplayer:exoplayer:2.12.3'
+    //implementation 'com.google.android.exoplayer:exoplayer:2.12.3'
 
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
 
