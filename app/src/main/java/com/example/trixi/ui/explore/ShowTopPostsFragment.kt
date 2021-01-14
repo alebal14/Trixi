@@ -24,7 +24,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private lateinit var model: TrixiViewModel
     var  mContext : Context? = null
     var page = 1
-    var limit = 30
+    var limit = 20
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -101,7 +101,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
     private fun allPostsToAdapter(cat: Int?) {
          if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
-            limit = 100
+            limit = 50
                 model.getAllPostsWithQuery(page, limit)
                     ?.observe(viewLifecycleOwner, Observer { post ->
                         var finalPost = post
@@ -182,6 +182,9 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private fun searchToAdapter() {
         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+               return false
+            }
+            override fun onQueryTextSubmit(newText: String?): Boolean {
                 if (newText != null) {
                     model.getPostBySearching(newText!!)
                         .observe(viewLifecycleOwner, Observer { post ->
@@ -190,9 +193,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     SearchClickx()
                 }
                 return true
-            }
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return false
             }
         })
     }
@@ -276,7 +276,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
         button!!.isSelected = true
 
-        model.getAllPosts()?.observe(viewLifecycleOwner, Observer { post ->
 
             when (v?.getId()) {
                 R.id.cat_spinner_start ->{
@@ -337,8 +336,6 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                     button!!.isSelected = false
                 }
             }
-
-        })
 
     }
 
