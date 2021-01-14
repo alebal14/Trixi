@@ -7,19 +7,41 @@
         android:background="@color/cardview_light_background"
         app:cardCornerRadius="4dp">
 
+   <data>
+        <variable
+            android:name="url"
+            android:type="String"/>
+
+        <variable
+            android:name="callback"
+            android:type="com.realpacific.videodemo.PlayerStateCallback"/>
+    </data>
+
     <RelativeLayout
         android:id="@+id/home_item_media_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.potyvideo.library.AndExoPlayerView
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/home_item_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:resize_mode="fill"
+            app:video_url="@{url}"
+            app:on_state_change="@{callback}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!--<com.potyvideo.library.AndExoPlayerView
                 android:id="@+id/home_item_video"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 app:andexo_full_screen="false"
                 app:andexo_play_when_ready="true"
                 app:andexo_resize_mode="Zoom"
-                app:andexo_show_controller="true" />
+                app:andexo_show_controller="true" />-->
 
         <ImageView
                 android:id="@+id/home_item_media"
