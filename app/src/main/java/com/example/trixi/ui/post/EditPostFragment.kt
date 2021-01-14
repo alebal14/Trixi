@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Category
@@ -194,7 +195,7 @@ class EditPostFragment(private val post: Post) : Fragment() {
 
     private fun updatePost() {
             title = title_field.text.toString()
-            description = description_field.text.toString()
+            description = description_field.text.toString().replace("\\\\n".toRegex(), "\n").trimEnd()
 
             if (description.isNotEmpty() && description.length > 500) {
             Toast.makeText(activity, "Description cannot be longer than 150 characters", Toast.LENGTH_SHORT)

@@ -183,6 +183,7 @@ class PetProfileFragment(val pet: Pet?) : Fragment() {
                                     if(postVideo.isNullOrEmpty()){
                                         profile_no_posts.text = "No videos yet"
                                         profile_no_posts.visibility = TextView.VISIBLE
+                                        media_grid.adapter = null
                                     } else {
                                         profile_no_posts.visibility = View.GONE
                                         media_grid.apply {

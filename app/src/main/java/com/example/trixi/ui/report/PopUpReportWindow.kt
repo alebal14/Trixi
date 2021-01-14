@@ -53,13 +53,13 @@ class PopUpReportWindow( private var report: Report?) :
     }
 
     private fun deleteReport(deleteReport: Report?) {
-        dbDelete.deleteAReportFromDb(deleteReport!!.uid)
+        deleteReport!!.uid?.let { dbDelete.deleteAReportFromDb(it) }
 
     }
 
     private fun deletePost(deleteReport: Report?) {
         if (deleteReport != null) {
-            deleteReport.post.uid?.let { dbDelete.deleteAPostFromDb(it) }
+            deleteReport.post!!.uid?.let { dbDelete.deleteAPostFromDb(it) }
         }
         deleteReport(deleteReport)
     }
@@ -67,11 +67,11 @@ class PopUpReportWindow( private var report: Report?) :
     private fun populateReport() {
 
         Picasso.get()
-            .load(RetrofitClient.BASE_URL + (report!!.reporter.imageUrl))
+            .load(RetrofitClient.BASE_URL + (report!!.reporter!!.imageUrl))
             .transform(CropCircleTransformation()).fit()
             .centerCrop().into(report_profileimg)
 
-        report_profileName.text = report!!.reporter.userName
+        report_profileName.text = report!!.reporter?.userName
         report_text.text = report!!.reportText
     }
 
@@ -87,24 +87,6 @@ class PopUpReportWindow( private var report: Report?) :
         super.onDestroy()
     }
 
-
-    private fun sendReport() {
-        val reportText = enter_report_content.text.toString()
-        val user = PostToDb.loggedInUser!!
-
-        if (reportText.isEmpty()) {
-            Toast.makeText(context, "Please write a comment", Toast.LENGTH_LONG).show()
-            return
-        }
-
-        //val reportObj = Report("", user, reportText, post!! )
-        //db.addReportToDb(reportObj)
-
-        Toast.makeText(context, "Thank you! Your report has been sent to Trixi and will be reviewed.", Toast.LENGTH_LONG).show()
-        dialog!!.dismiss()
-
-
-    }
 }
 
 

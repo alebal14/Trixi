@@ -2,16 +2,19 @@ package com.example.trixi.ui.fragments
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Pet
 import com.example.trixi.entities.User
+import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.profile.PetProfileFragment
 import com.example.trixi.ui.profile.UserProfileFragment
 import com.squareup.picasso.Picasso
@@ -27,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_follow_list.*
 class PopUpFollowWindow(private val fm: FragmentManager, private val headerText: String, private val follow: ArrayList<User>?, private val followingPet: ArrayList<Pet>?) :
         DialogFragment() {
 
+    private lateinit var model: TrixiViewModel
     private val adapterChat = GroupAdapter<GroupieViewHolder>()
 
     companion object {
@@ -58,22 +62,26 @@ class PopUpFollowWindow(private val fm: FragmentManager, private val headerText:
 
 
     private fun setUpFollowView() {
+        model = ViewModelProvider(this).get(TrixiViewModel::class.java)
         follow!!.forEach { follow ->
-            adapterChat.add(FollowItem( this,fm, follow, null))
+            follow.uid?.let {
+                model.getOneUser(it)?.observe(viewLifecycleOwner, { getFollowUser ->
+                    adapterChat.add(FollowItem( this,fm, getFollowUser, null))
+                })
+            }
         }
 
         followingPet?.forEach { followingPet ->
-            adapterChat.add(FollowItem(this, fm, null, followingPet))
+            model.getOnePet(followingPet.uid)?.observe(viewLifecycleOwner, { getFollowingPet ->
+                adapterChat.add(FollowItem(this, fm, null, getFollowingPet))
+            })
+
         }
 
         recyclerView_popup_follow_list.adapter = adapterChat
 
     }
 }
-
-
-
-
 
 class FollowItem(private  val df: DialogFragment, private val fm: FragmentManager, private val followUser: User?, private val followingPet: Pet?) :
     Item<GroupieViewHolder>() {

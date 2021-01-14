@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient
 import com.example.trixi.entities.Pet
@@ -257,7 +258,7 @@ class EditPetProfile(private val pet : Pet)  : Fragment(){
         petName = edit_username.text.toString()
         petAge = edit_pet_age.text.toString()
         petBreed = edit_breed.text.toString()
-        petBio = edit_description.text.toString()
+        petBio = edit_description.text.toString().replace("\\\\n".toRegex(), "\n").trimEnd()
 
         if (petBio.length > 150) {
             Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT)
