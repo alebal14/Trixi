@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trixi.R
 import com.example.trixi.apiService.RetrofitClient

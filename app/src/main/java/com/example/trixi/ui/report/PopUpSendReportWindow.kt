@@ -82,7 +82,7 @@ class PopUpSendReportWindow(var post: Post?) :
             return
         }
 
-        val reportObj = Report("", user, reportText, post!! )
+        val reportObj = Report(null, user, reportText, post!! )
         db.addReportToDb(reportObj)
 
         Toast.makeText(context, "Thank you! Your report has been sent to Trixi and will be reviewed.", Toast.LENGTH_LONG).show()

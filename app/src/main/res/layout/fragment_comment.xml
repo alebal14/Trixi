@@ -53,7 +53,7 @@
                 android:background="@drawable/btn_rounded_corners"
                 android:ems="10"
                 android:paddingStart="16dp"
-                android:hint="write comment"
+                android:hint="Add comment"
                 android:layout_marginStart="10dp"
                 android:inputType="text"
 
