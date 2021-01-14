@@ -196,6 +196,12 @@ class EditPostFragment(private val post: Post) : Fragment() {
             title = title_field.text.toString()
             description = description_field.text.toString()
 
+            if (description.isNotEmpty() && description.length > 500) {
+            Toast.makeText(activity, "Description cannot be longer than 150 characters", Toast.LENGTH_SHORT)
+                    .show()
+            return
+            }
+
             if (title.isEmpty()) {
                 Toast.makeText(activity, "Please enter a title", Toast.LENGTH_SHORT).show()
                 return

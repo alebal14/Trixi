@@ -60,9 +60,6 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         button_register.setTextColor(ContextCompat.getColor(applicationContext, R.color.gray))
-        username_check.setColorFilter(getResources().getColor(R.color.gray))
-        email_check.setColorFilter(getResources().getColor(R.color.gray))
-        password_check.setColorFilter(getResources().getColor(R.color.gray))
 
         checkInput()
 

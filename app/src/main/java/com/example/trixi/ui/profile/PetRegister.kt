@@ -84,7 +84,7 @@ class PetRegister : Fragment() {
 
         val model = ViewModelProvider(this).get(TrixiViewModel::class.java)
 
-        register_pet_image.setOnClickListener {
+        pet_register_image.setOnClickListener {
             requestPermissions()
             val intent = Intent(
                 Intent.ACTION_PICK,
@@ -190,7 +190,7 @@ class PetRegister : Fragment() {
 
     private fun sendPhoto(){
 
-        val totheView = view?.findViewById<View>(R.id.register_pet_image) as ImageView
+        val totheView = view?.findViewById<View>(R.id.pet_register_image) as ImageView
 
         Picasso.get()
             .load(selectedFile)
@@ -213,12 +213,19 @@ class PetRegister : Fragment() {
         }
     }
 
+
     private fun createPet(){
 
         petName = register_pet_name.text.toString()
         petAge = register_pet_age.text.toString()
         petBreed = register_breed.text.toString()
         petBio = register_pet_bio.text.toString()
+
+        if (petBio.length > 150) {
+            Toast.makeText(activity, "Bio cannot be longer than 150 characters", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
 
 
         if (petName.isEmpty()) {

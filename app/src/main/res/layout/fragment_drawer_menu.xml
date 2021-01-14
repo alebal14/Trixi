@@ -29,6 +29,20 @@
                 android:fontFamily="@font/playfair_display"
 
                 />
+        <TextView
+            android:id="@+id/see_reported_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/ic_see_reported"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/playfair_display"
+            android:gravity="center_vertical"
+            android:text="See reported content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:tint="@color/colorTeal" />
 
         <TextView
                 android:id="@+id/edit_profile"

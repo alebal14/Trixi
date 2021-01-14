@@ -196,5 +196,16 @@ class TrixiViewModel : ViewModel() {
         return activities
     }
 
+    fun getAllReports(): MutableLiveData<List<Report>> {
+        val allReports = MutableLiveData<List<Report>>()
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "getting All reports")
+            val reports = retrofitClient?.getAllReports()?.body()
+            allReports as MutableLiveData
+            allReports.postValue(reports)
+        }
+        return allReports
+    }
+
 
 }

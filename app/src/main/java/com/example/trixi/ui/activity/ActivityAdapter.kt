@@ -87,6 +87,7 @@ class ActivityAdapter(
                 itemView.activity_postVideo.visibility = View.GONE
                 Picasso.get()
                         .load(RetrofitClient.BASE_URL + (activity.post.filePath))
+                        .centerCrop()
                         .fit().into(itemView.activity_postImg)
 
             } else {

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginTop="200dp"
+    android:background="@color/colorTeal"
+    tools:context="ui.fragments.PopUpCommentWindow">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:padding="50dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:paddingEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Reporting User">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/report_profileimg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/image_btn_circle"
+                />
+
+            <TextView
+                android:id="@+id/report_profileName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="John Doe"
+                android:textSize="20sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:paddingEnd="10dp"
+            android:text="Reason for reporting">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/report_text"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/text_input_rounded_corners"
+            android:layout_height="wrap_content"
+            android:text="Reason for reporting:"
+            android:backgroundTint="@color/colorLightGreen"
+            >
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/button_delete_post"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_round_red"
+                android:text="Delete Post" />
+
+            <Button
+                android:id="@+id/button_approve_post"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/btn_rounded_corners"
+                android:text="Approve Post" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

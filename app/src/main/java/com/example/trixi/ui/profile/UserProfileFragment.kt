@@ -28,6 +28,7 @@ import com.example.trixi.ui.post.SinglePostFragment
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import com.google.android.material.tabs.TabLayout
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_drawer_menu.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
@@ -222,7 +223,7 @@ class UserProfileFragment(val user: User?) : Fragment() {
 
 
     private fun redirectToSinglePost(post: Post) {
-        val singlePost = SinglePostFragment(post)
+        val singlePost = SinglePostFragment(post, null)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.fragment_container, singlePost)?.addToBackStack("singelPostFragment")!!.commit()
     }
