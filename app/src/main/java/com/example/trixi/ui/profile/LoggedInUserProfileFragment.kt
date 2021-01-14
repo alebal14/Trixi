@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -237,7 +238,7 @@ class LoggedInUserProfileFragment : Fragment() {
 
     private fun populateProfile(updatedLoggedInUser: User) {
 
-        follow_button.visibility = INVISIBLE
+        follow_button.visibility = GONE
         profile_name.text = updatedLoggedInUser.userName
 
         if (updatedLoggedInUser.bio == null) {
