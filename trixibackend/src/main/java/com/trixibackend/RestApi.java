@@ -119,7 +119,10 @@ public class RestApi {
 
         app.post("/rest/update_post", (req, res) -> {
             Post updatedPost = (Post) req.getBody(Post.class);
-            if (updatedPost != null) {
+            var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
+            var loggedInUser = (User) sessionCookie.getData();
+
+            if (updatedPost != null && loggedInUser.getUid().equals(updatedPost.getOwnerId())) {
                 Post oldPost = db.getPostHandler().findPostById(updatedPost.getUid());
                 updatedPost.setId(oldPost.getId());
                 updatedPost.setFilePath(oldPost.getFilePath());
@@ -320,16 +323,17 @@ public class RestApi {
                         Type = req.getFormData("petType").get(0).getString().replace("\"", "");
                         gender = req.getFormData("gender").get(0).getString().replace("\"", "");
 
-//                        if(!loggedInUser.getUid().equals(petOwnerId)){
-//                            res.send("not allowed");
-//                            return;
-//                        }
+                        if(!loggedInUser.getUid().equals(petOwnerId)){
+                            res.send("not allowed");
+                            return;
+                        }
 
                         Pet pet = new Pet();
 
                         if(petUid != null){
                             Pet oldPet = db.getPetHandler().findPetById(petUid);
                             pet.setUid(petUid);
+                            pet.setId(oldPet.getId());
                             if(Petfiles == null){
                                 pet.setImageUrl(oldPet.getImageUrl());
                             }
