@@ -122,7 +122,11 @@ public class RestApi {
             var sessionCookie = (SessionCookie) req.getMiddlewareContent("sessioncookie");
             var loggedInUser = (User) sessionCookie.getData();
 
-            if (updatedPost != null && loggedInUser.getUid().equals(updatedPost.getOwnerId())) {
+            if (updatedPost != null ) {
+//                if(!loggedInUser.getUid().equals(updatedPost.getOwnerId())){
+//                    res.send("Not allowed");
+//                    return;
+//                }
                 Post oldPost = db.getPostHandler().findPostById(updatedPost.getUid());
                 updatedPost.setId(oldPost.getId());
                 updatedPost.setFilePath(oldPost.getFilePath());
