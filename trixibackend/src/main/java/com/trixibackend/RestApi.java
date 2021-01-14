@@ -310,11 +310,15 @@ public class RestApi {
 
                         if(petUid != null){
                             Pet oldPet = db.getPetHandler().findPetById(petUid);
-                            pet.setUid(petUid);
+                            pet.setUid(oldPet.getUid());
+                            pet.setId(oldPet.getId());
                             if(Petfiles == null){
                                 pet.setImageUrl(oldPet.getImageUrl());
                             }
+                        } else {
+
                         }
+
                         if(Petfiles != null){
                             PetFileUrl = db.uploadImage(Petfiles.get(0));
                             pet.setImageUrl(PetFileUrl);
