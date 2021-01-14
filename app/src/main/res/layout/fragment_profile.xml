@@ -100,7 +100,6 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:paddingRight="60dp"
-                android:text="@string/number_of_followers"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20dp" />
 
@@ -110,7 +109,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="60dp"
-                android:text="@string/number_of_following"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20dp" />
 
@@ -185,7 +183,6 @@
             android:ems="10"
             android:gravity="center_vertical"
             android:padding="15dp"
-            android:text="@string/pet_owner"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/followers_container"
@@ -225,7 +222,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
-                android:text="@string/profile_user_name"
                 android:textColor="@color/colorTeal"
                 android:textSize="27sp"
                 android:textStyle="bold"

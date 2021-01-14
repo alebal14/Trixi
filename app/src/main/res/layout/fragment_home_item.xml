@@ -71,7 +71,6 @@
                         android:shadowDx="2.5"
                         android:shadowDy="2.3"
                         android:shadowRadius="2.6"
-                        android:text="John Doe"
                         android:textColor="@color/white"
                         android:textSize="25sp"
                         android:textStyle="bold">
@@ -274,7 +273,6 @@
                     android:shadowDx="1"
                     android:shadowDy="2"
                     android:shadowRadius="2.6"
-                    android:text="Title"
                     android:textColor="@color/white"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -289,7 +287,6 @@
                     android:shadowDx="1"
                     android:shadowDy="2"
                     android:shadowRadius="1"
-                    android:text="Description"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
@@ -304,13 +301,10 @@
                     android:shadowDy="2"
                     android:textStyle="bold"
                     android:shadowRadius="2.6"
-                    android:text="Tags"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
-
         </LinearLayout>
-
 
     </RelativeLayout>
 

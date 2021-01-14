@@ -30,8 +30,7 @@ class RetrofitClient {
 
         //common ip address for all who are using Emulator
         val BASE_URL = "http://10.0.2.2:3000/"
-
-
+        
 
         fun okHttpClient() : OkHttpClient {
             var cookieManager: CookieManager = CookieManager()
