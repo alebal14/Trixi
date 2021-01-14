@@ -79,7 +79,10 @@ class HomeAdapter(
                     } else {
                         model.getOnePet(post.ownerId!!)
                             ?.observe(viewLifeCycleOwner, Observer { petIsOwner ->
-                                populatePetInfo(petIsOwner, fm)
+                                if(petIsOwner != null){
+                                    populatePetInfo(petIsOwner, fm)
+                                }
+
                             })
                     }
                 })
