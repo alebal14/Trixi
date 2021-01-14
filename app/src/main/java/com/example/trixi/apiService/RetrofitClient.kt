@@ -23,14 +23,13 @@ class RetrofitClient {
         //val BASE_URL = "http://192.168.1.71:3000/"
 
         //Alexandra
-        //val BASE_URL = "http://192.168.0.162:3000/"
+        val BASE_URL = "http://192.168.0.162:3000/"
 
         //Sofia
        //val BASE_URL = "http://192.168.0.2:3000/"
 
         //common ip address for all who are using Emulator
-        val BASE_URL = "http://10.0.2.2:3000/"
-        
+        //val BASE_URL = "http://10.0.2.2:3000/"
 
         fun okHttpClient() : OkHttpClient {
             var cookieManager: CookieManager = CookieManager()
