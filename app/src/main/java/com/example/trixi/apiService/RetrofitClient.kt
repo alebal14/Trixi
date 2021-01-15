@@ -19,10 +19,10 @@ class RetrofitClient {
        var instance: Retrofit? = null
 
         //Anna
-        val BASE_URL = "http://192.168.1.71:3000/"
+        //val BASE_URL = "http://192.168.1.71:3000/"
 
         //Alexandra
-        //val BASE_URL = "http://192.168.0.162:3000/"
+        val BASE_URL = "http://192.168.0.162:3000/"
 
         //Sofia
         //val BASE_URL = "http://192.168.0.2:3000/"

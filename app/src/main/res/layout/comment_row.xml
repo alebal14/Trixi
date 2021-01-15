@@ -53,7 +53,7 @@
                 android:layout_marginRight="20dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/white">
+                android:textColor="@android:color/black">
 
             </TextView>
 

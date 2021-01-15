@@ -1,109 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".ui.home.EmptyHomeFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.home.EmptyHomeFragment"
+    android:background="@color/colorTeal">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp">
+
+
+        <LinearLayout
+            android:id="@+id/empty_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp">
+            android:layout_height="wrap_content"
+            android:paddingTop="23dp"
+            android:orientation="horizontal"
+            android:gravity="right">
 
 
-        <LinearLayout
-                android:id="@+id/empty_container"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/home_item_following"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:paddingTop="23dp">
-
-
-            <TextView
-                    android:id="@+id/home_item_following"
-                    style="@style/FancyFont"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:inputType="textPersonName"
-                    android:shadowColor="#000000"
-                    android:shadowDx="1"
-                    android:shadowDy="2"
-                    android:shadowRadius="2.6"
-                    android:text="Following  "
-                    android:textColor="@color/white"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    tools:ignore="RtlHardcoded" />
+                android:layout_marginTop="8dp"
+                android:inputType="textPersonName"
+                android:text="Following  "
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:shadowColor="#000000"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
+                android:shadowRadius="2.6"
+                android:textColor="@color/white"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
-                    android:id="@+id/home_item_discover"
-                    style="@style/FancyFont"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:inputType="textPersonName"
-                    android:paddingEnd="10dp"
-                    android:shadowColor="#000000"
-                    android:shadowDx="1"
-                    android:shadowDy="2"
-                    android:shadowRadius="2.6"
-                    android:text="Discover"
-                    android:textColor="@color/gray"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    tools:ignore="RtlHardcoded" />
+                android:id="@+id/home_item_discover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:inputType="textPersonName"
+                android:paddingEnd="10dp"
+                android:text="Discover"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
+                android:shadowRadius="2.6"
+                android:textSize="17sp"
+               android:textColor="@color/gray"
+                tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="370dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="55dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginEnd="55dp"
-                android:layout_marginBottom="0dp"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="55dp"
+            android:layout_marginEnd="55dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
-                android:paddingStart="5dp"
-                android:paddingTop="20dp"
-                android:paddingRight="5dp">
+                android:text="You have to follow someone to see his/her posts"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="2.5"
+                android:shadowDy="2.3"
+                android:shadowRadius="2.6"
+                android:textColor="@color/black"
+                />
 
-            <TextView
-                    android:id="@+id/empty_text"
-                    style="@style/FancyFont"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:paddingTop="30dp"
-                    android:text="Go follow someone!"
-                    android:textColor="@color/black"
-                    android:textSize="25sp" />
+
+
+
 
         </LinearLayout>
-
         <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center">
-
-            <com.airbnb.lottie.LottieAnimationView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="20dp"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_url="https://assets2.lottiefiles.com/packages/lf20_dcmlqwqx.json" />
+                android:layout_marginBottom="20dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_url="https://assets2.lottiefiles.com/packages/lf20_dcmlqwqx.json" />
         </LinearLayout>
+
+
+
+
+
+
 
 
     </RelativeLayout>
