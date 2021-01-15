@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.EmptyHomeFragment"
     android:background="@color/colorTeal">
 
@@ -10,7 +11,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp">
 
@@ -61,23 +61,23 @@
 
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="370dp"
+            android:layout_height="250dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="55dp"
-            android:layout_marginTop="80dp"
             android:layout_marginEnd="55dp"
             android:layout_marginBottom="0dp"
             android:gravity="center"
             android:paddingStart="5dp"
             android:paddingTop="20dp"
-            android:paddingRight="5dp" >
+            android:paddingEnd="5dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/empty_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="You have to follow someone to see his/her posts"
                 android:textSize="20sp"
@@ -87,12 +87,31 @@
                 android:shadowDy="2.3"
                 android:shadowRadius="2.6"
                 android:textColor="@color/black"
-                >
+                />
 
-            </TextView>
+
+
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_url="https://assets2.lottiefiles.com/packages/lf20_dcmlqwqx.json" />
+        </LinearLayout>
+
+
+
+
+
+
 
 
     </RelativeLayout>

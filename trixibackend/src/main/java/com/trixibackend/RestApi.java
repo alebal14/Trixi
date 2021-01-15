@@ -509,6 +509,27 @@ public class RestApi {
             }
         });
 
+        app.get("/api/searchPost/", (req, res) -> {
+
+            try {
+
+
+                var alluser = db.getUserHandler().getAllUsers();
+                var allpet = db.getPetHandler().getAllPets();
+
+                var searchPost = db.getPostHandler().findPostWhitouthUser(alluser, allpet);
+
+                System.out.println(searchPost.size());
+
+
+                res.json(searchPost);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        });
+
+
         app.get("/api/discover/:id", (req, res) -> {
 
             String id = req.getParam("id");
