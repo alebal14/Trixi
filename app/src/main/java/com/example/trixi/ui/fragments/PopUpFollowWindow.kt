@@ -27,9 +27,13 @@ import kotlinx.android.synthetic.main.follow_row.view.*
 import kotlinx.android.synthetic.main.fragment_follow_list.*
 
 
-
-class PopUpFollowWindow(private val fm: FragmentManager, private val headerText: String, private val follow: ArrayList<User>?, private val followingPet: ArrayList<Pet>?) :
-        DialogFragment() {
+class PopUpFollowWindow(
+    private val fm: FragmentManager,
+    private val headerText: String,
+    private val follow: ArrayList<User>?,
+    private val followingPet: ArrayList<Pet>?
+) :
+    DialogFragment() {
 
     private lateinit var model: TrixiViewModel
     private val adapterChat = GroupAdapter<GroupieViewHolder>()
@@ -39,9 +43,9 @@ class PopUpFollowWindow(private val fm: FragmentManager, private val headerText:
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         return inflater.inflate(R.layout.fragment_follow_list, container, false)
@@ -56,49 +60,61 @@ class PopUpFollowWindow(private val fm: FragmentManager, private val headerText:
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
         )
     }
 
 
     private fun setUpFollowView() {
         model = ViewModelProvider(this).get(TrixiViewModel::class.java)
-        follow!!.forEach { follow ->
-            follow.uid?.let {
-                model.getOneUser(it)?.observe(viewLifecycleOwner, { getFollowUser ->
-                    adapterChat.add(FollowItem( this,fm, getFollowUser, null))
-                })
+        if(!follow.isNullOrEmpty()){
+            follow!!.forEach { follow ->
+                follow.uid?.let {
+                    model.getOneUser(it)?.observe(viewLifecycleOwner, { getFollowUser ->
+                        adapterChat.add(FollowItem(this, fm, getFollowUser, null))
+                    })
+                }
             }
         }
 
-        followingPet?.forEach { followingPet ->
-            model.getOnePet(followingPet.uid)?.observe(viewLifecycleOwner, { getFollowingPet ->
-                adapterChat.add(FollowItem(this, fm, null, getFollowingPet))
-            })
+        if(!followingPet.isNullOrEmpty()){
+            followingPet!!.forEach { followingPet ->
+                model.getOnePet(followingPet.uid)?.observe(viewLifecycleOwner, { getFollowingPet ->
 
+                    adapterChat.add(FollowItem(this, fm, null, getFollowingPet))
+                })
+
+            }
         }
+
+
 
         recyclerView_popup_follow_list.adapter = adapterChat
 
     }
 }
 
-class FollowItem(private  val df: DialogFragment, private val fm: FragmentManager, private val followUser: User?, private val followingPet: Pet?) :
+class FollowItem(
+    private val df: DialogFragment,
+    private val fm: FragmentManager,
+    private val followUser: User?,
+    private val followingPet: Pet?
+) :
     Item<GroupieViewHolder>() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        if(followUser == null){
+        if (followUser == null && followingPet != null) {
             viewHolder.itemView.follow_user_name.text = followingPet!!.name
             Picasso.get().load(RetrofitClient.BASE_URL + followingPet.imageUrl)
-                    .transform(CropCircleTransformation()).fit()
-                    .into(viewHolder.itemView.follow_user_image)
+                .transform(CropCircleTransformation()).fit()
+                .into(viewHolder.itemView.follow_user_image)
         }
-        if(followingPet == null){
+        if (followingPet == null && followUser!=null) {
             viewHolder.itemView.follow_user_name.text = followUser!!.userName
             Picasso.get().load(RetrofitClient.BASE_URL + followUser.imageUrl)
-                    .transform(CropCircleTransformation()).fit()
-                    .into(viewHolder.itemView.follow_user_image)
+                .transform(CropCircleTransformation()).fit()
+                .into(viewHolder.itemView.follow_user_image)
         }
 
         viewHolder.itemView.follow_user_name.setOnClickListener {
@@ -113,10 +129,10 @@ class FollowItem(private  val df: DialogFragment, private val fm: FragmentManage
     }
 
     private fun redirectToUserOrPet() {
-        if(followingPet == null){
+        if (followingPet == null) {
             val userProfileFragment = UserProfileFragment(followUser)
             fm.beginTransaction().replace(R.id.fragment_container, userProfileFragment).commit()
-        }else {
+        } else {
             val petProfileFragment = PetProfileFragment(followingPet)
             fm.beginTransaction().replace(R.id.fragment_container, petProfileFragment).commit()
         }
