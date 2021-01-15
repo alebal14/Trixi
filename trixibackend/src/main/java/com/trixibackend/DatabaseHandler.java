@@ -13,12 +13,14 @@ import org.apache.commons.fileupload.FileItem;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.nio.file.Paths;
 import java.util.*;
+
 import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -29,7 +31,7 @@ public class DatabaseHandler {
     private UserHandler userHandler = null;
     private PostHandler postHandler = null;
     private PetHandler petHandler = null;
-//    private LikeHandler likeHandler = null;
+    //    private LikeHandler likeHandler = null;
 //    private CommentHandler commentHandler = null;
     private CategoryHandler categoryHandler = null;
     private PetTypeHandler petTypeHandler = null;
@@ -80,7 +82,7 @@ public class DatabaseHandler {
         categoryHandler = new CategoryHandler(database);
         petTypeHandler = new PetTypeHandler(database);
         notificationHandler = new NotificationHandler(database);
-        reportHandler =  new ReportHandler(database);
+        reportHandler = new ReportHandler(database);
 
 
         userColl = userHandler.getUserColl();
@@ -100,8 +102,8 @@ public class DatabaseHandler {
         collections.putIfAbsent(Pet.class, petColl);
         collections.putIfAbsent(Category.class, categoryColl);
         collections.putIfAbsent(PetType.class, petTypeColl);
-        collections.putIfAbsent(Notification.class,notColl);
-        collections.putIfAbsent(Report.class,reportColl);
+        collections.putIfAbsent(Notification.class, notColl);
+        collections.putIfAbsent(Report.class, reportColl);
     }
 
     public <T> T save(Object object) {
@@ -152,35 +154,32 @@ public class DatabaseHandler {
     }
 
 
-    public DeleteResult deleteById(String collectionName, String id, User loggedInUser, Response res,Request req){
-        switch (collectionName){
+    public DeleteResult deleteById(String collectionName, String id, User loggedInUser, Response res, Request req) {
+        System.out.println("loggedin user :" + loggedInUser);
+        switch (collectionName) {
             case "users":
-                if(loggedInUser.getUid().equals(id) || loggedInUser.getRole().equals("admin")){
+                if (loggedInUser.getUid().equals(id) || loggedInUser.getRole().equals("admin")) {
                     return userHandler.deleteUser(id);
-                }else{
+                } else {
                     res.send("not allowed");
                 }
 
             case "posts":
-                Post p  = postHandler.findPostById(id);
-                if(loggedInUser.getUid().equals(p.getOwnerId()) || loggedInUser.getRole().equals("admin")){
-                    return postHandler.deletePost(id);
-                }else{
-                    res.send("not allowed");
-                }
+                return postHandler.deletePost(id);
+
 
             case "pets":
                 Pet pet = petHandler.findPetById(id);
-                if(loggedInUser.getUid().equals(pet.getOwnerId()) || loggedInUser.getRole().equals("admin")){
-                    return petHandler.deletePet(id,userColl);
-                }else{
+                if (loggedInUser.getUid().equals(pet.getOwnerId()) || loggedInUser.getRole().equals("admin")) {
+                    return petHandler.deletePet(id, userColl);
+                } else {
                     res.send("not allowed");
                 }
 
             case "reports":
-                if(loggedInUser.getRole().equals("admin")){
+                if (loggedInUser.getRole().equals("admin")) {
                     return reportHandler.deleteReport(id);
-                }else{
+                } else {
                     res.send("not allowed");
                 }
 
