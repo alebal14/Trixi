@@ -110,7 +110,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
     private fun allPostsToAdapter(cat: Int?) {
          if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
-            limit = 50
+            limit = 100
                 model.getAllPostsWithQuery(page, limit)
                     ?.observe(viewLifecycleOwner, Observer { post ->
                         var finalPost = post
