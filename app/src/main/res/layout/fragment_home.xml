@@ -44,16 +44,5 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/refresh_button"
-        android:layout_width="397dp"
-        android:layout_height="706dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="47dp"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_baseline_sync_24" />
-
 
 </RelativeLayout>
