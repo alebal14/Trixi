@@ -56,12 +56,6 @@ class DiscoverFragment : Fragment() {
             }
         }
 
-        refresh_button.setOnClickListener {
-            Log.d("home", "in home fragment")
-            val deg = refresh_button.rotation + 180F
-            refresh_button.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
-            setUpDiscoverView()
-        }
     }
 
     override fun onDestroyView() {

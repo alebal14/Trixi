@@ -70,13 +70,13 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="4dp"
                         android:gravity="left"
+                        android:text="sofia"
                         android:shadowColor="#000000"
                         android:shadowDx="2.5"
                         android:shadowDy="2.3"
                         android:shadowRadius="2.6"
-                        android:text="John Doe"
                         android:textColor="@color/white"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:textStyle="bold">
 
                 </TextView>
@@ -99,10 +99,10 @@
 
                 <TextView
                         android:id="@+id/home_item_following"
-                        style="@style/HomeItemFont"
+                        style="@style/FancyFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:inputType="textPersonName"
                         android:shadowColor="#000000"
                         android:shadowDx="2.5"
@@ -115,10 +115,10 @@
 
                 <TextView
                         android:id="@+id/home_item_discover"
-                        style="@style/HomeItemFont"
+                        style="@style/FancyFont"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:inputType="textPersonName"
                         android:paddingEnd="10dp"
                         android:shadowColor="#000000"
@@ -163,6 +163,10 @@
                         android:id="@+id/home_item_edit"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:shadowColor="#000000"
+                        android:shadowDx="1"
+                        android:shadowDy="2"
+                        android:shadowRadius="1"
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/ic_baseline_edit_24"
                         android:backgroundTint="@color/colorPink" />
@@ -179,6 +183,10 @@
                 <ImageButton
                         android:id="@+id/home_item_profile"
                         android:layout_width="40dp"
+                        android:shadowColor="#000000"
+                        android:shadowDx="1"
+                        android:shadowDy="2"
+                        android:shadowRadius="1"
                         android:layout_height="40dp"
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/ic_baseline_pets_24"
@@ -206,6 +214,10 @@
                             android:background="@drawable/count"
                             android:minWidth="20dp"
                             android:padding="3dp"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="1"
                             android:text="1"
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
@@ -237,6 +249,10 @@
                             android:minWidth="20dp"
                             android:padding="3dp"
                             android:text="300"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="2"
+                            android:shadowRadius="1"
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -268,8 +284,7 @@
 
             <TextView
                     android:id="@+id/home_item_title"
-                    android:textAppearance="@style/HomeItemFont"
-                    style="@style/HomeItemFont"
+                    style="@style/FancyFont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
@@ -277,7 +292,6 @@
                     android:shadowDx="1"
                     android:shadowDy="2"
                     android:shadowRadius="2.6"
-                    android:text="Title"
                     android:textColor="@color/white"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -292,7 +306,6 @@
                     android:shadowDx="1"
                     android:shadowDy="2"
                     android:shadowRadius="1"
-                    android:text="Description"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
@@ -307,13 +320,10 @@
                     android:shadowDy="2"
                     android:textStyle="bold"
                     android:shadowRadius="2.6"
-                    android:text="Tags"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
-
         </LinearLayout>
-
 
     </RelativeLayout>
 
