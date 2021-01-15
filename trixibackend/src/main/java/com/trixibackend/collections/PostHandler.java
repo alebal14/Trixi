@@ -204,6 +204,35 @@ public class PostHandler {
         return resultList;
     }
 
+    public List<Post> findPostWhitouthUser(List<User> userList, List<Pet> petList){
+
+        List<Post> allPostFromDB = getAllPosts();
+
+        List<User> getAllUser = userList ;
+        List<Pet>  getAllPet = petList;
+
+        Set<String> userid =
+                getAllUser.stream()
+                        .map(User::getUid)
+                        .collect(Collectors.toSet());
+
+        Set<String> petid = getAllPet.stream()
+                .map(Pet::getUid)
+                .collect(Collectors.toSet());
+
+        List<String> concatlist = Stream.concat(userid.stream(),petid.stream())
+                .collect(Collectors.toList());
+
+        List<Post> result =
+                allPostFromDB.stream()
+                        .filter(e -> !concatlist.contains(e.getOwnerId()))
+                        .collect(Collectors.toList());
+
+        //result.forEach(r -> deletePost(r.getUid()));
+
+        return result;
+    }
+
     public List<Post> findPostByPetType(List<Pet> petsByType){
         List<Post> allPostFromDB = getAllPosts();
 

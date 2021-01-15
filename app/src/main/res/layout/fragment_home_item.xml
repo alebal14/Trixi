@@ -7,10 +7,12 @@
         android:background="@color/cardview_light_background"
         app:cardCornerRadius="4dp">
 
+
     <RelativeLayout
         android:id="@+id/home_item_media_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
         <com.potyvideo.library.AndExoPlayerView
                 android:id="@+id/home_item_video"
@@ -24,6 +26,7 @@
         <ImageView
                 android:id="@+id/home_item_media"
                 android:layout_width="match_parent"
+                android:transitionName="simple_transition"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
@@ -267,7 +270,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="500dp">
+            android:layout_marginTop="400dp">
 
         <LinearLayout
                 android:id="@+id/home_item_post_info"

@@ -2,6 +2,7 @@ package com.example.trixi.ui.explore
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -11,13 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.trixi.R
 import com.example.trixi.entities.PetType
 import com.example.trixi.entities.Post
 import com.example.trixi.repository.TrixiViewModel
 import com.example.trixi.ui.post.SinglePostFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_top_liked_posts.*
-
+import kotlinx.android.synthetic.main.fragment_top_liked_posts.pullToRefresh
+import kotlinx.android.synthetic.main.fragment_upload.*
 
 
 class ShowTopPostsFragment : Fragment(), View.OnClickListener {
@@ -25,6 +29,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     var  mContext : Context? = null
     var page = 1
     var limit = 20
+    var scrollToLoad =  true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +47,8 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
         cat_spinner.setVisibility(View.GONE)
 
+
+
         cat_all.setOnClickListener(this)
         cat_training.setOnClickListener(this)
         cat_tricks.setOnClickListener(this)
@@ -54,6 +61,9 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         allPostsToAdapter(null)
         searchToAdapter()
         populateCatSpinner()
+
+
+
 
 
         search_bar.setOnClickListener(object : View.OnClickListener {
@@ -81,26 +91,38 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 oldScrollY: Int
             ) {
 
-                if (scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight) {
-                        page++
-                        allPostsToAdapter(cat)
+
+
+
+
+                if (scrollToLoad && scrollY == v!!.getChildAt(0).measuredHeight - v!!.measuredHeight) {
+                    page++
+                    allPostsToAdapter(cat)
                 }
             }
         })
 
-        pullToRefresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-            pullToRefresh.isEnabled = false;
-            if(page > 1){
+        if(page == 1){
+            pullToRefresh.isEnabled = false
+            pullToRefresh.isRefreshing = false
+        } else {
+            pullToRefresh.isEnabled = true
+        }
+       
+        pullToRefresh.setOnRefreshListener {
+            if (page > 1) {
                 page--
                 allPostsToAdapter(cat)
             }
-            pullToRefresh.isEnabled = true;
-        })
-
+            if (pullToRefresh.isRefreshing) {
+                pullToRefresh.isRefreshing = false;
+            }
+        }
     }
 
     private fun allPostsToAdapter(cat: Int?) {
          if (cat == R.id.cat_training || cat == R.id.cat_other || cat == R.id.cat_tricks || cat == R.id.cat_obedience || cat == R.id.cat_feeding || cat == R.id.cat_cute){
+             scrollToLoad = true
             limit = 50
                 model.getAllPostsWithQuery(page, limit)
                     ?.observe(viewLifecycleOwner, Observer { post ->
@@ -149,15 +171,20 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                                         redirectToSinglePost(p)
                                     }
                             }
-                        }else{
+                        } else {
                             top_scroll.isEnabled = false;
-                            Toast.makeText(activity, "You reached the last Post", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                activity,
+                                "You reached the last Post",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     })
 
         }else {
             model.getAllPostsWithQuery(page, limit).observe(viewLifecycleOwner, Observer { post ->
                 if (post != null) {
+                    scrollToLoad = true
                     var sortedPosts = post!!.sortedByDescending { it.likes!!.size }.map { it }
                     ScrollToLoad(null)
                     media_grid_top_posts.apply {
@@ -182,14 +209,19 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
     private fun searchToAdapter() {
         search_bar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-               return false
+                return false
             }
+
             override fun onQueryTextSubmit(newText: String?): Boolean {
+
                 if (newText != null) {
+                    scrollToLoad = false
+
                     model.getPostBySearching(newText!!)
                         .observe(viewLifecycleOwner, Observer { post ->
                             setAdapter(post!!)
                         })
+
                     SearchClickx()
                 }
                 return true
@@ -255,8 +287,7 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
             media_grid_top_posts.adapter =
-                ExploreMediaGridAdapter(adapterList as ArrayList<Post>){
-                    p -> redirectToSinglePost(p)
+                ExploreMediaGridAdapter(adapterList as ArrayList<Post>){ p -> redirectToSinglePost(p)
                 }
         }
     }
@@ -264,6 +295,8 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         var button = v
+        scrollToLoad = true
+
 
         cat_spinner_start.isSelected = false
         cat_all.isSelected = false
@@ -274,11 +307,12 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
         cat_cute.isSelected = false
         cat_other.isSelected = false
 
+
         button!!.isSelected = true
 
 
             when (v?.getId()) {
-                R.id.cat_spinner_start ->{
+                R.id.cat_spinner_start -> {
                     cat_spinner_start.setVisibility(View.GONE)
                     cat_spinner.setVisibility(View.VISIBLE)
                     selectItemInSpinner()
@@ -286,49 +320,49 @@ class ShowTopPostsFragment : Fragment(), View.OnClickListener {
                 R.id.cat_all -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    page =1
+                    page = 1
                     allPostsToAdapter(null)
                     populateCatSpinner()
                 }
                 R.id.cat_training -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    page =1
+                    page = 1
                     allPostsToAdapter(R.id.cat_training)
                     populateCatSpinner()
                 }
                 R.id.cat_tricks -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    page =1
+                    page = 1
                     allPostsToAdapter(R.id.cat_tricks)
                     populateCatSpinner()
                 }
-                R.id.cat_obedience-> {
+                R.id.cat_obedience -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    page =1
+                    page = 1
                     allPostsToAdapter(R.id.cat_obedience)
                     populateCatSpinner()
                 }
                 R.id.cat_feeding -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    page =1
+                    page = 1
                     allPostsToAdapter(R.id.cat_feeding)
                     populateCatSpinner()
                 }
                 R.id.cat_cute -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    page =1
+                    page = 1
                     allPostsToAdapter(R.id.cat_cute)
                     populateCatSpinner()
                 }
                 R.id.cat_other -> {
                     cat_spinner.setVisibility(View.GONE)
                     cat_spinner_start.setVisibility(View.VISIBLE)
-                    page =1
+                    page = 1
                     allPostsToAdapter(R.id.cat_other)
                     populateCatSpinner()
                 }

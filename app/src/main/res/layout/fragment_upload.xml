@@ -76,14 +76,20 @@
 
             </RelativeLayout>
 
-
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/uploadanim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_url="https://assets1.lottiefiles.com/packages/lf20_3wkkkbbp.json" />
 
             <ImageView
                 android:id="@+id/uploadImage"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
-                android:layout_marginBottom="20dp"
-                android:src="@drawable/ic_baseline_cloud_upload_24"/>
+                android:layout_marginBottom="20dp" />
 
             <com.potyvideo.library.AndExoPlayerView
                 android:id="@+id/uploadVideo"

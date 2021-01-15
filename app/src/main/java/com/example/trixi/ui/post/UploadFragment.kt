@@ -93,6 +93,7 @@ class UploadFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         uploadVideo.visibility = View.GONE;
+        uploadImage.visibility =  View.GONE;
         edit_buttons_container.visibility= View.GONE
 
         btn_open_gallery_picture.setOnClickListener {
@@ -361,6 +362,9 @@ class UploadFragment() : Fragment() {
 
     private fun sendPhoto(){
 
+        uploadImage.visibility =  View.VISIBLE
+        uploadanim.visibility = View.GONE
+
         val totheView = view?.findViewById<View>(R.id.uploadImage) as ImageView
 
         Picasso.get()
@@ -394,6 +398,7 @@ class UploadFragment() : Fragment() {
     }
 
     private fun sendVideo(){
+        uploadanim.visibility = View.GONE
         uploadImage.visibility = View.GONE;
         uploadVideo.visibility = View.VISIBLE;
         uploadVideo.setSource(postPath)
