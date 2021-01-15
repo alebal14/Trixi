@@ -123,10 +123,7 @@ public class RestApi {
             var loggedInUser = (User) sessionCookie.getData();
 
             if (updatedPost != null ) {
-//                if(!loggedInUser.getUid().equals(updatedPost.getOwnerId())){
-//                    res.send("Not allowed");
-//                    return;
-//                }
+
                 Post oldPost = db.getPostHandler().findPostById(updatedPost.getUid());
                 updatedPost.setId(oldPost.getId());
                 updatedPost.setFilePath(oldPost.getFilePath());
@@ -195,6 +192,7 @@ public class RestApi {
 
                         User user = new User();
                         User oldUser = db.getUserHandler().findUserById(uid);
+                        System.out.println("loggedin user : " + loggedInUser);
 
                         if (uid != null) {
                             if(!loggedInUser.getUid().equals(uid)){
@@ -278,10 +276,6 @@ public class RestApi {
                         categoryName = req.getFormData("categoryName").get(0).getString().replace("\"", "");
                         fileType = req.getFormData("fileType").get(0).getString().replace("\"", "");
 
-                        if(!loggedInUser.getUid().equals(ownerId)){
-                            res.send("not allowed");
-                            return;
-                        }
 
                         PostfileUrl = db.uploadImage(Postfiles.get(0));
 
@@ -326,6 +320,8 @@ public class RestApi {
                         breed = req.getFormData("breed").get(0).getString().replace("\"", "");
                         Type = req.getFormData("petType").get(0).getString().replace("\"", "");
                         gender = req.getFormData("gender").get(0).getString().replace("\"", "");
+
+                        System.out.println("loggedin user : " + loggedInUser);
 
                         if(!loggedInUser.getUid().equals(petOwnerId)){
                             res.send("not allowed");
