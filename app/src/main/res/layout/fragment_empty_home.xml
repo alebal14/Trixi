@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/white"
         tools:context=".ui.home.EmptyHomeFragment">
 
@@ -84,7 +84,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="Explore and follow someone to see their posts here!"
+                    android:paddingTop="30dp"
+                    android:text="Go follow someone!"
                     android:textColor="@color/black"
                     android:textSize="25sp" />
 
@@ -96,12 +97,12 @@
                 android:gravity="center">
 
             <com.airbnb.lottie.LottieAnimationView
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_url="https://assets2.lottiefiles.com/packages/lf20_dcmlqwqx.json"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="20dp" />
+                    android:layout_marginBottom="20dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_url="https://assets2.lottiefiles.com/packages/lf20_dcmlqwqx.json" />
         </LinearLayout>
 
 
