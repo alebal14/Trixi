@@ -195,10 +195,10 @@ public class RestApi {
                         System.out.println("loggedin user : " + loggedInUser);
 
                         if (uid != null) {
-                            if(!loggedInUser.getUid().equals(uid)){
-                                res.send("not allowed");
-                                return;
-                            }
+//                            if(!loggedInUser.getUid().equals(uid)){
+//                                res.send("not allowed");
+//                                return;
+//                            }
                             user.setUid(uid);
                             user.setId(new ObjectId(uid));
                             user.setFollowingsUser(oldUser.getFollowingsUser());
